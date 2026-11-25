@@ -11,7 +11,7 @@
 
 ## Статус
 
-**Фаза 0 — документация.** Кода пока нет. Требования, методика, модель данных и архитектура описаны в [docs/](docs/README.md). План фаз — в [roadmap](docs/roadmap.md).
+**Фаза 0 (документация) и веха M1 (контент-репозиторий с golden sample) завершены, инструменты разработки настроены.** Следующая веха — M2: пакеты `core` и `srs`; кода ядра пока нет. Требования, методика, модель данных и архитектура описаны в [docs/](docs/README.md), план фаз — в [roadmap](docs/roadmap.md). UI-стек ещё не выбран ([Q-13](docs/risks-and-questions.md)).
 
 ## Два репозитория
 
@@ -40,18 +40,20 @@
 
 [Кликабельный прототип десктопного интерфейса](prototypes/desktop-ui/README.md) на данных golden sample: главная, сессия повторения, темы, карточки, статистика, настройки. Открывается как `prototypes/desktop-ui/index.html`.
 
-## Проверка и просмотр документации
+## Разработка
 
-Нужен Node ≥24.17 (`.nvmrc`). Пакеты `@wastech-mdlint/*` 0.4.1 стоят в devDependencies: `core`, `cli`, `mcp-server`, `viewer`.
+Нужен Node ≥24.17 (`.nvmrc`). Все инструменты — точные версии в devDependencies.
 
 ```bash
 npm ci
-npm run lint:docs      # проверка документации (0 ошибок — условие готовности)
-npm run docs:view      # локальный просмотр на 127.0.0.1:4180: схемы, подсветка, граф ссылок
-npm run docs:graph     # граф связей документов
+npm run lint           # всё: lint:code + lint:docs (0 ошибок — условие готовности)
+npm run lint:code      # ESLint (границы пакетов ядра), Stylelint, проверка Prettier, tsc -b
+npm run lint:docs      # wastech-mdlint по docs/, .rules/, skills
+npm run fix            # все автоисправления: ESLint, Stylelint, Prettier
+npm run docs:view      # просмотр документации на 127.0.0.1:4180: схемы, подсветка, граф ссылок
 ```
 
-Конфиг лежит в [wastech-mdlint.config.json](wastech-mdlint.config.json), правила для агентов — в [AGENTS.md](AGENTS.md). Ту же проверку на каждый push и pull request запускает CI: `.github/workflows/markdown-lint.yml`.
+Правила разработки — в [.rules/](.rules/README.md) (на английском: их читают и агенты), вход для агентов — [AGENTS.md](AGENTS.md). CI на каждый push в `main` и каждый pull request: `.github/workflows/ci.yml` (код) и `.github/workflows/markdown-lint.yml` (документация).
 
 ## Лицензия
 

@@ -4,69 +4,39 @@ Guide for AI agents and contributors working in `wastech-learn`.
 
 ## What this repo is
 
-`wastech-learn` is the framework half of a personal spaced-repetition learning system. The knowledge itself
-(topics, cards, summaries, diagrams, review logs) lives in a separate private repo, `wastech-learn-content`.
-See [README.md](README.md) and [docs/README.md](docs/README.md).
+`wastech-learn` is the framework half of a personal spaced-repetition learning system (chat → cards, summaries, visuals → FSRS review). The knowledge itself lives in the separate private repo `wastech-learn-content`. See [README.md](README.md) and [docs/README.md](docs/README.md).
 
-**Current phase: 0 (documentation only).** There is no code yet. The docs in `docs/` are the source of
-truth for requirements and architecture. Do not scaffold code unless the user asks for it explicitly.
+**Phase:** documentation (phase 0) and M1 (content repo with a golden sample) are done; tooling is set up; M2 — the `core` and `srs` packages — is next. No package exists yet. Do not scaffold code unless the user asks; the UI stack is still open (ADR-0006 `proposed`, Q-13).
+
+## Rules — read before working
+
+The [rules index](.rules/README.md) is the canonical "how to work here". The non-negotiables in short:
+
+1. **Headless core.** All logic in `core`, `srs`, `content-fs`; hosts (`cli`, `mcp-server`, `server`, `app`) stay thin. `core` and `srs` are pure, independent of each other, free of Node APIs — [architecture](.rules/architecture.md).
+2. **Data invariants.** Markdown never stores scheduling state; the review log is append-only JSONL per device and writer; card `id` is random and stable, never a hash; replay is deterministic — [architecture](.rules/architecture.md).
+3. **Validate at the edge.** Zod schemas from `core` parse every input once; no `any`, no enums, no default exports; **comments explain why, never what**, with no links — [coding-style](.rules/coding-style.md).
+4. **No keys, no model calls, no telemetry.** AI runs in subscription chats via skills and MCP — [security](.rules/security.md).
+5. **Tests ship with logic**, deterministic, with golden content and replay checks — [testing](.rules/testing.md).
+6. **Git:** Conventional Commits in English, scoped staging, never `git add -A`, **no agent attribution** (no `Co-Authored-By`, no "Generated with"), commit or push only when asked — [git-workflow](.rules/git-workflow.md).
+7. **Docs move with the code:** Russian docs, English rules; FR status and ADRs updated in the same change — [documentation](.rules/documentation.md).
+8. **User-facing text** in ru/en/pl, calm and guilt-free — [values-and-philosophy](.rules/values-and-philosophy.md), [tone-of-voice](.rules/tone-of-voice.md).
+
+## Skills
+
+`implement` (runs `assess-refactor` first), `spec-task`, `interview`, `interview-to-spec`, `handoff`, `park` (backlog cards in `docs/backlog/`) — installed from `wastech-skills`, pinned in `skills-lock.json`. `implement` and `assess-refactor` are edited for this repo; re-apply the edits after `npx skills update`.
+
+## Commands
+
+```bash
+npm ci               # Node >=24.17 (.nvmrc); every tool is an exact devDependency
+npm run lint         # lint:code (ESLint, Stylelint, Prettier check, tsc -b) + lint:docs (wastech-mdlint)
+npm run fix          # every autofix: ESLint, Stylelint, Prettier
+npm run docs:view    # local viewer for the docs with rendered Mermaid
+npm run proto:data   # rebuild the prototype's data.js from ../wastech-learn-content
+```
+
+`npm run lint` must be green before a change is done; CI runs it on every push to `main` and every pull request. The `wastech-mdlint` MCP server is registered in [.mcp.json](.mcp.json): use `lint` on a draft before writing it and `impact-analysis` before renaming or splitting a doc.
 
 ## Language
 
-- Documentation in `docs/` and `README.md` is written in **Russian**.
-- File names, front matter keys, IDs, code identifiers, and machine-checked table headers
-  (`ID`, `Priority`, `Status`, `Principles`, `Journeys`) are **English**.
-- This file stays in English to keep the always-loaded context small (the `LLM-001` estimate
-  undercounts Cyrillic).
-- Talk to the user in the language they use.
-
-## ID scheme
-
-| Prefix | Meaning | Defined in |
-| --- | --- | --- |
-| `G-xx` | Product goal | `docs/product/vision.md` |
-| `J-xx` | User journey | `docs/product/journeys.md` |
-| `LP-xx` | Learning principle | `docs/learning/principles.md` |
-| `FR-xxx` | Functional requirement (1xx capture, 2xx review, 3xx content, 4xx insights, 5xx language) | `docs/requirements/fr-*.md` |
-| `NFR-xx` | Non-functional requirement | `docs/requirements/nfr.md` |
-| `ADR-xxxx` | Architecture decision | `docs/adr/` |
-| `R-xx` / `Q-xx` | Risk / open question | `docs/risks-and-questions.md` |
-
-IDs are never reused. Every `LP-xx` and `J-xx` must be referenced by at least one FR (`GRP-003`).
-Use `docs/glossary.md` terms; do not introduce synonyms.
-
-## Document size policy
-
-Every page covers one topic. Budgets are enforced by `SIZE-001` in
-[wastech-mdlint.config.json](wastech-mdlint.config.json): 120 lines / 12 KB warn, 180 lines / 18 KB error;
-ADRs 60 / 90 lines. When a page outgrows its budget, first compress the wording without losing
-meaning, then split it by meaning into sibling pages behind an index. Never cut content to fit.
-
-## Checks
-
-```bash
-npm ci              # once; Node >=24.17 (.nvmrc), @wastech-mdlint/* 0.4.1 pinned in devDependencies
-npm run lint:docs   # must report zero errors before a change is done
-npm run docs:view   # optional: local viewer with rendered Mermaid and a link graph
-```
-
-Mermaid blocks must stay valid.
-
-The `wastech-mdlint` MCP server (read-only: `lint`, `lint-files`, `context-graph`, `context-slice`,
-`impact-analysis`, `compile-context`) is registered in [.mcp.json](.mcp.json) and runs the locally
-installed version. Use `lint` to check a draft before writing it and `impact-analysis` before renaming or
-splitting a doc.
-
-## Architecture invariants (for future code)
-
-- **Headless core**: `core`, `srs` and `content-fs` hold all logic; `cli`, `mcp-server`, `server` and `app`
-  are thin hosts. See `docs/architecture/components.md`.
-- Content Markdown never stores scheduling state. Review state is an append-only JSONL event log.
-- Card `id` is stable and random, never a content hash.
-- No API keys in MVP: AI features run inside subscription chats (Claude Code, ChatGPT).
-
-## Do not
-
-- Commit, push or `git init` without the user's consent.
-- Put secrets or personal data into docs.
-- Change an accepted ADR in place: supersede it with a new one.
+Docs in `docs/` and `README.md` are **Russian**; this file, `.rules/` and skills are **English** (the `LLM-001` estimate undercounts Cyrillic). Identifiers, file names and front matter keys are English. Talk to the user in the language they use.

@@ -1,7 +1,8 @@
 name: Markdown lint
 
-# Runs the same check as `npm run lint:docs`: wastech-mdlint over the docs, the prototype README and
-# (later) the skills that wastech-mdlint.config.json selects. It fails on a broken link, anchor or image,
+# Runs the same check as `npm run lint:docs`: wastech-mdlint over the docs, the rules in .rules/, the
+# prototype README and the installed skills' SKILL.md that wastech-mdlint.config.json selects (an anchor
+# in a skill's link fails here too). It fails on a broken link, anchor or image,
 # a duplicate requirement ID, a principle or journey that no requirement carries forward, or a page over
 # its size budget. The full report goes into the job summary.
 #
