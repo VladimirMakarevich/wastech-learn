@@ -52,3 +52,7 @@ npm run docs:graph     # граф связей документов
 ```
 
 Конфиг лежит в [wastech-mdlint.config.json](wastech-mdlint.config.json), правила для агентов — в [AGENTS.md](AGENTS.md). Ту же проверку на каждый push и pull request запускает CI: `.github/workflows/markdown-lint.yml`.
+
+## Лицензия
+
+[MIT](LICENSE). Лицензия распространяется на этот репозиторий: документацию, прототип и будущий код. Контент-репозиторий `wastech-learn-content` приватный, лицензия на него не действует.
