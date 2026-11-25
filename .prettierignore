@@ -1,0 +1,18 @@
+# Markdown is checked by wastech-mdlint (npm run lint:docs). Prettier would re-pad every table and rewrap
+# the docs, turning a one-line edit into a whole-file diff.
+*.md
+
+# Dependencies, lockfile, build and test output.
+node_modules/
+package-lock.json
+dist/
+coverage/
+
+# Generated: prototypes/desktop-ui/build-data.mjs writes data.js; the happy-path SVGs come from generate.py.
+prototypes/desktop-ui/data.js
+docs/assets/
+
+# Installed from wastech-skills and pinned in skills-lock.json; edited only to fit this repository.
+.agents/
+.claude/
+skills-lock.json

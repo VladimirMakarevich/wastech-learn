@@ -1,0 +1,6 @@
+{
+  // Solution file for `tsc -b` (npm run typecheck). Each package is added as a reference when it is created,
+  // e.g. { "path": "packages/core" }. Until then the build checks the JavaScript tooling (tsconfig.tooling.json).
+  "files": [],
+  "references": [{ "path": "./tsconfig.tooling.json" }]
+}

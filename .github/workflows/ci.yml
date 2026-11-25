@@ -1,0 +1,52 @@
+name: CI
+
+# The code half of the definition-of-done gate, on every push to `main` and every pull request:
+# ESLint (with the package boundaries of the headless core), Stylelint, the Prettier check and `tsc -b`.
+# The steps run in the order a failure is cheapest to read. The Markdown half runs in markdown-lint.yml,
+# so `npm run lint` is covered by the two workflows together without linting anything twice.
+# Tests join this workflow with the first package (M2).
+#
+# No path filter, on purpose: a config, the lockfile or a tsconfig can break the gate without touching code.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-code:
+    name: eslint, stylelint, prettier, tsc
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      # The Node line from .nvmrc (24); every tool is an exact devDependency pinned by the lockfile.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: ESLint
+        run: npm run --silent lint:es
+
+      - name: Stylelint
+        run: npm run --silent lint:css
+
+      - name: Prettier
+        run: npm run --silent format:check
+
+      - name: Typecheck
+        run: npm run --silent typecheck

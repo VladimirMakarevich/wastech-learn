@@ -1,0 +1,15 @@
+{
+  // Type-checks the repository's own JavaScript tooling — lint configs, scripts/ and the prototype's data builder —
+  // with checkJs, so `npm run typecheck` guards real files before the first package exists. It emits only
+  // declarations into .cache/, which `tsc -b` needs for a referenced project.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "emitDeclarationOnly": true,
+    "outDir": ".cache/tsc/tooling",
+    "rootDir": ".",
+    "types": ["node"]
+  },
+  "include": ["*.js", "scripts/**/*.mjs", "prototypes/**/*.mjs"]
+}

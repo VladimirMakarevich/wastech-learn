@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Генератор схем happy path для docs/product/happy-path.md.
+"""Генератор схем happy path: весь путь темы, день 0 и сессия повторения.
 
 Запуск из корня репозитория:
 
