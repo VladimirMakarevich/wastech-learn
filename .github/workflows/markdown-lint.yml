@@ -1,0 +1,58 @@
+name: Markdown lint
+
+# Runs the same check as `npm run lint:docs`: wastech-mdlint over the docs, the prototype README and
+# (later) the skills that wastech-mdlint.config.json selects. It fails on a broken link, anchor or image,
+# a duplicate requirement ID, a principle or journey that no requirement carries forward, or a page over
+# its size budget. The full report goes into the job summary.
+#
+# No path filter, on purpose: a renamed asset or a changed config can break a page whose Markdown never
+# changed, and a filter on `**/*.md` would skip exactly that run.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: markdown-lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-md:
+    name: wastech-mdlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      # wastech-mdlint needs Node >= 24.17. .nvmrc names the `24` line, which resolves to the newest 24.x.
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # The linter is a devDependency, so `npm ci` runs the exact version the lockfile pins, the same one
+      # `npm run lint:docs` runs locally.
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      # The output is captured before the exit status is acted on: the summary matters most on the run
+      # that fails.
+      - name: Lint Markdown
+        run: |
+          status=0
+          npm run --silent lint:docs > "$RUNNER_TEMP/mdlint.txt" 2>&1 || status=$?
+          cat "$RUNNER_TEMP/mdlint.txt"
+          {
+            echo "## Markdown lint — wastech-mdlint $(npx --no-install wastech-mdlint --version)"
+            echo
+            echo '```text'
+            cat "$RUNNER_TEMP/mdlint.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"

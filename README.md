@@ -51,4 +51,4 @@ npm run docs:view      # локальный просмотр на 127.0.0.1:4180
 npm run docs:graph     # граф связей документов
 ```
 
-Конфиг лежит в [wastech-mdlint.config.json](wastech-mdlint.config.json), правила для агентов — в [AGENTS.md](AGENTS.md).
+Конфиг лежит в [wastech-mdlint.config.json](wastech-mdlint.config.json), правила для агентов — в [AGENTS.md](AGENTS.md). Ту же проверку на каждый push и pull request запускает CI: `.github/workflows/markdown-lint.yml`.
