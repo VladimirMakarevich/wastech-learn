@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "skills": {
+    "assess-refactor": {
+      "source": "VladimirMakarevich/wastech-skills",
+      "commit": "01f50fc0b825aa62bb56d557a25d283c6c5a51d9",
+      "sourceType": "github",
+      "skillPath": "skills/assess-refactor/SKILL.md",
+      "computedHash": "16a90eb87043038e34ce50203ae8432636ca00da3c506e9143b827765d87e48b"
+    },
+    "handoff": {
+      "source": "VladimirMakarevich/wastech-skills",
+      "commit": "01f50fc0b825aa62bb56d557a25d283c6c5a51d9",
+      "sourceType": "github",
+      "skillPath": "skills/handoff/SKILL.md",
+      "computedHash": "d891bf8d563e6e38a832a5ec4925ccf01b86c1d37cba36c664442c304b67eca5"
+    },
+    "implement": {
+      "source": "VladimirMakarevich/wastech-skills",
+      "commit": "01f50fc0b825aa62bb56d557a25d283c6c5a51d9",
+      "sourceType": "github",
+      "skillPath": "skills/implement/SKILL.md",
+      "computedHash": "6198e586ef625c30702092badce1778a3a64739a40e11ae846fafffaa0cd446b"
+    },
+    "interview": {
+      "source": "VladimirMakarevich/wastech-skills",
+      "commit": "01f50fc0b825aa62bb56d557a25d283c6c5a51d9",
+      "sourceType": "github",
+      "skillPath": "skills/interview/SKILL.md",
+      "computedHash": "a727e00f177189f6c7a0eb432c822b1bc07afce2985d3a741d90627673d6de16"
+    },
+    "interview-to-spec": {
+      "source": "VladimirMakarevich/wastech-skills",
+      "commit": "01f50fc0b825aa62bb56d557a25d283c6c5a51d9",
+      "sourceType": "github",
+      "skillPath": "skills/interview-to-spec/SKILL.md",
+      "computedHash": "a4f1e435e2edb729458a7c7c8c3297e4dea5c161c6d66665832f228abfc2aa6a"
+    },
+    "park": {
+      "source": "VladimirMakarevich/wastech-skills",
+      "commit": "def8c3acbf4157cb79993dfafa36cfb4eeb17d16",
+      "sourceType": "github",
+      "skillPath": "skills/park/SKILL.md",
+      "computedHash": "bb721f6ffe5d576c5cb34e6cd58f71c0072a719df64f4aa1b8b2ece1f3a56228"
+    },
+    "spec-task": {
+      "source": "VladimirMakarevich/wastech-skills",
+      "commit": "01f50fc0b825aa62bb56d557a25d283c6c5a51d9",
+      "sourceType": "github",
+      "skillPath": "skills/spec-task/SKILL.md",
+      "computedHash": "bafa9945ac6b7a1f01b13979511b9554395f612a8e84fda5493e66a0dd4fd2b9"
+    }
+  }
+}
