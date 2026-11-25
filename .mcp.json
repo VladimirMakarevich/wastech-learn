@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "wastech-mdlint": {
+      "command": "npx",
+      "args": ["--no-install", "wastech-mdlint-mcp"]
+    }
+  }
+}

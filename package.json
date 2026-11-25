@@ -1,0 +1,23 @@
+{
+  "name": "wastech-learn",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Personal spaced-repetition learning framework: requirements, architecture and (later) the headless core, app, CLI and MCP server.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=24.17.0"
+  },
+  "scripts": {
+    "lint:docs": "wastech-mdlint lint .",
+    "lint:docs:fix": "wastech-mdlint lint . --fix",
+    "docs:graph": "wastech-mdlint graph .",
+    "docs:view": "wastech-mdlint-viewer"
+  },
+  "devDependencies": {
+    "@wastech-mdlint/cli": "0.4.1",
+    "@wastech-mdlint/core": "0.4.1",
+    "@wastech-mdlint/mcp-server": "0.4.1",
+    "@wastech-mdlint/viewer": "0.4.1"
+  }
+}

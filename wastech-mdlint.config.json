@@ -1,0 +1,147 @@
+{
+  // Локальный путь к схеме, а не URL: проверка работает офлайн и совпадает с версией CLI
+  // (@wastech-mdlint/cli в devDependencies). Запуск: npm run lint:docs
+  "$schema": "./node_modules/@wastech-mdlint/cli/schema.json",
+
+  // Корпус — то, что читает человек или агент: корневые документы, docs/ и будущие skills.
+  "include": ["./*.md", "docs/**/*.md", "skills/*/SKILL.md"],
+
+  "rules": [
+    // Ворота: относительные ссылки, якоря и картинки должны резолвиться.
+    { "rule": "REF-001" },
+    { "rule": "REF-002" },
+    { "rule": "REF-003" },
+    { "rule": "REF-008" },
+
+    // Пустые секции и заглушки. Шаблон ADR намеренно состоит из подсказок.
+    { "rule": "CTX-001", "options": { "exclude": ["docs/adr/0000-template.md"] } },
+    // Картинки с alt-текстом, у блоков кода указан язык (mermaid, jsonc, yaml, text, ...).
+    { "rule": "CTX-005" },
+    { "rule": "CTX-006" },
+
+    // Сироты: каждый документ достижим из README.md / docs/README.md.
+    { "rule": "GRP-002" },
+    // Циклы ссылок между документами допустимы: разделы ссылаются друг на друга в «См. также».
+    { "rule": "GRP-001", "severity": "off" },
+    // Чеклисты в доках — это задачи на будущее, а не долг.
+    { "rule": "CTX-002", "severity": "off" },
+
+    // Всегда загружаемый контекст агента: CLAUDE.md импортирует AGENTS.md.
+    {
+      "rule": "LLM-001",
+      "options": { "entrypoints": ["./CLAUDE.md", "./AGENTS.md"], "maxTokensPerEntrypoint": 3000 }
+    },
+
+    // Размер: небольшие страницы на одну тему. Русский текст в UTF-8 весит ~2 байта на символ,
+    // поэтому байтовые лимиты выше, чем 8/12 KB в англоязычном wastechlab-mobile-template.
+    // Документ, который перерос бюджет, сначала сжимают по формулировкам, затем делят по смыслу.
+    {
+      "rule": "SIZE-001",
+      "options": {
+        "lines": { "warn": 120, "error": 180 },
+        "bytes": { "warn": 12288, "error": 18432 },
+        "overrides": [
+          { "pattern": "docs/adr/*.md", "lines": { "warn": 60, "error": 90 }, "bytes": { "warn": 6144, "error": 9216 } },
+          { "pattern": "**/README.md", "lines": { "warn": 80, "error": 120 } }
+        ]
+      }
+    },
+
+    // Таблицы требований: обязательные колонки, допустимые приоритеты, формат и уникальность ID.
+    {
+      "rule": "TBL-001",
+      "options": {
+        "files": ["docs/requirements/fr-*.md"],
+        "section": "Требования",
+        "requiredColumns": ["ID", "Требование", "Priority", "Status", "Principles", "Journeys"]
+      }
+    },
+    {
+      "rule": "TBL-001",
+      "options": {
+        "files": ["docs/requirements/nfr.md"],
+        "section": "Требования",
+        "requiredColumns": ["ID", "Требование", "Priority", "Status", "Проверка"]
+      }
+    },
+    {
+      "rule": "TBL-003",
+      "options": {
+        "files": ["docs/requirements/fr-*.md", "docs/requirements/nfr.md"],
+        "section": "Требования",
+        "column": "Priority",
+        "values": ["MVP", "Later", "Won't"]
+      }
+    },
+    {
+      "rule": "TBL-003",
+      "options": {
+        "files": ["docs/requirements/fr-*.md", "docs/requirements/nfr.md"],
+        "section": "Требования",
+        "column": "Status",
+        "values": ["proposed", "accepted", "done", "dropped"]
+      }
+    },
+    {
+      "rule": "TBL-004",
+      "options": {
+        "files": ["docs/requirements/fr-*.md", "docs/requirements/nfr.md"],
+        "section": "Требования",
+        "column": "ID",
+        "pattern": "^(FR-\\d{3}|NFR-\\d{2})$"
+      }
+    },
+    // ID уникальны во всём корпусе: цели, сценарии, принципы, требования, риски, вопросы.
+    {
+      "rule": "TBL-006",
+      "options": { "column": "ID", "idPattern": "^(G|J|LP|FR|NFR|R|Q)-\\d{2,3}$" }
+    },
+
+    // Трассировка: каждый принцип обучения доходит до требования, каждый сценарий покрыт требованием.
+    {
+      "rule": "GRP-003",
+      "options": {
+        "idPattern": "LP-\\d{2}",
+        "chain": [
+          { "stage": "principles", "files": ["docs/learning/principles.md"], "idColumn": "ID", "refColumn": "ID" },
+          { "stage": "requirements", "files": ["docs/requirements/fr-*.md"], "refColumn": "Principles" }
+        ]
+      }
+    },
+    {
+      "rule": "GRP-003",
+      "options": {
+        "idPattern": "J-\\d{2}",
+        "chain": [
+          { "stage": "journeys", "files": ["docs/product/journeys.md"], "idColumn": "ID", "refColumn": "ID" },
+          { "stage": "requirements", "files": ["docs/requirements/fr-*.md"], "refColumn": "Journeys" }
+        ]
+      }
+    },
+
+    // ADR: front matter и обязательные секции.
+    {
+      "rule": "FM-001",
+      "options": {
+        "files": ["docs/adr/[0-9][0-9][0-9][0-9]-*.md"],
+        "exclude": ["docs/adr/0000-template.md"],
+        "required": ["id", "status", "date"],
+        "allowed": { "status": ["proposed", "accepted", "superseded", "rejected"] },
+        "patterns": { "id": "^ADR-\\d{4}$", "date": "^\\d{4}-\\d{2}-\\d{2}$" }
+      }
+    },
+    {
+      "rule": "SEC-001",
+      "options": {
+        "files": ["docs/adr/[0-9][0-9][0-9][0-9]-*.md"],
+        "sections": ["Контекст", "Решение", "Альтернативы", "Последствия"]
+      }
+    },
+
+    // Единый словарь: вместо синонимов из колонки Aliases используется канонический термин.
+    {
+      "rule": "CTX-003",
+      "options": { "glossary": "docs/glossary.md", "termColumn": "Term", "aliasColumn": "Aliases" }
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="860" viewBox="0 0 1800 860" role="img" aria-labelledby="title desc">
+<title id="title">День 0: разбор темы в Claude Code</title>
+<desc id="desc">Swimlane: я, Claude Code со skill learn-capture, MCP-сервер с mdlint и контент-репозиторий; девять шагов от старта до мини-квиза.</desc>
+<defs><filter id="sh" x="-5%" y="-10%" width="110%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/></filter><linearGradient id="rgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#10B981" stop-opacity="0.28"/><stop offset="1" stop-color="#10B981" stop-opacity="0.02"/></linearGradient><marker id="m94A3B8" viewBox="0 0 10 10" refX="8.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94A3B8"/></marker></defs>
+<rect width="1800" height="860" fill="#F5F7FB"/>
+<text x="40.0" y="62.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="30" font-weight="800" fill="#0F172A" text-anchor="start" >День 0 · разбор темы в Claude Code</text>
+<text x="40.0" y="94.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="16" font-weight="400" fill="#64748B" text-anchor="start" >Кто что делает на каждом шаге: я, ИИ-тьютор, MCP-сервер и репозиторий — всё по подписке, без API-ключей</text>
+<rect x="40.0" y="128.0" width="1720.0" height="150.0" rx="16" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.2"/>
+<path d="M40,144 a16,16 0 0 1 16,-16 h4 v150 h-4 a16,16 0 0 1 -16,-16 z" fill="#2563EB"/>
+<text x="70.0" y="196.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="17" font-weight="800" fill="#1D4ED8" text-anchor="start" >Я</text>
+<text x="70.0" y="220.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#64748B" text-anchor="start" >думаю, отвечаю, выбираю</text>
+<rect x="40.0" y="290.0" width="1720.0" height="150.0" rx="16" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.2"/>
+<path d="M40,306 a16,16 0 0 1 16,-16 h4 v150 h-4 a16,16 0 0 1 -16,-16 z" fill="#7C3AED"/>
+<text x="70.0" y="358.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="17" font-weight="800" fill="#6D28D9" text-anchor="start" >Claude Code</text>
+<text x="70.0" y="382.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#64748B" text-anchor="start" >skill learn-capture</text>
+<rect x="40.0" y="452.0" width="1720.0" height="150.0" rx="16" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1.2"/>
+<path d="M40,468 a16,16 0 0 1 16,-16 h4 v150 h-4 a16,16 0 0 1 -16,-16 z" fill="#475569"/>
+<text x="70.0" y="520.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="17" font-weight="800" fill="#334155" text-anchor="start" >wastech-learn-mcp</text>
+<text x="70.0" y="544.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#64748B" text-anchor="start" >+ wastech-mdlint</text>
+<rect x="40.0" y="614.0" width="1720.0" height="150.0" rx="16" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.2"/>
+<path d="M40,630 a16,16 0 0 1 16,-16 h4 v150 h-4 a16,16 0 0 1 -16,-16 z" fill="#0F766E"/>
+<text x="70.0" y="682.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="17" font-weight="800" fill="#115E59" text-anchor="start" >Контент-репозиторий</text>
+<text x="70.0" y="706.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#64748B" text-anchor="start" >wastech-learn-content (git)</text>
+<path d="M404,203.0 H415.0 V365.0 H425" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M498.0,416 V476" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)" marker-start="url(#m94A3B8)"/>
+<path d="M570,365.0 H591" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M664.0,314 V254" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)" marker-start="url(#m94A3B8)"/>
+<path d="M736,365.0 H757" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M830.0,314 V254" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)" marker-start="url(#m94A3B8)"/>
+<path d="M902,203.0 H923" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M996.0,254 V314" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M1068,365.0 H1089" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M1162.0,416 V476" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)" marker-start="url(#m94A3B8)"/>
+<path d="M1234,365.0 H1245.0 V203.0 H1255" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M1400,203.0 H1411.0 V365.0 H1421" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M1494.0,416 V476" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M1494.0,578 V638" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M1566,365.0 H1587" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M1660.0,314 V254" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)" marker-start="url(#m94A3B8)"/>
+<path d="M1660.0,416 V476" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<path d="M1660.0,578 V638" fill="none" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m94A3B8)"/>
+<rect x="262.0" y="155.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="274.0" y="181.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Старт</text>
+<text x="274.0" y="202.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >«Разберём</text>
+<text x="274.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >backpressure»</text>
+<circle cx="264.0" cy="157.0" r="12" fill="#2563EB"/>
+<text x="264.0" y="161.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >1</text>
+<rect x="428.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="440.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Поиск темы</text>
+<text x="440.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >есть ли уже</text>
+<text x="440.0" y="380.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >такая тема?</text>
+<circle cx="430.0" cy="319.0" r="12" fill="#7C3AED"/>
+<text x="430.0" y="323.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >2</text>
+<rect x="428.0" y="479.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#sh)"/>
+<text x="440.0" y="505.0" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >search</text>
+<text x="440.0" y="526.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >похожих тем</text>
+<text x="440.0" y="542.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >нет</text>
+<rect x="594.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="606.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Pre-questions</text>
+<text x="606.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >3–5 вопросов</text>
+<text x="606.0" y="380.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >до объяснения</text>
+<circle cx="596.0" cy="319.0" r="12" fill="#7C3AED"/>
+<text x="596.0" y="323.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >3</text>
+<rect x="594.0" y="155.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="606.0" y="181.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Отвечаю</text>
+<text x="606.0" y="202.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >как могу +</text>
+<text x="606.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >уверенность 1–3</text>
+<rect x="760.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="772.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Диалог</text>
+<text x="772.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >сократический,</text>
+<text x="772.0" y="380.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >подсказки H0→H4</text>
+<circle cx="762.0" cy="319.0" r="12" fill="#7C3AED"/>
+<text x="762.0" y="323.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >4</text>
+<rect x="760.0" y="155.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="772.0" y="181.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Пробую сам</text>
+<text x="772.0" y="202.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >предсказываю,</text>
+<text x="772.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >объясняю</text>
+<rect x="926.0" y="155.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="938.0" y="181.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Brain dump</text>
+<text x="938.0" y="202.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >суть своими</text>
+<text x="938.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >словами</text>
+<circle cx="928.0" cy="157.0" r="12" fill="#2563EB"/>
+<text x="928.0" y="161.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >5</text>
+<rect x="926.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="938.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Разбор</text>
+<text x="938.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >отмечает</text>
+<text x="938.0" y="380.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >пробелы</text>
+<rect x="1092.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1104.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Кандидаты</text>
+<text x="1104.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >12 карточек</text>
+<text x="1104.0" y="380.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >разных типов</text>
+<circle cx="1094.0" cy="319.0" r="12" fill="#7C3AED"/>
+<text x="1094.0" y="323.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >6</text>
+<rect x="1092.0" y="479.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1104.0" y="505.0" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >add_cards</text>
+<text x="1104.0" y="526.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >dryRun:</text>
+<text x="1104.0" y="542.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >mdlint + check</text>
+<rect x="1258.0" y="155.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1270.0" y="181.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Отбор</text>
+<text x="1270.0" y="202.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >оставляю 8,</text>
+<text x="1270.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >3 переписываю</text>
+<circle cx="1260.0" cy="157.0" r="12" fill="#2563EB"/>
+<text x="1260.0" y="161.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >7</text>
+<rect x="1424.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1436.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Запись</text>
+<text x="1436.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >тема, summary,</text>
+<text x="1436.0" y="380.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >карточки, схема</text>
+<circle cx="1426.0" cy="319.0" r="12" fill="#7C3AED"/>
+<text x="1426.0" y="323.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >8</text>
+<rect x="1424.0" y="479.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1436.0" y="505.0" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >validate ✓</text>
+<text x="1436.0" y="526.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >render SVG,</text>
+<text x="1436.0" y="542.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >идемпотентно</text>
+<rect x="1424.0" y="641.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#99F6E4" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1436.0" y="667.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Файлы темы</text>
+<text x="1436.0" y="688.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >index, summary,</text>
+<text x="1436.0" y="704.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >materials,</text>
+<text x="1436.0" y="720.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >8 карточек, SVG</text>
+<rect x="1590.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1602.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Мини-квиз</text>
+<text x="1602.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >3 новые</text>
+<text x="1602.0" y="380.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >карточки</text>
+<circle cx="1592.0" cy="319.0" r="12" fill="#7C3AED"/>
+<text x="1592.0" y="323.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >9</text>
+<rect x="1590.0" y="155.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1602.0" y="181.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Вспоминаю</text>
+<text x="1602.0" y="202.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >и ставлю</text>
+<text x="1602.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >оценку</text>
+<rect x="1590.0" y="479.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1602.0" y="505.0" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >record_review</text>
+<text x="1602.0" y="526.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >событие,</text>
+<text x="1602.0" y="542.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >grader: self</text>
+<rect x="1590.0" y="641.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#99F6E4" stroke-width="1.2" filter="url(#sh)"/>
+<text x="1602.0" y="667.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Журнал</text>
+<text x="1602.0" y="688.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >reviews/desk1/</text>
+<text x="1602.0" y="704.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >mcp-2026-11.jsonl</text>
+<text x="700.0" y="684.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="14" font-weight="600" fill="#115E59" text-anchor="start" >До шага 8 в репозиторий ничего не пишется:</text>
+<text x="700.0" y="706.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start" >сначала мой отбор карточек, потом validate (mdlint + check)</text>
+<text x="600.0" y="534.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start" >Тонкий слой над ядром: core · srs · content-fs</text>
+<rect x="40.0" y="790.0" width="860.0" height="38.0" rx="19.0" fill="#FFFFFF" stroke="#C7D2FE" stroke-width="1.3"/>
+<text x="470.0" y="813.9" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="600" fill="#3730A3" text-anchor="middle" >≈ 20–40 минут разговора · захват после диалога ≤ 15 минут · всё по подписке</text>
+<rect x="920.0" y="790.0" width="840.0" height="38.0" rx="19.0" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.3"/>
+<text x="1340.0" y="813.9" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="600" fill="#334155" text-anchor="middle" >Ошибка validate → ИИ правит текст до записи: в git попадает только проверенное</text>
+</svg>

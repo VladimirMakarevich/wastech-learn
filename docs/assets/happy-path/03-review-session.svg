@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="870" viewBox="0 0 1600 870" role="img" aria-labelledby="title desc">
+<title id="title">Сессия повторения: что происходит с одной карточкой</title>
+<desc id="desc">Экран вопроса и экран ответа с четырьмя оценками; что делает FSRS после оценки; очередь дня; ветки «был перерыв» и «квиз в чате».</desc>
+<defs><filter id="sh" x="-5%" y="-10%" width="110%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/></filter><linearGradient id="rgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#10B981" stop-opacity="0.28"/><stop offset="1" stop-color="#10B981" stop-opacity="0.02"/></linearGradient><marker id="m059669" viewBox="0 0 10 10" refX="8.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#059669"/></marker><marker id="m475569" viewBox="0 0 10 10" refX="8.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker><marker id="m4F46E5" viewBox="0 0 10 10" refX="8.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4F46E5"/></marker></defs>
+<rect width="1600" height="870" fill="#F5F7FB"/>
+<text x="40.0" y="62.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="30" font-weight="800" fill="#0F172A" text-anchor="start" >Сессия повторения: путь одной карточки</text>
+<text x="40.0" y="94.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="16" font-weight="400" fill="#64748B" text-anchor="start" >Дни 1…N · в браузере (позже — в телефоне) или квизом в Claude Code · 5–15 минут</text>
+<text x="40.0" y="128.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#64748B" text-anchor="start" letter-spacing="1.4">КАРТОЧКА НА ЭКРАНЕ</text>
+<rect x="40.0" y="146.0" width="350.0" height="380.0" rx="18" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2" filter="url(#sh)"/>
+<text x="60.0" y="176.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#64748B" text-anchor="start" >architecture / backpressure</text>
+<text x="370.0" y="176.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#64748B" text-anchor="end" >7 / 23</text>
+<rect x="60.0" y="188.0" width="310.0" height="4.0" rx="2" fill="#E2E8F0"/>
+<rect x="60.0" y="188.0" width="94.3" height="4.0" rx="2" fill="#059669"/>
+<rect x="60.0" y="206.0" width="134.0" height="24.0" rx="12.0" fill="#FFFFFF" stroke="#C7D2FE" stroke-width="1.3"/>
+<text x="127.0" y="222.1" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="600" fill="#3730A3" text-anchor="middle" >why · understand</text>
+<text x="60.0" y="266.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="19" font-weight="700" fill="#0F172A" text-anchor="start" >[Streaming] Why does a</text>
+<text x="60.0" y="293.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="19" font-weight="700" fill="#0F172A" text-anchor="start" >consumer signal demand</text>
+<text x="60.0" y="320.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="19" font-weight="700" fill="#0F172A" text-anchor="start" >to the producer?</text>
+<text x="60.0" y="372.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#64748B" text-anchor="start" >Уверенность до ответа</text>
+<rect x="60.0" y="382.0" width="104.0" height="30.0" rx="15" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="112.0" y="402.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="500" fill="#334155" text-anchor="middle" >1 не уверен</text>
+<rect x="172.0" y="382.0" width="104.0" height="30.0" rx="15" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="224.0" y="402.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#1D4ED8" text-anchor="middle" >2 скорее да</text>
+<rect x="284.0" y="382.0" width="80.0" height="30.0" rx="15" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1"/>
+<text x="324.0" y="402.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="500" fill="#334155" text-anchor="middle" >3 точно</text>
+<rect x="60.0" y="442.0" width="310.0" height="48.0" rx="12" fill="#4F46E5"/>
+<text x="215.0" y="472.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle" >Показать ответ · Space</text>
+<text x="215.0" y="512.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#64748B" text-anchor="middle" >сначала вспоминаю сам — потом смотрю</text>
+<path d="M396,466 H424" fill="none" stroke="#4F46E5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m4F46E5)"/>
+<text x="410.0" y="454.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11" font-weight="700" fill="#3730A3" text-anchor="middle" >Space</text>
+<rect x="430.0" y="146.0" width="350.0" height="380.0" rx="18" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.2" filter="url(#sh)"/>
+<text x="450.0" y="176.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#64748B" text-anchor="start" >architecture / backpressure</text>
+<text x="760.0" y="176.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#64748B" text-anchor="end" >7 / 23</text>
+<rect x="450.0" y="188.0" width="310.0" height="4.0" rx="2" fill="#E2E8F0"/>
+<rect x="450.0" y="188.0" width="94.3" height="4.0" rx="2" fill="#059669"/>
+<text x="450.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#64748B" text-anchor="start" >Why does a consumer signal demand…</text>
+<text x="450.0" y="246.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="700" fill="#047857" text-anchor="start" letter-spacing="1.2">ОТВЕТ</text>
+<text x="450.0" y="272.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="16" font-weight="700" fill="#0F172A" text-anchor="start" >Keeps the producer from</text>
+<text x="450.0" y="294.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="16" font-weight="700" fill="#0F172A" text-anchor="start" >overflowing the consumer.</text>
+<rect x="450.0" y="324.0" width="110.0" height="40.0" rx="8" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+<text x="505.0" y="349.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#0F172A" text-anchor="middle" >Producer</text>
+<rect x="650.0" y="324.0" width="110.0" height="40.0" rx="8" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="1"/>
+<text x="705.0" y="349.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#0F172A" text-anchor="middle" >Consumer</text>
+<path d="M562,336 H648" fill="none" stroke="#475569" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m475569)"/>
+<path d="M648,353 H562" fill="none" stroke="#059669" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m059669)"/>
+<text x="605.0" y="318.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#64748B" text-anchor="middle" >данные</text>
+<text x="605.0" y="380.0" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="11" font-weight="700" fill="#047857" text-anchor="middle" >request(n)</text>
+<rect x="450.0" y="402.0" width="71.5" height="50.0" rx="10" fill="#FEF2F2" stroke="#FECACA" stroke-width="1.2"/>
+<text x="485.8" y="422.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="800" fill="#B91C1C" text-anchor="middle" >1 · Again</text>
+<text x="485.8" y="441.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#334155" text-anchor="middle" >&lt;10 мин</text>
+<text x="485.8" y="470.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#64748B" text-anchor="middle" >не вспомнил</text>
+<rect x="529.5" y="402.0" width="71.5" height="50.0" rx="10" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.2"/>
+<text x="565.2" y="422.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="800" fill="#B45309" text-anchor="middle" >2 · Hard</text>
+<text x="565.2" y="441.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#334155" text-anchor="middle" >2 дн</text>
+<text x="565.2" y="470.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#64748B" text-anchor="middle" >с трудом</text>
+<rect x="609.0" y="402.0" width="71.5" height="50.0" rx="10" fill="#ECFDF5" stroke="#059669" stroke-width="2"/>
+<text x="644.8" y="422.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="800" fill="#047857" text-anchor="middle" >3 · Good</text>
+<text x="644.8" y="441.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#334155" text-anchor="middle" >4 дн</text>
+<text x="644.8" y="470.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#64748B" text-anchor="middle" >вспомнил</text>
+<rect x="688.5" y="402.0" width="71.5" height="50.0" rx="10" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.2"/>
+<text x="724.2" y="422.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="800" fill="#1D4ED8" text-anchor="middle" >4 · Easy</text>
+<text x="724.2" y="441.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#334155" text-anchor="middle" >9 дн</text>
+<text x="724.2" y="470.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11" font-weight="400" fill="#64748B" text-anchor="middle" >легко</text>
+<text x="605.0" y="508.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="11.5" font-weight="400" fill="#64748B" text-anchor="middle" >o тема · e VS Code · u отменить · ! отложить</text>
+<text x="820.0" y="128.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#64748B" text-anchor="start" letter-spacing="1.4">ЧТО ДЕЛАЕТ FSRS ПОСЛЕ ОЦЕНКИ</text>
+<rect x="820.0" y="146.0" width="165.5" height="104.0" rx="12" fill="#FFFFFF" stroke="#A7F3D0" stroke-width="1.2" filter="url(#sh)"/>
+<circle cx="842.0" cy="172.0" r="12" fill="#059669"/>
+<text x="842.0" y="176.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >1</text>
+<text x="862.0" y="177.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start" >Оценка</text>
+<text x="836.0" y="208.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >Good, ответ</text>
+<text x="836.0" y="226.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >занял 8 с</text>
+<path d="M988.5,198 H1008.5" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m059669)"/>
+<rect x="1011.5" y="146.0" width="165.5" height="104.0" rx="12" fill="#FFFFFF" stroke="#A7F3D0" stroke-width="1.2" filter="url(#sh)"/>
+<circle cx="1033.5" cy="172.0" r="12" fill="#059669"/>
+<text x="1033.5" y="176.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >2</text>
+<text x="1053.5" y="177.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start" >Память</text>
+<text x="1027.5" y="208.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >stability 1.8 → 4 дн</text>
+<text x="1027.5" y="226.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >difficulty 5.1</text>
+<path d="M1180.0,198 H1200.0" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m059669)"/>
+<rect x="1203.0" y="146.0" width="165.5" height="104.0" rx="12" fill="#FFFFFF" stroke="#A7F3D0" stroke-width="1.2" filter="url(#sh)"/>
+<circle cx="1225.0" cy="172.0" r="12" fill="#059669"/>
+<text x="1225.0" y="176.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >3</text>
+<text x="1245.0" y="177.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start" >Интервал</text>
+<text x="1219.0" y="208.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >когда R упадёт</text>
+<text x="1219.0" y="226.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >до 90% → 4 дн</text>
+<path d="M1371.5,198 H1391.5" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m059669)"/>
+<rect x="1394.5" y="146.0" width="165.5" height="104.0" rx="12" fill="#FFFFFF" stroke="#A7F3D0" stroke-width="1.2" filter="url(#sh)"/>
+<circle cx="1416.5" cy="172.0" r="12" fill="#059669"/>
+<text x="1416.5" y="176.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >4</text>
+<text x="1436.5" y="177.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start" >Очередь</text>
+<text x="1410.5" y="208.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >карточка вернётся</text>
+<text x="1410.5" y="226.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >29 ноября</text>
+<text x="820.0" y="290.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#64748B" text-anchor="start" letter-spacing="1.4">ОЧЕРЕДЬ НА СЕГОДНЯ</text>
+<rect x="820.0" y="304.0" width="740.0" height="58.0" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.2"/>
+<circle cx="846.0" cy="333.0" r="13" fill="#7C3AED"/>
+<text x="846.0" y="337.5" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" >1</text>
+<text x="872.0" y="329.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start" >Learning-шаги</text>
+<text x="872.0" y="349.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >вчерашние новые: шаги 1 мин → 10 мин</text>
+<text x="1540.0" y="341.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" font-weight="800" fill="#6D28D9" text-anchor="end" >2</text>
+<rect x="820.0" y="372.0" width="740.0" height="58.0" rx="12" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.2"/>
+<circle cx="846.0" cy="401.0" r="13" fill="#059669"/>
+<text x="846.0" y="405.5" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" >2</text>
+<text x="872.0" y="397.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start" >Due из всех доменов вперемешку</text>
+<text x="872.0" y="417.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >architecture · dotnet · angular · lang-pl чередуются</text>
+<text x="1540.0" y="409.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" font-weight="800" fill="#047857" text-anchor="end" >18</text>
+<rect x="820.0" y="440.0" width="740.0" height="58.0" rx="12" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1.2"/>
+<circle cx="846.0" cy="469.0" r="13" fill="#4F46E5"/>
+<text x="846.0" y="473.5" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" >3</text>
+<text x="872.0" y="465.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start" >Новые</text>
+<text x="872.0" y="485.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="start" >не больше 10 в день; при бэклоге — пауза</text>
+<text x="1540.0" y="477.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="22" font-weight="800" fill="#3730A3" text-anchor="end" >3</text>
+<text x="820.0" y="524.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#64748B" text-anchor="start" >Варианты одной карточки и карточки одной idea — в разные дни (bury siblings)</text>
+<text x="40.0" y="582.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="700" fill="#64748B" text-anchor="start" letter-spacing="1.4">ДВЕ ЧАСТЫЕ СИТУАЦИИ</text>
+<rect x="40.0" y="598.0" width="200.0" height="80.0" rx="12" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.2"/>
+<text x="58.0" y="633.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="16" font-weight="800" fill="#B45309" text-anchor="start" >Был перерыв</text>
+<text x="58.0" y="655.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#64748B" text-anchor="start" >без чувства вины</text>
+<polygon points="252.0,598.0 490.8,598.0 508.8,638.0 490.8,678.0 252.0,678.0 252.0,638.0" fill="#FFFFFF" stroke="#FDE68A" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="376.4" y="633.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="middle" >14 дней без сессий</text>
+<text x="376.4" y="654.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle" >расписание не сдвигается</text>
+<polygon points="514.8,598.0 753.6,598.0 771.6,638.0 753.6,678.0 514.8,678.0 532.8,638.0" fill="#FFFFFF" stroke="#FDE68A" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="647.2" y="633.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="middle" >«Накопилось 180 ≈ 45 мин»</text>
+<text x="647.2" y="654.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle" >план: 3 дня по 15 минут</text>
+<polygon points="777.6,598.0 1016.4,598.0 1034.4,638.0 1016.4,678.0 777.6,678.0 795.6,638.0" fill="#FFFFFF" stroke="#FDE68A" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="910.0" y="633.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="middle" >Режим «5 минут»</text>
+<text x="910.0" y="654.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle" >сначала самое забываемое</text>
+<polygon points="1040.4,598.0 1279.2,598.0 1297.2,638.0 1279.2,678.0 1040.4,678.0 1058.4,638.0" fill="#FFFFFF" stroke="#FDE68A" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="1172.8" y="633.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="middle" >Новые на паузе</text>
+<text x="1172.8" y="654.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle" >пока бэклог &gt; 2× нормы</text>
+<polygon points="1303.2,598.0 1542.0,598.0 1560.0,638.0 1542.0,678.0 1303.2,678.0 1321.2,638.0" fill="#D97706" stroke="#FDE68A" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="1435.6" y="633.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" >Бэклог разобран</text>
+<text x="1435.6" y="654.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#FFFFFF" text-anchor="middle" >новые возвращаются плавно</text>
+<rect x="40.0" y="702.0" width="200.0" height="80.0" rx="12" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.2"/>
+<text x="58.0" y="737.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="16" font-weight="800" fill="#6D28D9" text-anchor="start" >Квиз в чате</text>
+<text x="58.0" y="759.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#64748B" text-anchor="start" >Claude Code, по подписке</text>
+<polygon points="252.0,702.0 490.8,702.0 508.8,742.0 490.8,782.0 252.0,782.0 252.0,742.0" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="376.4" y="737.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="middle" >«Погоняй меня 10 минут»</text>
+<text x="376.4" y="758.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle" >статус: due 18 ≈ 5 мин</text>
+<polygon points="514.8,702.0 753.6,702.0 771.6,742.0 753.6,782.0 514.8,782.0 532.8,742.0" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="647.2" y="737.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="middle" >ИИ задаёт вопрос</text>
+<text x="647.2" y="758.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle" >ответ скрыт до попытки</text>
+<polygon points="777.6,702.0 1016.4,702.0 1034.4,742.0 1016.4,782.0 777.6,782.0 795.6,742.0" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="910.0" y="737.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="middle" >Я отвечаю</text>
+<text x="910.0" y="758.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle" >и ставлю уверенность</text>
+<polygon points="1040.4,702.0 1279.2,702.0 1297.2,742.0 1279.2,782.0 1040.4,782.0 1058.4,742.0" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="1172.8" y="737.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="middle" >ИИ сверяет с рубрикой</text>
+<text x="1172.8" y="758.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#334155" text-anchor="middle" >и предлагает оценку</text>
+<polygon points="1303.2,702.0 1542.0,702.0 1560.0,742.0 1542.0,782.0 1303.2,782.0 1321.2,742.0" fill="#7C3AED" stroke="#DDD6FE" stroke-width="1.3" stroke-linejoin="round" filter="url(#sh)"/>
+<text x="1435.6" y="737.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" >Я подтверждаю оценку</text>
+<text x="1435.6" y="758.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#FFFFFF" text-anchor="middle" >→ событие в журнал</text>
+<text x="40.0" y="840.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12.5" font-weight="400" fill="#64748B" text-anchor="start" >Все оценки пишутся в reviews/&lt;device&gt;/&lt;writer&gt;-YYYY-MM.jsonl — расписание всегда можно пересчитать (replay), а смена модели FSRS не теряет историю.</text>
+</svg>
