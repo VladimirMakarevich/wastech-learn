@@ -21,7 +21,7 @@ flowchart LR
 
 | Веха | Содержание | Требования | Готово, когда |
 | --- | --- | --- | --- |
-| M1 Контент | Создан `wastech-learn-content`, пресет mdlint, `.gitattributes`, `learn.config.json`, golden sample (1 тех-тема ~10 карточек, 1 тема на ru, 10 польских слов) | FR-310, NFR-09 | Golden sample проходит mdlint без ошибок |
+| M1 Контент | Создан `wastech-learn-content`, пресет mdlint, `.gitattributes`, `learn.config.json`, golden sample (1 тех-тема ~10 карточек, 1 тема на ru, 10 польских слов) | FR-310, NFR-09 | **Сделано 2026-11-25:** 3 темы, 30 карточек, 0 ошибок mdlint; правила пресета проверены на заведомо плохих карточках |
 | M2 Ядро | `core` (схемы, парсер, bundle, `check`), `srs` (ts-fsrs, replay, очередь, бэклог), `content-fs`, CLI `check/build/render/simulate` | FR-204, FR-208, FR-307, NFR-04, NFR-05, NFR-14 | Тесты replay и property-тесты зелёные; симуляция бэклога проходит |
 | M3 Захват | `wastech-learn-mcp` (инструменты контента и квиза), skills `learn-capture`, `learn-import`, `learn-quiz`, hook, промпт learning package | FR-101…FR-111, FR-115…FR-117, FR-210 | Одна реальная тема захвачена из Claude Code и одна из ChatGPT |
 | M4 Приложение | Angular/Ionic из шаблона: Home, Review, Session end, Topic, Browser, Stats (минимум), Settings, i18n ru/en/pl, TTS; локальный сервер | FR-2xx, FR-3xx, FR-401…FR-403, FR-5xx (MVP) | Сессия из 20 review items проходится только с клавиатуры |

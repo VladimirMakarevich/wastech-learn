@@ -4,7 +4,7 @@
   "$schema": "./node_modules/@wastech-mdlint/cli/schema.json",
 
   // Корпус — то, что читает человек или агент: корневые документы, docs/ и будущие skills.
-  "include": ["./*.md", "docs/**/*.md", "skills/*/SKILL.md"],
+  "include": ["./*.md", "docs/**/*.md", "prototypes/**/*.md", "skills/*/SKILL.md"],
 
   "rules": [
     // Ворота: относительные ссылки, якоря и картинки должны резолвиться.

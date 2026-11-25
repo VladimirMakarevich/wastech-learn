@@ -36,6 +36,10 @@
 4. [Принципы обучения](docs/learning/principles.md)
 5. [Карта всей документации](docs/README.md)
 
+## Прототип UI
+
+[Кликабельный прототип десктопного интерфейса](prototypes/desktop-ui/README.md) на данных golden sample: главная, сессия повторения, темы, карточки, статистика, настройки. Открывается как `prototypes/desktop-ui/index.html`.
+
 ## Проверка и просмотр документации
 
 Нужен Node ≥24.17 (`.nvmrc`). Пакеты `@wastech-mdlint/*` 0.4.1 стоят в devDependencies: `core`, `cli`, `mcp-server`, `viewer`.

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Прототип wastech-learn</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#home">
+      <span class="brand-mark" aria-hidden="true">w</span>
+      <span>wastech-learn</span>
+    </a>
+    <nav id="nav" aria-label="Main"></nav>
+    <div class="sidebar-foot">
+      <div class="lang-switch" id="lang-switch" role="group" aria-label="UI language"></div>
+      <button class="ghost-btn" id="theme-toggle" type="button"></button>
+      <div class="sync" id="sync"></div>
+      <div class="proto-note" id="proto-note"></div>
+    </div>
+  </aside>
+  <main>
+    <header class="topbar">
+      <h1 id="page-title"></h1>
+      <div class="topbar-right">
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="search" type="search" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+      </div>
+    </header>
+    <div id="view" class="view"></div>
+  </main>
+  <div id="drawer" class="drawer" hidden></div>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

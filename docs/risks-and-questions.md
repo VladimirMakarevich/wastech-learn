@@ -35,6 +35,7 @@
 | Q-10 | Тёмная тема для SVG-диаграмм | M4 | `currentColor` и прозрачный фон или два рендера |
 | Q-11 | Как запускать локальный сервер без ручной команды | M4 | Ярлык, systemd user service, автозапуск из Claude Code |
 | Q-12 | Стемминг для ru и pl в поиске | M4 | Без стемминга, Snowball через MiniSearch `processTerm` или ИИ-поиск дублей |
+| Q-13 | UI-стек: Ionic-шаблон `wastechlab-mobile-template` или desktop-first Angular (Material/CDK) с Capacitor позже; ADR-0006 возвращён в `proposed` | До M4, после ревью [прототипа](../prototypes/desktop-ui/README.md) | Ionic-шаблон; Angular desktop-first + Capacitor; Astro + island |
 
 ## См. также
 

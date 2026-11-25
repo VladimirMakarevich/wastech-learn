@@ -20,7 +20,14 @@
 
 ## Пресет для `wastech-learn-content`
 
-Это черновик. Ключи опций сверены со схемой `@wastech-mdlint/cli@0.4.1`. При реализации пресет проверяется на golden sample.
+Ключи опций сверены со схемой `@wastech-mdlint/cli@0.4.1`. Ниже — сокращённая версия. Рабочая копия («версия пресета 1») лежит в `wastech-mdlint.config.json` контент-репозитория и 2026-11-25 проверена на golden sample. По сравнению с первым черновиком в неё добавлено:
+
+- секция `Pretest` в `index.md`;
+- порядок секций summary (SEC-002);
+- допустимые `lang` и `langPair` у карточки;
+- шаблон для `related` у темы.
+
+Все правила срабатывают на заведомо плохих карточках. Дубль `id` mdlint не ловит, это задача `check`.
 
 ```jsonc
 {
@@ -50,7 +57,7 @@
     { "rule": "SEC-001", "options": { "files": ["content/**/cards/*.md"], "sections": ["Question", "Answer"] } },
     { "rule": "SEC-002", "options": { "files": ["content/**/cards/*.md"], "level": 2,
         "order": ["Question", "Answer", "Rubric", "Explanation", "Sources"] } },
-    { "rule": "SEC-001", "options": { "files": ["content/*/*/index.md"], "sections": ["Key idea", "Cards"] } },
+    { "rule": "SEC-001", "options": { "files": ["content/*/*/index.md"], "sections": ["Key idea", "Pretest", "Cards"] } },
     { "rule": "SEC-001", "options": { "files": ["content/*/*/summary.md"], "exclude": ["content/lang-*/**"],
         "sections": ["TL;DR", "Mental model", "Diagram", "Worked example", "Trade-offs", "When not to use",
                      "Misconceptions", "Comparison", "Self-check", "Related", "Open questions", "Sources"] } },
