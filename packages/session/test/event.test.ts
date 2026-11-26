@@ -9,9 +9,7 @@ import {
   undoEvents,
   unsuspendEvent,
 } from "../src/index.js";
-import { NOW, SCHED, origin } from "./fixtures.js";
-
-const HASH = `sha256:${"a".repeat(64)}`;
+import { HASH, NOW, SCHED, origin } from "./fixtures.js";
 
 const valid = (event: ReviewEvent): ReviewEvent => {
   const parsed = parseReviewEvent(JSON.parse(JSON.stringify(event)));

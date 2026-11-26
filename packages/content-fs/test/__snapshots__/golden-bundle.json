@@ -259,6 +259,7 @@
         "backpressure",
         "reactive-streams"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Why a consumer signals demand",
@@ -285,6 +286,7 @@
         "backpressure",
         "reactive-streams"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Reactive Streams: requesting items",
@@ -310,6 +312,7 @@
       "tags": [
         "backpressure"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Buffering vs dropping",
@@ -337,6 +340,7 @@
         "kafka",
         "high-load"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Kafka consumer lag and OOM",
@@ -380,6 +384,7 @@
         "backpressure",
         "tcp"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "TCP flow control window",
@@ -405,6 +410,7 @@
       "tags": [
         "backpressure"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Unbounded queue",
@@ -431,6 +437,7 @@
         "backpressure",
         "rate-limiting"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Rate limiting is not backpressure",
@@ -457,6 +464,7 @@
         "backpressure",
         "overload"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Load shedding",
@@ -485,6 +493,7 @@
         "dotnet",
         "channels"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Channels: Wait vs DropOldest",
@@ -512,6 +521,7 @@
         "dotnet",
         "channels"
       ],
+      "created": "2026-11-25",
       "lang": "en",
       "langPair": null,
       "title": "Channels: TryWrite on a full channel",
@@ -537,6 +547,7 @@
       "tags": [
         "async"
       ],
+      "created": "2026-11-25",
       "lang": "ru",
       "langPair": null,
       "title": "Зачем ConfigureAwait(false) в библиотеке",
@@ -563,6 +574,7 @@
         "async",
         "aspnet"
       ],
+      "created": "2026-11-25",
       "lang": "ru",
       "langPair": null,
       "title": "Дедлок в классическом ASP.NET",
@@ -601,6 +613,7 @@
       "tags": [
         "async"
       ],
+      "created": "2026-11-25",
       "lang": "ru",
       "langPair": null,
       "title": "async void против async Task",
@@ -627,6 +640,7 @@
         "async",
         "performance"
       ],
+      "created": "2026-11-25",
       "lang": "ru",
       "langPair": null,
       "title": "ValueTask для синхронного пути",
@@ -653,6 +667,7 @@
         "async",
         "aspnet-core"
       ],
+      "created": "2026-11-25",
       "lang": "ru",
       "langPair": null,
       "title": "Контекст синхронизации в ASP.NET Core",
@@ -679,6 +694,7 @@
         "async",
         "aspnet-core"
       ],
+      "created": "2026-11-25",
       "lang": "ru",
       "langPair": null,
       "title": "Почему .Result плох и в ASP.NET Core",
@@ -704,6 +720,7 @@
       "tags": [
         "async"
       ],
+      "created": "2026-11-25",
       "lang": "ru",
       "langPair": null,
       "title": "Синхронное начало async-метода",
@@ -729,6 +746,7 @@
       "tags": [
         "async"
       ],
+      "created": "2026-11-25",
       "lang": "ru",
       "langPair": null,
       "title": "Sync-over-async",
@@ -755,6 +773,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "rachunek",
@@ -781,6 +800,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "kelner",
@@ -807,6 +827,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "stolik",
@@ -833,6 +854,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "napiwek",
@@ -859,6 +881,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "danie",
@@ -885,6 +908,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "przystawka",
@@ -911,6 +935,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "deser",
@@ -937,6 +962,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "zamówić / zamawiać",
@@ -963,6 +989,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "Smacznego!",
@@ -989,6 +1016,7 @@
       "tags": [
         "restauracja"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": "pl-ru",
       "title": "karta",
@@ -1016,6 +1044,7 @@
         "restauracja",
         "biernik"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": null,
       "title": "Biernik после poproszę",
@@ -1042,6 +1071,7 @@
         "restauracja",
         "dopelniacz"
       ],
+      "created": "2026-11-25",
       "lang": "pl",
       "langPair": null,
       "title": "Dopełniacz после отрицания",

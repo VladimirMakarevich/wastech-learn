@@ -8,7 +8,7 @@
 | --- | --- | --- | --- |
 | `@wastech-learn/core` | Zod-схемы (front matter, `learn.config.json`, событие, learning package, входы инструментов MCP), парсер Markdown (unified/remark — тот же стек, что в mdlint), сериализация файлов контента из полей (`serialize/`), поиск MiniSearch (`search/`), генераторы `id` и ULID с внешним RNG, компилятор content bundle (remark → rehype → Shiki, KaTeX, sanitize), правила `check`, каталог сообщений ru/en/pl, каноничный пресет mdlint `preset/content.mdlint.jsonc` | unified, remark, rehype, zod, yaml, shiki, minisearch | Node, браузер |
 | `@wastech-learn/srs` | Адаптер ts-fsrs, replay журнала, очередь (лимиты, siblings, бэклог, режим «5 минут»), симуляция бэклога, метрики | ts-fsrs | Node, браузер |
-| `@wastech-learn/session` | Сессия повторения поверх `core` и `srs` ([ADR-0015](../adr/0015-session-package.md)): перевод значений `core` в порты `srs`, сборка событий (`review`, `undo`, `suspend`, `unsuspend`, `reset`), правило leech, прогноз интервалов четырёх кнопок; в M4 — движок и итоги сессии | core, srs | Node, браузер |
+| `@wastech-learn/session` | Сессия повторения поверх `core` и `srs` ([ADR-0015](../adr/0015-session-package.md)): перевод значений `core` в порты `srs`, сборка событий (`review`, `undo`, `suspend`, `unsuspend`, `reset`), правило leech, прогноз интервалов четырёх кнопок, журнал в памяти с replay по одному review item, движок сессии (режимы, learning steps в ходе сессии, отмена, bury, suspend, reset, внешние изменения), подсказка оценки по рубрике и итоги | core, srs | Node, браузер |
 | `@wastech-learn/content-fs` | Чтение репозитория и снимок по времени изменения файлов, проверка с наложением (mdlint + `check`), транзакция записи группы файлов, хранилище `requestId`, запись тем, карточек, summary, materials и диаграмм, `inbox/`, квиз (replay в памяти, дозапись событий `mcp` через `session`), дозапись JSONL (атомарно, свой файл на writer), рендер Mermaid | core, srs, session, `@wastech-mdlint/core`; mermaid-cli через `npx` с точной версией, не зависимостью | Node |
 | `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2), `new-id`, `hook post-tool-use` (M3); `serve`, `export` — позже | core, srs, content-fs | Node |
 | `@wastech-learn/mcp-server` | `wastech-learn-mcp`: инструменты MCP ([mcp-tools](../ai/mcp-tools.md)) поверх `content-fs`, маппинг ошибок в `{ code, message, hint }` | core, srs, content-fs, `@modelcontextprotocol/sdk` | Node (stdio; позже Worker) |
@@ -68,7 +68,7 @@ interface ContentBundle {
   builtAt: string;          // передаётся снаружи: повторная сборка даёт тот же файл
   domains: DomainMeta[];
   topics: TopicMeta[];      // путь, title, lang, familiarity, related, html секций summary
-  cards: CardEntry[];       // id, type, variants[], questionHtml, answerHtml, rubric[], contentHash, topic
+  cards: CardEntry[];       // id, type, created, variants[], questionHtml, answerHtml, rubric[], contentHash, topic
   assets: Record<string, string>; // локальные картинки, которые не встроены; SVG встраиваются в HTML
   searchIndex?: unknown;    // сериализованный MiniSearch из core/search, попадёт в bundle в M4
 }

@@ -104,6 +104,7 @@ const cardEntry = (renderer: MarkdownRenderer, card: Card): CardEntry => {
     grading: frontMatter.grading,
     idea: frontMatter.idea ?? null,
     tags: frontMatter.tags ?? [],
+    created: frontMatter.created,
     lang: card.lang,
     langPair: frontMatter.langPair ?? null,
     title: card.title ?? card.id,

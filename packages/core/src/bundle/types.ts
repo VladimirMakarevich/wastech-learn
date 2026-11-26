@@ -46,6 +46,8 @@ export interface CardEntry {
   readonly grading: string;
   readonly idea: string | null;
   readonly tags: readonly string[];
+  /** `YYYY-MM-DD` from the front matter: new cards of a topic come up in the order they were captured. */
+  readonly created: string;
   readonly lang: ContentLang;
   readonly langPair: string | null;
   readonly title: string;

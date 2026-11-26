@@ -10,9 +10,9 @@
 | `u` / `Ctrl+Z` | Review | Отменить последнюю оценку |
 | `o` | Review, Browser | Открыть тему |
 | `e` | Review, Browser, Topic | Открыть файл в VS Code (`vscode://file/<abs-path>:<line>`) |
-| `r` | Review | Пометить «переписать» |
+| `r` | Review | Пометить «переписать» (Later, вместе с fix list) |
 | `!` | Review | Отложить (suspend) |
-| `b` | Review | Bury до завтра |
+| `b` | Review | Скрыть карточку до конца сессии, без записи в журнал |
 | `p` | Review (`pl`) | Озвучить |
 | `/` | Везде | Поиск |
 | `g h` | Везде | На главную |
