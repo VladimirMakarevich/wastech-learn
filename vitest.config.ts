@@ -1,14 +1,37 @@
 import { defineConfig } from "vitest/config";
 
+const BENCHMARKS = "packages/*/test/**/benchmark.test.ts";
+
 export default defineConfig({
   // Workspace packages import each other's TypeScript sources, the same export condition tsc and the editor
   // use, so `npm test` never runs against a stale dist/.
   resolve: { conditions: ["@wastech-learn/source"] },
   ssr: { resolve: { conditions: ["@wastech-learn/source"] } },
   test: {
-    include: ["packages/*/test/**/*.test.ts"],
     // Code that reads the machine's zone is a bug; a zone with DST and a half-hour offset makes such a bug
     // fail loudly instead of passing by luck on a UTC runner.
     env: { TZ: "Australia/Adelaide" },
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          include: ["packages/*/test/**/*.test.ts"],
+          exclude: [BENCHMARKS],
+          sequence: { groupOrder: 0 },
+        },
+      },
+      {
+        // Timing budgets measured while every other test file runs on the other cores measure the machine,
+        // not the code: the benchmarks run after the unit tests, one file at a time.
+        extends: true,
+        test: {
+          name: "benchmark",
+          include: [BENCHMARKS],
+          fileParallelism: false,
+          sequence: { groupOrder: 1 },
+        },
+      },
+    ],
   },
 });
