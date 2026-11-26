@@ -1,6 +1,6 @@
 # Архитектура: обзор
 
-Система local-first. Вся логика сосредоточена в headless TypeScript-ядре, хосты над ним тонкие. Источник истины — git-репозиторий контента. Ключевые решения: [ADR-0006](../adr/0006-headless-core-angular-ui.md) (ядро + UI), [ADR-0007](../adr/0007-local-server-phase-1.md) (локальный сервер), [ADR-0003](../adr/0003-append-only-review-log.md) (журнал).
+Система local-first. Вся логика сосредоточена в headless TypeScript-ядре, хосты над ним тонкие. Источник истины — git-репозиторий контента. Ключевые решения: [ADR-0006](../adr/0006-headless-core-angular-ui.md) (ядро + UI), [ADR-0007](../adr/0007-local-server-phase-1.md) (локальный сервер), [ADR-0003](../adr/0003-append-only-review-log.md) (журнал), [ADR-0015](../adr/0015-session-package.md) (пакет `session`, replay в клиенте).
 
 ## Контекст (C4, уровень 1)
 
@@ -36,7 +36,6 @@ flowchart LR
     cli["wastech-learn CLI<br/>check / build / render"]
     server["Local server<br/>Hono, localhost"]
     app["App<br/>Angular + CDK в браузере"]
-    cache[(".cache<br/>node:sqlite")]
     repo[("content repo<br/>MD, SVG, JSONL")]
   end
   cc --> mcp
@@ -46,18 +45,15 @@ flowchart LR
   server -->|content bundle, события| app
   app -->|POST events| server
   server --> repo
-  server --> cache
-  mcp --> cache
 ```
 
 | Контейнер | Ответственность | Технология |
 | --- | --- | --- |
-| App | Повторение, чтение тем, поиск, статистика, настройки, i18n | Angular + CDK, вид Evening Glass, i18n из `wastechlab-mobile-template`, ts-fsrs в клиенте |
-| Local server | Отдаёт content bundle, принимает события и дописывает JSONL, следит за файлами, пересобирает кэш | Node 24 + Hono |
+| App | Повторение, чтение тем, поиск, статистика, настройки, i18n; replay, очередь и метрики считает сам | Angular + CDK, вид Evening Glass, i18n из `wastechlab-mobile-template`, `session` и `srs` в клиенте |
+| Local server | Отдаёт content bundle и журнал, принимает события и дописывает JSONL, следит за файлами, пересобирает bundle | Node 24 + Hono |
 | wastech-learn-mcp | Инструменты захвата и квиза для Claude Code | Node 24, `@modelcontextprotocol/sdk`, stdio |
 | CLI | `check`, `build` (bundle), `render` (диаграммы), `export` (CSV оптимизатора), `simulate` | Node 24 |
 | Content repo | Источник истины: контент и журнал | git, Markdown, SVG, JSONL |
-| Cache | Состояние review items после replay | `node:sqlite`, `.gitignore` |
 
 ## Фазы развёртывания
 

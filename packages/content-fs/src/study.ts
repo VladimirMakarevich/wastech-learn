@@ -2,7 +2,6 @@ import { glob, stat } from "node:fs/promises";
 import { join } from "node:path";
 import {
   LearnError,
-  newUlid,
   promptMarkdown,
   revealFor,
   type Card,
@@ -12,6 +11,17 @@ import {
   type ReviewEvent,
   type RevealInput,
 } from "@wastech-learn/core";
+import {
+  crossesLeechThreshold,
+  ratingEvent,
+  ratingGroup,
+  suspendEvent,
+  toQueueCards,
+  toReplayEvents,
+  toSrsConfig,
+  undoEvents,
+  type EventOrigin,
+} from "@wastech-learn/session";
 import {
   buildQueue,
   createScheduler,
@@ -25,7 +35,6 @@ import {
   type Scheduler,
 } from "@wastech-learn/srs";
 import { isMissing, toPosix } from "./fs-utils.js";
-import { toQueueCards, toReplayEvents, toSrsConfig } from "./load.js";
 import { appendReviewEvents, logFileOf } from "./log-append.js";
 import { readReviewLog } from "./log-read.js";
 import type { Snapshot, Workspace } from "./workspace.js";
@@ -265,14 +274,12 @@ export const createStudy = (workspace: Workspace): Study => {
         : undefined;
   };
 
-  const eventBase = async (snapshot: Snapshot, item: string, now: Date) => ({
-    v: 1 as const,
-    ts: now.toISOString(),
-    tz: snapshot.config.timezone,
+  const origin = async (snapshot: Snapshot): Promise<EventOrigin> => ({
     device: await workspace.device(),
     writer: MCP_WRITER,
-    item,
+    timezone: snapshot.config.timezone,
     sched: (await scheduler(snapshot.config)).sched,
+    random: workspace.options.random,
   });
 
   return {
@@ -365,32 +372,24 @@ export const createStudy = (workspace: Workspace): Study => {
       const card = cardOfItem(snapshot, input.item);
       if (card?.frontMatter.status !== "active") throw notActive(input.item);
       const now = workspace.options.now();
-      const { random } = workspace.options;
-      const base = await eventBase(snapshot, input.item, now);
-      const review: ReviewEvent = {
-        ...base,
-        id: newUlid(now, random),
-        kind: input.mode === "practice" ? "practice" : "review",
+      const from = await origin(snapshot);
+      const review = ratingEvent(from, now, {
+        item: input.item,
+        kind: input.mode,
         rating: input.rating,
-        aiSuggested: input.aiSuggested ?? null,
-        grader: input.grader,
-        confidence: input.confidence ?? null,
-        ...(input.durMs === undefined ? {} : { durMs: input.durMs }),
         contentHash: card.contentHash,
-      };
+        confidence: input.confidence,
+        durMs: input.durMs,
+        aiSuggested: input.aiSuggested,
+        grader: input.grader,
+      });
       const before = await itemState(snapshot, input.item, now);
       const after = await itemState(snapshot, input.item, now, [review]);
-      // A leech is suspended the moment it crosses the threshold: drilling it again wastes the session,
-      // and the learner sees it in the fix list instead. An item already past the threshold, unsuspended
-      // after a rewrite, is not suspended again by its next answer.
       const suspend =
         review.kind === "review" &&
-        after !== undefined &&
-        after.leech &&
-        !after.suspended &&
-        (before?.lapses ?? 0) < snapshot.config.leechThreshold;
+        crossesLeechThreshold(before, after, snapshot.config.leechThreshold);
       const written: ReviewEvent[] = suspend
-        ? [review, { ...base, id: newUlid(now, random), kind: "suspend" }]
+        ? [review, suspendEvent(from, now, input.item)]
         : [review];
       // One append for the rating and its suspend: both reach the log, or neither does.
       await append(written);
@@ -426,26 +425,8 @@ export const createStudy = (workspace: Workspace): Study => {
           {},
         );
       }
-      // The suspend a rating triggered goes with it: undoing the rating alone would leave the item hidden.
-      const targets = [
-        last,
-        ...own.filter(
-          (event) =>
-            event.kind === "suspend" &&
-            event.item === last.item &&
-            event.ts === last.ts,
-        ),
-      ];
-      const base = await eventBase(snapshot, last.item, now);
-      await append(
-        targets.map((target) => ({
-          ...base,
-          item: target.item,
-          id: newUlid(now, workspace.options.random),
-          kind: "undo",
-          target: target.id,
-        })),
-      );
+      const targets = ratingGroup(own, last);
+      await append(undoEvents(await origin(snapshot), now, targets));
       return {
         undone: targets.map((target) => ({
           event: target.id,

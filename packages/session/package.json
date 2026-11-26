@@ -1,0 +1,29 @@
+{
+  "name": "@wastech-learn/session",
+  "version": "0.0.0",
+  "description": "The review session of wastech-learn over core and srs: review-log events, the leech rule, the interval preview, the session engine and its summary. Pure: runs in Node and in the browser.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladimirMakarevich/wastech-learn.git",
+    "directory": "packages/session"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "@wastech-learn/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24.17.0"
+  },
+  "dependencies": {
+    "@wastech-learn/core": "0.0.0",
+    "@wastech-learn/srs": "0.0.0"
+  }
+}

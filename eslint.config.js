@@ -40,7 +40,7 @@ const NODE_DYNAMIC_IMPORT = {
 
 const HOST_NAMES = ["cli", "mcp-server", "server", "app"];
 const TABLE_MESSAGE =
-  "Packages depend downward only: core and srs on nothing of ours, content-fs on them, hosts on all three, the app on core and srs.";
+  "Packages depend downward only: core and srs on nothing of ours, session on both, content-fs on the three, Node hosts on all four, the app on core, srs and session.";
 /** @param {string} name @returns {Restriction} */
 const pkg = (name) => ({
   paths: [{ name: `@wastech-learn/${name}`, message: TABLE_MESSAGE }],
@@ -146,6 +146,7 @@ export default defineConfig(
       ...restrictImports(
         NODE_APIS,
         pkg("srs"),
+        pkg("session"),
         pkg("content-fs"),
         ...HOST_NAMES.map(pkg),
       ),
@@ -158,9 +159,18 @@ export default defineConfig(
       ...restrictImports(
         NODE_APIS,
         pkg("core"),
+        pkg("session"),
         pkg("content-fs"),
         ...HOST_NAMES.map(pkg),
       ),
+      ...restrictSyntax(NO_ENUM, NO_DEFAULT_EXPORT, NODE_DYNAMIC_IMPORT),
+    },
+  },
+  // session joins core and srs for every host that runs a review, the browser included: still no Node API.
+  {
+    files: ["packages/session/**"],
+    rules: {
+      ...restrictImports(NODE_APIS, pkg("content-fs"), ...HOST_NAMES.map(pkg)),
       ...restrictSyntax(NO_ENUM, NO_DEFAULT_EXPORT, NODE_DYNAMIC_IMPORT),
     },
   },
@@ -175,7 +185,7 @@ export default defineConfig(
       ...HOST_NAMES.filter((other) => other !== host).map(pkg),
     ),
   })),
-  // The app runs in the browser: core types and the srs queue only, state through ReviewStore.
+  // The app runs in the browser: core types, the srs queue and the session engine, state through ReviewStore.
   {
     files: ["packages/app/**"],
     rules: {

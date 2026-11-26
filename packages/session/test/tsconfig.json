@@ -1,0 +1,11 @@
+{
+  // Type-checks the tests against the package's emitted declarations; it emits only declarations into .cache/,
+  // which tsc -b needs for a referenced project.
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "outDir": "../../../.cache/tsc/session-test"
+  },
+  "include": ["**/*.ts"],
+  "references": [{ "path": ".." }]
+}

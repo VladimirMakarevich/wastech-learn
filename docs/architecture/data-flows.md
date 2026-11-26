@@ -49,7 +49,7 @@ sequenceDiagram
 
 ## Квиз в чате (J-09)
 
-Последовательность описана в [tutor-and-grading.md](../ai/tutor-and-grading.md#квиз-в-чате-learn-quiz). MCP-сервер сам делает replay из журнала и кэша, `record_review` пишет в файл writer `mcp`.
+Последовательность описана в [tutor-and-grading.md](../ai/tutor-and-grading.md#квиз-в-чате-learn-quiz). MCP-сервер сам делает replay журнала в памяти, `record_review` пишет в файл writer `mcp`.
 
 ## Изменение файлов и пересборка
 
@@ -74,7 +74,7 @@ sequenceDiagram
   D1->>G: push (reviews/desk1/*)
   D2->>G: pull
   G-->>D2: новые строки в reviews/desk1/*
-  D2->>D2: replay всех журналов → кэш
+  D2->>D2: replay всех журналов
   D2->>G: push (reviews/laptop/*)
 ```
 

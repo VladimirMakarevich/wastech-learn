@@ -9,6 +9,8 @@
     { "path": "./packages/core/test" },
     { "path": "./packages/srs" },
     { "path": "./packages/srs/test" },
+    { "path": "./packages/session" },
+    { "path": "./packages/session/test" },
     { "path": "./packages/content-fs" },
     { "path": "./packages/content-fs/test" },
     { "path": "./packages/cli" },

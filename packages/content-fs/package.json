@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@wastech-learn/core": "0.0.0",
+    "@wastech-learn/session": "0.0.0",
     "@wastech-learn/srs": "0.0.0",
     "@wastech-mdlint/core": "0.4.1"
   }
