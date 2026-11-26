@@ -69,7 +69,7 @@
       mastery: "Освоение",
       capture_t: "Новая тема",
       capture:
-        "Разбери её в Claude Code: «разберём …» запустит learn-capture. Из ChatGPT — положи learning package в inbox/ и вызови learn-import.",
+        "Разбери её в Claude Code: «разберём …» запустит `learn-capture`. Из ChatGPT — положи learning package в `inbox/` и вызови `learn-import`.",
       quiz_t: "Квиз в чате",
       quiz: "Без браузера: в Claude Code скажи «погоняй меня 10 минут» — ИИ проверит ответы по рубрике, оценку подтверждаешь ты.",
       show: "Показать ответ",
@@ -123,7 +123,7 @@
       t_undo: "Оценка отменена",
       t_vscode: "Открылось бы в VS Code: {f}",
       t_susp: "Карточка отложена (suspend)",
-      t_cram: "Тренировка по теме без влияния на расписание — позже (FR-212)",
+      t_cram: "Тренировка по теме без влияния на расписание — позже",
       cram: "Повторить тему",
       open_topic: "Открыть тему",
       close: "Закрыть",
@@ -134,29 +134,59 @@
       all_domains: "Все домены",
       all_types: "Все типы",
       found: "Найдено: {n}",
+      col_due: "Срок",
+      st_leech_l: "Трудные (leech)",
+      search_short: "Поиск",
+      updated: "обновлено {d}",
+      chat_t: "Из чата",
+      mem_topic: "{cards}, средний R {r}%",
+      due_n: "{n} сегодня",
+      toc: "Разделы",
+      st_active: "активна",
+      changed_s: "изменена",
+      f_domain: "Домен",
+      all: "Все",
+      none_found:
+        "Ничего не нашлось — попробуй другое слово или сбрось фильтры",
+      st_fc_aria:
+        "Прогноз на 30 дней: до {max} карточек в день, в среднем {avg}",
+      st_avg: "В среднем {n} в день; выходные приглушены",
+      st_act: "Активность",
+      st_ret: "Удержание (true retention)",
+      st_young_r: "Молодые карточки",
+      st_mature_r: "Зрелые карточки",
+      st_ret_f: "Доля вспомненных за 30 дней. Цель — {dr} из настроек",
+      st_grades: "Оценки",
+      st_hard_l: "Доля Hard",
+      g_ui: "Интерфейс",
+      g_pl: "Польский",
+      s_tech: "Технические домены",
+      less: "Меньше",
+      more_n: "Больше",
+      s_dev_name: "Имя",
       pretest: "Pretest",
       materials: "Материалы",
       key: "Суть",
       show_q: "Показать вопросы самопроверки",
-      map_later: "Карта знаний (связи тем) — позже, FR-308",
+      map_later: "Карта знаний (связи тем) — позже",
       st_young: "True retention · молодые",
       st_mature: "True retention · зрелые",
       st_reviews: "Повторений за 30 дней",
       st_time: "Медиана сессии",
       st_fc: "Прогноз нагрузки на 30 дней",
       st_hard: "Hard в 9% ответов — в норме: его не путают с провалом",
-      st_cal: "Калибровка и Bloom — после MVP (FR-404, FR-407)",
-      st_leech: "Leech: 0 — fix list пуст",
+      st_cal: "Калибровка и Bloom — после MVP",
+      st_leech: "Трудных карточек (leech) нет — исправлять нечего",
       s_lang: "Язык интерфейса",
       s_lang_h: "Контент тем остаётся на своём языке",
-      s_dr: "Desired retention",
+      s_dr: "Целевое удержание (DR)",
       s_dr_h: "Выше — больше повторений в день",
       s_limits: "Новых в день",
       s_limits_h: "Отдельно для языковых доменов",
       s_sess: "Длина сессии",
       s_tts: "Озвучка pl-PL",
       s_tts_btn: "Проверить голос",
-      s_heat: "Heatmap активности",
+      s_heat: "Карта активности",
       s_heat_h: "По умолчанию выключен — без стриков",
       s_dev: "Устройство",
       per_day: "≈ {m} мин в день",
@@ -197,7 +227,7 @@
       mastery: "Mastery",
       capture_t: "New topic",
       capture:
-        "Study it in Claude Code: “let’s study …” starts learn-capture. From ChatGPT, drop a learning package into inbox/ and run learn-import.",
+        "Study it in Claude Code: “let’s study …” starts `learn-capture`. From ChatGPT, drop a learning package into `inbox/` and run `learn-import`.",
       quiz_t: "Quiz in chat",
       quiz: "No browser needed: tell Claude Code “quiz me for 10 minutes” — the AI checks answers against the rubric, you confirm the rating.",
       show: "Show answer",
@@ -251,7 +281,7 @@
       t_undo: "Rating undone",
       t_vscode: "Would open in VS Code: {f}",
       t_susp: "Card suspended",
-      t_cram: "Topic practice without rescheduling — later (FR-212)",
+      t_cram: "Topic practice without rescheduling — later",
       cram: "Practice topic",
       open_topic: "Open topic",
       close: "Close",
@@ -262,19 +292,47 @@
       all_domains: "All domains",
       all_types: "All types",
       found: "Found: {n}",
+      col_due: "Due",
+      st_leech_l: "Leeches",
+      search_short: "Search",
+      updated: "updated {d}",
+      chat_t: "From the chat",
+      mem_topic: "{cards}, mean R {r}%",
+      due_n: "{n} today",
+      toc: "Sections",
+      st_active: "active",
+      changed_s: "changed",
+      f_domain: "Domain",
+      all: "All",
+      none_found: "Nothing found — try another word or clear the filters",
+      st_fc_aria: "30-day forecast: up to {max} cards a day, {avg} on average",
+      st_avg: "{n} a day on average; weekends are muted",
+      st_act: "Activity",
+      st_ret: "Retention (true retention)",
+      st_young_r: "Young cards",
+      st_mature_r: "Mature cards",
+      st_ret_f: "Share recalled over 30 days. Target: {dr} from Settings",
+      st_grades: "Ratings",
+      st_hard_l: "Hard share",
+      g_ui: "Interface",
+      g_pl: "Polish",
+      s_tech: "Technical domains",
+      less: "Fewer",
+      more_n: "More",
+      s_dev_name: "Name",
       pretest: "Pretest",
       materials: "Materials",
       key: "Key idea",
       show_q: "Show self-check questions",
-      map_later: "Knowledge map (topic links) — later, FR-308",
+      map_later: "Knowledge map (topic links) — later",
       st_young: "True retention · young",
       st_mature: "True retention · mature",
       st_reviews: "Reviews in 30 days",
       st_time: "Median session",
       st_fc: "30-day workload forecast",
       st_hard: "Hard in 9% of answers — fine: not used as a fail",
-      st_cal: "Calibration and Bloom — after MVP (FR-404, FR-407)",
-      st_leech: "Leeches: 0 — fix list is empty",
+      st_cal: "Calibration and Bloom — after MVP",
+      st_leech: "No leeches — nothing to fix",
       s_lang: "Interface language",
       s_lang_h: "Topic content stays in its own language",
       s_dr: "Desired retention",
@@ -325,7 +383,7 @@
       mastery: "Opanowanie",
       capture_t: "Nowy temat",
       capture:
-        "Omów go w Claude Code: „omówmy …” uruchamia learn-capture. Z ChatGPT — wrzuć learning package do inbox/ i uruchom learn-import.",
+        "Omów go w Claude Code: „omówmy …” uruchamia `learn-capture`. Z ChatGPT — wrzuć learning package do `inbox/` i uruchom `learn-import`.",
       quiz_t: "Quiz w czacie",
       quiz: "Bez przeglądarki: powiedz w Claude Code „przepytaj mnie przez 10 minut” — AI sprawdzi odpowiedzi według rubryki, ocenę zatwierdzasz ty.",
       show: "Pokaż odpowiedź",
@@ -380,7 +438,7 @@
       t_undo: "Ocena cofnięta",
       t_vscode: "Otworzyłoby się w VS Code: {f}",
       t_susp: "Karta zawieszona",
-      t_cram: "Ćwiczenie tematu bez wpływu na harmonogram — później (FR-212)",
+      t_cram: "Ćwiczenie tematu bez wpływu na harmonogram — później",
       cram: "Powtórz temat",
       open_topic: "Otwórz temat",
       close: "Zamknij",
@@ -391,29 +449,58 @@
       all_domains: "Wszystkie dziedziny",
       all_types: "Wszystkie typy",
       found: "Znaleziono: {n}",
+      col_due: "Termin",
+      st_leech_l: "Trudne (leech)",
+      search_short: "Szukaj",
+      updated: "zaktualizowano {d}",
+      chat_t: "Z czatu",
+      mem_topic: "{cards}, średnie R {r}%",
+      due_n: "{n} dziś",
+      toc: "Sekcje",
+      st_active: "aktywna",
+      changed_s: "zmieniona",
+      f_domain: "Domena",
+      all: "Wszystkie",
+      none_found:
+        "Nic nie znaleziono — spróbuj innego słowa albo wyczyść filtry",
+      st_fc_aria: "Prognoza na 30 dni: do {max} kart dziennie, średnio {avg}",
+      st_avg: "Średnio {n} dziennie; weekendy są przygaszone",
+      st_act: "Aktywność",
+      st_ret: "Retencja (true retention)",
+      st_young_r: "Młode karty",
+      st_mature_r: "Dojrzałe karty",
+      st_ret_f: "Odsetek przypomnianych z 30 dni. Cel: {dr} z ustawień",
+      st_grades: "Oceny",
+      st_hard_l: "Udział Hard",
+      g_ui: "Interfejs",
+      g_pl: "Polski",
+      s_tech: "Domeny techniczne",
+      less: "Mniej",
+      more_n: "Więcej",
+      s_dev_name: "Nazwa",
       pretest: "Pretest",
       materials: "Materiały",
       key: "Sedno",
       show_q: "Pokaż pytania kontrolne",
-      map_later: "Mapa wiedzy (powiązania tematów) — później, FR-308",
+      map_later: "Mapa wiedzy (powiązania tematów) — później",
       st_young: "True retention · młode",
       st_mature: "True retention · dojrzałe",
       st_reviews: "Powtórek w 30 dni",
       st_time: "Mediana sesji",
       st_fc: "Prognoza obciążenia na 30 dni",
       st_hard: "Hard w 9% odpowiedzi — w normie: nie myli się go z porażką",
-      st_cal: "Kalibracja i Bloom — po MVP (FR-404, FR-407)",
-      st_leech: "Leech: 0 — lista do poprawy pusta",
+      st_cal: "Kalibracja i Bloom — po MVP",
+      st_leech: "Brak trudnych kart (leech) — nie ma czego poprawiać",
       s_lang: "Język interfejsu",
       s_lang_h: "Treść tematów zostaje w swoim języku",
-      s_dr: "Desired retention",
+      s_dr: "Docelowa retencja (DR)",
       s_dr_h: "Wyżej — więcej powtórek dziennie",
       s_limits: "Nowych dziennie",
       s_limits_h: "Osobno dla dziedzin językowych",
       s_sess: "Długość sesji",
       s_tts: "Głos pl-PL",
       s_tts_btn: "Sprawdź głos",
-      s_heat: "Heatmapa aktywności",
+      s_heat: "Mapa aktywności",
       s_heat_h: "Domyślnie wyłączona — bez serii",
       s_dev: "Urządzenie",
       per_day: "≈ {m} min dziennie",
@@ -533,13 +620,16 @@
       '<rect x="3" y="7" width="14" height="12" rx="2"/><path d="M7 4h12a2 2 0 0 1 2 2v10"/>',
     stats: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
     settings:
-      '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+      '<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>',
     speaker:
       '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
     pencil: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
     chevron: '<path d="m9 6 6 6-6 6"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    minus: '<path d="M5 12h14"/>',
   };
   const ico = (name) =>
     `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICON[name]}</svg>`;
@@ -549,8 +639,6 @@
     angular: "Angular",
     "lang-pl": "Polski",
   };
-  const langChip = (l) =>
-    `<span class="chip ${l === "pl" ? "amber" : l === "ru" ? "blue" : "violet"}">${esc(l.toUpperCase())}</span>`;
   const typeChip = (c) =>
     `<span class="chip">${esc(c.type)} · ${esc(c.bloom)}</span>`;
   const slug = (s) =>
@@ -639,7 +727,7 @@
     $("#nav").innerHTML = items
       .map(
         ([id, key]) => `
-      <a class="nav-item ${name === id ? "active" : ""}" href="#${id}" data-nav="${id}">
+      <a class="nav-item nav-${id} ${name === id ? "active" : ""}" href="#${id}" data-nav="${id}">
         <svg viewBox="0 0 24 24" aria-hidden="true">${ICON[id === "prefs" ? "settings" : id]}</svg>${esc(t(key))}
         ${id === "review" ? `<span class="badge">${QUEUE.length}</span>` : ""}
       </a>`,
@@ -656,27 +744,57 @@
     $("#theme-toggle").innerHTML =
       `${ico(dark ? "sun" : "moon")}<span class="label">${esc(themeLabel)}</span>`;
     $("#theme-toggle").setAttribute("aria-label", themeLabel);
+    const prefsLink = $("#prefs-link");
+    prefsLink.innerHTML = ico("settings");
+    prefsLink.setAttribute("aria-label", t("nav_settings"));
+    prefsLink.classList.toggle("active", name === "prefs");
     $("#sync").innerHTML = `<span class="dot"></span>${esc(t("sync"))}`;
     $("#proto-note").textContent = t("proto");
-    $("#search").placeholder = t("search");
+    $("#search").placeholder = t("search_short");
+    $("#search").setAttribute("aria-label", t("search"));
   }
 
-  function topicCard(tp) {
+  // Строка точек — тот же язык памяти, что и в сессии: одна точка на карточку темы, яркость — R.
+  function memStrip(cards) {
+    const rev = cards.filter((c) => !c.isNew);
+    const label = rev.length
+      ? t("mem_topic", {
+          cards: nCards(cards.length),
+          r: Math.round((rev.reduce((a, c) => a + c.R, 0) / rev.length) * 100),
+        })
+      : t("mem_aria_new", { cards: nCards(cards.length) });
+    return `<span class="memstrip" role="img" aria-label="${esc(label)}">${cards
+      .map(
+        (c) =>
+          `<span class="pt sm${c.isNew ? " new" : ""}" style="--r:${memOpacity(c).toFixed(2)}"></span>`,
+      )
+      .join("")}</span>`;
+  }
+
+  const rCell = (c) =>
+    c.isNew
+      ? `<span class="r-cell"><span class="r-dot new"></span>${esc(t("mem_new"))}</span>`
+      : `<span class="r-cell"><span class="r-dot" style="--r:${memOpacity(c).toFixed(2)}"></span>${pct(c.R)}</span>`;
+
+  function topicRow(tp, withIdea) {
     const cs = DATA.cards.filter((c) => c.topic === tp.path);
     const due = QUEUE.filter(
       (q) => cardBy[q.split(":")[0]].topic === tp.path,
     ).length;
-    const rev = cs.filter((c) => !c.isNew);
-    const mastery = Math.round(
-      (rev.reduce((s, c) => s + c.R, 0) / Math.max(1, cs.length)) * 100,
-    );
-    return `<article class="card topic-card" data-topic="${tp.path}">
-      <div class="row"><span class="chip">${esc(domainLabel[tp.domain] ?? tp.domain)}</span>${langChip(tp.lang)}</div>
-      <h3>${esc(tp.title)}</h3>
-      <p>${inline(tp.keyIdea)}</p>
-      <div class="topic-stats"><span>${esc(t("cards"))}: <b>${cs.length}</b></span><span>${esc(t("due"))}: <b>${due}</b></span><span>${esc(t("mastery"))}: <b>${mastery}%</b></span></div>
-      <div class="progress"><span style="width:${mastery}%"></span></div>
-    </article>`;
+    // На странице тем домен уже стоит в заголовке группы, повторять его в строке незачем.
+    const meta = [
+      withIdea ? null : (domainLabel[tp.domain] ?? tp.domain),
+      tp.lang.toUpperCase(),
+      nCards(cs.length),
+    ]
+      .filter(Boolean)
+      .join(" · ");
+    return `<a class="t-row" href="#topics" data-topic="${tp.path}">
+      <span class="t-main"><span class="t-title">${esc(tp.title)}</span><span class="t-meta">${esc(meta)}</span>${withIdea ? `<span class="t-idea">${inline(tp.keyIdea)}</span>` : ""}</span>
+      ${memStrip(cs)}
+      <span class="t-due${due ? "" : " none"}">${esc(t("due_n", { n: due }))}</span>
+      ${ico("chevron")}
+    </a>`;
   }
 
   function viewHome() {
@@ -693,40 +811,36 @@
       }),
     );
     const max = Math.max(...fc);
-    const hero =
-      state.demo === "back"
-        ? `<section class="card hero back">
-          <div class="big">${esc(t("back_title", { cards: nCards(180), m: 45 }))}</div>
-          <div class="muted">${esc(t("back_plan"))}</div>
-          <div class="row"><a class="btn primary" href="#review" data-mode="5">${esc(t("b5"))}</a><a class="btn" href="#review" data-mode="15">${esc(t("b15"))}</a><a class="btn" href="#review" data-mode="all">${esc(t("ball"))}</a></div>
-        </section>`
-        : `<section class="card hero">
-          <div class="muted">${esc(t("today"))}</div>
-          <div class="big">${esc(nCards(QUEUE.length))} ≈ ${min} ${esc(t("min"))}</div>
-          <div class="muted">${esc(t("new_of", { a: newCount, b: 10, c: plCount }))}</div>
-          <div class="row"><a class="btn primary" href="#review" data-mode="5">${esc(t("b5"))} <kbd>Enter</kbd></a><a class="btn" href="#review" data-mode="15">${esc(t("b15"))}</a><a class="btn" href="#review" data-mode="all">${esc(t("ball"))}</a></div>
-        </section>`;
+    const back = state.demo === "back";
+    const title = back
+      ? t("back_title", { cards: nCards(180), m: 45 })
+      : `${nCards(QUEUE.length)} ≈ ${min} ${t("min")}`;
+    const sub = back
+      ? t("back_plan")
+      : t("new_of", { a: newCount, b: 10, c: plCount });
     return `
-      <div class="row" style="justify-content:flex-end;margin-bottom:12px">
-        <span class="muted" style="font-size:13px">${esc(t("demo"))}</span>
-        <div class="segmented" role="group">
-          <button type="button" data-demo="normal" class="${state.demo === "normal" ? "active" : ""}">${esc(t("demo_normal"))}</button>
-          <button type="button" data-demo="back" class="${state.demo === "back" ? "active" : ""}">${esc(t("demo_back"))}</button>
-        </div>
-      </div>
-      <div class="grid-2">
-        ${hero}
-        <section class="card">
-          <div class="section-title" style="margin-top:0">${esc(t("forecast"))}</div>
-          <div class="forecast">${fc.map((v, i) => `<div class="bar ${i === 0 ? "today" : ""}"><small>${v}</small><span class="bar-fill" style="height:${Math.round((v / max) * 80)}%"></span><small>${esc(dayNames[i])}</small></div>`).join("")}</div>
+      <div class="home-top">
+        <section class="card today" aria-labelledby="today-h">
+          <h2 class="today-big" id="today-h">${esc(title)}</h2>
+          <p class="today-sub">${esc(sub)}</p>
+          <div class="row start-row"><a class="btn primary" href="#review" data-mode="5">${esc(t("b5"))} <kbd>Enter</kbd></a><a class="btn" href="#review" data-mode="15">${esc(t("b15"))}</a><a class="btn" href="#review" data-mode="all">${esc(t("ball"))}</a></div>
+        </section>
+        <section class="card forecast-card" aria-labelledby="fc-h">
+          <h2 class="card-h" id="fc-h">${esc(t("forecast"))}</h2>
+          <div class="forecast">${fc.map((v, i) => `<div class="bar ${i === 0 ? "today" : ""}"><small class="tnum">${v}</small><span class="bar-fill" style="height:${Math.round((v / max) * 80)}%"></span><small>${esc(dayNames[i])}</small></div>`).join("")}</div>
         </section>
       </div>
-      <div class="section-title">${esc(t("topics"))}</div>
-      <div class="grid-3">${DATA.topics.map(topicCard).join("")}</div>
-      <div class="grid-2 even" style="margin-top:20px">
-        <section class="card tip"><span class="chip violet">Claude Code</span><div><b>${esc(t("capture_t"))}</b><div class="muted">${esc(t("capture"))}</div></div></section>
-        <section class="card tip"><span class="chip violet">learn-quiz</span><div><b>${esc(t("quiz_t"))}</b><div class="muted">${esc(t("quiz"))}</div></div></section>
-      </div>`;
+      <section class="glist">
+        <h2 class="group-h">${esc(t("topics"))}<span class="tnum">${DATA.topics.length}</span></h2>
+        <div class="group-body">${DATA.topics.map((tp) => topicRow(tp, false)).join("")}</div>
+      </section>
+      <section class="glist">
+        <h2 class="group-h">${esc(t("chat_t"))}</h2>
+        <div class="group-body">
+          <div class="g-row chat-row"><div><b>${esc(t("capture_t"))}</b><p>${inline(t("capture"))}</p></div><span class="chat-tool">Claude Code</span></div>
+          <div class="g-row chat-row"><div><b>${esc(t("quiz_t"))}</b><p>${inline(t("quiz"))}</p></div><span class="chat-tool">learn-quiz</span></div>
+        </div>
+      </section>`;
   }
 
   function startSession(mode) {
@@ -795,6 +909,9 @@
 
   function sessionBar() {
     const s = state.session;
+    // Переключатель демо-состояния — управление прототипом, а не контент: ему место в тулбаре.
+    if (route().name === "home")
+      return `<span class="demo-label">${esc(t("demo"))}</span><div class="segmented" role="group" aria-label="${esc(t("demo"))}">${["normal", "back"].map((d) => `<button type="button" data-demo="${d}" aria-pressed="${state.demo === d}" class="${state.demo === d ? "active" : ""}">${esc(t(`demo_${d}`))}</button>`).join("")}</div>`;
     if (route().name !== "review" || !s || s.i >= s.items.length) return "";
     const rest = s.items.slice(s.i).map((it) => it.card.id);
     const mode = t(s.mode === "all" ? "ball" : s.mode === "5" ? "b5" : "b15");
@@ -940,14 +1057,22 @@
     const ok = rated.filter((r) => r.rating >= 2).length;
     const m = Math.max(1, Math.round((Date.now() - s.start) / 60000));
     const hc = rated.filter((r) => r.rating === 1 && r.conf === 3);
-    return `<section class="card end">
-      <div class="big">${esc(t("end_t", { cards: nCards(rated.length), m }))}</div>
-      <div style="font-size:18px">${esc(t("end_rec", { a: ok, b: rated.length }))}</div>
-      <div class="card" style="width:100%;text-align:left;box-shadow:none">
-        <h4 style="margin:0 0 8px">${esc(t("end_hc"))}</h4>
-        ${hc.length ? hc.map((r) => `<div><a href="#topics" data-topic="${r.card.topic}">${esc(r.card.title)}</a></div>`).join("") : `<div class="muted">${esc(t("end_none"))}</div>`}
-      </div>
-      <div class="muted">${esc(t("end_tom", { cards: nCards(18) }))}</div>
+    return `<section class="end">
+      <h2 class="today-big">${esc(t("end_t", { cards: nCards(rated.length), m }))}</h2>
+      <p class="today-sub">${esc(t("end_rec", { a: ok, b: rated.length }))} · ${esc(t("end_tom", { cards: nCards(18) }))}</p>
+      <section class="glist">
+        <h3 class="group-h">${esc(t("end_hc"))}</h3>
+        <div class="group-body">${
+          hc.length
+            ? hc
+                .map(
+                  (r) =>
+                    `<a class="g-row g-action" href="#topics" data-topic="${r.card.topic}">${esc(r.card.title)}${ico("chevron")}</a>`,
+                )
+                .join("")
+            : `<div class="g-row muted">${esc(t("end_none"))}</div>`
+        }</div>
+      </section>
       <div class="row"><a class="btn primary" href="#home">${esc(t("home"))}</a><a class="btn" href="#review" data-act="restart">${esc(t("more"))}</a></div>
     </section>`;
   }
@@ -965,15 +1090,15 @@
     return `
       <div class="topic-head">
         <div>
-          <div class="row"><span class="chip">${esc(domainLabel[tp.domain] ?? tp.domain)}</span>${langChip(tp.lang)}<span class="chip">${esc(tp.familiarity)}</span><span class="muted" style="font-size:13px">updated ${esc(tp.updated)}</span></div>
+          <div class="row topic-tags"><span class="chip">${esc(domainLabel[tp.domain] ?? tp.domain)}</span><span class="chip">${esc(tp.lang.toUpperCase())}</span><span class="chip">${esc(tp.familiarity)}</span><span class="muted">${esc(t("updated", { d: tp.updated }))}</span></div>
           <h2>${esc(tp.title)}</h2>
-          <div style="font-size:17px;color:var(--ink);max-width:760px">${inline(tp.keyIdea)}</div>
+          <p class="topic-idea">${inline(tp.keyIdea)}</p>
         </div>
         <div class="row"><button class="btn" type="button" data-act="cram">${esc(t("cram"))}</button><button class="btn" type="button" data-act="vscode-topic" data-path="${esc(path)}">${esc(t("vscode"))}</button></div>
       </div>
       <div class="topic-layout">
-        <nav class="toc">${tp.summary.map((sec) => `<a href="#topics" data-topic="${path}" data-anchor="${slug(sec.title)}">${esc(sec.title)}</a>`).join("")}</nav>
-        <article class="card md">${tp.summary
+        <nav class="toc" aria-label="${esc(t("toc"))}">${tp.summary.map((sec) => `<a href="#topics" data-topic="${path}" data-anchor="${slug(sec.title)}">${esc(sec.title)}</a>`).join("")}</nav>
+        <article class="card md summary">${tp.summary
           .map((sec) => {
             const id = slug(sec.title);
             const body =
@@ -984,21 +1109,40 @@
           })
           .join("")}</article>
         <aside class="context">
-          <section class="card"><h4>${esc(t("pretest"))}</h4><ol style="margin:0;padding-left:18px">${tp.pretest.map((q) => `<li>${esc(q)}</li>`).join("")}</ol></section>
-          <section class="card"><h4>${esc(t("cards"))} · ${cs.length}</h4><div class="side-list">${cs
-            .map(
-              (c) => `
-            <div class="item" data-card="${c.id}"><span>${esc(c.title)}<br><span class="muted" style="font-size:12px">${esc(c.type)}</span></span>
-            <span class="rbar" title="R"><span style="width:${c.isNew ? 0 : Math.round(c.R * 100)}%"></span></span></div>`,
-            )
-            .join("")}</div></section>
-          <section class="card md"><h4>${esc(t("materials"))}</h4>${tp.materialsHtml}</section>
+          <section>
+            <h3 class="group-h">${esc(t("pretest"))}</h3>
+            <ol class="group-body pad pretest">${tp.pretest.map((q) => `<li>${esc(q)}</li>`).join("")}</ol>
+          </section>
+          <section>
+            <h3 class="group-h">${esc(t("nav_cards"))}<span class="tnum">${cs.length}</span></h3>
+            <div class="group-body">${cs
+              .map(
+                (c) =>
+                  `<button type="button" class="g-row g-action card-row" data-card="${c.id}"><span class="cr-main"><span>${esc(c.title)}</span><small>${esc(c.type)}</small></span>${rCell(c)}</button>`,
+              )
+              .join("")}</div>
+          </section>
+          <section>
+            <h3 class="group-h">${esc(t("materials"))}</h3>
+            <div class="group-body pad md materials">${tp.materialsHtml}</div>
+          </section>
         </aside>
       </div>`;
   }
 
   function viewTopics() {
-    return `<div class="grid-3">${DATA.topics.map(topicCard).join("")}</div><p class="muted" style="margin-top:18px">${esc(t("map_later"))}</p>`;
+    const domains = DATA.topics
+      .map((tp) => tp.domain)
+      .filter((d, i, a) => a.indexOf(d) === i);
+    return `${domains
+      .map((d, i) => {
+        const tps = DATA.topics.filter((tp) => tp.domain === d);
+        return `<section class="glist${i === 0 ? " first" : ""}">
+        <h2 class="group-h">${esc(domainLabel[d] ?? d)}<span class="tnum">${tps.length}</span></h2>
+        <div class="group-body">${tps.map((tp) => topicRow(tp, true)).join("")}</div>
+      </section>`;
+      })
+      .join("")}<p class="group-f later-map">${esc(t("map_later"))}</p>`;
   }
 
   function filteredCards() {
@@ -1016,30 +1160,37 @@
     const f = state.filters;
     const list = filteredCards();
     const types = [...new Set(DATA.cards.map((c) => c.type))];
+    const domains = DATA.topics
+      .map((tp) => tp.domain)
+      .filter((d, i, a) => a.indexOf(d) === i);
+    const seg = (key, cur, items) =>
+      items
+        .map(
+          ([v, label]) =>
+            `<button type="button" data-${key}="${v}" aria-pressed="${cur === v}" class="${cur === v ? "active" : ""}">${esc(label)}</button>`,
+        )
+        .join("");
     return `
-      <div class="toolbar">
-        <input id="card-q" type="search" placeholder="${esc(t("search"))}" value="${esc(f.q)}" style="width:320px">
-        <select id="f-domain"><option value="">${esc(t("all_domains"))}</option>${DATA.topics
-          .map((tp) => tp.domain)
-          .filter((d, i, a) => a.indexOf(d) === i)
-          .map(
-            (d) =>
-              `<option value="${d}" ${f.domain === d ? "selected" : ""}>${esc(domainLabel[d] ?? d)}</option>`,
-          )
-          .join("")}</select>
-        <select id="f-type"><option value="">${esc(t("all_types"))}</option>${types.map((ty) => `<option ${f.type === ty ? "selected" : ""}>${ty}</option>`).join("")}</select>
-        <span class="muted">${esc(t("found", { n: list.length }))}</span>
+      <div class="cards-tools">
+        <label class="field-search">${ico("search")}<input id="card-q" type="search" placeholder="${esc(t("search"))}" value="${esc(f.q)}" autocomplete="off"></label>
+        <div class="segmented" role="group" aria-label="${esc(t("f_domain"))}">${seg("fdomain", f.domain, [["", t("all")], ...domains.map((d) => [d, domainLabel[d] ?? d])])}</div>
+        <span class="found tnum" aria-live="polite">${esc(t("found", { n: list.length }))}</span>
       </div>
-      <div class="card table-wrap" style="padding:6px 10px">
-        <table class="list"><thead><tr><th>${esc(t("col_title"))}</th><th>${esc(t("col_type"))}</th><th>${esc(t("col_topic"))}</th><th>R</th><th>Due</th><th>${esc(t("lapses"))}</th><th>${esc(t("col_status"))}</th></tr></thead>
-        <tbody>${list
-          .map(
-            (c) => `<tr data-card="${c.id}">
-          <td class="title">${esc(c.title)}</td><td><span class="chip">${esc(c.type)}</span></td><td>${esc(topicBy[c.topic].title)}</td>
-          <td>${c.isNew ? "—" : `${Math.round(c.R * 100)}%`}</td><td>${c.isNew ? "new" : c.dueIn === 0 ? esc(t("today")) : `+${days(c.dueIn)}`}</td><td>${c.lapses}</td>
-          <td>${c.changed ? `<span class="chip amber">${esc(t("changed"))}</span>` : `<span class="chip green">${esc(c.status)}</span>`}</td></tr>`,
-          )
-          .join("")}</tbody></table>
+      <div class="segmented tokens" role="group" aria-label="${esc(t("col_type"))}">${seg("ftype", f.type, [["", t("all")], ...types.map((ty) => [ty, ty])])}</div>
+      <div class="group-body table-wrap">
+        <table class="list"><thead><tr><th>${esc(t("col_title"))}</th><th>${esc(t("col_type"))}</th><th>${esc(t("col_topic"))}</th><th>R</th><th>${esc(t("col_due"))}</th><th class="num">${esc(t("lapses"))}</th><th>${esc(t("col_status"))}</th></tr></thead>
+        <tbody>${
+          list.length
+            ? list
+                .map(
+                  (c) => `<tr data-card="${c.id}" tabindex="0">
+          <td class="title">${esc(c.title)}</td><td class="type">${esc(c.type)}</td><td class="topic">${esc(topicBy[c.topic].title)}</td>
+          <td class="r">${rCell(c)}</td><td class="due">${c.isNew ? esc(t("mem_new")) : c.dueIn === 0 ? esc(t("today_l")) : `+${days(c.dueIn)}`}</td><td class="num">${c.lapses}</td>
+          <td class="status${c.changed ? " is-changed" : ""}">${c.changed ? `<span class="status-changed" title="${esc(t("changed"))}">${ico("pencil")}${esc(t("changed_s"))}</span>` : `<span class="muted">${esc(t("st_active"))}</span>`}</td></tr>`,
+                )
+                .join("")
+            : `<tr><td colspan="7" class="empty">${esc(t("none_found"))}</td></tr>`
+        }</tbody></table>
       </div>`;
   }
 
@@ -1069,41 +1220,112 @@
       Math.round(8 + r() * 22 + (i % 7 === 5 ? -6 : 0)),
     );
     const max = Math.max(...bars);
+    const avg = Math.round(bars.reduce((a, b) => a + b, 0) / bars.length);
+    const dr = Number(store.get("wl-dr", "0.9")).toFixed(2);
+    const ticks = [0, 7, 14, 21, 29];
     return `
-      <div class="grid-4">
-        <div class="card kpi"><span class="v">88%</span><span class="l">${esc(t("st_young"))}</span></div>
-        <div class="card kpi"><span class="v">92%</span><span class="l">${esc(t("st_mature"))}</span></div>
-        <div class="card kpi"><span class="v">412</span><span class="l">${esc(t("st_reviews"))}</span></div>
-        <div class="card kpi"><span class="v">9 ${esc(t("min"))}</span><span class="l">${esc(t("st_time"))}</span></div>
-      </div>
-      <section class="card" style="margin-top:20px">
-        <div class="section-title" style="margin-top:0">${esc(t("st_fc"))}</div>
-        <div class="bars30">${bars.map((v, i) => `<span class="${i % 7 === 5 || i % 7 === 6 ? "wknd" : ""}" style="height:${Math.round((v / max) * 100)}%" title="${v}"></span>`).join("")}</div>
-      </section>
-      <div class="grid-3" style="margin-top:20px">
-        <div class="card"><span class="chip amber">Hard</span><p>${esc(t("st_hard"))}</p></div>
-        <div class="card"><span class="chip amber">Leech</span><p>${esc(t("st_leech"))}</p></div>
-        <div class="card"><span class="chip">Later</span><p class="muted">${esc(t("st_cal"))}</p></div>
+      <div class="stats-layout">
+        <div class="stats-col">
+          <section>
+            <h2 class="group-h">${esc(t("st_fc"))}</h2>
+            <div class="group-body chart">
+              <div class="chart-y"><span class="tnum">${max}</span><span class="tnum">0</span></div>
+              <div class="bars30" role="img" aria-label="${esc(t("st_fc_aria", { max, avg }))}">${bars.map((v, i) => `<span class="${i === 0 ? "today" : i % 7 === 5 || i % 7 === 6 ? "wknd" : ""}" style="height:${Math.round((v / max) * 100)}%" title="${v}"></span>`).join("")}</div>
+              <div class="chart-x">${ticks.map((d) => `<span${d === 29 ? ' class="tick-end"' : ""} style="--at:${d}">${esc(d === 0 ? t("today_l") : `+${days(d)}`)}</span>`).join("")}</div>
+            </div>
+            <p class="group-f">${esc(t("st_avg", { n: nCards(avg) }))}</p>
+          </section>
+          <section>
+            <h2 class="group-h">${esc(t("st_act"))}</h2>
+            <dl class="group-body">
+              <div class="g-row"><dt>${esc(t("st_reviews"))}</dt><dd>412</dd></div>
+              <div class="g-row"><dt>${esc(t("st_time"))}</dt><dd>9 ${esc(t("min"))}</dd></div>
+            </dl>
+          </section>
+        </div>
+        <div class="stats-col">
+          <section>
+            <h2 class="group-h">${esc(t("st_ret"))}</h2>
+            <dl class="group-body">
+              <div class="g-row"><dt>${esc(t("st_young_r"))}</dt><dd>88%</dd></div>
+              <div class="g-row"><dt>${esc(t("st_mature_r"))}</dt><dd>92%</dd></div>
+            </dl>
+            <p class="group-f">${esc(t("st_ret_f", { dr }))}</p>
+          </section>
+          <section>
+            <h2 class="group-h">${esc(t("st_grades"))}</h2>
+            <dl class="group-body">
+              <div class="g-row"><dt>${esc(t("st_hard_l"))}</dt><dd>9%</dd></div>
+              <div class="g-row"><dt>${esc(t("st_leech_l"))}</dt><dd>0</dd></div>
+            </dl>
+            <p class="group-f">${esc(t("st_hard"))}. ${esc(t("st_leech"))}.</p>
+          </section>
+          <p class="group-f later">${esc(t("st_cal"))}</p>
+        </div>
       </div>`;
   }
 
   function viewSettings() {
     const dr = Number(store.get("wl-dr", "0.9"));
-    const perDay = (x) => Math.round((9 * (1 / (1 - x))) / 10);
-    return `<section class="card">
-      <div class="setting"><div><b>${esc(t("s_lang"))}</b><small>${esc(t("s_lang_h"))}</small></div>
-        <div class="segmented">${["ru", "en", "pl"].map((l) => `<button type="button" data-lang="${l}" class="${l === lang ? "active" : ""}">${l.toUpperCase()}</button>`).join("")}</div></div>
-      <div class="setting"><div><b>${esc(t("s_dr"))}</b><small>${esc(t("s_dr_h"))}</small></div>
-        <div class="row"><input id="dr" type="range" min="0.8" max="0.97" step="0.01" value="${dr}"><b id="dr-v" style="color:var(--ink)">${dr.toFixed(2)}</b><span class="muted" id="dr-load">${esc(t("per_day", { m: perDay(dr) }))}</span></div></div>
-      <div class="setting"><div><b>${esc(t("s_limits"))}</b><small>${esc(t("s_limits_h"))}</small></div>
-        <div class="row"><span class="chip">architecture · dotnet · angular: 10</span><span class="chip amber">lang-pl: 10</span></div></div>
-      <div class="setting"><div><b>${esc(t("s_sess"))}</b></div>
-        <div class="segmented"><button type="button">5</button><button type="button">10</button><button type="button" class="active">15 ${esc(t("min"))}</button></div></div>
-      <div class="setting"><div><b>${esc(t("s_tts"))}</b></div>
-        <div class="row"><button class="btn" type="button" data-act="tts-check">${esc(t("s_tts_btn"))}</button><span class="muted" id="tts-res"></span></div></div>
-      <div class="setting"><div><b>${esc(t("s_heat"))}</b><small>${esc(t("s_heat_h"))}</small></div><label class="row"><input type="checkbox"> off</label></div>
-      <div class="setting"><div><b>${esc(t("s_dev"))}</b></div><div class="row"><span class="chip">desk1</span><span class="muted" style="font:13px var(--mono)">~/Projects/wastech-learn-content</span></div></div>
-    </section>`;
+    const sess = store.get("wl-sess", "15");
+    const heat = store.get("wl-heat", "0") === "1";
+    const lim = {
+      tech: Number(store.get("wl-new-tech", "10")),
+      pl: Number(store.get("wl-new-pl", "10")),
+    };
+    const stepper = (k, label, sub) =>
+      `<div class="g-row"><span class="g-label">${esc(label)}<small>${esc(sub)}</small></span>
+        <span class="stepper" role="group" aria-label="${esc(label)}"><button type="button" data-step="${k}:-1" aria-label="${esc(t("less"))}">${ico("minus")}</button><output class="tnum" id="lim-${k}">${lim[k]}</output><button type="button" data-step="${k}:1" aria-label="${esc(t("more_n"))}">${ico("plus")}</button></span></div>`;
+    return `<div class="settings">
+      <section>
+        <h2 class="group-h">${esc(t("g_ui"))}</h2>
+        <div class="group-body">
+          <div class="g-row"><span class="g-label">${esc(t("s_lang"))}</span>
+            <div class="segmented" role="group" aria-label="${esc(t("s_lang"))}">${["ru", "en", "pl"].map((l) => `<button type="button" data-lang="${l}" aria-pressed="${l === lang}" class="${l === lang ? "active" : ""}">${l.toUpperCase()}</button>`).join("")}</div></div>
+        </div>
+        <p class="group-f">${esc(t("s_lang_h"))}</p>
+      </section>
+      <section>
+        <h2 class="group-h">${esc(t("nav_review"))}</h2>
+        <div class="group-body">
+          <div class="g-row stack">
+            <div class="g-line"><label class="g-label" for="dr">${esc(t("s_dr"))}<small>${esc(t("s_dr_h"))}</small></label><b class="tnum" id="dr-v">${dr.toFixed(2)}</b></div>
+            <input id="dr" class="slider" type="range" min="0.8" max="0.97" step="0.01" value="${dr}" style="--p:${(((dr - 0.8) / 0.17) * 100).toFixed(1)}%">
+            <div class="g-line small"><span class="tnum">0.80</span><span class="tnum" id="dr-load">${esc(t("per_day", { m: Math.round((9 * (1 / (1 - dr))) / 10) }))}</span><span class="tnum">0.97</span></div>
+          </div>
+          <div class="g-row"><span class="g-label">${esc(t("s_sess"))}</span>
+            <div class="segmented" role="group" aria-label="${esc(t("s_sess"))}">${["5", "10", "15"].map((m) => `<button type="button" data-sess="${m}" aria-pressed="${m === sess}" class="${m === sess ? "active" : ""}">${m} ${esc(t("min"))}</button>`).join("")}</div></div>
+        </div>
+      </section>
+      <section>
+        <h2 class="group-h">${esc(t("s_limits"))}</h2>
+        <div class="group-body">
+          ${stepper("tech", t("s_tech"), "architecture · dotnet · angular")}
+          ${stepper("pl", t("g_pl"), "lang-pl")}
+        </div>
+        <p class="group-f">${esc(t("s_limits_h"))}</p>
+      </section>
+      <section>
+        <h2 class="group-h">${esc(t("s_tts"))}</h2>
+        <div class="group-body">
+          <button type="button" class="g-row g-action tint" data-act="tts-check">${esc(t("s_tts_btn"))}<span class="muted" id="tts-res"></span></button>
+        </div>
+      </section>
+      <section>
+        <h2 class="group-h">${esc(t("nav_stats"))}</h2>
+        <div class="group-body">
+          <label class="g-row"><span class="g-label">${esc(t("s_heat"))}</span><input type="checkbox" role="switch" class="switch" id="heat"${heat ? " checked" : ""}></label>
+        </div>
+        <p class="group-f">${esc(t("s_heat_h"))}</p>
+      </section>
+      <section>
+        <h2 class="group-h">${esc(t("s_dev"))}</h2>
+        <dl class="group-body">
+          <div class="g-row"><dt>${esc(t("s_dev_name"))}</dt><dd>desk1</dd></div>
+          <div class="g-row path">~/Projects/wastech-learn-content</div>
+        </dl>
+      </section>
+    </div>`;
   }
 
   let timer;
@@ -1297,6 +1519,7 @@
     const demo = e.target.closest("[data-demo]");
     if (demo) {
       state.demo = demo.dataset.demo;
+      state.focusSel = `[data-demo="${demo.dataset.demo}"]`;
       render();
       return;
     }
@@ -1315,6 +1538,36 @@
     if (chk) {
       const i = Number(chk.dataset.check);
       s().checks.has(i) ? s().checks.delete(i) : s().checks.add(i);
+      render();
+      return;
+    }
+    const fd = e.target.closest("[data-fdomain], [data-ftype]");
+    if (fd) {
+      if (fd.dataset.fdomain !== undefined)
+        state.filters.domain = fd.dataset.fdomain;
+      else state.filters.type = fd.dataset.ftype;
+      state.focusSel =
+        fd.dataset.fdomain !== undefined
+          ? `[data-fdomain="${fd.dataset.fdomain}"]`
+          : `[data-ftype="${fd.dataset.ftype}"]`;
+      render();
+      return;
+    }
+    const step = e.target.closest("[data-step]");
+    if (step) {
+      const [k, d] = step.dataset.step.split(":");
+      const v = Math.min(
+        30,
+        Math.max(0, Number(store.get(`wl-new-${k}`, "10")) + Number(d)),
+      );
+      store.set(`wl-new-${k}`, String(v));
+      $(`#lim-${k}`).textContent = v;
+      return;
+    }
+    const sessBtn = e.target.closest("[data-sess]");
+    if (sessBtn) {
+      store.set("wl-sess", sessBtn.dataset.sess);
+      state.focusSel = `[data-sess="${sessBtn.dataset.sess}"]`;
       render();
       return;
     }
@@ -1369,20 +1622,18 @@
       const x = Number(e.target.value);
       store.set("wl-dr", String(x));
       $("#dr-v").textContent = x.toFixed(2);
+      e.target.style.setProperty(
+        "--p",
+        `${(((x - 0.8) / 0.17) * 100).toFixed(1)}%`,
+      );
       $("#dr-load").textContent = t("per_day", {
         m: Math.round((9 * (1 / (1 - x))) / 10),
       });
     }
   });
   document.addEventListener("change", (e) => {
-    if (e.target.id === "f-domain") {
-      state.filters.domain = e.target.value;
-      render();
-    }
-    if (e.target.id === "f-type") {
-      state.filters.type = e.target.value;
-      render();
-    }
+    if (e.target.id === "heat")
+      store.set("wl-heat", e.target.checked ? "1" : "0");
   });
   $("#search").addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
@@ -1414,13 +1665,22 @@
       $("#search").focus();
       return;
     }
+    if (e.key === "Enter" && e.target.matches?.("tr[data-card]")) {
+      state.drawer = e.target.dataset.card;
+      renderDrawer();
+      return;
+    }
     if (e.key === "Escape" && state.drawer) {
       state.drawer = null;
       renderDrawer();
       return;
     }
     const r = route();
-    if (r.name === "home" && e.key === "Enter") {
+    if (
+      r.name === "home" &&
+      e.key === "Enter" &&
+      !e.target.closest?.("button, a")
+    ) {
       startSession("5");
       go("review");
       return;
