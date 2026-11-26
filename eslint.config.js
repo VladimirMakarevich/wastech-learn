@@ -178,11 +178,14 @@ export default defineConfig(
     files: ["packages/content-fs/**"],
     rules: restrictImports(...HOST_NAMES.map(pkg)),
   },
-  // Hosts on Node may use the core and content-fs, never another host or the app.
+  // Hosts on Node may use the core and content-fs, never another host or the app. The one exception is the
+  // CLI's `serve`, which starts the local server: the server is a library the CLI runs, not a peer it reaches into.
   ...["cli", "mcp-server", "server"].map((host) => ({
     files: [`packages/${host}/**`],
     rules: restrictImports(
-      ...HOST_NAMES.filter((other) => other !== host).map(pkg),
+      ...HOST_NAMES.filter(
+        (other) => other !== host && !(host === "cli" && other === "server"),
+      ).map(pkg),
     ),
   })),
   // The app runs in the browser: core types, the srs queue and the session engine, state through ReviewStore.

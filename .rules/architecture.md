@@ -16,7 +16,7 @@
 | `srs` | ts-fsrs adapter, replay, queue, backlog policy, metrics | Third-party libraries only |
 | `session` | The review session over both: ports from `core` to `srs`, review-log events, the leech rule, the interval preview, the session engine and summary (ADR-0015) | `core`, `srs` |
 | `content-fs` | Repository IO, JSONL appends, file watching, diagram rendering | `core`, `srs`, `session`, Node APIs |
-| `cli`, `mcp-server`, `server` | Thin hosts: argument parsing, transport, exit codes | `core`, `srs`, `session`, `content-fs` |
+| `cli`, `mcp-server`, `server` | Thin hosts: argument parsing, transport, exit codes | `core`, `srs`, `session`, `content-fs`; `cli` also `server`, which its `serve` command starts |
 | `app` | UI | `core` (bundle types), `srs` and `session` (replay, queue and session in the client) |
 
 - `core` and `srs` **do not depend on each other**, never import Node APIs and never touch the file system or the network: they run in the browser too. `session` joins them under the same constraints.

@@ -27,6 +27,7 @@ export const COMMAND_OPTIONS = {
   },
   "new-id": { count: { type: "string" } },
   hook: {},
+  serve: { port: { type: "string" }, "no-open": { type: "boolean" } },
 } as const satisfies Readonly<Record<string, OptionSpec>>;
 
 /** Subcommands a command accepts as its words; a command not listed here takes none. */

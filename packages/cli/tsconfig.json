@@ -9,6 +9,7 @@
   "references": [
     { "path": "../core" },
     { "path": "../srs" },
-    { "path": "../content-fs" }
+    { "path": "../content-fs" },
+    { "path": "../server" }
   ]
 }

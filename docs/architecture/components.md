@@ -10,9 +10,9 @@
 | `@wastech-learn/srs` | Адаптер ts-fsrs, replay журнала, очередь (лимиты, siblings, бэклог, режим «5 минут»), симуляция бэклога, метрики | ts-fsrs | Node, браузер |
 | `@wastech-learn/session` | Сессия повторения поверх `core` и `srs` ([ADR-0015](../adr/0015-session-package.md)): перевод значений `core` в порты `srs`, сборка событий (`review`, `undo`, `suspend`, `unsuspend`, `reset`), правило leech, прогноз интервалов четырёх кнопок, журнал в памяти с replay по одному review item, движок сессии (режимы, learning steps в ходе сессии, отмена, bury, suspend, reset, внешние изменения), подсказка оценки по рубрике и итоги | core, srs | Node, браузер |
 | `@wastech-learn/content-fs` | Чтение репозитория и снимок по времени изменения файлов, проверка с наложением (mdlint + `check`), транзакция записи группы файлов, хранилище `requestId`, запись тем, карточек, summary, materials и диаграмм, `inbox/`, квиз (replay в памяти, дозапись событий `mcp` через `session`), дозапись JSONL (атомарно, свой файл на writer), наблюдение за файлами (`watchRepository`: `content`, `reviews`, `config`, без своей дозаписи), рендер Mermaid | core, srs, session, `@wastech-mdlint/core`; mermaid-cli через `npx` с точной версией, не зависимостью | Node |
-| `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2), `new-id`, `hook post-tool-use` (M3); `serve`, `export` — позже | core, srs, content-fs | Node |
+| `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2), `new-id`, `hook post-tool-use` (M3), `serve` (M4); `export` — позже | core, srs, content-fs, server (для `serve`) | Node |
 | `@wastech-learn/mcp-server` | `wastech-learn-mcp`: инструменты MCP ([mcp-tools](../ai/mcp-tools.md)) поверх `content-fs`, маппинг ошибок в `{ code, message, hint }` | core, srs, content-fs, `@modelcontextprotocol/sdk` | Node (stdio; позже Worker) |
-| `@wastech-learn/server` | Локальный HTTP: bundle, события, статус, SSE об изменениях | core, srs, content-fs, Hono | Node |
+| `@wastech-learn/server` | Локальный HTTP на `127.0.0.1`: сборка приложения, bundle с `ETag`, журнал, приём событий `web`, SSE об изменениях, защита `Host`/`Origin`/`Content-Type`/размера тела | core, srs, content-fs, Hono, `@hono/node-server` | Node |
 | `app` | Angular + CDK UI | core (типы bundle), srs и session (replay, очередь и сессия в клиенте) | Браузер, Capacitor |
 | `skills/*` | [`learn-capture`](../../skills/learn-capture/SKILL.md), [`learn-import`](../../skills/learn-import/SKILL.md), [`learn-quiz`](../../skills/learn-quiz/SKILL.md) | — (инструкции над MCP и CLI) | Claude Code |
 
@@ -34,6 +34,7 @@ flowchart BT
   cli --> cfs
   mcp --> cfs
   srv --> cfs
+  cli --> srv
   app --> ses
 ```
 

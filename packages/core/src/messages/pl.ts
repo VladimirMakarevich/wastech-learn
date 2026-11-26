@@ -201,6 +201,13 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "cli.build.written": "Bundle zapisany w {file}: {topics}, {cards}",
   "cli.build.blocked":
     "Bundle nie został zapisany: popraw błędy powyżej i uruchom ponownie",
+  "cli.serve.listening":
+    "wastech-learn działa pod adresem {url}; Ctrl+C zatrzymuje serwer",
+  "cli.serve.built": "Bundle zbudowany w {ms} ms: {topics}, {cards}",
+  "cli.serve.build-failed":
+    "Bundle nie został przebudowany ({errors}); aplikacja działa na poprzednim i pokazuje, gdzie jest błąd",
+  "cli.serve.watch-failed":
+    "Aktualizacje na żywo zatrzymały się: {detail}. Uruchom ponownie wastech-learn serve, aby je przywrócić",
   "cli.render.rendered": "Wyrenderowano: {file}",
   "cli.render.stale": "Nieaktualny: {file}",
   "cli.render.summary": "Diagramy: {total}, wyrenderowane: {rendered}",
@@ -244,6 +251,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Nie można odczytać ani zapisać {file}: sprawdź ścieżkę i uprawnienia",
   "cli.error.render-failed":
     "Renderowanie {file} nie powiodło się: sprawdź źródło Mermaid",
+  "cli.error.port-in-use":
+    "Port {port} jest już zajęty: uruchom z --port <inny port> albo zatrzymaj program, który go zajmuje",
   "cli.error.missing-command": "Podaj polecenie: wastech-learn --help",
   "cli.error.unknown-command":
     "Nieznane polecenie {command}: wastech-learn --help",
@@ -269,6 +278,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "  simulate   Zasymuluj przerwę i sesje, które rozładują zaległości",
     "  new-id     Wypisz nowe id kart (--count <n>, domyślnie 1)",
     "  hook       post-tool-use: sprawdź plik, który agent właśnie zapisał (JSON zdarzenia na stdin)",
+    "  serve      Otwórz aplikację w przeglądarce przez lokalny serwer na 127.0.0.1",
     "",
     "Opcje:",
     "  --content <folder> Repozytorium treści (domyślnie bieżący folder)",
@@ -278,5 +288,6 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "build:    --out <plik> (domyślnie .cache/content-bundle.json), --built-at <data ISO>",
     "render:   --check",
     "simulate: --cards, --warmup-days, --break-days, --session-minutes, --seed, --runs",
+    "serve:    --port <n> (domyślnie 4747), --no-open",
   ].join("\n"),
 };

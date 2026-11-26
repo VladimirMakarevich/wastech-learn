@@ -53,6 +53,8 @@ export const cli = async (
     now: () => FIXED_NOW,
     random: seededRng(7),
     readStdin: () => Promise.resolve(stdin),
+    openUrl: () => undefined,
+    untilInterrupted: () => Promise.resolve(),
   });
   return { code, out: out.join("\n"), err: err.join("\n") };
 };

@@ -201,6 +201,13 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "cli.check.clean": "Проверено: {cards}, замечаний нет",
   "cli.build.written": "Bundle записан в {file}: {topics}, {cards}",
   "cli.build.blocked": "Bundle не записан: исправь ошибки выше и запусти снова",
+  "cli.serve.listening":
+    "wastech-learn открыт на {url}; Ctrl+C останавливает сервер",
+  "cli.serve.built": "Bundle собран за {ms} мс: {topics}, {cards}",
+  "cli.serve.build-failed":
+    "Bundle не пересобран ({errors}); приложение работает на прежнем и показывает, где ошибка",
+  "cli.serve.watch-failed":
+    "Живые обновления остановились: {detail}. Перезапусти wastech-learn serve, чтобы вернуть их",
   "cli.render.rendered": "Отрендерено: {file}",
   "cli.render.stale": "Устарел: {file}",
   "cli.render.summary": "Диаграмм: {total}, отрендерено: {rendered}",
@@ -244,6 +251,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Не удалось прочитать или записать {file}: проверь путь и права",
   "cli.error.render-failed":
     "Рендер {file} не удался: проверь исходник Mermaid",
+  "cli.error.port-in-use":
+    "Порт {port} уже занят: запусти с --port <другой порт> или останови программу, которая его держит",
   "cli.error.missing-command": "Укажи команду: wastech-learn --help",
   "cli.error.unknown-command":
     "Неизвестная команда {command}: wastech-learn --help",
@@ -271,6 +280,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "  simulate   Проиграть перерыв и сессии, которые разбирают бэклог",
     "  new-id     Вывести новые id карточек (--count <n>, по умолчанию 1)",
     "  hook       post-tool-use: проверить файл, который только что записал агент (JSON события на stdin)",
+    "  serve      Открыть приложение в браузере через локальный сервер на 127.0.0.1",
     "",
     "Параметры:",
     "  --content <папка>  Контент-репозиторий (по умолчанию текущая папка)",
@@ -280,5 +290,6 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "build:    --out <файл> (по умолчанию .cache/content-bundle.json), --built-at <дата ISO>",
     "render:   --check",
     "simulate: --cards, --warmup-days, --break-days, --session-minutes, --seed, --runs",
+    "serve:    --port <n> (по умолчанию 4747), --no-open",
   ].join("\n"),
 };
