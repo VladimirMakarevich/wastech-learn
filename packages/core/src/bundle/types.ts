@@ -62,7 +62,7 @@ export interface CardEntry {
 /**
  * What the app reads instead of the content repository: metadata and pre-rendered, sanitized HTML. It is
  * derived from the content and never committed there. The search index joins it as an optional field
- * when the app needs it.
+ * when the first host needs it, so adding it is not a version change.
  */
 export interface ContentBundle {
   readonly version: 1;

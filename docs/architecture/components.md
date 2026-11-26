@@ -65,7 +65,7 @@ interface ContentBundle {
   topics: TopicMeta[];      // путь, title, lang, familiarity, related, html секций summary
   cards: CardEntry[];       // id, type, variants[], questionHtml, answerHtml, rubric[], contentHash, topic
   assets: Record<string, string>; // локальные картинки, которые не встроены; SVG встраиваются в HTML
-  searchIndex?: unknown;    // сериализованный MiniSearch, появится в M4
+  searchIndex?: unknown;    // сериализованный MiniSearch, появится в M3 для поиска дублей
 }
 ```
 
