@@ -16,6 +16,10 @@ export interface CliIo {
   readonly cwd: string;
   /** The clock is read here, in the host, and handed to the pure packages as a value. */
   readonly now: () => Date;
+  /** Randomness for new ids, in [0, 1); tests pass a seeded source. */
+  readonly random: () => number;
+  /** The whole of standard input, for commands fed by another program such as a Claude Code hook. */
+  readonly readStdin: () => Promise<string>;
 }
 
 export interface CommandContext {
@@ -24,6 +28,8 @@ export interface CommandContext {
   /** Absolute path of the content repository. */
   readonly root: string;
   readonly values: Readonly<Record<string, string | boolean | undefined>>;
+  /** Words after the command, for commands with a subcommand (`hook post-tool-use`). */
+  readonly positionals: readonly string[];
   readonly t: (key: MessageKey, params?: MessageParams) => string;
 }
 

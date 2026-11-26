@@ -56,6 +56,11 @@ export const en = {
     one: "Cloze card has {count} variant, expected 1 to {limit}",
     other: "Cloze card has {count} variants, expected 1 to {limit}",
   },
+  "finding.cloze-unclosed": {
+    count: "count",
+    one: "{count} cloze gap has no closing }}: close it",
+    other: "{count} cloze gaps have no closing }}: close them",
+  },
   "finding.vocab-lang-pair": "A vocab card needs langPair in its front matter",
   "finding.vocab-example": "Answer has no example sentence: add one in italics",
   "finding.id-unique": "id {id} is already used in {other}",
@@ -72,6 +77,13 @@ export const en = {
   "finding.preset-drift":
     "Preset rule {rule} (#{position}) is missing or changed: restore it from the CLI preset",
 
+  "finding.diagram-render": "Mermaid could not render this source: {detail}",
+  "finding.package-card":
+    "Candidate card {card} has a missing or invalid {field}: fix it in the package",
+  "finding.package-material":
+    "A materials row has a missing or invalid {field}: fix the table row",
+  "finding.package-summary-section":
+    "Summary section {section} is not in the template: rename it or drop it",
   "count.files": {
     count: "count",
     one: "{count} file",
@@ -97,6 +109,59 @@ export const en = {
     one: "{count} card",
     other: "{count} cards",
   },
+
+  "error.path-outside-content": "{subject} is outside the content repository",
+  "error.request-id-reused":
+    "requestId {subject} was already used for a different call",
+  "error.item-not-active": "{subject} is not a review item of an active card",
+  "error.topic-exists": "Topic {subject} already exists",
+  "error.topic-not-found": "Topic {subject} does not exist",
+  "error.card-not-found": "There is no card with id {subject}",
+  "error.package-not-found": "There is no learning package at {subject}",
+  "error.nothing-to-undo": "There is no review from this device to undo",
+  "error.input-invalid": "Input field {field} is invalid",
+  "error.tool-unknown": "There is no tool named {subject}",
+  "error.config-invalid": "{file}: {field} is invalid",
+  "error.config-json": "{file} is not valid JSON",
+  "hint.config-json": "Fix the syntax of the file and call again",
+  "error.event-invalid":
+    "A review event has an invalid {field}; nothing was written",
+  "error.repository-not-found":
+    "No {file} in the content folder this server was started with",
+  "error.io-failed": "Cannot read or write {file}",
+  "error.render-failed": "Rendering {file} failed",
+  "error.scheduler-unsupported":
+    "learn.config.json names another scheduler than {expected}",
+  "error.unexpected": "Unexpected failure: {detail}",
+
+  "hint.path-outside-content":
+    "Pass a path relative to the repository root, without .. or links that lead out of it",
+  "hint.request-id-reused":
+    "Use a new requestId for a changed call; repeat an id only with the same input",
+  "hint.item-not-active":
+    "Take items from quiz_next: draft and retired cards are not reviewed",
+  "hint.topic-exists":
+    "Add to it with add_cards, save_summary and save_materials",
+  "hint.topic-not-found":
+    "Create it with create_topic first, or find its <domain>/<topic> with search",
+  "hint.card-not-found": "Find the card's id with search",
+  "hint.package-not-found":
+    "Pass the path of a file in inbox/, such as inbox/topic.md",
+  "hint.nothing-to-undo":
+    "Only reviews recorded with record_review on this device can be undone here",
+  "hint.input-invalid": "Fix that field and call the tool again",
+  "hint.tool-unknown": "List the tools to see what this server offers",
+  "hint.config-invalid": "Fix the value in the file and call again",
+  "hint.event-invalid": "Check the rating and the review item, then call again",
+  "hint.repository-not-found":
+    "Start the server with --content pointing at a content repository",
+  "hint.io-failed": "Check that the file exists and can be written",
+  "hint.render-failed":
+    "Check that npx can run mermaid-cli on this machine, then call again",
+  "hint.scheduler-unsupported":
+    "Set srs.scheduler to the version this framework ships with, or update the framework",
+  "hint.unexpected":
+    "Nothing was written; tell the framework's author what led to it",
 
   "cli.check.summary": "{files}, {errors}, {warnings}",
   "cli.check.clean": "{cards} checked, no findings",
@@ -155,6 +220,11 @@ export const en = {
   "cli.error.scheduler-unsupported":
     "learn.config.json names another scheduler: set srs.scheduler to {expected} or use a matching framework version",
 
+  "cli.hook.findings": "{file} has findings: fix them before going on",
+  "cli.hook.failed": "The content check did not run: {detail}",
+  "cli.hook.bad-event":
+    "No tool event on stdin: run this command from a PostToolUse hook",
+
   "cli.help": [
     "Usage: wastech-learn <command> [options]",
     "",
@@ -163,6 +233,8 @@ export const en = {
     "  build      Compile the content bundle for the app (--out <file>)",
     "  render     Render diagrams/*.mmd to SVG; --check only lists stale ones",
     "  simulate   Simulate a break and the sessions that clear its backlog",
+    "  new-id     Print new card ids (--count <n>, default 1)",
+    "  hook       post-tool-use: check a file an agent just wrote (event JSON on stdin)",
     "",
     "Options:",
     "  --content <dir>   Content repository (default: current folder)",

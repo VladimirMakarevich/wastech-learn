@@ -1,6 +1,10 @@
 import type { Finding } from "../../finding.js";
 import type { Card } from "../../model.js";
-import { clozeGapCounts, isClozeType } from "../../parse/variants.js";
+import {
+  clozeClosure,
+  clozeGapCounts,
+  isClozeType,
+} from "../../parse/variants.js";
 import { CLOZE_VARIANTS_LIMIT } from "../limits.js";
 
 /** One gap per variant, few variants per card: each variant must test exactly one thing. */
@@ -15,6 +19,17 @@ export const checkCloze = (card: Card): readonly Finding[] => {
       file: card.file,
       line: card.question.line,
       params: { count: counts.size, limit: CLOZE_VARIANTS_LIMIT },
+    });
+  }
+  // An unclosed gap still counts as a variant, but nothing can hide it: the prompt would show its answer.
+  const { opened, closed } = clozeClosure(card.question.markdown);
+  if (opened > closed) {
+    findings.push({
+      ruleId: "cloze-unclosed",
+      severity: "error",
+      file: card.file,
+      line: card.question.line,
+      params: { count: opened - closed },
     });
   }
   for (const [number, gaps] of [...counts].sort(([a], [b]) => a - b)) {

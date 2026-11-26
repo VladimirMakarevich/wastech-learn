@@ -1,7 +1,7 @@
 {
   "name": "@wastech-learn/content-fs",
   "version": "0.0.0",
-  "description": "Repository IO of wastech-learn: loads the content repository, reads and appends the review log, renders diagrams.",
+  "description": "Repository IO of wastech-learn: loads the content repository, validates and writes content safely, reads and appends the review log, renders diagrams.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@wastech-learn/core": "0.0.0",
-    "@wastech-learn/srs": "0.0.0"
+    "@wastech-learn/srs": "0.0.0",
+    "@wastech-mdlint/core": "0.4.1"
   }
 }

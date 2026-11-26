@@ -12,6 +12,8 @@
     { "path": "./packages/content-fs" },
     { "path": "./packages/content-fs/test" },
     { "path": "./packages/cli" },
-    { "path": "./packages/cli/test" }
+    { "path": "./packages/cli/test" },
+    { "path": "./packages/mcp-server" },
+    { "path": "./packages/mcp-server/test" }
   ]
 }

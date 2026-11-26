@@ -32,27 +32,36 @@ export type CardType = (typeof CARD_TYPES)[number];
 export const CARD_STATUSES = ["draft", "active", "retired"] as const;
 export type CardStatus = (typeof CARD_STATUSES)[number];
 
+export const BLOOM_LEVELS = [
+  "remember",
+  "understand",
+  "apply",
+  "analyze",
+  "evaluate",
+  "create",
+] as const;
+export type BloomLevel = (typeof BLOOM_LEVELS)[number];
+
+export const GRADINGS = ["self", "ai", "none"] as const;
+
+export const TOPIC_STATUSES = ["draft", "active", "archived"] as const;
+export const FAMILIARITIES = ["new", "familiar"] as const;
+export const LANG_PAIRS = ["pl-ru", "pl-en"] as const;
+
 export const cardFrontMatterSchema = z.object({
   id: z.string().regex(CARD_ID_PATTERN, {
     error: "Expected 8 lower-case Crockford base32 characters",
   }),
   type: z.enum(CARD_TYPES),
   status: z.enum(CARD_STATUSES),
-  bloom: z.enum([
-    "remember",
-    "understand",
-    "apply",
-    "analyze",
-    "evaluate",
-    "create",
-  ]),
-  grading: z.enum(["self", "ai", "none"]),
+  bloom: z.enum(BLOOM_LEVELS),
+  grading: z.enum(GRADINGS),
   idea: kebabSchema.optional(),
   tags: z.array(kebabSchema).optional(),
   origin: z.enum(ORIGINS),
   created: isoDateSchema,
   lang: z.enum(CONTENT_LANGS).optional(),
-  langPair: z.enum(["pl-ru", "pl-en"]).optional(),
+  langPair: z.enum(LANG_PAIRS).optional(),
 });
 export type CardFrontMatter = z.infer<typeof cardFrontMatterSchema>;
 
@@ -60,8 +69,8 @@ export const topicIndexFrontMatterSchema = z.object({
   title: z.string().min(1),
   domain: kebabSchema,
   lang: z.enum(CONTENT_LANGS),
-  status: z.enum(["draft", "active", "archived"]),
-  familiarity: z.enum(["new", "familiar"]),
+  status: z.enum(TOPIC_STATUSES),
+  familiarity: z.enum(FAMILIARITIES),
   created: isoDateSchema,
   origin: z.enum(ORIGINS),
   tags: z.array(kebabSchema).optional(),

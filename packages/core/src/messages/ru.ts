@@ -66,6 +66,13 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     many: "У cloze-карточки {count} вариантов, нужно от 1 до {limit}",
     other: "У cloze-карточки {count} варианта, нужно от 1 до {limit}",
   },
+  "finding.cloze-unclosed": {
+    count: "count",
+    one: "{count} пропуск cloze не закрыт }}: закрой его",
+    few: "{count} пропуска cloze не закрыты }}: закрой их",
+    many: "{count} пропусков cloze не закрыты }}: закрой их",
+    other: "{count} пропуска cloze не закрыты }}: закрой их",
+  },
   "finding.vocab-lang-pair": "Карточке vocab нужен langPair во front matter",
   "finding.vocab-example":
     "В ответе нет примера предложения: добавь его курсивом",
@@ -83,6 +90,14 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "finding.preset-drift":
     "Правило пресета {rule} (№{position}) пропало или изменилось: верни его из пресета CLI",
 
+  "finding.diagram-render":
+    "Mermaid не смог отрисовать этот источник: {detail}",
+  "finding.package-card":
+    "У кандидата {card} нет поля {field} или оно неверно: исправь его в пакете",
+  "finding.package-material":
+    "В строке материалов нет поля {field} или оно неверно: исправь строку таблицы",
+  "finding.package-summary-section":
+    "Секции summary {section} нет в шаблоне: переименуй её или убери",
   "count.files": {
     count: "count",
     one: "{count} файл",
@@ -118,6 +133,61 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     many: "{count} карточек",
     other: "{count} карточки",
   },
+
+  "error.path-outside-content": "{subject} — вне контент-репозитория",
+  "error.request-id-reused":
+    "requestId {subject} уже использован для другого вызова",
+  "error.item-not-active": "{subject} — не review item активной карточки",
+  "error.topic-exists": "Тема {subject} уже есть",
+  "error.topic-not-found": "Темы {subject} нет",
+  "error.card-not-found": "Карточки с id {subject} нет",
+  "error.package-not-found": "По пути {subject} нет learning package",
+  "error.nothing-to-undo":
+    "Нет оценки с этого устройства, которую можно отменить",
+  "error.input-invalid": "Поле входа {field} неверно",
+  "error.tool-unknown": "Инструмента {subject} нет",
+  "error.config-invalid": "{file}: поле {field} неверно",
+  "error.config-json": "{file} — не валидный JSON",
+  "hint.config-json": "Исправь синтаксис файла и вызови снова",
+  "error.event-invalid":
+    "У события повторения неверное поле {field}; ничего не записано",
+  "error.repository-not-found":
+    "В папке контента, с которой запущен сервер, нет {file}",
+  "error.io-failed": "Не удаётся прочитать или записать {file}",
+  "error.render-failed": "Не удалось отрисовать {file}",
+  "error.scheduler-unsupported":
+    "learn.config.json указывает не тот планировщик, что {expected}",
+  "error.unexpected": "Непредвиденный сбой: {detail}",
+
+  "hint.path-outside-content":
+    "Передай путь от корня репозитория, без .. и ссылок, ведущих наружу",
+  "hint.request-id-reused":
+    "Для изменённого вызова возьми новый requestId; повторяй id только с тем же входом",
+  "hint.item-not-active":
+    "Бери review items из quiz_next: черновики и карточки в retired не повторяются",
+  "hint.topic-exists":
+    "Дополняй её через add_cards, save_summary и save_materials",
+  "hint.topic-not-found":
+    "Сначала создай её через create_topic или найди её <domain>/<topic> через search",
+  "hint.card-not-found": "Найди id карточки через search",
+  "hint.package-not-found":
+    "Передай путь к файлу в inbox/, например inbox/topic.md",
+  "hint.nothing-to-undo":
+    "Здесь отменяются только оценки, записанные через record_review на этом устройстве",
+  "hint.input-invalid": "Исправь это поле и вызови инструмент снова",
+  "hint.tool-unknown":
+    "Запроси список инструментов, чтобы увидеть, что есть у сервера",
+  "hint.config-invalid": "Исправь значение в файле и вызови снова",
+  "hint.event-invalid": "Проверь оценку и review item и вызови снова",
+  "hint.repository-not-found":
+    "Запусти сервер с --content, указывающим на контент-репозиторий",
+  "hint.io-failed": "Проверь, что файл существует и доступен для записи",
+  "hint.render-failed":
+    "Проверь, что npx может запустить mermaid-cli на этой машине, и вызови снова",
+  "hint.scheduler-unsupported":
+    "Укажи в srs.scheduler версию, с которой идёт фреймворк, или обнови фреймворк",
+  "hint.unexpected":
+    "Ничего не записано; расскажи автору фреймворка, что к этому привело",
 
   "cli.check.summary": "{files}, {errors}, {warnings}",
   "cli.check.clean": "Проверено: {cards}, замечаний нет",
@@ -177,6 +247,12 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "cli.error.scheduler-unsupported":
     "В learn.config.json другой планировщик: укажи srs.scheduler = {expected} или поставь подходящую версию фреймворка",
 
+  "cli.hook.findings":
+    "В {file} есть замечания: исправь их, прежде чем идти дальше",
+  "cli.hook.failed": "Проверка контента не запустилась: {detail}",
+  "cli.hook.bad-event":
+    "На stdin нет события инструмента: запускай команду из hook PostToolUse",
+
   "cli.help": [
     "Использование: wastech-learn <команда> [параметры]",
     "",
@@ -185,6 +261,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "  build      Собрать content bundle для приложения (--out <файл>)",
     "  render     Отрендерить diagrams/*.mmd в SVG; --check только покажет устаревшие",
     "  simulate   Проиграть перерыв и сессии, которые разбирают бэклог",
+    "  new-id     Вывести новые id карточек (--count <n>, по умолчанию 1)",
+    "  hook       post-tool-use: проверить файл, который только что записал агент (JSON события на stdin)",
     "",
     "Параметры:",
     "  --content <папка>  Контент-репозиторий (по умолчанию текущая папка)",

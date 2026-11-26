@@ -19,6 +19,7 @@ export const RULE_IDS = [
   "code-width",
   "cloze-gaps",
   "cloze-variants",
+  "cloze-unclosed",
   "vocab-lang-pair",
   "vocab-example",
   "id-unique",
@@ -28,6 +29,10 @@ export const RULE_IDS = [
   "active-edit",
   "preset-invalid",
   "preset-drift",
+  "diagram-render",
+  "package-card",
+  "package-material",
+  "package-summary-section",
 ] as const;
 export type RuleId = (typeof RULE_IDS)[number];
 

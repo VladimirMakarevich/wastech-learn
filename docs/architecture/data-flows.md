@@ -16,7 +16,7 @@ sequenceDiagram
   M-->>CC: похожих тем нет
   CC->>U: pre-questions, диалог, brain dump
   CC->>M: add_cards(dryRun=true, кандидаты)
-  M->>L: lintContent + check
+  M->>L: mdlint + check с наложением
   L-->>M: находки
   M-->>CC: кандидаты + находки
   CC->>U: кандидаты на отбор
@@ -84,8 +84,8 @@ sequenceDiagram
 
 1. Пользователь кладёт файл в `inbox/`.
 2. `learn-import` вызывает `import_package`. Тот разбирает пакет через схему `core` и возвращает тему и кандидатов.
-3. Дальше всё как при захвате: отбор, `add_cards`, `save_summary`, `save_diagram`, валидация.
-4. Исходник перемещается в `inbox/done/`.
+3. Дальше всё как при захвате: отбор, `add_cards`, `save_summary` (в существующую тему — с `merge`), `save_diagram`, валидация.
+4. `archive_package` переносит исходник в `inbox/done/`.
 
 ## См. также
 

@@ -8,10 +8,11 @@
 
 | Package | What the tests cover |
 | --- | --- |
-| `core` | Schemas of the config, front matter and event v1; the parser and `contentHash`; one violating fixture per `check` rule; preset drift; catalog parity (keys, placeholders, CLDR forms); the bundle sanitizer |
+| `core` | Schemas of the config, front matter and event v1; the parser and `contentHash`; one violating fixture per `check` rule; preset drift; catalog parity (keys, placeholders, CLDR forms); the bundle sanitizer; id and ULID generators with a seed; the learning package parser; serialization of cards, index, summary and materials; MiniSearch; the MCP input schemas |
 | `srs` | Replay against direct ts-fsrs calls and the semantics of every event kind; log preparation (duplicates, order, undo); day boundaries across DST; the queue and backlog policy; property tests of the queue; a ~1000-event determinism test under shuffled lines, files and `TZ`; the backlog simulation; the NFR-05 benchmark |
-| `content-fs` | Loading the golden copy in `fixtures/golden/` (3 topics, 30 cards); `check` and the reviewed bundle snapshot on it; reading and appending the log in a temp folder; the git baseline; `render` with a stub renderer, end to end only with `WASTECH_RENDER_E2E=1` |
-| `cli` | Exit codes and messages of `check`, `build`, `render --check` and `simulate`, run in-process on a temp copy of the golden sample |
+| `content-fs` | Loading the golden copy in `fixtures/golden/` (3 topics, 30 cards); `check` and the reviewed bundle snapshot on it; reading and appending the log in a temp folder; the git baseline; `render` with a stub renderer, end to end only with `WASTECH_RENDER_E2E=1`; every golden content file read and written back byte for byte; the write transaction with a failing file system; path confinement; validation with an overlay; the `requestId` store |
+| `cli` | Exit codes and messages of `check`, `build`, `render --check`, `simulate`, `new-id` and `hook post-tool-use` (event JSON on stdin), run in-process on a temp copy of the golden sample |
+| `mcp-server` | A contract test per tool through an in-process client of the same MCP SDK, on a temp copy of the golden sample, with sockets and `fetch` disabled: validation, `dryRun`, idempotency by `requestId` across a restart, path confinement, reply size, `quiz_next` hiding the answer, due dates equal to a full replay; the export prompts in three languages |
 
 Property tests run with a fixed fast-check seed: deterministic in CI, widened locally by changing the seed.
 

@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach } from "vitest";
+import { seededRng } from "@wastech-learn/srs";
 import { run, type ExitCode } from "../src/index.js";
 
 export const GOLDEN = fileURLToPath(
@@ -41,6 +42,7 @@ export const FIXED_NOW = new Date("2026-11-26T18:00:00.000Z");
 export const cli = async (
   argv: readonly string[],
   cwd = process.cwd(),
+  stdin = "",
 ): Promise<CliRun> => {
   const out: string[] = [];
   const err: string[] = [];
@@ -49,6 +51,8 @@ export const cli = async (
     err: (line) => err.push(line),
     cwd,
     now: () => FIXED_NOW,
+    random: seededRng(7),
+    readStdin: () => Promise.resolve(stdin),
   });
   return { code, out: out.join("\n"), err: err.join("\n") };
 };

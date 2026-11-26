@@ -23,9 +23,9 @@ Skills лежат в `wastech-learn/skills/<name>/SKILL.md` и ставятся 
 
 | Skill | Триггер | Что делает | Done when |
 | --- | --- | --- | --- |
-| `learn-capture` | «разберём тему X», «сохрани тему» | Ведёт цикл [study-process](../learning/study-process.md): pre-questions → диалог → brain dump → кандидаты → визуал → запись → мини-квиз | Файлы темы записаны, `validate` чистый, мини-квиз пройден |
-| `learn-import` | «импортируй из inbox», файл в `inbox/` | Разбирает learning package, показывает кандидатов на отбор, раскладывает по файлам, валидирует | Пакет разложен, исходник перемещён в `inbox/done/` |
-| `learn-quiz` | «погоняй меня», «квиз 10 минут» | Квиз по due review items с самооценкой или ИИ-оценкой | Батч пройден, события записаны |
+| [`learn-capture`](../../skills/learn-capture/SKILL.md) | «разберём тему X», «сохрани тему» | Ведёт цикл [study-process](../learning/study-process.md): pre-questions → диалог → brain dump → кандидаты → визуал → запись → мини-квиз | Файлы темы записаны, `validate` чистый, мини-квиз пройден |
+| [`learn-import`](../../skills/learn-import/SKILL.md) | «импортируй из inbox», файл в `inbox/` | Разбирает learning package, показывает кандидатов на отбор, раскладывает по файлам, валидирует, переносит пакет через `archive_package` | Пакет разложен, исходник перемещён в `inbox/done/` |
+| [`learn-quiz`](../../skills/learn-quiz/SKILL.md) | «погоняй меня», «квиз 10 минут» | Квиз по due review items с самооценкой или ИИ-оценкой | Батч пройден, события записаны |
 | `learn-fix` | «починим leech» | Разбор fix list | Later |
 | `learn-journal` | «рефлексия» | Три вопроса рефлексии → `journal/YYYY-MM.md` | Later |
 
@@ -42,16 +42,29 @@ Skills лежат в `wastech-learn/skills/<name>/SKILL.md` и ставятся 
 
 ## Hook и проверки
 
-`.claude/settings.json` контент-репозитория содержит hook `PostToolUse` на `Write|Edit` по `content/**`. Он запускает `wastech-mdlint lint <file>` и `wastech-learn check <file>`, а находки возвращает агенту. MCP-инструменты валидируют и сами, а hook подстраховывает ручные правки, которые ИИ делает через Edit.
+`.claude/settings.json` контент-репозитория содержит hook `PostToolUse` на `Write|Edit`. Он запускает одну команду, `wastech-learn hook post-tool-use`: она читает JSON события Claude Code из stdin, пропускает файлы вне `content/**` и проверяет изменённый файл mdlint и `check` по всему репозиторию. В ответ попадают ошибки самого файла и ошибки, которые правка вызвала в других файлах по сравнению с закоммиченным состоянием (например, переименованный заголовок summary ломает якорь в карточке). Ошибки уходят в stderr с кодом `2`, и Claude Code возвращает их агенту; чистый файл и файл вне `content/` дают `0`, а событие или командная строка, которые не удалось прочитать, — `1` (видно человеку, агента не останавливает). Для правки `.mmd` проверяется и SVG рядом: устаревший рендер — тоже находка. MCP-инструменты валидируют и сами, а hook подстраховывает ручные правки, которые ИИ делает через Edit.
+
+```jsonc
+// .claude/settings.json
+{
+  "hooks": {
+    "PostToolUse": [
+      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "npx --no-install wastech-learn hook post-tool-use --content \"$CLAUDE_PROJECT_DIR\"" }] }
+    ]
+  }
+}
+```
 
 ## Конфигурация Claude Code в контент-репозитории
+
+Пакеты `@wastech-learn/mcp-server`, `@wastech-learn/cli` и `@wastech-mdlint/mcp-server` стоят в контенте точными devDependencies, поэтому версию фиксирует lockfile, а запуск не ходит в сеть:
 
 ```jsonc
 // .mcp.json
 {
   "mcpServers": {
-    "wastech-learn": { "command": "npx", "args": ["-y", "@wastech-learn/mcp-server@<version>", "--content", "."] },
-    "wastech-mdlint": { "command": "npx", "args": ["-y", "@wastech-mdlint/mcp-server@0.4.1"] }
+    "wastech-learn": { "command": "npx", "args": ["--no-install", "wastech-learn-mcp", "--content", "."] },
+    "wastech-mdlint": { "command": "npx", "args": ["--no-install", "wastech-mdlint-mcp"] }
   }
 }
 ```

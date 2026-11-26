@@ -11,7 +11,7 @@
 
 ## Статус
 
-**Фаза 0 (документация) и вехи M1 (контент-репозиторий с golden sample) и M2 (ядро: `core`, `srs`, `content-fs` и CLI `check`, `build`, `render`, `simulate`) завершены.** Следующая веха — M3: захват через MCP и skills. Требования, методика, модель данных и архитектура описаны в [docs/](docs/README.md), план фаз — в [roadmap](docs/roadmap.md). UI — desktop-first Angular + CDK в стиле [прототипа](prototypes/desktop-ui/README.md) ([ADR-0006](docs/adr/0006-headless-core-angular-ui.md)).
+**Фаза 0 (документация) и вехи M1 (контент-репозиторий с golden sample) и M2 (ядро: `core`, `srs`, `content-fs` и CLI `check`, `build`, `render`, `simulate`) завершены.** Идёт веха M3 — захват через MCP и skills: MCP-сервер `wastech-learn-mcp`, hook, `new-id` и skills `learn-capture`, `learn-import`, `learn-quiz` готовы; впереди публикация пакетов, подключение контент-репозитория и приёмка на реальных темах. Требования, методика, модель данных и архитектура описаны в [docs/](docs/README.md), план фаз — в [roadmap](docs/roadmap.md). UI — desktop-first Angular + CDK в стиле [прототипа](prototypes/desktop-ui/README.md) ([ADR-0006](docs/adr/0006-headless-core-angular-ui.md)).
 
 ## Два репозитория
 

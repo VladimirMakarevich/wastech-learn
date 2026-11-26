@@ -96,7 +96,7 @@
 | Слова в ответе | `basic`/`cloze`/`vocab` ≤12; `why`/`compare` ≤40 и ≤3 пунктов | `answer-words`, `answer-points` |
 | Рубрика | ≤5 пунктов, хотя бы один отмечен `(!)`; у `scenario` и `design` обязательна | `rubric-items`, `rubric-required`, `rubric-missing` |
 | Код | ≤12 строк в блоке, ≤80 символов в строке | `code-lines`, `code-width` |
-| Cloze | Каждый вариант `cN` содержит ровно один пропуск, вариантов от 1 до 3 | `cloze-gaps`, `cloze-variants` |
+| Cloze | Каждый вариант `cN` содержит ровно один пропуск, вариантов от 1 до 3, каждый пропуск закрыт `}}` | `cloze-gaps`, `cloze-variants`, `cloze-unclosed` |
 | `vocab` | Есть `langPair` и пример предложения курсивом в `Answer` (`*…*`, от двух слов) | `vocab-lang-pair`, `vocab-example` |
 | Уникальность | `id` уникален во всём репозитории | `id-unique` |
 | Diagram | SVG лежит рядом, `source-sha256` в нём совпадает с хэшем `.mmd` | `diagram-svg-missing`, `diagram-stale` |
@@ -110,8 +110,8 @@
 
 | Где | Что |
 | --- | --- |
-| MCP `validate` | `lintContent` из `@wastech-mdlint/core` для черновика + `check` до записи |
-| Hook Claude Code `PostToolUse` | `lint` по изменённым файлам `content/**` |
+| MCP: каждая запись и `validate` | Корпус mdlint из `@wastech-mdlint/core` с наложенными новыми файлами (`lintContext` по заменённым документам) + `check` до записи |
+| Hook Claude Code `PostToolUse` | `wastech-learn hook post-tool-use`: mdlint и `check` по изменённому файлу `content/**` |
 | CI контент-репозитория | `lint` + `check` на каждый push |
 | VS Code | Задача `lint:content`; MCP mdlint доступен ИИ в редакторе |
 
