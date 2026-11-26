@@ -121,6 +121,8 @@ export const en = {
   "error.nothing-to-undo": "There is no review from this device to undo",
   "error.content-changed":
     "{subject} changed while the write was being prepared; nothing was written",
+  "error.search-index-invalid":
+    "The content bundle has a search index this version cannot read",
   "error.input-invalid": "Input field {field} is invalid",
   "error.tool-unknown": "There is no tool named {subject}",
   "error.config-invalid": "{file}: {field} is invalid",
@@ -153,6 +155,8 @@ export const en = {
     "Only reviews recorded with record_review on this device can be undone here",
   "hint.content-changed":
     "Someone saved the file in the meantime: call the tool again to build on the new text",
+  "hint.search-index-invalid":
+    "Rebuild the bundle with wastech-learn build or restart wastech-learn serve",
   "hint.input-invalid": "Fix that field and call the tool again",
   "hint.tool-unknown": "List the tools to see what this server offers",
   "hint.config-invalid": "Fix the value in the file and call again",

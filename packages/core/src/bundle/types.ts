@@ -63,8 +63,8 @@ export interface CardEntry {
 
 /**
  * What the app reads instead of the content repository: metadata and pre-rendered, sanitized HTML. It is
- * derived from the content and never committed there. The search index joins it as an optional field
- * when the first host needs it, so adding it is not a version change.
+ * derived from the content and never committed there. The search index is an optional field, so a bundle
+ * without it is still version 1.
  */
 export interface ContentBundle {
   readonly version: 1;
@@ -74,4 +74,6 @@ export interface ContentBundle {
   readonly cards: readonly CardEntry[];
   /** Repository paths of local images that are not inlined, for the host to serve. */
   readonly assets: Readonly<Record<string, string>>;
+  /** The serialized search index over topics and cards; `loadSearchIndex` restores it. */
+  readonly searchIndex?: string;
 }

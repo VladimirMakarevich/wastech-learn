@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** —
 - **Даёт:** `searchIndex` в bundle и его загрузка из `core`
 
@@ -32,5 +32,5 @@
 
 ## Приёмка фазы
 
-- [ ] Unit-часть AC-F05 проходит.
-- [ ] [components](../../../architecture/components.md): `searchIndex` описан; lint и тесты зелёные.
+- [x] Unit-часть AC-F05 проходит.
+- [x] [components](../../../architecture/components.md): `searchIndex` описан; lint и тесты зелёные.

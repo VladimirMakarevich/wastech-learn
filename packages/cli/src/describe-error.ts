@@ -30,6 +30,7 @@ const describeLearnError = (
     case "package-not-found":
     case "nothing-to-undo":
     case "content-changed":
+    case "search-index-invalid":
       return t(`error.${error.code}`, { subject: error.subject ?? "" });
   }
 };

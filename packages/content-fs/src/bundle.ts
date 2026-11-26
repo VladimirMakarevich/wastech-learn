@@ -2,6 +2,7 @@ import { mkdir, rename, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import {
   LearnError,
+  buildSearchIndex,
   compileBundle,
   parseContent,
   type ContentBundle,
@@ -14,8 +15,8 @@ export type BundleBuild =
   | { readonly ok: false; readonly findings: readonly Finding[] };
 
 /**
- * Compiles the repository into a content bundle, or returns the schema findings that prevent it: a bundle
- * with a card silently missing would look complete to the app.
+ * Compiles the repository into a content bundle with its search index, or returns the schema findings that
+ * prevent it: a bundle with a card silently missing would look complete to the app.
  */
 export const buildBundle = async (
   root: string,
@@ -25,7 +26,11 @@ export const buildBundle = async (
   const files = await loadContentFiles(root);
   const { model, findings } = await parseContent(files);
   if (findings.length > 0) return { ok: false, findings };
-  return { ok: true, bundle: await compileBundle(model, files, { builtAt }) };
+  const bundle = await compileBundle(model, files, { builtAt });
+  return {
+    ok: true,
+    bundle: { ...bundle, searchIndex: buildSearchIndex(model).serialize() },
+  };
 };
 
 /** The bundle as written to disk: stable key order from the compiler, two-space indent, final newline. */

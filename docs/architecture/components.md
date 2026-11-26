@@ -70,7 +70,7 @@ interface ContentBundle {
   topics: TopicMeta[];      // путь, title, lang, familiarity, related, html секций summary
   cards: CardEntry[];       // id, type, created, variants[], questionHtml, answerHtml, rubric[], contentHash, topic
   assets: Record<string, string>; // локальные картинки, которые не встроены; SVG встраиваются в HTML
-  searchIndex?: unknown;    // сериализованный MiniSearch из core/search, попадёт в bundle в M4
+  searchIndex?: string;     // сериализованный индекс MiniSearch из core/search; loadSearchIndex восстанавливает его в браузере
 }
 ```
 

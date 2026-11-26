@@ -1,4 +1,5 @@
-import MiniSearch, { type SearchResult } from "minisearch";
+import MiniSearch, { type Options, type SearchResult } from "minisearch";
+import { LearnError } from "../errors.js";
 import type { ContentModel } from "../model.js";
 import { findSection } from "../parse/sections.js";
 import { oneLine } from "../serialize/inline.js";
@@ -141,6 +142,11 @@ export interface ContentSearchIndex {
     query: string,
     filters?: SearchFilters,
   ) => readonly SearchHit[];
+  /**
+   * The index as text for the content bundle, so the app searches without the content and without a
+   * server round trip. `loadSearchIndex` turns it back into an index that answers identically.
+   */
+  readonly serialize: () => string;
 }
 
 const DEFAULT_LIMIT = 8;
@@ -164,43 +170,64 @@ const hitOf = (result: SearchResult): SearchHit => ({
   score: Math.round(result.score * 1000) / 1000,
 });
 
+// The options are code, not data: a serialized index carries none of them, so building and loading must
+// share this one object or a loaded index would rank differently from the one that was built.
+const INDEX_OPTIONS: Options<IndexedDoc> = {
+  idField: "key",
+  fields: ["title", "question", "answer", "body", "tags", "folded"],
+  storeFields: [...STORED],
+  searchOptions: {
+    boost: { question: 3, title: 2, tags: 1.5 },
+    prefix: true,
+    fuzzy: (term) => (term.length > 4 ? 0.2 : false),
+  },
+};
+
+const wrap = (index: MiniSearch<IndexedDoc>): ContentSearchIndex => ({
+  search: (query, filters = {}) => {
+    const matches = (result: SearchResult): boolean =>
+      (filters.domain === undefined || result.domain === filters.domain) &&
+      (filters.type === undefined || result.type === filters.type) &&
+      (filters.status === undefined || result.status === filters.status);
+    return index
+      .search(
+        { combineWith: "OR", queries: [query, foldDiacritics(query)] },
+        { filter: matches },
+      )
+      .map(hitOf)
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          a.kind.localeCompare(b.kind, "en") ||
+          a.id.localeCompare(b.id, "en"),
+      )
+      .slice(0, filters.limit ?? DEFAULT_LIMIT);
+  },
+  serialize: () => JSON.stringify(index),
+});
+
 /**
  * Builds the lexical index of topics (title, key idea, summary) and cards (title, question, answer,
- * tags). Pure over the model, so the MCP server's duplicate check and, later, the app's search box rank
- * the same content the same way. A query is matched as typed and with diacritics folded; prefixes match
- * so a word typed half-way already finds its card.
+ * tags). Pure over the model, so the MCP server's duplicate check and the app's search box rank the same
+ * content the same way. A query is matched as typed and with diacritics folded; prefixes match so a word
+ * typed half-way already finds its card.
  */
 export const buildSearchIndex = (model: ContentModel): ContentSearchIndex => {
-  const index = new MiniSearch<IndexedDoc>({
-    idField: "key",
-    fields: ["title", "question", "answer", "body", "tags", "folded"],
-    storeFields: [...STORED],
-    searchOptions: {
-      boost: { question: 3, title: 2, tags: 1.5 },
-      prefix: true,
-      fuzzy: (term) => (term.length > 4 ? 0.2 : false),
-    },
-  });
+  const index = new MiniSearch<IndexedDoc>(INDEX_OPTIONS);
   index.addAll([...documentsOf(model)]);
-  return {
-    search: (query, filters = {}) => {
-      const matches = (result: SearchResult): boolean =>
-        (filters.domain === undefined || result.domain === filters.domain) &&
-        (filters.type === undefined || result.type === filters.type) &&
-        (filters.status === undefined || result.status === filters.status);
-      return index
-        .search(
-          { combineWith: "OR", queries: [query, foldDiacritics(query)] },
-          { filter: matches },
-        )
-        .map(hitOf)
-        .sort(
-          (a, b) =>
-            b.score - a.score ||
-            a.kind.localeCompare(b.kind, "en") ||
-            a.id.localeCompare(b.id, "en"),
-        )
-        .slice(0, filters.limit ?? DEFAULT_LIMIT);
-    },
-  };
+  return wrap(index);
+};
+
+/** Restores an index from `serialize`, as the app does with the bundle's `searchIndex`. */
+export const loadSearchIndex = (serialized: string): ContentSearchIndex => {
+  try {
+    return wrap(MiniSearch.loadJSON<IndexedDoc>(serialized, INDEX_OPTIONS));
+  } catch (error) {
+    throw new LearnError(
+      "search-index-invalid",
+      "The content bundle has a search index this version cannot read",
+      {},
+      { cause: error },
+    );
+  }
 };

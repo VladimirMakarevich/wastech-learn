@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   buildSearchIndex,
   foldDiacritics,
+  isLearnError,
+  loadSearchIndex,
   parseContent,
 } from "../src/index.js";
 import { repoWith, topicFiles } from "./content-builders.js";
@@ -106,5 +108,44 @@ describe("content search", () => {
 
   it("folds Polish and Russian diacritics, including ł", () => {
     expect(foldDiacritics("Łódź żurek ёлка")).toBe("lodz zurek елка");
+  });
+});
+
+describe("serialized search index", () => {
+  it("answers every query exactly as the index it was built from", async () => {
+    const built = buildSearchIndex(await model());
+    const loaded = loadSearchIndex(built.serialize());
+    for (const [query, filters] of [
+      ["consumer signal demand producer", {}],
+      ["streaming", { status: "draft" }],
+      ["window sender", { type: "why" }],
+      ["zurku", {}],
+      ["poprosic", {}],
+      ["flow", { limit: 1 }],
+      ["produc", {}],
+    ] as const) {
+      expect(loaded.search(query, filters)).toEqual(
+        built.search(query, filters),
+      );
+    }
+    expect(loaded.search("zurku")[0]?.id).toBe("e4ej1s8e");
+  });
+
+  it("is the same text for the same content", async () => {
+    expect(buildSearchIndex(await model()).serialize()).toBe(
+      buildSearchIndex(await model()).serialize(),
+    );
+  });
+
+  it("refuses text that is not an index with a typed error", () => {
+    for (const broken of ["", "{}", "not json"]) {
+      let caught: unknown;
+      try {
+        loadSearchIndex(broken);
+      } catch (error) {
+        caught = error;
+      }
+      expect(isLearnError(caught) && caught.code).toBe("search-index-invalid");
+    }
   });
 });

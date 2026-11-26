@@ -146,6 +146,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Нет оценки с этого устройства, которую можно отменить",
   "error.content-changed":
     "{subject} изменился, пока готовилась запись; ничего не записано",
+  "error.search-index-invalid":
+    "Индекс поиска в content bundle не читается этой версией",
   "error.input-invalid": "Поле входа {field} неверно",
   "error.tool-unknown": "Инструмента {subject} нет",
   "error.config-invalid": "{file}: поле {field} неверно",
@@ -178,6 +180,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Здесь отменяются только оценки, записанные через record_review на этом устройстве",
   "hint.content-changed":
     "Файл сохранили в это время: вызови инструмент снова, чтобы опереться на новый текст",
+  "hint.search-index-invalid":
+    "Пересобери bundle командой wastech-learn build или перезапусти wastech-learn serve",
   "hint.input-invalid": "Исправь это поле и вызови инструмент снова",
   "hint.tool-unknown":
     "Запроси список инструментов, чтобы увидеть, что есть у сервера",
