@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** 03
 - **Даёт:** Бинарь `wastech-learn` с командой `check` и кодами выхода
 
@@ -31,5 +31,5 @@ CLI-тесты кодов выхода в временной папке.
 
 ## Приёмка фазы
 
-- [ ] AC-F03a и AC-F01b (код `2`) проходят.
-- [ ] `npx wastech-learn check --content fixtures/golden` работает из корня.
+- [x] AC-F03a и AC-F01b (код `2`) проходят.
+- [x] `npx wastech-learn check --content fixtures/golden` работает из корня.

@@ -1,0 +1,28 @@
+{
+  "name": "@wastech-learn/srs",
+  "version": "0.0.0",
+  "description": "ts-fsrs adapter, deterministic replay of the review log, the day queue and the backlog policy of wastech-learn. Pure: runs in Node and in the browser.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladimirMakarevich/wastech-learn.git",
+    "directory": "packages/srs"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "@wastech-learn/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24.17.0"
+  },
+  "dependencies": {
+    "ts-fsrs": "6.0.1"
+  }
+}

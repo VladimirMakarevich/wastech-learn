@@ -4,7 +4,16 @@
 
 ## Current state
 
-No package and no test exists yet. **Vitest** (with **fast-check** for property tests) is installed together with the first package in M2, and `npm test` joins the DoD from that commit on. Until then the gate is `npm run lint`.
+**Vitest** with **fast-check** runs every `packages/*/test/**/*.test.ts` (`npm test`, also in CI). Packages import each other's TypeScript sources through the `@wastech-learn/source` export condition, so tests never need a build. The suite pins `TZ` to a zone with DST and a half-hour offset, so code that reads the machine's zone fails.
+
+| Package | What the tests cover |
+| --- | --- |
+| `core` | Schemas of the config, front matter and event v1; the parser and `contentHash`; one violating fixture per `check` rule; preset drift; catalog parity (keys, placeholders, CLDR forms); the bundle sanitizer |
+| `srs` | Replay against direct ts-fsrs calls and the semantics of every event kind; log preparation (duplicates, order, undo); day boundaries across DST; the queue and backlog policy; property tests of the queue; a ~1000-event determinism test under shuffled lines, files and `TZ`; the backlog simulation; the NFR-05 benchmark |
+| `content-fs` | Loading the golden copy in `fixtures/golden/` (3 topics, 30 cards); `check` and the reviewed bundle snapshot on it; reading and appending the log in a temp folder; the git baseline; `render` with a stub renderer, end to end only with `WASTECH_RENDER_E2E=1` |
+| `cli` | Exit codes and messages of `check`, `build`, `render --check` and `simulate`, run in-process on a temp copy of the golden sample |
+
+Property tests run with a fixed fast-check seed: deterministic in CI, widened locally by changing the seed.
 
 ## Tiers and what each must cover
 

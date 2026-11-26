@@ -2,12 +2,15 @@
   "name": "wastech-learn",
   "version": "0.0.0",
   "private": true,
-  "description": "Personal spaced-repetition learning framework: requirements, architecture and (later) the headless core, app, CLI and MCP server.",
+  "description": "Personal spaced-repetition learning framework: the headless core (schemas, check, content bundle, FSRS replay and queue), the CLI, and later the app and MCP server.",
   "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=24.17.0"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "lint": "npm run lint:code && npm run lint:docs",
     "lint:code": "npm run lint:es && npm run lint:css && npm run format:check && npm run typecheck",
@@ -16,6 +19,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc -b",
+    "build": "tsc -b",
+    "test": "vitest run",
     "fix": "node scripts/fix.mjs",
     "lint:docs": "wastech-mdlint lint .",
     "lint:docs:fix": "wastech-mdlint lint . --fix",
@@ -33,6 +38,7 @@
     "@wastech-mdlint/viewer": "0.4.1",
     "eslint": "10.15.0",
     "eslint-config-prettier": "10.1.8",
+    "fast-check": "4.10.2",
     "globals": "17.14.0",
     "hast-util-to-html": "9.0.7",
     "mdast-util-to-hast": "13.2.2",
@@ -45,6 +51,7 @@
     "typescript": "6.0.3",
     "typescript-eslint": "8.74.0",
     "unist-util-visit": "5.2.0",
+    "vitest": "5.1.0",
     "yaml": "2.9.1"
   }
 }

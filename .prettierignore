@@ -8,6 +8,13 @@ package-lock.json
 dist/
 coverage/
 
+# A byte-for-byte copy of the golden sample from wastech-learn-content, refreshed from there and never
+# reformatted here: the golden tests compare against the content repository's own formatting.
+fixtures/golden/
+
+# Vitest file snapshots: written by the test runner byte for byte, reviewed as output, not formatted.
+**/__snapshots__/
+
 # Generated: prototypes/desktop-ui/build-data.mjs writes data.js; the happy-path SVGs come from generate.py.
 prototypes/desktop-ui/data.js
 docs/assets/

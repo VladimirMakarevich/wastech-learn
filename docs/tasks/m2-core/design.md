@@ -32,8 +32,12 @@
 
 ## Контракты
 
-- **Входы `srs`:** `replay(events: readonly ReplayEvent[], config: SrsConfig, now: Date): ReplayState`, `buildQueue(state, cards: readonly QueueCard[], config, now, mode)`, `simulate(params, seed)`. Все чистые, `DefaultScheduler` создаётся один раз асинхронно и передаётся внутрь.
-- **Bundle** — `ContentBundle` из [components](../../architecture/components.md) без `searchIndex`; `builtAt` передаётся снаружи, поэтому вывод `build` повторяем.
+- **Входы `srs`:** `replay(events: readonly ReplayEvent[], scheduler, config: SrsConfig, now: Date): ReplayState`, `buildQueue(state, cards: readonly QueueCard[], config, now, { mode, order, estimates })`, `simulate(params, config, scheduler, seed)` и `compareBacklogOrders` по нескольким сидам. Все чистые; планировщик создаёт `createScheduler(config)` один раз асинхронно и передаёт внутрь.
+- **Подготовка журнала** (дубли, порядок, `undo`) — `prepareEvents` в `srs`: тот же код нужен браузеру, а `log-read` вызывает его.
+- **Бэклог по прошлым дням** считается из сегментов истории, которые replay записывает по каждому review item, а не повторным replay на каждый день. Так пауза и возврат новых выводятся из журнала без хранимого флага.
+- **Siblings:** из конкурирующих за день побеждает тот, кто дольше ждёт; карточка, уже отвеченная сегодня, держит ключ дня.
+- **База `active-edit`:** прежний текст изменённых карточек из `git HEAD` контента; вне git правило молчит (M2-Q4).
+- **Bundle** — `ContentBundle` из [components](../../architecture/components.md) без `searchIndex`; `builtAt` передаётся снаружи, поэтому вывод `build` повторяем. `rehype-sanitize` идёт последним, его allowlist пропускает SVG, KaTeX и Shiki, а `style` — только без скобок и кавычек, то есть без `url()`.
 - **Журнал:** `log-read` возвращает события и находки `{file, line, code}`; `log-append` пишет в `reviews/<device>/<writer>-YYYY-MM.jsonl` (месяц по `ts` в UTC) одним `write` с `fsync` и пропускает `id`, уже записанные в этот файл.
 - **`render`:** маркер `<!-- source-sha256: … -->` первой строкой, как у текущего скрипта; `--check` только сообщает.
 

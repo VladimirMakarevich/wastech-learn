@@ -10,6 +10,10 @@
     "lib": ["ES2023"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    // Workspace packages resolve to each other's TypeScript sources through this export condition, so the
+    // type-aware ESLint run and the editor never depend on a stale or missing dist/. Node ignores it and
+    // loads dist/, and tsc -b swaps the sources of a referenced project for its emitted declarations.
+    "customConditions": ["@wastech-learn/source"],
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "composite": true,
