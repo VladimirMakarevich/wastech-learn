@@ -58,7 +58,7 @@ Screens and wireframes: [screens](docs/ux/screens.md); shortcuts, labels, i18n: 
 ## Evidence on Hand
 
 - Real content: the golden sample in the private `wastech-learn-content` repo, exported into the prototype's `data.js` by `npm run proto:data`.
-- [Clickable desktop prototype](prototypes/desktop-ui/README.md): its screen layout and flows are validated evidence; its visual look (indigo accent, rounded cards, shadows) is a draft and does not bind future design.
+- [Clickable desktop prototype](prototypes/desktop-ui/README.md): its screen layout and flows are validated evidence. Its look now follows the [DESIGN.md](DESIGN.md) world; the Review screen is the first one built in it, the other screens only inherit its tokens.
 - Happy-path diagrams: [docs/assets/happy-path/](docs/product/happy-path.md).
 - Intervals, R, stability and statistics in the prototype are demo values — FSRS is not computed there. No real usage metrics exist yet; do not fabricate them.
 

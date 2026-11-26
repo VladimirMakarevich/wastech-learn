@@ -8,7 +8,7 @@ Guide for AI agents and contributors working in `wastech-learn`.
 
 **Phase:** documentation (phase 0) and M1 (content repo with a golden sample) are done; tooling is set up; M2 — the `core` and `srs` packages — is next. No package exists yet. Do not scaffold code unless the user asks; the UI stack is still open (ADR-0006 `proposed`, Q-13).
 
-**UI design work** starts from [PRODUCT.md](PRODUCT.md): users, purpose, constraints and principles condensed from `docs/` for the `impeccable` skill.
+**UI design work** starts from [PRODUCT.md](PRODUCT.md): users, purpose, constraints and principles condensed from `docs/` for the `impeccable` skill. The visual world lives in [DESIGN.md](DESIGN.md) (iOS-inspired, frosted glass, dark-first); the prototype's Review screen is built in it, the other screens only inherit its tokens.
 
 ## Rules — read before working
 
@@ -41,4 +41,4 @@ npm run proto:data   # rebuild the prototype's data.js from ../wastech-learn-con
 
 ## Language
 
-Docs in `docs/` and `README.md` are **Russian**; this file, `.rules/` and skills are **English** (the `LLM-001` estimate undercounts Cyrillic). Identifiers, file names and front matter keys are English. Talk to the user in the language they use.
+Docs in `docs/` and `README.md` are **Russian**; this file, `PRODUCT.md`, `DESIGN.md`, `.rules/` and skills are **English** (the `LLM-001` estimate undercounts Cyrillic). Identifiers, file names and front matter keys are English. Talk to the user in the language they use.

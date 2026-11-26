@@ -5,7 +5,7 @@
 ## Languages
 
 - **`docs/` and `README.md` are written in Russian.** File names, front matter keys, IDs, code identifiers and machine-checked table headers (`ID`, `Priority`, `Status`, `Principles`, `Journeys`) are English.
-- **`AGENTS.md`, `.rules/` and skills are English**: they are loaded into agent context, and the `LLM-001` token estimate undercounts Cyrillic.
+- **`AGENTS.md`, `PRODUCT.md`, `DESIGN.md`, `.rules/` and skills are English**: they are loaded into agent context (the last two by the `impeccable` design skill), and the `LLM-001` token estimate undercounts Cyrillic.
 - Use the canonical terms from the [glossary](../docs/glossary.md); `CTX-003` flags the listed aliases.
 
 ## IDs and traceability
