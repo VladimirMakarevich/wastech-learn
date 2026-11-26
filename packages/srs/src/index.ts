@@ -37,7 +37,23 @@ export type {
   QueueMode,
   QueueOptions,
 } from "./queue.js";
-export { createReplayer, replay } from "./replay.js";
+export {
+  MATURE_INTERVAL_DAYS,
+  RETURN_AFTER_DAYS,
+  comebackDays,
+  comebackStatus,
+  loadForecast,
+  studyDaysWindow,
+  trueRetention,
+} from "./metrics.js";
+export type {
+  ComebackStatus,
+  ForecastDay,
+  RetentionCount,
+  TimeWindow,
+  TrueRetention,
+} from "./metrics.js";
+export { createReplayer, replay, reviewRecords } from "./replay.js";
 export { seededRng, shuffled } from "./rng.js";
 export type { Rng } from "./rng.js";
 export type {
@@ -46,6 +62,7 @@ export type {
   Phase,
   ReplayState,
   Replayer,
+  ReviewRecord,
 } from "./replay.js";
 export { SCHEDULER_PACKAGE, createScheduler } from "./scheduler.js";
 export type { MemoryCard, Scheduler } from "./scheduler.js";

@@ -1,5 +1,5 @@
 import { prepareEvents } from "./events.js";
-import type { ReplayEvent, SrsConfig } from "./ports.js";
+import type { Rating, ReplayEvent, SrsConfig } from "./ports.js";
 import type { MemoryCard, Scheduler } from "./scheduler.js";
 
 export type Phase = "new" | "learning" | "review" | "relearning";
@@ -47,6 +47,20 @@ export interface ReplayState {
   readonly history: ReadonlyMap<string, readonly HistorySegment[]>;
 }
 
+/**
+ * One applied review with the item as it stood just before the answer. True retention asks whether an
+ * item in the review phase was recalled, and the phase before the answer is gone once the answer applies.
+ */
+export interface ReviewRecord {
+  readonly item: string;
+  /** Epoch milliseconds of the answer. */
+  readonly at: number;
+  readonly rating: Rating;
+  readonly phase: Phase;
+  /** The interval the item was on when it was answered, in days. */
+  readonly scheduledDays: number;
+}
+
 interface Memory {
   card: MemoryCard;
   suspended: boolean;
@@ -66,6 +80,7 @@ export interface Replayer {
 export const createReplayer = (
   scheduler: Scheduler,
   config: Pick<SrsConfig, "leechThreshold">,
+  observe?: (record: ReviewRecord) => void,
 ): Replayer => {
   const { leechThreshold } = config;
   const memories = new Map<string, Memory>();
@@ -100,6 +115,13 @@ export const createReplayer = (
     switch (event.kind) {
       case "review":
         if (event.rating === undefined) return;
+        observe?.({
+          item: event.item,
+          at: at.getTime(),
+          rating: event.rating,
+          phase: PHASES[memory.card.state] ?? "new",
+          scheduledDays: memory.card.scheduledDays,
+        });
         if (memory.card.state === 0) memory.introducedAt = at.getTime();
         memory.card = scheduler.review(memory.card, event.rating, at);
         break;
@@ -157,6 +179,18 @@ export const createReplayer = (
   return { apply, state };
 };
 
+const applyUntil = (
+  replayer: Replayer,
+  events: readonly ReplayEvent[],
+  now: Date,
+): void => {
+  const until = now.getTime();
+  for (const event of prepareEvents(events)) {
+    if (Date.parse(event.ts) > until) break;
+    replayer.apply(event);
+  }
+};
+
 /**
  * Replays the log into the state of every review item at `now`. Pure: the same events, scheduler version
  * and `now` give the same state whatever order the events arrive in. Events after `now` are ignored, so a
@@ -169,10 +203,24 @@ export const replay = (
   now: Date,
 ): ReplayState => {
   const replayer = createReplayer(scheduler, config);
-  const until = now.getTime();
-  for (const event of prepareEvents(events)) {
-    if (Date.parse(event.ts) > until) break;
-    replayer.apply(event);
-  }
+  applyUntil(replayer, events, now);
   return replayer.state(now);
+};
+
+/**
+ * Every review the log applies up to `now`, in replay order, each with the item's phase and interval
+ * before the answer. Undone events are gone, as in `replay`.
+ */
+export const reviewRecords = (
+  events: readonly ReplayEvent[],
+  scheduler: Scheduler,
+  config: Pick<SrsConfig, "leechThreshold">,
+  now: Date,
+): readonly ReviewRecord[] => {
+  const records: ReviewRecord[] = [];
+  const replayer = createReplayer(scheduler, config, (record) =>
+    records.push(record),
+  );
+  applyUntil(replayer, events, now);
+  return records;
 };
