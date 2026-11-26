@@ -1,0 +1,540 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-26T01:33:39.000Z",
+  "title": "Design System: wastech-learn",
+  "extensions": {
+    "colorMeta": {
+      "tint": {
+        "role": "primary",
+        "displayName": "Evening Teal (night)",
+        "canonical": "oklch(74% 0.105 200deg)",
+        "tonalRamp": [
+          "oklch(15% 0.026 200deg)",
+          "oklch(26% 0.045 200deg)",
+          "oklch(37% 0.065 200deg)",
+          "oklch(48% 0.084 200deg)",
+          "oklch(59% 0.103 200deg)",
+          "oklch(70% 0.087 200deg)",
+          "oklch(82% 0.066 200deg)",
+          "oklch(95% 0.044 200deg)"
+        ],
+        "note": "CSS --primary in the dark rendition; text uses --primary-ink oklch(82% 0.095 200deg)."
+      },
+      "tint-day": {
+        "role": "primary",
+        "displayName": "Evening Teal (day)",
+        "canonical": "oklch(51% 0.1 208deg)",
+        "tonalRamp": [
+          "oklch(15% 0.025 208deg)",
+          "oklch(26% 0.043 208deg)",
+          "oklch(37% 0.062 208deg)",
+          "oklch(48% 0.080 208deg)",
+          "oklch(59% 0.098 208deg)",
+          "oklch(70% 0.083 208deg)",
+          "oklch(82% 0.063 208deg)",
+          "oklch(95% 0.042 208deg)"
+        ],
+        "note": "CSS --primary in the light rendition; text uses --primary-ink oklch(43% 0.085 208deg)."
+      },
+      "on-tint": {
+        "role": "primary",
+        "displayName": "On Teal",
+        "canonical": "oklch(19% 0.035 210deg)",
+        "tonalRamp": [
+          "oklch(15% 0.009 210deg)",
+          "oklch(26% 0.015 210deg)",
+          "oklch(37% 0.022 210deg)",
+          "oklch(48% 0.028 210deg)",
+          "oklch(59% 0.034 210deg)",
+          "oklch(70% 0.029 210deg)",
+          "oklch(82% 0.022 210deg)",
+          "oklch(95% 0.015 210deg)"
+        ],
+        "note": "Night text on the tint; day uses white."
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "Night Ground",
+        "canonical": "oklch(14.5% 0.008 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.002 250deg)",
+          "oklch(26% 0.003 250deg)",
+          "oklch(37% 0.005 250deg)",
+          "oklch(48% 0.006 250deg)",
+          "oklch(59% 0.008 250deg)",
+          "oklch(70% 0.007 250deg)",
+          "oklch(82% 0.005 250deg)",
+          "oklch(95% 0.003 250deg)"
+        ]
+      },
+      "ground-day": {
+        "role": "neutral",
+        "displayName": "Day Ground",
+        "canonical": "oklch(96.4% 0.004 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.001 250deg)",
+          "oklch(26% 0.002 250deg)",
+          "oklch(37% 0.002 250deg)",
+          "oklch(48% 0.003 250deg)",
+          "oklch(59% 0.004 250deg)",
+          "oklch(70% 0.003 250deg)",
+          "oklch(82% 0.003 250deg)",
+          "oklch(95% 0.002 250deg)"
+        ]
+      },
+      "sidebar": {
+        "role": "neutral",
+        "displayName": "Night Sidebar",
+        "canonical": "oklch(17.5% 0.009 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.002 250deg)",
+          "oklch(26% 0.004 250deg)",
+          "oklch(37% 0.006 250deg)",
+          "oklch(48% 0.007 250deg)",
+          "oklch(59% 0.009 250deg)",
+          "oklch(70% 0.007 250deg)",
+          "oklch(82% 0.006 250deg)",
+          "oklch(95% 0.004 250deg)"
+        ]
+      },
+      "sidebar-day": {
+        "role": "neutral",
+        "displayName": "Day Sidebar",
+        "canonical": "oklch(94.6% 0.005 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.001 250deg)",
+          "oklch(26% 0.002 250deg)",
+          "oklch(37% 0.003 250deg)",
+          "oklch(48% 0.004 250deg)",
+          "oklch(59% 0.005 250deg)",
+          "oklch(70% 0.004 250deg)",
+          "oklch(82% 0.003 250deg)",
+          "oklch(95% 0.002 250deg)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Night Surface",
+        "canonical": "oklch(20.5% 0.01 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.003 250deg)",
+          "oklch(26% 0.004 250deg)",
+          "oklch(37% 0.006 250deg)",
+          "oklch(48% 0.008 250deg)",
+          "oklch(59% 0.010 250deg)",
+          "oklch(70% 0.008 250deg)",
+          "oklch(82% 0.006 250deg)",
+          "oklch(95% 0.004 250deg)"
+        ]
+      },
+      "surface-day": {
+        "role": "neutral",
+        "displayName": "Day Surface",
+        "canonical": "oklch(100% 0 0deg)",
+        "tonalRamp": [
+          "oklch(15% 0.000 250deg)",
+          "oklch(26% 0.000 250deg)",
+          "oklch(37% 0.000 250deg)",
+          "oklch(48% 0.000 250deg)",
+          "oklch(59% 0.000 250deg)",
+          "oklch(70% 0.000 250deg)",
+          "oklch(82% 0.000 250deg)",
+          "oklch(95% 0.000 250deg)"
+        ]
+      },
+      "surface-raised": {
+        "role": "neutral",
+        "displayName": "Raised Surface",
+        "canonical": "oklch(24.5% 0.011 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.003 250deg)",
+          "oklch(26% 0.005 250deg)",
+          "oklch(37% 0.007 250deg)",
+          "oklch(48% 0.009 250deg)",
+          "oklch(59% 0.011 250deg)",
+          "oklch(70% 0.009 250deg)",
+          "oklch(82% 0.007 250deg)",
+          "oklch(95% 0.005 250deg)"
+        ],
+        "note": "Day value oklch(97.4% 0.004 250deg)."
+      },
+      "glass-solid": {
+        "role": "neutral",
+        "displayName": "Glass Fallback",
+        "canonical": "oklch(23% 0.01 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.003 250deg)",
+          "oklch(26% 0.004 250deg)",
+          "oklch(37% 0.006 250deg)",
+          "oklch(48% 0.008 250deg)",
+          "oklch(59% 0.010 250deg)",
+          "oklch(70% 0.008 250deg)",
+          "oklch(82% 0.006 250deg)",
+          "oklch(95% 0.004 250deg)"
+        ],
+        "note": "Opaque fallback for glass; the live glass is oklch(23% 0.01 250deg / 64%) at night, oklch(98.6% 0.003 250deg / 70%) by day; day fallback oklch(97.6% 0.004 250deg)."
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Night Ink",
+        "canonical": "oklch(96.5% 0.004 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.001 250deg)",
+          "oklch(26% 0.002 250deg)",
+          "oklch(37% 0.002 250deg)",
+          "oklch(48% 0.003 250deg)",
+          "oklch(59% 0.004 250deg)",
+          "oklch(70% 0.003 250deg)",
+          "oklch(82% 0.003 250deg)",
+          "oklch(95% 0.002 250deg)"
+        ]
+      },
+      "ink-day": {
+        "role": "neutral",
+        "displayName": "Day Ink",
+        "canonical": "oklch(21% 0.012 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.003 250deg)",
+          "oklch(26% 0.005 250deg)",
+          "oklch(37% 0.007 250deg)",
+          "oklch(48% 0.010 250deg)",
+          "oklch(59% 0.012 250deg)",
+          "oklch(70% 0.010 250deg)",
+          "oklch(82% 0.008 250deg)",
+          "oklch(95% 0.005 250deg)"
+        ]
+      },
+      "body": {
+        "role": "neutral",
+        "displayName": "Night Body",
+        "canonical": "oklch(86% 0.008 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.002 250deg)",
+          "oklch(26% 0.003 250deg)",
+          "oklch(37% 0.005 250deg)",
+          "oklch(48% 0.006 250deg)",
+          "oklch(59% 0.008 250deg)",
+          "oklch(70% 0.007 250deg)",
+          "oklch(82% 0.005 250deg)",
+          "oklch(95% 0.003 250deg)"
+        ],
+        "note": "Day value oklch(33% 0.012 250deg)."
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Night Muted",
+        "canonical": "oklch(69% 0.012 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.003 250deg)",
+          "oklch(26% 0.005 250deg)",
+          "oklch(37% 0.007 250deg)",
+          "oklch(48% 0.010 250deg)",
+          "oklch(59% 0.012 250deg)",
+          "oklch(70% 0.010 250deg)",
+          "oklch(82% 0.008 250deg)",
+          "oklch(95% 0.005 250deg)"
+        ],
+        "note": "Day value oklch(48% 0.012 250deg)."
+      },
+      "memory": {
+        "role": "neutral",
+        "displayName": "Warm Memory White",
+        "canonical": "oklch(95% 0.045 85deg)",
+        "tonalRamp": [
+          "oklch(15% 0.011 85deg)",
+          "oklch(26% 0.019 85deg)",
+          "oklch(37% 0.028 85deg)",
+          "oklch(48% 0.036 85deg)",
+          "oklch(59% 0.044 85deg)",
+          "oklch(70% 0.037 85deg)",
+          "oklch(82% 0.028 85deg)",
+          "oklch(95% 0.019 85deg)"
+        ],
+        "note": "Lightness fixed; only opacity (0.16-1.0) encodes R."
+      },
+      "memory-day": {
+        "role": "neutral",
+        "displayName": "Memory Ink",
+        "canonical": "oklch(27% 0.03 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.007 250deg)",
+          "oklch(26% 0.013 250deg)",
+          "oklch(37% 0.018 250deg)",
+          "oklch(48% 0.024 250deg)",
+          "oklch(59% 0.029 250deg)",
+          "oklch(70% 0.025 250deg)",
+          "oklch(82% 0.019 250deg)",
+          "oklch(95% 0.012 250deg)"
+        ],
+        "note": "Lightness fixed; only opacity encodes R."
+      },
+      "again": {
+        "role": "semantic",
+        "displayName": "Again Red",
+        "canonical": "oklch(70% 0.19 22deg)",
+        "tonalRamp": [
+          "oklch(15% 0.048 22deg)",
+          "oklch(26% 0.082 22deg)",
+          "oklch(37% 0.117 22deg)",
+          "oklch(48% 0.152 22deg)",
+          "oklch(59% 0.187 22deg)",
+          "oklch(70% 0.158 22deg)",
+          "oklch(82% 0.120 22deg)",
+          "oklch(95% 0.079 22deg)"
+        ],
+        "note": "Day oklch(58% 0.21 25deg); text -ink, fill -weak."
+      },
+      "hard": {
+        "role": "semantic",
+        "displayName": "Hard Orange",
+        "canonical": "oklch(80% 0.15 66deg)",
+        "tonalRamp": [
+          "oklch(15% 0.037 66deg)",
+          "oklch(26% 0.065 66deg)",
+          "oklch(37% 0.092 66deg)",
+          "oklch(48% 0.120 66deg)",
+          "oklch(59% 0.147 66deg)",
+          "oklch(70% 0.125 66deg)",
+          "oklch(82% 0.095 66deg)",
+          "oklch(95% 0.062 66deg)"
+        ],
+        "note": "Day oklch(70% 0.16 62deg); text -ink, fill -weak."
+      },
+      "good": {
+        "role": "semantic",
+        "displayName": "Good Green",
+        "canonical": "oklch(77% 0.17 150deg)",
+        "tonalRamp": [
+          "oklch(15% 0.043 150deg)",
+          "oklch(26% 0.074 150deg)",
+          "oklch(37% 0.105 150deg)",
+          "oklch(48% 0.136 150deg)",
+          "oklch(59% 0.167 150deg)",
+          "oklch(70% 0.142 150deg)",
+          "oklch(82% 0.108 150deg)",
+          "oklch(95% 0.071 150deg)"
+        ],
+        "note": "Day oklch(56% 0.14 150deg); text -ink, fill -weak."
+      },
+      "easy": {
+        "role": "semantic",
+        "displayName": "Easy Blue",
+        "canonical": "oklch(71% 0.16 255deg)",
+        "tonalRamp": [
+          "oklch(15% 0.040 255deg)",
+          "oklch(26% 0.069 255deg)",
+          "oklch(37% 0.099 255deg)",
+          "oklch(48% 0.128 255deg)",
+          "oklch(59% 0.157 255deg)",
+          "oklch(70% 0.133 255deg)",
+          "oklch(82% 0.101 255deg)",
+          "oklch(95% 0.067 255deg)"
+        ],
+        "note": "Day oklch(55% 0.2 258deg); text -ink, fill -weak."
+      }
+    },
+    "typographyMeta": {
+      "title": {
+        "displayName": "Title",
+        "purpose": "The question on the review card; 22px at <=760px."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "The answer under the reveal line; 17px at <=760px."
+      },
+      "toolbar-title": {
+        "displayName": "Toolbar Title",
+        "purpose": "Page name in the sticky glass toolbar."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Explanations and summaries; section heads at 650."
+      },
+      "callout": {
+        "displayName": "Callout",
+        "purpose": "Buttons, grouped-list rows and values."
+      },
+      "footnote": {
+        "displayName": "Footnote",
+        "purpose": "Breadcrumbs, group headers, hints, toolbar session facts."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Chips, rating intervals, legends; tabular figures."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Code, keycaps (600 11px) and file paths only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-float",
+        "value": "0 1px 2px oklch(0% 0 0deg / 30%), 0 14px 36px oklch(0% 0 0deg / 45%)",
+        "purpose": "Floating chrome only: decision tray, toast, drawer. Day: 0 1px 2px oklch(20% 0.02 250deg / 5%), 0 10px 30px oklch(20% 0.02 250deg / 10%)."
+      },
+      {
+        "name": "shadow-raised",
+        "value": "0 1px 2px oklch(0% 0 0deg / 35%), 0 2px 6px oklch(0% 0 0deg / 20%)",
+        "purpose": "Selected segment of a segmented control."
+      },
+      {
+        "name": "glass",
+        "value": "background: var(--glass); backdrop-filter: blur(28px) saturate(170%); border: 1px solid var(--glass-edge)",
+        "purpose": "Toolbar, decision tray, mobile tab bar, toast; falls back to --glass-solid."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing curve."
+      },
+      {
+        "name": "answer-reveal",
+        "value": "opacity 0 -> 1, translateY(8px) -> 0, 0.32s ease-out",
+        "purpose": "The one authored transition, on reveal."
+      },
+      {
+        "name": "tray-phase",
+        "value": "opacity 0.4 -> 1, 0.24s ease-out",
+        "purpose": "Tray content on phase change only."
+      },
+      {
+        "name": "memory-point",
+        "value": "opacity 0.9s ease-out",
+        "purpose": "A just-rated card's point easing to its new R."
+      },
+      {
+        "name": "control-state",
+        "value": "background, color, transform 0.18s ease-out",
+        "purpose": "Buttons and segments; press scales to 0.98."
+      },
+      {
+        "name": "progress",
+        "value": "width 0.4s ease-out",
+        "purpose": "2px session progress line under the toolbar."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition: none; animation: none (all elements and pseudo-elements)",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack-inspector",
+        "value": "1180px"
+      },
+      {
+        "name": "tab-bar",
+        "value": "760px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Reveal Button",
+      "kind": "button",
+      "refersTo": "button-reveal",
+      "description": "Primary action of the question phase, in the tint, with its Space keycap.",
+      "html": "<button class=\"ds-reveal\" type=\"button\">Show answer <kbd class=\"ds-kbd\">Space</kbd></button>",
+      "css": ".ds-reveal { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 260px; height: 46px; padding: 0 14px; border: 0; border-radius: 12px; background: var(--primary); color: var(--on-primary); font: 600 15.5px/1 var(--font); cursor: pointer; transition: background 0.18s var(--ease-out), transform 0.18s var(--ease-out); } .ds-reveal:hover { background: color-mix(in oklch, var(--primary) 88%, var(--ink)); } .ds-reveal:active { transform: scale(0.98); } .ds-reveal:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; } .ds-kbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border: 1px solid currentcolor; border-radius: 6px; font: 600 11px/1 var(--mono); opacity: 0.6; }"
+    },
+    {
+      "name": "Rating Button",
+      "kind": "button",
+      "refersTo": "rating-button",
+      "description": "One of four ratings: weak hue fill, ink text, keycap, label and interval; suggested gets an inset ring.",
+      "html": "<div class=\"ds-ratings\"><button class=\"ds-rate ds-again\" type=\"button\"><span class=\"ds-rate-top\"><kbd class=\"ds-rkbd\">1</kbd>Again</span><span class=\"ds-iv\">10 min</span></button><button class=\"ds-rate ds-good ds-suggested\" type=\"button\"><span class=\"ds-rate-top\"><kbd class=\"ds-rkbd\">3</kbd>Good</span><span class=\"ds-iv\">1.5 mo</span></button></div>",
+      "css": ".ds-ratings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .ds-rate { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 10px 14px; border: 0; border-radius: 12px; text-align: left; font: 600 15px/1.3 var(--font); cursor: pointer; transition: background 0.18s var(--ease-out), transform 0.18s var(--ease-out); } .ds-again { background: var(--red-weak); color: var(--red-ink); } .ds-good { background: var(--green-weak); color: var(--green-ink); } .ds-rate:hover { background: color-mix(in oklch, currentcolor 22%, transparent); } .ds-rate:active { transform: scale(0.98); } .ds-rate:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; } .ds-suggested { box-shadow: inset 0 0 0 2px currentcolor; } .ds-rate-top { display: flex; align-items: center; gap: 8px; } .ds-rkbd { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border: 1px solid currentcolor; border-radius: 6px; font: 600 11px/1 var(--mono); opacity: 0.7; } .ds-iv { padding-left: 28px; font-size: 13px; font-weight: 500; opacity: 0.85; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Confidence Segmented Control",
+      "kind": "input",
+      "refersTo": "segmented-track",
+      "description": "Rounded-rectangle track with raised selected segment; confidence 1-3 before reveal.",
+      "html": "<div class=\"ds-seg\" role=\"radiogroup\"><button type=\"button\" role=\"radio\" aria-checked=\"false\"><kbd class=\"ds-skbd\">1</kbd>Guess</button><button type=\"button\" role=\"radio\" aria-checked=\"true\" class=\"ds-on\"><kbd class=\"ds-skbd\">2</kbd>Think so</button><button type=\"button\" role=\"radio\" aria-checked=\"false\"><kbd class=\"ds-skbd\">3</kbd>Sure</button></div>",
+      "css": ".ds-seg { display: inline-flex; gap: 2px; padding: 2px; border-radius: 10px; background: var(--fill); } .ds-seg button { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border: 0; border-radius: 8px; background: transparent; color: var(--body); font: 600 13.5px/1.2 var(--font); cursor: pointer; transition: background 0.18s var(--ease-out), color 0.18s var(--ease-out); } .ds-seg button:hover { color: var(--ink); } .ds-seg button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; } .ds-seg .ds-on { background: var(--seg-on); color: var(--ink); box-shadow: var(--shadow-raised); } .ds-skbd { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 4px; border: 1px solid var(--border-strong); border-radius: 6px; font: 600 10.5px/1 var(--mono); color: var(--muted); }"
+    },
+    {
+      "name": "Decision Tray",
+      "kind": "custom",
+      "refersTo": "decision-tray",
+      "description": "Glass panel pinned to the bottom of the review column holding the whole decision; opaque under reduced transparency.",
+      "html": "<div class=\"ds-tray\"><span class=\"ds-tray-label\">How sure are you?</span><button class=\"ds-tray-btn\" type=\"button\">Show answer</button></div>",
+      "css": ".ds-tray { display: flex; align-items: center; gap: 16px; padding: 12px 12px 12px 18px; border: 1px solid var(--glass-edge); border-radius: 24px; background: var(--glass); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); box-shadow: var(--shadow); } .ds-tray-label { font: 400 13.5px/1.4 var(--font); color: var(--muted); } .ds-tray-btn { margin-left: auto; height: 46px; min-width: 200px; border: 0; border-radius: 12px; background: var(--primary); color: var(--on-primary); font: 600 15.5px/1 var(--font); cursor: pointer; } .ds-tray-btn:hover { background: color-mix(in oklch, var(--primary) 88%, var(--ink)); } .ds-tray-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; } @media (prefers-reduced-transparency: reduce) { .ds-tray { background: var(--glass-solid); backdrop-filter: none; } }"
+    },
+    {
+      "name": "Inset-Grouped List",
+      "kind": "card",
+      "refersTo": "group-row",
+      "description": "iOS-style inspector group: muted header, opaque hairline-bordered group, hairline-divided rows with tabular values.",
+      "html": "<div><div class=\"ds-group-h\">FSRS state</div><dl class=\"ds-group\"><div class=\"ds-row\"><dt>R now</dt><dd><span class=\"ds-rdot\" style=\"--r:0.72\"></span>85%</dd></div><div class=\"ds-row\"><dt>Stability</dt><dd>18 d</dd></div><button class=\"ds-row ds-action\" type=\"button\">Open in VS Code</button></dl></div>",
+      "css": ".ds-group-h { margin: 0 0 7px; padding: 0 14px; font: 500 13px/1.4 var(--font); color: var(--muted); } .ds-group { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; } .ds-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 10px 14px; border: 0; background: transparent; font: 400 14px/1.4 var(--font); text-align: left; color: var(--body); } .ds-row + .ds-row { border-top: 1px solid var(--border); } .ds-row dd { margin: 0; display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; } .ds-action { color: var(--ink); font-weight: 500; cursor: pointer; } .ds-action:hover { background: var(--fill); } .ds-action:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; } .ds-rdot { width: 9px; height: 9px; border-radius: 50%; background: var(--memory); opacity: var(--r, 1); }"
+    },
+    {
+      "name": "Memory Field",
+      "kind": "custom",
+      "refersTo": "memory-field",
+      "description": "Signature: the session's cards as solid points whose opacity is R; current card ringed in the tint, new cards outlined.",
+      "html": "<div class=\"ds-memfield\" role=\"img\" aria-label=\"Session memory\"><span class=\"ds-pt ds-cur\" style=\"--r:0.9\"></span><span class=\"ds-pt\" style=\"--r:1\"></span><span class=\"ds-pt ds-new\"></span><span class=\"ds-pt\" style=\"--r:0.55\"></span><span class=\"ds-pt\" style=\"--r:0.25\"></span><span class=\"ds-pt\" style=\"--r:0.8\"></span><span class=\"ds-pt ds-new\"></span><span class=\"ds-pt\" style=\"--r:0.4\"></span></div>",
+      "css": ".ds-memfield { display: grid; grid-template-columns: repeat(4, 22px); gap: 4px; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: max-content; } .ds-pt { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; } .ds-pt::before { content: ''; width: 11px; height: 11px; border-radius: 50%; background: var(--memory); opacity: var(--r, 1); transition: opacity 0.9s var(--ease-out); } .ds-pt.ds-new::before { background: transparent; border: 1.5px solid var(--memory); opacity: 0.55; } .ds-pt.ds-cur { outline: 2px solid var(--primary); outline-offset: -2px; } .ds-pt:hover::before { opacity: 1; } @media (prefers-reduced-motion: reduce) { .ds-pt::before { transition: none; } }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Pill with translucent neutral fill for card type and metadata.",
+      "html": "<span class=\"ds-chip\">why · understand</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; background: var(--fill); color: var(--body); font: 550 12.5px/1.5 var(--font); white-space: nowrap; } .ds-chip:hover { background: var(--fill-strong); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Evening Glass",
+    "overview": "A native-feeling study app in the iOS and macOS grammar: system type, tinted near-black grounds, grouped surfaces lifted by lightness, one teal tint, and frosted glass only on chrome that content scrolls beneath. The usual session is in the evening in a dim room, so dark is the primary rendition; light is a complete second rendition. Both follow the OS until the user picks one, and an explicit pick wins either way.\n\nWhat the user reads (question, answer, diagram, inspector facts) sits on opaque surfaces. The signature move is **memory luminance**: retrievability (R) is the opacity of a solid point in a fixed per-theme color (warm white at night, ink by day). In Review the inspector shows the current session's cards as a field of points, the current one ringed in the tint; a just-rated card's point eases to its new value. Topic and Cards screens still draw R as a thin bar.\n\nRejected by the user: anything that reads as a SaaS dashboard, a game, or Anki.",
+    "keyCharacteristics": [
+      "Dark-first, light equally finished; theme follows the OS unless chosen.",
+      "Glass only on the sticky toolbar, decision tray, mobile tab bar and toast.",
+      "One teal tint for \"you are here\", focus and the primary action.",
+      "Memory luminance: R as the opacity of a solid point, never a glow.",
+      "Tabular figures on every number."
+    ],
+    "rules": [
+      {
+        "name": "The One Tint Rule",
+        "body": "The tint marks where the user is and what they do next. If two unrelated things on screen wear it, one is wrong.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Red Debt Rule",
+        "body": "Red belongs to the Again rating and destructive actions. Due counts, backlog and missed days never turn red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "Every number (session count, minutes left, timer, intervals, R, badges) uses tabular figures, so it changes in place without reflow.",
+        "section": "typography"
+      },
+      {
+        "name": "The Glass Floats Rule",
+        "body": "Glass exists only where real content passes beneath it. Never glass on content, never glass on glass, never a decorative gradient behind glass to make the blur visible.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep reading content on opaque surfaces and reserve glass for the toolbar, decision tray, mobile tab bar and toast.",
+      "Do draw retrievability as memory luminance: a solid point whose opacity carries R.",
+      "Do give both themes full craft and let diagrams take their colors from tokens.",
+      "Do honor reduced transparency and reduced motion with opaque fallbacks and no animation.",
+      "Do pair every rating hue with its number key, label and interval."
+    ],
+    "donts": [
+      "Don't ship a SaaS dashboard look: no indigo on slate, no grids of KPI tiles, no shadowed content cards.",
+      "Don't gamify: no confetti, mascots, streak flames, trophies or celebratory color.",
+      "Don't fall back to Anki-style utility: grey tables and raw form controls as the main surface.",
+      "Don't use glows, halos or blurred color blobs; luminance is a solid point, not light bleed.",
+      "Don't costume iOS on the desktop: no fake status bar, home indicator or device frame."
+    ]
+  }
+}

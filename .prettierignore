@@ -19,3 +19,5 @@ skills-lock.json
 
 # Written by the Impeccable design hook on every run; local, never committed.
 .impeccable/hook.cache.json
+# Direction-roll state of the Impeccable decision page; ignored by its own nested .gitignore, which Prettier does not read.
+.impeccable/questions/
