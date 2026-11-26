@@ -10,16 +10,16 @@
 
 | # | Фаза | Даёт | Зависит от | Статус |
 | --- | --- | --- | --- | --- |
-| 01 | [Генераторы `id`, схемы пакета и входов](01-core-ids-and-schemas.md) | Генераторы `id` и ULID, схема learning package v1, Zod-схемы входов инструментов, команда `new-id` | M2 01–08 | ☐ |
-| 02 | [Сериализация файлов контента](02-serialize.md) | Чистые функции, которые строят текст карточки, `index.md`, summary и materials из полей | 01 | ☐ |
-| 03 | [Поиск MiniSearch](03-search.md) | Индекс по темам и карточкам с фильтрами и нормализацией pl | M2 02 | ☐ |
-| 04 | [Путь записи в `content-fs`](04-write-path.md) | Проверка с наложением, транзакция, хранилище `requestId`, запись тем, карточек, summary, materials, диаграмм и работа с `inbox/` | 02, M2 06 | ☐ |
-| 05 | [Сервер и инструменты контента](05-content-tools.md) | Пакет `mcp-server` на stdio с `create_topic`, `add_cards`, `update_card`, `save_summary`, `save_materials`, `validate`, `search` | 03, 04 | ☐ |
-| 06 | [Диаграммы и learning package](06-diagram-and-package-tools.md) | `save_diagram`, `import_package`, `archive_package` | 05, M2 10 | ☐ |
-| 07 | [Инструменты квиза](07-quiz-tools.md) | `queue_status`, `quiz_next`, `reveal`, `record_review`, `undo_last`, автоматический `suspend` | 05, M2 08 | ☐ |
-| 08 | [Hook `PostToolUse`](08-hook.md) | Подкоманда `wastech-learn hook post-tool-use` | 04 | ☐ |
-| 09 | [Skills и промпт экспорта](09-skills.md) | `learn-capture`, `learn-import`, `learn-quiz` и промпт экспорта на трёх языках | 05–07 | ☐ |
-| 10 | [Публикация и подключение контента](10-publish-and-wire.md) | Пакеты в npm, контент-репозиторий с сервером, hook и skills | 01–09 | ☐ |
+| 01 | [Генераторы `id`, схемы пакета и входов](01-core-ids-and-schemas.md) | Генераторы `id` и ULID, схема learning package v1, Zod-схемы входов инструментов, команда `new-id` | M2 01–08 | ☑ |
+| 02 | [Сериализация файлов контента](02-serialize.md) | Чистые функции, которые строят текст карточки, `index.md`, summary и materials из полей | 01 | ☑ |
+| 03 | [Поиск MiniSearch](03-search.md) | Индекс по темам и карточкам с фильтрами и нормализацией pl | M2 02 | ☑ |
+| 04 | [Путь записи в `content-fs`](04-write-path.md) | Проверка с наложением, транзакция, хранилище `requestId`, запись тем, карточек, summary, materials, диаграмм и работа с `inbox/` | 02, M2 06 | ☑ |
+| 05 | [Сервер и инструменты контента](05-content-tools.md) | Пакет `mcp-server` на stdio с `create_topic`, `add_cards`, `update_card`, `save_summary`, `save_materials`, `validate`, `search` | 03, 04 | ☑ |
+| 06 | [Диаграммы и learning package](06-diagram-and-package-tools.md) | `save_diagram`, `import_package`, `archive_package` | 05, M2 10 | ☑ |
+| 07 | [Инструменты квиза](07-quiz-tools.md) | `queue_status`, `quiz_next`, `reveal`, `record_review`, `undo_last`, автоматический `suspend` | 05, M2 08 | ☑ |
+| 08 | [Hook `PostToolUse`](08-hook.md) | Подкоманда `wastech-learn hook post-tool-use` | 04 | ☑ |
+| 09 | [Skills и промпт экспорта](09-skills.md) | `learn-capture`, `learn-import`, `learn-quiz` и промпт экспорта на трёх языках | 05–07 | ☑ |
+| 10 | [Подключение контента](10-publish-and-wire.md) | Контент-репозиторий на локальной сборке: сервер, hook и skills; публикация в npm — после приёмки | 01–09 | ☑ |
 | 11 | [Приёмка и документы](11-acceptance-and-docs.md) | Две реальные темы, замер времени, статусы требований и документы | 10 | ☐ |
 
 «M2 NN» — фаза плана [M2](../../m2-core/plan/index.md). Фазы 03 и 08 не зависят от соседних и могут идти раньше.

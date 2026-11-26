@@ -6,14 +6,14 @@
 
 | Пакет | Ответственность | Зависит от | Где работает |
 | --- | --- | --- | --- |
-| `@wastech-learn/core` | Zod-схемы (front matter, `learn.config.json`, событие, learning package), парсер Markdown (unified/remark — тот же стек, что в mdlint), компилятор content bundle (remark → rehype → Shiki, KaTeX, sanitize), правила `check`, каталог сообщений ru/en/pl, каноничный пресет mdlint `preset/content.mdlint.jsonc` | unified, remark, rehype, zod, yaml, shiki | Node, браузер |
+| `@wastech-learn/core` | Zod-схемы (front matter, `learn.config.json`, событие, learning package, входы инструментов MCP), парсер Markdown (unified/remark — тот же стек, что в mdlint), сериализация файлов контента из полей (`serialize/`), поиск MiniSearch (`search/`), генераторы `id` и ULID с внешним RNG, компилятор content bundle (remark → rehype → Shiki, KaTeX, sanitize), правила `check`, каталог сообщений ru/en/pl, каноничный пресет mdlint `preset/content.mdlint.jsonc` | unified, remark, rehype, zod, yaml, shiki, minisearch | Node, браузер |
 | `@wastech-learn/srs` | Адаптер ts-fsrs, replay журнала, очередь (лимиты, siblings, бэклог, режим «5 минут»), симуляция бэклога, метрики | ts-fsrs | Node, браузер |
-| `@wastech-learn/content-fs` | Чтение репозитория, дозапись JSONL (атомарно, свой файл на writer), кэш `node:sqlite`, watch файлов, рендер Mermaid | core, srs; mermaid-cli через `npx` с точной версией, не зависимостью | Node |
-| `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2); `serve`, `export`, `new-id` — позже | core, srs, content-fs | Node |
-| `@wastech-learn/mcp-server` | Инструменты MCP ([mcp-tools](../ai/mcp-tools.md)) | core, srs, content-fs, `@wastech-mdlint/core` | Node (stdio; позже Worker) |
+| `@wastech-learn/content-fs` | Чтение репозитория и снимок по времени изменения файлов, проверка с наложением (mdlint + `check`), транзакция записи группы файлов, хранилище `requestId`, запись тем, карточек, summary, materials и диаграмм, `inbox/`, квиз (replay в памяти, дозапись событий `mcp`), дозапись JSONL (атомарно, свой файл на writer), кэш `node:sqlite` (позже), рендер Mermaid | core, srs, `@wastech-mdlint/core`; mermaid-cli через `npx` с точной версией, не зависимостью | Node |
+| `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2), `new-id`, `hook post-tool-use` (M3); `serve`, `export` — позже | core, srs, content-fs | Node |
+| `@wastech-learn/mcp-server` | `wastech-learn-mcp`: инструменты MCP ([mcp-tools](../ai/mcp-tools.md)) поверх `content-fs`, маппинг ошибок в `{ code, message, hint }` | core, srs, content-fs, `@modelcontextprotocol/sdk` | Node (stdio; позже Worker) |
 | `@wastech-learn/server` | Локальный HTTP: bundle, события, статус, SSE об изменениях | core, srs, content-fs, Hono | Node |
 | `app` | Angular + CDK UI | core (типы bundle), srs (очередь в клиенте) | Браузер, Capacitor |
-| `skills/*` | `learn-capture`, `learn-import`, `learn-quiz`, … | — (инструкции над MCP и CLI) | Claude Code |
+| `skills/*` | [`learn-capture`](../../skills/learn-capture/SKILL.md), [`learn-import`](../../skills/learn-import/SKILL.md), [`learn-quiz`](../../skills/learn-quiz/SKILL.md) | — (инструкции над MCP и CLI) | Claude Code |
 
 ## Правила зависимостей
 
@@ -55,6 +55,8 @@ interface ReviewStore {
 
 **Порты `srs`.** `srs` не импортирует `core`, поэтому объявляет узкие входы: `ReplayEvent` (`id`, `ts`, `kind`, `item`, `rating`, `target`, `due`), `QueueCard` (`item`, `cardId`, `idea`, `domain`, `type`, `status`) и `SrsConfig`. Хост передаёт разобранные значения `core`; совместимость форм проверяет `satisfies` в `content-fs/load.ts`, поэтому переименование поля ломает сборку, а не replay.
 
+**Путь записи MCP** — в `content-fs`: инструмент строит полные тексты файлов (`core/serialize`), `validateOverlay` прогоняет mdlint и `check` по репозиторию с наложенными файлами, `commitFiles` пишет группу атомарно с откатом, `runIdempotent` хранит ответы по `requestId` в `.cache/mcp/requests.jsonl`. Пути проходят `confinePath` после разрешения символических ссылок.
+
 **Content bundle** — результат `wastech-learn build`, его читает UI:
 
 ```ts
@@ -65,7 +67,7 @@ interface ContentBundle {
   topics: TopicMeta[];      // путь, title, lang, familiarity, related, html секций summary
   cards: CardEntry[];       // id, type, variants[], questionHtml, answerHtml, rubric[], contentHash, topic
   assets: Record<string, string>; // локальные картинки, которые не встроены; SVG встраиваются в HTML
-  searchIndex?: unknown;    // сериализованный MiniSearch, появится в M3 для поиска дублей
+  searchIndex?: unknown;    // сериализованный MiniSearch из core/search, попадёт в bundle в M4
 }
 ```
 

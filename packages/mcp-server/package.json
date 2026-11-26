@@ -1,0 +1,35 @@
+{
+  "name": "@wastech-learn/mcp-server",
+  "version": "0.0.0",
+  "description": "wastech-learn-mcp: the stdio MCP server that captures topics and cards from a chat and runs the quiz over a content repository.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladimirMakarevich/wastech-learn.git",
+    "directory": "packages/mcp-server"
+  },
+  "type": "module",
+  "bin": {
+    "wastech-learn-mcp": "./bin/wastech-learn-mcp.mjs"
+  },
+  "exports": {
+    ".": {
+      "@wastech-learn/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24.17.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "@wastech-learn/content-fs": "0.0.0",
+    "@wastech-learn/core": "0.0.0",
+    "@wastech-learn/srs": "0.0.0"
+  }
+}

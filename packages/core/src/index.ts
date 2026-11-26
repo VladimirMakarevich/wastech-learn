@@ -102,3 +102,147 @@ export type {
   ReviewEvent,
   ReviewEventParse,
 } from "./schema/event.js";
+
+export { newCardId, newUlid, newUniqueCardId } from "./id.js";
+export type { RandomSource } from "./id.js";
+
+export {
+  BLOOM_LEVELS,
+  FAMILIARITIES,
+  GRADINGS,
+  LANG_PAIRS,
+  TOPIC_STATUSES,
+} from "./schema/front-matter.js";
+export type { BloomLevel } from "./schema/front-matter.js";
+export { TOPIC_PATH_PATTERN, topicPathSchema } from "./schema/common.js";
+
+export {
+  CARD_SECTIONS,
+  INDEX_SECTIONS,
+  LANGUAGE_SUMMARY_SECTIONS,
+  MATERIALS_TITLE_SUFFIX,
+  MATERIAL_KINDS,
+  MATERIAL_STATUSES,
+  OPEN_QUESTIONS_SECTION,
+  SUMMARY_SECTIONS,
+  isLanguageDomain,
+  summaryTemplateFor,
+} from "./template.js";
+export type {
+  MaterialKind,
+  MaterialStatus,
+  SummarySectionName,
+} from "./template.js";
+
+export {
+  PACKAGE_FORMAT,
+  PACKAGE_SECTIONS,
+  REQUIRED_PACKAGE_SECTIONS,
+  learningPackageFrontMatterSchema,
+} from "./schema/package.js";
+export type { LearningPackageFrontMatter } from "./schema/package.js";
+export { parseLearningPackage } from "./parse/package.js";
+export type {
+  CandidateCard,
+  LearningPackage,
+  PackageParse,
+} from "./parse/package.js";
+
+export {
+  MUTATING_TOOLS,
+  TOOL_INPUT_SCHEMAS,
+  TOOL_NAMES,
+  isToolName,
+  requestLifetimeMs,
+  toolInputJsonSchema,
+} from "./schema/mcp/index.js";
+export type { ToolInput, ToolName } from "./schema/mcp/index.js";
+export type {
+  AddCardsInput,
+  CardFields,
+  CardPatch,
+  CardSource,
+  CreateTopicInput,
+  MaterialItem,
+  PretestItem,
+  SaveDiagramInput,
+  SaveMaterialsInput,
+  SaveSummaryInput,
+  SearchInput,
+  SummarySections,
+  UpdateCardInput,
+  ValidateInput,
+} from "./schema/mcp/content.js";
+export type { MutationInput } from "./schema/mcp/common.js";
+export type {
+  ArchivePackageInput,
+  ImportPackageInput,
+} from "./schema/mcp/package.js";
+export { QUIZ_MODES } from "./schema/mcp/quiz.js";
+export type {
+  QuizNextInput,
+  RecordReviewInput,
+  RevealInput,
+  UndoLastInput,
+} from "./schema/mcp/quiz.js";
+
+export {
+  frontMatterText,
+  readDocument,
+  sectionMarkdown,
+  withFrontMatterValue,
+  withSection,
+  writeDocument,
+} from "./serialize/document.js";
+export type {
+  ContentDocument,
+  DocumentSection,
+  FrontMatterValue,
+} from "./serialize/document.js";
+export {
+  cardDocument,
+  patchCardDocument,
+  rubricMarkdown,
+  sourcesMarkdown,
+  successorCardDocument,
+} from "./serialize/card.js";
+export type { NewCardMeta } from "./serialize/card.js";
+export {
+  cardLinkTarget,
+  pretestMarkdown,
+  topicIndexDocument,
+  withCardLinks,
+} from "./serialize/topic.js";
+export type { CardLink, TopicIndexInput } from "./serialize/topic.js";
+export {
+  mergeSummary,
+  summaryDocument,
+  withSummarySections,
+} from "./serialize/summary.js";
+export type { SummaryInput } from "./serialize/summary.js";
+export {
+  materialsDocument,
+  readMaterials,
+  withMaterials,
+} from "./serialize/materials.js";
+export type { MaterialsInput } from "./serialize/materials.js";
+export {
+  LINK_PATTERN,
+  linkParts,
+  markdownLink,
+  oneLine,
+} from "./serialize/inline.js";
+
+export { buildSearchIndex, foldDiacritics } from "./search/search.js";
+export type {
+  ContentSearchIndex,
+  SearchFilters,
+  SearchHit,
+  SearchHitKind,
+} from "./search/search.js";
+
+export { promptMarkdown, revealFor } from "./study/prompt.js";
+export type { Reveal } from "./study/prompt.js";
+
+export { postToolUseEventSchema } from "./schema/hook.js";
+export type { PostToolUseEvent } from "./schema/hook.js";

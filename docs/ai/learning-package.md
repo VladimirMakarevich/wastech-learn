@@ -50,42 +50,24 @@ Q: [Streaming] Why does a consumer signal demand to the producer?
 A: To keep the producer from overflowing the consumer's buffer.
 ````
 
-- Заголовок карточки: `### <type> · <bloom> · <idea>`, затем строки `Q:` и `A:`, при необходимости `R:` (рубрика) и `E:` (объяснение).
-- `learn-import` сам назначает `id`, проставляет `status: draft`, `origin: chatgpt`, `created`.
+- Заголовок карточки: `### <type> · <bloom> · <idea>`, затем строки `Q:` и `A:`, при необходимости `R:` (рубрика, по строке на пункт) и `E:` (объяснение). Строка без метки продолжает поле выше.
+- `id`, `created` и `origin` (`chatgpt` для пакета из ChatGPT, иначе `import`) назначают инструменты при записи. Отобранные кандидаты пишутся как `active`, отложенные — как `draft`.
+- Пакет, который чат вернул внутри блока кода, тоже читается: внешний блок снимается.
 - Пакет проверяется mdlint по пресету `inbox/*.md` (≤600 строк) и при импорте парсером `core`.
 
 ## Промпт экспорта
 
-Пользователь копирует промпт в конец разговора:
+Пользователь копирует промпт в конец разговора. Промпт просит один блок кода Markdown в формате выше: front matter, `Topic` со строкой `Key idea:`, `Summary` с подсекциями шаблона, `Materials` таблицей `Title | Kind | Why`, диаграммы Mermaid (до 7 узлов, подписи на стрелках), 8–15 кандидатов смешанных типов по правилам формулировки и не выдумывать источники.
 
-```text
-Export this conversation as a wastech-learn learning package (format v1).
-Output ONE markdown code block and nothing else. Rules:
-- Front matter: package: wastech-learn/v1, source, lang (en|ru|pl — the language
-  I studied in), domain (kebab-case), topic (kebab-case), familiarity (new|familiar), created.
-- Sections in order: Topic (one-sentence key idea in MY words if I gave them),
-  Summary (### TL;DR, Mental model, Diagram, Worked example, Trade-offs,
-  When not to use, Misconceptions, Comparison, Self-check, Related, Open questions, Sources),
-  Materials (table Title|Kind|Why), Diagrams (mermaid, max 7 nodes, labels on edges),
-  Cards.
-- Cards: 8–15 candidates, mixed types (basic, cloze, why, compare, scenario, vocab).
-  Each: "### <type> · <bloom> · <idea>", then "Q:" and "A:" lines; scenario adds "R:" rubric
-  (≤5 points, mark required with (!)).
-- Card rules: one idea per card; context prefix in [brackets]; question ≤25 words
-  (scenario ≤60); answer ≤12 words (basic) or ≤40 words (why/compare); no yes/no questions;
-  no enumerations — use cloze; 2–3 cards per idea from different angles.
-- Do not invent sources; omit a section rather than fill it with filler.
-```
-
-Русская и польская версии промпта будут в `wastech-learn/skills/learn-import/templates/`. Язык промпта не влияет на `lang` пакета.
+Три версии промпта лежат в skill: [en](../../skills/learn-import/templates/export-prompt.en.md), [ru](../../skills/learn-import/templates/export-prompt.ru.md), [pl](../../skills/learn-import/templates/export-prompt.pl.md). Тест сверяет, что все три требуют одни и те же поля, секции и лимиты. Язык промпта не влияет на `lang` пакета.
 
 ## Что делает `learn-import`
 
-1. Валидирует front matter пакета и структуру.
-2. Находит тему через `search`. Если она уже есть, предлагает слияние: новые секции summary добавляются через `## Open questions`, а не перезаписывают существующие.
+1. Разбирает пакет через `import_package`: front matter и структуру проверяет схема `core`, находки называют поле или номер кандидата. Инструмент ничего не меняет.
+2. Ищет тему и дубли через `search`. Если тема уже есть, summary пишется через `save_summary` с `merge`: пустые секции заполняются, а текст непустых уходит в `## Open questions` и не перезаписывает существующий.
 3. Показывает кандидатов карточек на отбор и правку, как в `learn-capture`. Generation effect сохраняется (LP-06).
 4. Записывает файлы через MCP-инструменты, диаграммы рендерит в SVG.
-5. Перемещает пакет в `inbox/done/`, чтобы его можно было найти.
+5. Переносит пакет в `inbox/done/` отдельным вызовом `archive_package`, когда отобранное записано.
 
 ## См. также
 

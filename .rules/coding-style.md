@@ -26,7 +26,7 @@ Formatting is Prettier's job and correctness is ESLint's ([eslint.config.js](../
 ## Errors
 
 - Throw typed errors with a stable `code` (one error type per package, e.g. `LearnError`). Never throw strings or bare `Error` across a package boundary.
-- Hosts map codes to their surface: CLI exit codes `0` clean, `1` findings, `2` operational error (as in wastech-mdlint); MCP errors as `{ code, message, hint }`.
+- Hosts map codes to their surface: CLI exit codes `0` clean, `1` findings, `2` operational error (as in wastech-mdlint); MCP errors as `{ code, message, hint }`. The one exception is `wastech-learn hook post-tool-use`, which speaks Claude Code's hook protocol: `2` hands the findings back to the agent, `1` means the hook could not check (shown to the person, the agent goes on).
 - Never swallow an error. An empty `catch` needs a comment saying why the failure is expected.
 - Async: `async`/`await` only, no floating promises (ESLint enforces it), `AbortSignal` for anything long-running.
 

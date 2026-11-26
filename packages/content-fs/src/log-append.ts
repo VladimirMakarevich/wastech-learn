@@ -6,6 +6,7 @@ import {
   reviewEventSchema,
   type ReviewEvent,
 } from "@wastech-learn/core";
+import { isMissing } from "./fs-utils.js";
 
 /**
  * The file an event belongs to: its own device and writer, the month of its timestamp in UTC. One file per
@@ -48,8 +49,7 @@ const readExisting = async (path: string, file: string): Promise<string> => {
   try {
     return await readFile(path, "utf8");
   } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT")
-      return "";
+    if (isMissing(error)) return "";
     throw new LearnError(
       "io-failed",
       `Cannot read ${file}`,

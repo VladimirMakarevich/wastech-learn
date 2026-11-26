@@ -1,16 +1,11 @@
 import { resolve } from "node:path";
-import {
-  isLearnError,
-  type LearnError,
-  type UiLanguage,
-} from "@wastech-learn/core";
+import type { UiLanguage } from "@wastech-learn/core";
 import { readUiLanguage } from "@wastech-learn/content-fs";
-import { SCHEDULER_PACKAGE, isSrsError } from "@wastech-learn/srs";
 import { parseCommandLine, type CommandName } from "./args.js";
 import { runCheck } from "./check.js";
+import { describeError } from "./describe-error.js";
 import {
   EXIT,
-  UsageError,
   translator,
   type CliIo,
   type CommandContext,
@@ -26,28 +21,8 @@ const COMMANDS: Readonly<Record<CommandName, Command>> = {
   build: async (ctx) => (await import("./build.js")).runBuild(ctx),
   render: async (ctx) => (await import("./render.js")).runRender(ctx),
   simulate: async (ctx) => (await import("./simulate.js")).runSimulate(ctx),
-};
-
-const describeLearnError = (
-  error: LearnError,
-  t: ReturnType<typeof translator>,
-  root: string,
-): string => {
-  const file = error.file ?? "";
-  switch (error.code) {
-    case "config-invalid":
-      return error.field === undefined || error.field === ""
-        ? t("cli.error.config-json", { file })
-        : t("cli.error.config-invalid", { file, field: error.field });
-    case "event-invalid":
-      return t("cli.error.event-invalid", { field: error.field ?? "" });
-    case "repository-not-found":
-      return t("cli.error.repository-not-found", { file, root });
-    case "io-failed":
-      return t("cli.error.io-failed", { file });
-    case "render-failed":
-      return t("cli.error.render-failed", { file });
-  }
+  "new-id": async (ctx) => (await import("./new-id.js")).runNewId(ctx),
+  hook: async (ctx) => (await import("./hook.js")).runHook(ctx),
 };
 
 /**
@@ -74,22 +49,13 @@ export const run = async (
       lang,
       root,
       values: parsed.values,
+      positionals: parsed.positionals,
       t: translator(lang),
     });
   } catch (error) {
-    const t = translator(lang);
-    if (error instanceof UsageError) io.err(t(error.key, error.params));
-    else if (isLearnError(error)) io.err(describeLearnError(error, t, root));
-    else if (isSrsError(error))
-      io.err(
-        t("cli.error.scheduler-unsupported", { expected: SCHEDULER_PACKAGE }),
-      );
-    else
-      io.err(
-        t("cli.error.unexpected", {
-          detail: error instanceof Error ? error.message : String(error),
-        }),
-      );
-    return EXIT.failure;
+    io.err(describeError(error, translator(lang), root));
+    // A hook command line Claude Code cannot run (a typo in settings.json) must not be handed back to
+    // the agent as something to fix: for a hook, exit 2 means "the agent's edit has findings".
+    return argv.includes("hook") ? EXIT.findings : EXIT.failure;
   }
 };

@@ -1,0 +1,12 @@
+{
+  // Type-checks the tests against the package's emitted declarations; it emits only declarations into .cache/,
+  // which tsc -b needs for a referenced project.
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "emitDeclarationOnly": true,
+    "outDir": "../../../.cache/tsc/mcp-server-test"
+  },
+  "include": ["**/*.ts"],
+  "references": [{ "path": ".." }]
+}

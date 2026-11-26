@@ -30,7 +30,7 @@ These are the **main rules** for working in this repository — the framework ha
 
 ## Key project facts
 
-- **Phase:** documentation (phase 0), milestone M1 (content repository with a golden sample) and milestone M2 (the packages `core`, `srs`, `content-fs`, `cli`) are done; M3 — capture through MCP and skills — is next ([roadmap](../docs/roadmap.md)).
+- **Phase:** documentation (phase 0), milestone M1 (content repository with a golden sample) and milestone M2 (the packages `core`, `srs`, `content-fs`, `cli`) are done; M3 — capture through MCP and skills — is in progress: the MCP server, the hook and the skills are in; the acceptance on real topics on a local build remains, publishing to npm comes after ([roadmap](../docs/roadmap.md)).
 - **Two repositories:** this public framework repo (MIT) and the private `wastech-learn-content` (topics, cards, review logs) next to it. Personal content never lands here.
 - **Runtime:** Node ≥ 24.17 (`.nvmrc`), npm workspaces under `packages/*`, ESM only, TypeScript 6.0 pinned (typescript-eslint does not support 7 yet).
 - **UI stack:** desktop-first Angular + CDK, the Evening Glass look from [DESIGN.md](../DESIGN.md), Capacitor in phase 2 ([ADR-0006](../docs/adr/0006-headless-core-angular-ui.md)). The app is scaffolded in M4, not before; the [prototype](../prototypes/desktop-ui/README.md) is the reference for layout and flows.

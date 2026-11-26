@@ -67,6 +67,13 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     many: "Karta cloze ma {count} wariantów, oczekiwano od 1 do {limit}",
     other: "Karta cloze ma {count} wariantu, oczekiwano od 1 do {limit}",
   },
+  "finding.cloze-unclosed": {
+    count: "count",
+    one: "{count} luka cloze nie jest zamknięta }}: zamknij ją",
+    few: "{count} luki cloze nie są zamknięte }}: zamknij je",
+    many: "{count} luk cloze nie jest zamkniętych }}: zamknij je",
+    other: "{count} luki cloze nie jest zamkniętej }}: zamknij je",
+  },
   "finding.vocab-lang-pair": "Karta vocab potrzebuje langPair we front matter",
   "finding.vocab-example":
     "W odpowiedzi brak przykładowego zdania: dodaj je kursywą",
@@ -84,6 +91,14 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "finding.preset-drift":
     "Reguła presetu {rule} (nr {position}) zniknęła lub się zmieniła: przywróć ją z presetu CLI",
 
+  "finding.diagram-render":
+    "Mermaid nie zdołał wyrenderować tego źródła: {detail}",
+  "finding.package-card":
+    "Kandydat {card} nie ma pola {field} albo jest ono niepoprawne: popraw je w pakiecie",
+  "finding.package-material":
+    "Wiersz materiałów nie ma pola {field} albo jest ono niepoprawne: popraw wiersz tabeli",
+  "finding.package-summary-section":
+    "Sekcji summary {section} nie ma w szablonie: zmień jej nazwę albo ją usuń",
   "count.files": {
     count: "count",
     one: "{count} plik",
@@ -119,6 +134,63 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     many: "{count} kart",
     other: "{count} karty",
   },
+
+  "error.path-outside-content": "{subject} leży poza repozytorium treści",
+  "error.request-id-reused":
+    "requestId {subject} został już użyty dla innego wywołania",
+  "error.item-not-active": "{subject} nie jest review item aktywnej karty",
+  "error.topic-exists": "Temat {subject} już istnieje",
+  "error.topic-not-found": "Temat {subject} nie istnieje",
+  "error.card-not-found": "Nie ma karty o id {subject}",
+  "error.package-not-found": "Pod ścieżką {subject} nie ma learning package",
+  "error.nothing-to-undo": "Nie ma oceny z tego urządzenia do cofnięcia",
+  "error.content-changed":
+    "{subject} zmienił się podczas przygotowania zapisu; nic nie zapisano",
+  "error.input-invalid": "Pole wejścia {field} jest niepoprawne",
+  "error.tool-unknown": "Nie ma narzędzia o nazwie {subject}",
+  "error.config-invalid": "{file}: pole {field} jest niepoprawne",
+  "error.config-json": "{file} to niepoprawny JSON",
+  "hint.config-json": "Popraw składnię pliku i wywołaj ponownie",
+  "error.event-invalid":
+    "Zdarzenie powtórki ma niepoprawne pole {field}; nic nie zapisano",
+  "error.repository-not-found":
+    "W folderze treści, z którym uruchomiono serwer, nie ma {file}",
+  "error.io-failed": "Nie można odczytać ani zapisać {file}",
+  "error.render-failed": "Renderowanie {file} nie powiodło się",
+  "error.scheduler-unsupported":
+    "learn.config.json wskazuje inny scheduler niż {expected}",
+  "error.unexpected": "Nieoczekiwany błąd: {detail}",
+
+  "hint.path-outside-content":
+    "Podaj ścieżkę względem katalogu głównego repozytorium, bez .. i linków prowadzących na zewnątrz",
+  "hint.request-id-reused":
+    "Dla zmienionego wywołania użyj nowego requestId; powtarzaj id tylko z tym samym wejściem",
+  "hint.item-not-active":
+    "Bierz review items z quiz_next: szkice i karty retired nie są powtarzane",
+  "hint.topic-exists":
+    "Uzupełniaj go przez add_cards, save_summary i save_materials",
+  "hint.topic-not-found":
+    "Najpierw utwórz go przez create_topic albo znajdź jego <domain>/<topic> przez search",
+  "hint.card-not-found": "Znajdź id karty przez search",
+  "hint.package-not-found":
+    "Podaj ścieżkę pliku w inbox/, na przykład inbox/topic.md",
+  "hint.nothing-to-undo":
+    "Tu można cofnąć tylko oceny zapisane przez record_review na tym urządzeniu",
+  "hint.content-changed":
+    "Ktoś w tym czasie zapisał plik: wywołaj narzędzie ponownie, by oprzeć się na nowym tekście",
+  "hint.input-invalid": "Popraw to pole i wywołaj narzędzie ponownie",
+  "hint.tool-unknown": "Pobierz listę narzędzi, by zobaczyć, co oferuje serwer",
+  "hint.config-invalid": "Popraw wartość w pliku i wywołaj ponownie",
+  "hint.event-invalid": "Sprawdź ocenę i review item, potem wywołaj ponownie",
+  "hint.repository-not-found":
+    "Uruchom serwer z --content wskazującym repozytorium treści",
+  "hint.io-failed": "Sprawdź, czy plik istnieje i można do niego pisać",
+  "hint.render-failed":
+    "Sprawdź, czy npx może uruchomić mermaid-cli na tym komputerze, i wywołaj ponownie",
+  "hint.scheduler-unsupported":
+    "Ustaw srs.scheduler na wersję dostarczaną z frameworkiem albo zaktualizuj framework",
+  "hint.unexpected":
+    "Nic nie zapisano; opisz autorowi frameworka, co do tego doprowadziło",
 
   "cli.check.summary": "{files}, {errors}, {warnings}",
   "cli.check.clean": "Sprawdzono: {cards}, bez uwag",
@@ -178,6 +250,11 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "cli.error.scheduler-unsupported":
     "learn.config.json wskazuje inny scheduler: ustaw srs.scheduler na {expected} lub użyj pasującej wersji frameworka",
 
+  "cli.hook.findings": "{file} ma uwagi: popraw je, zanim pójdziesz dalej",
+  "cli.hook.failed": "Sprawdzenie treści nie zostało uruchomione: {detail}",
+  "cli.hook.bad-event":
+    "Brak zdarzenia narzędzia na stdin: uruchamiaj to polecenie z hooka PostToolUse",
+
   "cli.help": [
     "Użycie: wastech-learn <polecenie> [opcje]",
     "",
@@ -186,6 +263,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "  build      Zbuduj content bundle dla aplikacji (--out <plik>)",
     "  render     Wyrenderuj diagrams/*.mmd do SVG; --check tylko pokaże nieaktualne",
     "  simulate   Zasymuluj przerwę i sesje, które rozładują zaległości",
+    "  new-id     Wypisz nowe id kart (--count <n>, domyślnie 1)",
+    "  hook       post-tool-use: sprawdź plik, który agent właśnie zapisał (JSON zdarzenia na stdin)",
     "",
     "Opcje:",
     "  --content <folder> Repozytorium treści (domyślnie bieżący folder)",

@@ -8,12 +8,25 @@ export type LearnErrorCode =
   | "event-invalid"
   | "repository-not-found"
   | "io-failed"
-  | "render-failed";
+  | "render-failed"
+  | "path-outside-content"
+  | "request-id-reused"
+  | "item-not-active"
+  | "topic-exists"
+  | "topic-not-found"
+  | "card-not-found"
+  | "package-not-found"
+  | "nothing-to-undo"
+  | "content-changed";
 
-/** Where an error points: a repository-relative file and, for schema errors, the dotted field path. */
+/**
+ * Where an error points: a repository-relative file and, for schema errors, the dotted field path; `subject`
+ * names the topic, card, review item or request id the error is about.
+ */
 export interface LearnErrorDetails {
   readonly file?: string;
   readonly field?: string;
+  readonly subject?: string;
 }
 
 /**
@@ -24,6 +37,7 @@ export class LearnError extends Error {
   readonly code: LearnErrorCode;
   readonly file: string | undefined;
   readonly field: string | undefined;
+  readonly subject: string | undefined;
 
   constructor(
     code: LearnErrorCode,
@@ -36,6 +50,7 @@ export class LearnError extends Error {
     this.code = code;
     this.file = details.file;
     this.field = details.field;
+    this.subject = details.subject;
   }
 }
 

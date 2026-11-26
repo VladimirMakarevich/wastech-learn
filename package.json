@@ -2,7 +2,7 @@
   "name": "wastech-learn",
   "version": "0.0.0",
   "private": true,
-  "description": "Personal spaced-repetition learning framework: the headless core (schemas, check, content bundle, FSRS replay and queue), the CLI, and later the app and MCP server.",
+  "description": "Personal spaced-repetition learning framework: the headless core (schemas, check, content bundle, FSRS replay and queue), the CLI, the MCP server, and later the app.",
   "license": "MIT",
   "type": "module",
   "engines": {

@@ -12,6 +12,13 @@ export const ORIGINS = ["claude-code", "chatgpt", "manual", "import"] as const;
 
 export const kebabSchema = z.string().regex(KEBAB_PATTERN);
 
+/** `<domain>/<topic>`: a topic's identity, the same string the content model and `related` use. */
+export const TOPIC_PATH_PATTERN = /^[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*$/;
+
+export const topicPathSchema = z
+  .string()
+  .regex(TOPIC_PATH_PATTERN, { error: "Expected <domain>/<topic>" });
+
 /** A calendar date as written in front matter; YAML keeps `2026-11-25` a string under its core schema. */
 export const isoDateSchema = z.iso.date();
 

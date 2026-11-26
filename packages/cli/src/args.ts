@@ -25,7 +25,14 @@ export const COMMAND_OPTIONS = {
     seed: { type: "string" },
     runs: { type: "string" },
   },
+  "new-id": { count: { type: "string" } },
+  hook: {},
 } as const satisfies Readonly<Record<string, OptionSpec>>;
+
+/** Subcommands a command accepts as its words; a command not listed here takes none. */
+const COMMAND_POSITIONALS: Partial<Record<CommandName, readonly string[]>> = {
+  hook: ["post-tool-use"],
+};
 
 export type CommandName = keyof typeof COMMAND_OPTIONS;
 
@@ -36,6 +43,7 @@ export type ParsedCommandLine =
       readonly command: CommandName;
       readonly lang: UiLanguage | undefined;
       readonly values: Readonly<Record<string, string | boolean | undefined>>;
+      readonly positionals: readonly string[];
     };
 
 const isCommand = (name: string): name is CommandName =>
@@ -78,12 +86,14 @@ export const parseCommandLine = (
   if (!isCommand(first))
     throw new UsageError("cli.error.unknown-command", { command: first });
   let values: Record<string, string | boolean | undefined>;
+  let positionals: string[];
+  const allowed = COMMAND_POSITIONALS[first];
   try {
-    ({ values } = parseArgs({
+    ({ values, positionals } = parseArgs({
       args: [...argv.slice(0, index), ...argv.slice(index + 1)],
       options: { ...COMMON, ...COMMAND_OPTIONS[first] },
       strict: true,
-      allowPositionals: false,
+      allowPositionals: allowed !== undefined,
     }));
   } catch (error) {
     const code =
@@ -99,7 +109,14 @@ export const parseCommandLine = (
   }
   const lang = parseLang(values.lang);
   if (values.help === true) return { kind: "help", lang };
-  return { kind: "command", command: first, lang, values };
+  if (allowed !== undefined) {
+    if (positionals.length !== 1 || !allowed.includes(positionals[0] ?? "")) {
+      throw new UsageError("cli.error.unknown-command", {
+        command: [first, ...positionals].join(" "),
+      });
+    }
+  }
+  return { kind: "command", command: first, lang, values, positionals };
 };
 
 /** Reads a whole positive number option, or the default when it is absent. */

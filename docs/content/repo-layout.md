@@ -34,7 +34,7 @@ wastech-learn-content/
 ├── learn.config.json                  # параметры SRS, лимиты, устройство, языки
 ├── wastech-mdlint.config.json         # пресет из wastech-learn
 ├── .mcp.json                          # подключение wastech-learn-mcp и wastech-mdlint MCP
-├── .claude/settings.json              # hook PostToolUse → lint
+├── .claude/settings.json              # hook PostToolUse → wastech-learn hook post-tool-use
 ├── skills-lock.json                   # версии skills из wastech-learn
 ├── .gitattributes                     # reviews/**/*.jsonl merge=union, eol=lf
 └── AGENTS.md / CLAUDE.md              # правила для ИИ в этом репозитории

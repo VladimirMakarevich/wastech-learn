@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** 03, 04
 - **Даёт:** Пакет `mcp-server` на stdio с `create_topic`, `add_cards`, `update_card`, `save_summary`, `save_materials`, `validate`, `search`
 
@@ -32,5 +32,5 @@
 
 ## Приёмка фазы
 
-- [ ] AC-F01, AC-F02a–d, AC-F03a–b, AC-F04a–c, AC-F06, AC-N03, AC-N07 проходят.
-- [ ] Lint и тесты зелёные.
+- [x] AC-F01, AC-F02a–d, AC-F03a–b, AC-F04a–c, AC-F06, AC-N03, AC-N07 проходят.
+- [x] Lint и тесты зелёные.

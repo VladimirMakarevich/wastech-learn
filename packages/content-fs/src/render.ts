@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { glob, readFile, writeFile } from "node:fs/promises";
-import { join, sep } from "node:path";
+import { join } from "node:path";
 import { promisify } from "node:util";
 import {
   LearnError,
@@ -8,6 +8,7 @@ import {
   sha256Hex,
   sourceMarker,
 } from "@wastech-learn/core";
+import { isMissing, toPosix } from "./fs-utils.js";
 
 const run = promisify(execFile);
 
@@ -21,6 +22,13 @@ export interface Renderer {
  * through npx at an exact version only when someone actually renders.
  */
 export const MERMAID_CLI = "@mermaid-js/mermaid-cli@11.12.0";
+
+/**
+ * The first render on a machine downloads mermaid-cli and Chromium, which takes minutes on a slow
+ * connection; a render that has not finished in five is a hung browser, and waiting longer only hangs
+ * the caller with it.
+ */
+export const RENDER_TIMEOUT_MS = 5 * 60_000;
 
 export const npxMermaidRenderer: Renderer = {
   render: async (sourcePath, outputPath) => {
@@ -39,6 +47,7 @@ export const npxMermaidRenderer: Renderer = {
       ],
       {
         maxBuffer: 16 * 1024 * 1024,
+        timeout: RENDER_TIMEOUT_MS,
       },
     );
   },
@@ -52,15 +61,11 @@ export interface RenderReport {
   readonly stale: readonly string[];
 }
 
-const toPosix = (path: string): string =>
-  sep === "/" ? path : path.split(sep).join("/");
-
 const readOptional = async (path: string): Promise<string | undefined> => {
   try {
     return await readFile(path, "utf8");
   } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT")
-      return undefined;
+    if (isMissing(error)) return undefined;
     throw error;
   }
 };

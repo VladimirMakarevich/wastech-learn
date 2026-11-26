@@ -3,6 +3,21 @@ import type { CardType } from "../schema/front-matter.js";
 const CLOZE = /\{\{c(\d+)::/g;
 
 /**
+ * A whole gap, `{{c1::answer}}` or `{{c1::answer::hint}}`: the number, the hidden text, the hint. The
+ * opening alone (`CLOZE`) decides the variants; this one decides what a prompt hides, and the two disagree
+ * only for a gap that never closes, which `check` reports.
+ */
+export const CLOZE_GAP = /\{\{c(\d+)::([\s\S]*?)(?:::([\s\S]*?))?\}\}/g;
+
+/** How many gaps open with `{{cN::` and how many of them close with `}}`. */
+export const clozeClosure = (
+  question: string,
+): { readonly opened: number; readonly closed: number } => ({
+  opened: [...question.matchAll(CLOZE)].length,
+  closed: [...question.matchAll(CLOZE_GAP)].length,
+});
+
+/**
  * How many gaps each cloze number has in a question: `{ 1: 1, 2: 2 }` means `c1` hides one span and
  * `c2` two. Variants are derived from it, and `check` uses the counts to flag a variant with more than one
  * gap.
