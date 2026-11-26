@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { glob, readFile, writeFile } from "node:fs/promises";
-import { join, sep } from "node:path";
+import { join } from "node:path";
 import { promisify } from "node:util";
 import {
   LearnError,
@@ -8,6 +8,7 @@ import {
   sha256Hex,
   sourceMarker,
 } from "@wastech-learn/core";
+import { isMissing, toPosix } from "./fs-utils.js";
 
 const run = promisify(execFile);
 
@@ -52,15 +53,11 @@ export interface RenderReport {
   readonly stale: readonly string[];
 }
 
-const toPosix = (path: string): string =>
-  sep === "/" ? path : path.split(sep).join("/");
-
 const readOptional = async (path: string): Promise<string | undefined> => {
   try {
     return await readFile(path, "utf8");
   } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT")
-      return undefined;
+    if (isMissing(error)) return undefined;
     throw error;
   }
 };

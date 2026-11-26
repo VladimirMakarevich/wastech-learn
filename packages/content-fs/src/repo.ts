@@ -1,6 +1,6 @@
 import { glob, readFile } from "node:fs/promises";
 import { hostname as osHostname } from "node:os";
-import { join, sep } from "node:path";
+import { join } from "node:path";
 import {
   LearnError,
   UI_LANGUAGES,
@@ -12,6 +12,7 @@ import {
   type LearnConfig,
   type UiLanguage,
 } from "@wastech-learn/core";
+import { isMissing, toPosix } from "./fs-utils.js";
 
 export const CONFIG_FILE = "learn.config.json";
 export const LOCAL_FILE = "learn.local.json";
@@ -19,9 +20,6 @@ export const MDLINT_CONFIG_FILE = "wastech-mdlint.config.json";
 
 /** Text files that make up the content: Markdown, diagram sources and their rendered SVGs. */
 const CONTENT_GLOB = "content/**/*.{md,mmd,svg}";
-
-const isMissing = (error: unknown): boolean =>
-  error instanceof Error && "code" in error && error.code === "ENOENT";
 
 const readText = async (
   root: string,
@@ -132,9 +130,6 @@ export const loadDevice = async (
   }
   return { device: parsed.data.device, source: "local" };
 };
-
-const toPosix = (path: string): string =>
-  sep === "/" ? path : path.split(sep).join("/");
 
 /**
  * Loads every content file and the mdlint config copy into the `path → text` map the core parses. Paths

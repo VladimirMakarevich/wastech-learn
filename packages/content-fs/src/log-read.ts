@@ -1,11 +1,12 @@
 import { glob, readFile } from "node:fs/promises";
-import { join, sep } from "node:path";
+import { join } from "node:path";
 import {
   LearnError,
   parseReviewEvent,
   type ReviewEvent,
 } from "@wastech-learn/core";
 import { prepareEvents } from "@wastech-learn/srs";
+import { toPosix } from "./fs-utils.js";
 
 export type LogFindingCode =
   "log-json-invalid" | "log-event-invalid" | "log-event-version";
@@ -27,9 +28,6 @@ export interface ReviewLog {
 }
 
 const LOG_GLOB = "reviews/**/*.jsonl";
-
-const toPosix = (path: string): string =>
-  sep === "/" ? path : path.split(sep).join("/");
 
 /**
  * Reads every writer's log file. A broken line is reported with its file and line instead of being
