@@ -81,7 +81,7 @@
       hard: "С трудом",
       good: "Вспомнил",
       easy: "Легко",
-      hard_hint: "Hard — это зачёт: вспомнил, но с усилием",
+      hard_hint: "Hard — это зачёт. Если не вспомнил, жми «Не вспомнил»",
       answer: "Ответ",
       expl: "Пояснение",
       rubric: "Рубрика: отметь, что назвал",
@@ -90,7 +90,6 @@
       sc_topic: "тема",
       sc_undo: "отменить",
       sc_susp: "отложить",
-      sc_end: "завершить",
       ctx: "Контекст",
       ctx_key: "Суть темы",
       ctx_sum: "Открыть раздел summary",
@@ -103,7 +102,16 @@
       vscode: "Открыть в VS Code",
       changed: "изменена после прошлого повтора",
       days_ago: "{n} дн назад",
-      session: "Сессия",
+      left: "Осталось ≈ {m} мин",
+      listen: "Прослушать",
+      mem_title: "Память сессии (демо)",
+      end: "Завершить",
+      demo_iv: "интервалы — демо",
+      mem_new: "новая",
+      mem_aria: "{cards} в сессии, средний R {r}%",
+      mem_aria_new: "{cards} в сессии, все новые",
+      sr_card: "Карточка {i} из {n}",
+      today_l: "сегодня",
       end_t: "Готово: {cards} за {m} мин",
       end_rec: "Вспомнил {a} из {b}",
       end_hc:
@@ -201,7 +209,7 @@
       hard: "With effort",
       good: "Recalled",
       easy: "Easy",
-      hard_hint: "Hard is a pass: recalled with effort",
+      hard_hint: "Hard is a pass. If you did not recall it, press “Forgot”",
       answer: "Answer",
       expl: "Explanation",
       rubric: "Rubric: tick what you covered",
@@ -210,7 +218,6 @@
       sc_topic: "topic",
       sc_undo: "undo",
       sc_susp: "suspend",
-      sc_end: "finish",
       ctx: "Context",
       ctx_key: "Key idea",
       ctx_sum: "Open summary section",
@@ -223,7 +230,16 @@
       vscode: "Open in VS Code",
       changed: "edited since last review",
       days_ago: "{n} d ago",
-      session: "Session",
+      left: "≈ {m} min left",
+      listen: "Listen",
+      mem_title: "Session memory (demo)",
+      end: "Finish",
+      demo_iv: "intervals are demo",
+      mem_new: "new",
+      mem_aria: "{cards} in the session, mean R {r}%",
+      mem_aria_new: "{cards} in the session, all new",
+      sr_card: "Card {i} of {n}",
+      today_l: "today",
       end_t: "Done: {cards} in {m} min",
       end_rec: "Recalled {a} of {b}",
       end_hc:
@@ -321,7 +337,8 @@
       hard: "Z trudem",
       good: "Pamiętam",
       easy: "Łatwe",
-      hard_hint: "Hard to zaliczenie: pamiętam, ale z wysiłkiem",
+      hard_hint:
+        "Hard to zaliczenie. Jeśli nie pamiętasz, wybierz „Nie pamiętam”",
       answer: "Odpowiedź",
       expl: "Wyjaśnienie",
       rubric: "Rubryka: zaznacz, co podałeś",
@@ -330,7 +347,6 @@
       sc_topic: "temat",
       sc_undo: "cofnij",
       sc_susp: "zawieś",
-      sc_end: "zakończ",
       ctx: "Kontekst",
       ctx_key: "Sedno tematu",
       ctx_sum: "Otwórz sekcję summary",
@@ -343,7 +359,16 @@
       vscode: "Otwórz w VS Code",
       changed: "zmieniona od ostatniej powtórki",
       days_ago: "{n} dni temu",
-      session: "Sesja",
+      left: "Zostało ≈ {m} min",
+      listen: "Odsłuchaj",
+      mem_title: "Pamięć sesji (demo)",
+      end: "Zakończ",
+      demo_iv: "interwały demonstracyjne",
+      mem_new: "nowa",
+      mem_aria: "{cards} w sesji, średnie R {r}%",
+      mem_aria_new: "{cards} w sesji, wszystkie nowe",
+      sr_card: "Karta {i} z {n}",
+      today_l: "dziś",
       end_t: "Gotowe: {cards} w {m} min",
       end_rec: "Pamiętam {a} z {b}",
       end_hc:
@@ -408,8 +433,12 @@
     const forms = PLURAL[lang];
     return `${n} ${forms[new Intl.PluralRules(lang).select(n)] ?? forms.other}`;
   };
+  // Месяцы — с одним знаком после запятой: целые месяцы сливают интервалы Good и Easy в одно
+  // «2 мес», и выбор между ними теряет смысл.
   const days = (n) =>
-    n < 30 ? `${n} ${t("d")}` : `${Math.round(n / 30)} ${t("mo")}`;
+    n < 30
+      ? `${n} ${t("d")}`
+      : `${new Intl.NumberFormat(lang, { maximumFractionDigits: 1 }).format(n / 30)} ${t("mo")}`;
 
   // R, stability и интервалы выводятся из хэша id карточки: прототип показывает, где живёт состояние
   // FSRS и как оно читается, а настоящее планирование появится только в пакете srs.
@@ -505,7 +534,15 @@
     stats: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
     settings:
       '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>',
+    speaker:
+      '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+    pencil: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+    chevron: '<path d="m9 6 6 6-6 6"/>',
   };
+  const ico = (name) =>
+    `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICON[name]}</svg>`;
   const domainLabel = {
     architecture: "Architecture",
     dotnet: ".NET",
@@ -515,7 +552,7 @@
   const langChip = (l) =>
     `<span class="chip ${l === "pl" ? "amber" : l === "ru" ? "blue" : "violet"}">${esc(l.toUpperCase())}</span>`;
   const typeChip = (c) =>
-    `<span class="chip primary">${esc(c.type)} · ${esc(c.bloom)}</span>`;
+    `<span class="chip">${esc(c.type)} · ${esc(c.bloom)}</span>`;
   const slug = (s) =>
     s
       .toLowerCase()
@@ -571,6 +608,9 @@
     drawer: null,
     topicPath: null,
     anchor: null,
+    flash: null,
+    focusSel: null,
+    viaPointer: false,
   };
   const VIEWS = ["home", "review", "topics", "cards", "stats", "prefs"];
   const route = () => {
@@ -612,9 +652,10 @@
       )
       .join("");
     const dark = isDark();
-    $("#theme-toggle").textContent = dark
-      ? `☀ ${t("theme_light")}`
-      : `☾ ${t("theme_dark")}`;
+    const themeLabel = t(dark ? "theme_light" : "theme_dark");
+    $("#theme-toggle").innerHTML =
+      `${ico(dark ? "sun" : "moon")}<span class="label">${esc(themeLabel)}</span>`;
+    $("#theme-toggle").setAttribute("aria-label", themeLabel);
     $("#sync").innerHTML = `<span class="dot"></span>${esc(t("sync"))}`;
     $("#proto-note").textContent = t("proto");
     $("#search").placeholder = t("search");
@@ -723,6 +764,48 @@
     return cloze(c.questionHtml, open);
   }
 
+  // Яркость точки памяти: R прототипа лежит в 0.80–0.97, поэтому шкала растянута на этот диапазон,
+  // иначе все точки выглядели бы одинаково яркими.
+  const memOpacity = (c) =>
+    c.isNew ? 0.55 : Math.min(1, Math.max(0.16, (c.R - 0.55) / 0.42));
+  const pct = (x) => `${Math.round(x * 100)}%`;
+
+  function memField(se) {
+    const cards = se.items.map((it) => it.card);
+    const rev = cards.filter((c) => !c.isNew);
+    const n = nCards(cards.length);
+    const label = rev.length
+      ? t("mem_aria", {
+          cards: n,
+          r: Math.round((rev.reduce((a, c) => a + c.R, 0) / rev.length) * 100),
+        })
+      : t("mem_aria_new", { cards: n });
+    const pts = cards
+      .map((c, i) => {
+        const flash = state.flash?.id === c.id ? state.flash : null;
+        const r = flash ? flash.from : memOpacity(c);
+        const tip = `${c.title} · ${c.isNew ? t("is_new") : `R ${pct(c.R)}`}`;
+        return `<span class="pt${c.isNew ? " new" : ""}${i === se.i ? " cur" : ""}" style="--r:${r.toFixed(2)}"${flash ? ` data-to="${memOpacity(c).toFixed(2)}"` : ""} title="${esc(tip)}"></span>`;
+      })
+      .join("");
+    // Колонки делят точки на ровные ряды, чтобы последняя точка не повисала одна на новой строке.
+    const cols = Math.ceil(cards.length / Math.ceil(cards.length / 10));
+    return `<div class="memfield" style="--cols:${cols}" role="img" aria-label="${esc(label)}">${pts}</div>`;
+  }
+
+  function sessionBar() {
+    const s = state.session;
+    if (route().name !== "review" || !s || s.i >= s.items.length) return "";
+    const rest = s.items.slice(s.i).map((it) => it.card.id);
+    const mode = t(s.mode === "all" ? "ball" : s.mode === "5" ? "b5" : "b15");
+    const elapsed = Math.floor((Date.now() - s.start) / 1000);
+    return `<span class="session-mode">${esc(mode)}</span>
+      <span class="session-count">${s.i + 1} / ${s.items.length}</span>
+      <span class="tnum">${esc(t("left", { m: estMin(rest) }))}</span>
+      <span class="tnum" id="timer">${String(Math.floor(elapsed / 60)).padStart(2, "0")}:${String(elapsed % 60).padStart(2, "0")}</span>
+      <button class="btn sm session-end" type="button" data-act="end" aria-keyshortcuts="Escape">${esc(t("end"))} <kbd>Esc</kbd></button>`;
+  }
+
   function viewReview() {
     const s = state.session;
     if (s.i >= s.items.length) return viewEnd();
@@ -751,68 +834,101 @@
     const suggested =
       c.rubric.length && open ? (reqChecked === req ? 3 : 1) : 0;
     const names = [t("again"), t("hard"), t("good"), t("easy")];
-    const elapsed = Math.floor((Date.now() - s.start) / 1000);
-    const lastRule = c.lastAgo ? t("days_ago", { n: c.lastAgo }) : t("is_new");
-    return `
-      <div class="session-bar">
-        <span class="chip green">${esc(t("session"))} · ${s.mode === "all" ? esc(t("ball")) : esc(t(s.mode === "5" ? "b5" : "b15"))}</span>
-        <div class="progress"><span style="width:${Math.round((s.i / s.items.length) * 100)}%"></span></div>
-        <b style="color:var(--ink)">${s.i + 1} / ${s.items.length}</b>
-        <span class="muted" id="timer">${String(Math.floor(elapsed / 60)).padStart(2, "0")}:${String(elapsed % 60).padStart(2, "0")}</span>
-        <button class="btn" type="button" data-act="end">${esc(t("sc_end"))} <kbd>Esc</kbd></button>
-      </div>
-      <div class="review-wrap">
-        <section class="card review-card">
-          <div class="review-meta">
-            <span class="crumb">${esc(domainLabel[tp.domain] ?? tp.domain)} / ${esc(tp.title)}</span>
-            <span class="row">${c.changed ? `<span class="chip amber">${esc(t("changed"))}</span>` : ""}${typeChip(c)}${showTts ? `<button class="tts" type="button" data-act="tts" data-text="${esc(ttsText)}">🔊 <kbd>p</kbd></button>` : ""}</span>
-          </div>
-          <div class="question">${questionHtml(it, open)}</div>
-          ${
-            open
-              ? `
-            ${c.rubric.length ? `<div class="rubric"><div class="hint" style="margin-bottom:4px">${esc(t("rubric"))}</div>${c.rubric.map((r, i) => `<label><input type="checkbox" data-check="${i}" ${s.checks.has(i) ? "checked" : ""}> <span>${esc(r.text)}${r.required ? `<span class="req">${esc(t("req"))}</span>` : ""}</span></label>`).join("")}</div>` : ""}
-            <div class="answer">${c.answerHtml}</div>
-            ${c.explanationHtml ? `<div class="explanation">${c.explanationHtml}</div>` : ""}
-            ${suggested ? `<div class="hint">${esc(t("suggested", { r: names[suggested - 1] }))}</div>` : ""}
-            <div class="ratings">${["again", "hard", "good", "easy"]
+    const lastRule =
+      c.lastAgo === 0
+        ? t("today_l")
+        : c.lastAgo
+          ? t("days_ago", { n: c.lastAgo })
+          : t("is_new");
+    // Анимация входа — только при смене фазы: выбор уверенности или пункт рубрики тоже
+    // перерисовывают экран, и повторный fade выглядел бы как мигание.
+    const phaseKey = `${s.i}:${s.phase}`;
+    const enter = s.shownKey !== phaseKey;
+    s.shownKey = phaseKey;
+
+    const answer = open
+      ? `<section class="answer-block${enter ? " enter" : ""}">
+          ${c.rubric.length ? `<div class="rubric"><div class="rubric-h">${esc(t("rubric"))}</div>${c.rubric.map((r, i) => `<label><input type="checkbox" data-check="${i}" ${s.checks.has(i) ? "checked" : ""}> <span>${esc(r.text)}${r.required ? `<span class="req">${esc(t("req"))}</span>` : ""}</span></label>`).join("")}</div>` : ""}
+          <div class="answer">${c.answerHtml}</div>
+          ${c.explanationHtml ? `<div class="explanation">${c.explanationHtml}</div>` : ""}
+          ${suggested ? `<div class="hint">${esc(t("suggested", { r: names[suggested - 1] }))}</div>` : ""}
+        </section>`
+      : "";
+
+    const tray = open
+      ? `<div class="ratings">${["again", "hard", "good", "easy"]
+          .map(
+            (k, i) => `
+          <button type="button" class="rate ${k}${suggested === i + 1 ? " suggested" : ""}" data-rate="${i + 1}" aria-keyshortcuts="${i + 1}" aria-label="${esc(`${i + 1} · ${names[i]} · ${iv[i]}`)}"${k === "hard" ? ` title="${esc(t("hard_hint"))}"` : ""}>
+            <span class="rate-top"><kbd>${i + 1}</kbd>${esc(names[i])}</span><span class="iv">${esc(iv[i])}</span>
+          </button>`,
+          )
+          .join("")}</div>
+        <div class="tray-hint">${esc(t("hard_hint"))}<span class="kb-hint"> · <kbd>Space</kbd> = ${esc(names[2])}</span><span class="demo-hint">${esc(t("demo_iv"))}</span></div>`
+      : `<div class="tray-row">
+          <div class="conf"><span class="tray-label" id="conf-l">${esc(t("conf"))}</span>
+            <div class="seg" role="radiogroup" aria-labelledby="conf-l">${[
+              t("c1"),
+              t("c2"),
+              t("c3"),
+            ]
               .map(
-                (k, i) => `
-              <button type="button" class="rate ${k} ${suggested === i + 1 ? "suggested" : ""}" data-rate="${i + 1}" ${k === "hard" ? `title="${esc(t("hard_hint"))}"` : ""}>
-                <span>${i + 1} · ${esc(names[i])}</span><span class="iv">${esc(iv[i])}</span>
-              </button>`,
+                (l, i) =>
+                  `<button type="button" role="radio" aria-checked="${s.conf === i + 1}" tabindex="${(s.conf ?? 1) === i + 1 ? 0 : -1}" aria-keyshortcuts="${i + 1}" data-conf="${i + 1}" class="${s.conf === i + 1 ? "active" : ""}"><kbd>${i + 1}</kbd>${esc(l)}</button>`,
               )
               .join("")}</div>
-            <div class="hint">${esc(t("hard_hint"))} · <kbd>Space</kbd> = ${esc(names[2])}</div>`
-              : `
-            <div class="confidence"><span class="hint">${esc(t("conf"))}</span>
-              ${[t("c1"), t("c2"), t("c3")].map((l, i) => `<button type="button" data-conf="${i + 1}" class="${s.conf === i + 1 ? "active" : ""}">${i + 1} · ${esc(l)}</button>`).join("")}
-            </div>
-            <button type="button" class="btn primary reveal" data-act="reveal">${esc(t("show"))} <kbd>Space</kbd></button>`
-          }
-          <div class="shortcuts">
-            <span><kbd>o</kbd>${esc(t("sc_topic"))}</span><span><kbd>e</kbd>VS Code</span><span><kbd>u</kbd>${esc(t("sc_undo"))}</span><span><kbd>!</kbd>${esc(t("sc_susp"))}</span>
           </div>
-        </section>
+          <button type="button" class="btn primary reveal" data-act="reveal" aria-keyshortcuts="Space">${esc(t("show"))} <kbd>Space</kbd></button>
+        </div>`;
+
+    return `
+      <div class="review-wrap">
+        <div class="review-col">
+          <article class="review-card ${open ? "is-a" : "is-q"}" aria-labelledby="q-text">
+            <header class="review-meta">
+              <span class="crumb">${esc(domainLabel[tp.domain] ?? tp.domain)}${ico("chevron")}${esc(tp.title)}</span>
+              <span class="meta-tags">${c.changed ? `<span class="chip">${ico("pencil")}${esc(t("changed"))}</span>` : ""}${typeChip(c)}${showTts ? `<button class="icon-btn" type="button" data-act="tts" data-text="${esc(ttsText)}" aria-label="${esc(t("listen"))}" aria-keyshortcuts="p">${ico("speaker")}<kbd>p</kbd></button>` : ""}</span>
+            </header>
+            <div class="q-body">
+              <div class="question" id="q-text">${questionHtml(it, open)}</div>
+              ${answer}
+            </div>
+            <footer class="shortcuts">
+              <span><kbd>o</kbd>${esc(t("sc_topic"))}</span><span><kbd>e</kbd>VS Code</span><span><kbd>u</kbd>${esc(t("sc_undo"))}</span><span><kbd>!</kbd>${esc(t("sc_susp"))}</span>
+            </footer>
+          </article>
+          <div class="tray"><div class="tray-inner${enter ? " enter" : ""}">${tray}</div></div>
+        </div>
         <aside class="context">
-          <section class="card">
-            <h4>${esc(t("ctx_key"))}</h4>
-            <div style="color:var(--ink)">${inline(tp.keyIdea)}</div>
-            <div style="margin-top:10px"><a href="#topics" data-topic="${tp.path}">${esc(t("ctx_sum"))} →</a></div>
+          <section>
+            <h2 class="group-h">${esc(t("mem_title"))}<span class="tnum">${nCards(s.items.length)}</span></h2>
+            <div class="group-body mem">
+              ${memField(s)}
+              <p class="mem-legend"><span class="mem-scale" aria-hidden="true"><i style="opacity:.2"></i><i style="opacity:.55"></i><i></i></span>${esc(t("r_now"))}<span class="mem-new" aria-hidden="true"></span>${esc(t("mem_new"))}</p>
+            </div>
           </section>
-          <section class="card">
-            <h4>${esc(t("ctx_state"))}</h4>
-            <dl class="kv">
-              <dt>${esc(t("r_now"))}</dt><dd>${c.isNew ? "—" : `${Math.round(c.R * 100)}%`}</dd>
-              <dt>Stability</dt><dd>${c.isNew ? "—" : days(c.S)}</dd>
-              <dt>${esc(t("lapses"))}</dt><dd>${c.lapses}</dd>
-              <dt>${esc(t("last"))}</dt><dd>${esc(lastRule)}</dd>
+          <section>
+            <h2 class="group-h">${esc(t("ctx_state"))}</h2>
+            <dl class="group-body">
+              <div class="g-row"><dt>${esc(t("r_now"))}</dt><dd>${c.isNew ? "—" : `<span class="r-dot" style="--r:${memOpacity(c).toFixed(2)}" aria-hidden="true"></span>${pct(c.R)}`}</dd></div>
+              <div class="g-row"><dt>Stability</dt><dd>${c.isNew ? "—" : esc(days(c.S))}</dd></div>
+              <div class="g-row"><dt>${esc(t("lapses"))}</dt><dd>${c.lapses}</dd></div>
+              <div class="g-row"><dt>${esc(t("last"))}</dt><dd>${esc(lastRule)}</dd></div>
             </dl>
           </section>
-          <section class="card">
-            <h4>${esc(t("file"))}</h4>
-            <div style="font:12.5px var(--mono);word-break:break-all;color:var(--body)">${esc(c.file)}</div>
-            <button class="btn" type="button" data-act="vscode" style="margin-top:10px">${esc(t("vscode"))} <kbd>e</kbd></button>
+          <section>
+            <h2 class="group-h">${esc(t("ctx_key"))}</h2>
+            <div class="group-body pad">
+              <p class="key-idea">${inline(tp.keyIdea)}</p>
+              <a class="ctx-link" href="#topics" data-topic="${tp.path}">${esc(t("ctx_sum"))}${ico("chevron")}</a>
+            </div>
+          </section>
+          <section>
+            <h2 class="group-h">${esc(t("file"))}</h2>
+            <div class="group-body">
+              <div class="g-row path">${esc(c.file)}</div>
+              <button class="g-row g-action" type="button" data-act="vscode" aria-keyshortcuts="e">${esc(t("vscode"))}<kbd>e</kbd></button>
+            </div>
           </section>
         </aside>
       </div>`;
@@ -965,7 +1081,7 @@
         <div class="bars30">${bars.map((v, i) => `<span class="${i % 7 === 5 || i % 7 === 6 ? "wknd" : ""}" style="height:${Math.round((v / max) * 100)}%" title="${v}"></span>`).join("")}</div>
       </section>
       <div class="grid-3" style="margin-top:20px">
-        <div class="card"><span class="chip green">Hard</span><p>${esc(t("st_hard"))}</p></div>
+        <div class="card"><span class="chip amber">Hard</span><p>${esc(t("st_hard"))}</p></div>
         <div class="card"><span class="chip amber">Leech</span><p>${esc(t("st_leech"))}</p></div>
         <div class="card"><span class="chip">Later</span><p class="muted">${esc(t("st_cal"))}</p></div>
       </div>`;
@@ -991,7 +1107,20 @@
   }
 
   let timer;
+  // Фокус возвращается после перерисовки только при работе с клавиатуры: после клика мышью
+  // фокус на кнопке перехватил бы Space, а Space в сессии означает «показать ответ».
+  const focusSelector = () => {
+    const el = document.activeElement;
+    if (state.viaPointer || !el || el === document.body) return null;
+    for (const k of ["conf", "rate", "act", "check"])
+      if (el.dataset?.[k] !== undefined)
+        return `[data-${k}="${el.dataset[k]}"]`;
+    return null;
+  };
+
   function render() {
+    const focusSel = state.focusSel ?? focusSelector();
+    state.focusSel = null;
     const r = route();
     renderChrome(r.name);
     const titles = {
@@ -1033,7 +1162,39 @@
       default:
         html = viewHome();
     }
-    $("#view").innerHTML = html;
+    document.body.dataset.view = r.name;
+    const view = $("#view");
+    view.classList.toggle("is-review", r.name === "review");
+    view.innerHTML = html;
+    $("#topbar-session").innerHTML = sessionBar();
+    const se = state.session;
+    const inSession = r.name === "review" && se && se.i < se.items.length;
+    const prog = $("#topbar-progress");
+    prog.hidden = !inSession;
+    if (inSession)
+      prog.style.setProperty(
+        "--p",
+        `${Math.round((se.i / se.items.length) * 100)}%`,
+      );
+    // Точка только что оценённой карточки рисуется со старой яркостью и плавно переходит к новой:
+    // так оценка видна как изменение памяти, а не как перерисовка.
+    if (focusSel)
+      document.querySelector(focusSel)?.focus({ preventScroll: true });
+    if (inSession && se.announced !== se.i) {
+      se.announced = se.i;
+      $("#sr-live").textContent = t("sr_card", {
+        i: se.i + 1,
+        n: se.items.length,
+      });
+    }
+    const flashed = view.querySelector(".pt[data-to]");
+    if (flashed)
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() =>
+          flashed.style.setProperty("--r", flashed.dataset.to),
+        ),
+      );
+    state.flash = null;
     renderDrawer();
   }
 
@@ -1047,7 +1208,19 @@
   function rate(n) {
     const se = s();
     if (!se || se.phase !== "a") return;
-    se.results.push({ card: se.items[se.i].card, rating: n, conf: se.conf });
+    const c = se.items[se.i].card;
+    se.results.push({
+      card: c,
+      rating: n,
+      conf: se.conf,
+      prev: { R: c.R, S: c.S, isNew: c.isNew, lastAgo: c.lastAgo },
+    });
+    // Сразу после повтора R = 1 при любой оценке; оценка меняет stability, а не текущую память.
+    state.flash = { id: c.id, from: memOpacity(c) };
+    c.R = 1;
+    c.S = Math.max(c.S, 1);
+    c.isNew = false;
+    c.lastAgo = 0;
     se.i += 1;
     se.phase = "q";
     se.conf = null;
@@ -1057,10 +1230,11 @@
   function undo() {
     const se = s();
     if (!se || !se.results.length) return;
-    se.results.pop();
+    const last = se.results.pop();
+    if (last.prev) Object.assign(last.card, last.prev);
     se.i -= 1;
     se.phase = "q";
-    se.conf = null;
+    se.conf = last.conf ?? null;
     se.checks = new Set();
     toast(t("t_undo"));
     render();
@@ -1223,7 +1397,11 @@
     render();
   });
 
+  document.addEventListener("pointerdown", () => {
+    state.viaPointer = true;
+  });
   document.addEventListener("keydown", (e) => {
+    state.viaPointer = false;
     const typing =
       /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName) &&
       e.target.type !== "checkbox";
@@ -1251,6 +1429,18 @@
     const se = s();
     if (se.i >= se.items.length) return;
     const c = se.items[se.i].card;
+    const radio = e.target.closest?.('[role="radio"]');
+    if (radio && /^Arrow(Left|Right|Up|Down)$/.test(e.key)) {
+      e.preventDefault();
+      const step = /Right|Down/.test(e.key) ? 1 : -1;
+      const next = ((Number(radio.dataset.conf) - 1 + step + 3) % 3) + 1;
+      se.conf = next;
+      state.focusSel = `[data-conf="${next}"]`;
+      render();
+      return;
+    }
+    // Space на кнопке или ссылке, до которой дошли с клавиатуры, нажимает её саму.
+    if (e.key === " " && e.target.closest?.("button, a, input")) return;
     if (e.key === " ") {
       e.preventDefault();
       se.phase === "q" ? reveal() : rate(3);

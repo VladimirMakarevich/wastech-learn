@@ -30,9 +30,31 @@ const split = (src) => {
   return m ? [YAML.parse(m[1] ?? ""), src.slice(m[0].length)] : [{}, src];
 };
 
-/** @param {string} file */
-const svgUri = (file) =>
-  `data:image/svg+xml;base64,${readFileSync(file).toString("base64")}`;
+let diagramSeq = 0;
+/** @param {string} s */
+const escAttr = (s) =>
+  s.replace(
+    /[&<>"]/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] ?? c,
+  );
+
+// Схема встраивается inline-SVG без собственного <style> и белого фона: тогда её красят токены
+// темы, и в тёмной теме нет светлой плашки. Id получают уникальный префикс, иначе маркеры стрелок
+// нескольких схем на одной странице ссылались бы на первую.
+/**
+ * @param {string} file
+ * @param {string} alt
+ */
+const inlineSvg = (file, alt) => {
+  const id = `dg${++diagramSeq}`;
+  const svg = readFileSync(file, "utf8")
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<style[\s\S]*?<\/style>/g, "")
+    .replaceAll("my-svg", id)
+    .replace(/background-color:\s*white;?/, "")
+    .trim();
+  return `<span class="diagram" role="img" aria-label="${escAttr(alt)}">${svg}</span>`;
+};
 
 /**
  * @param {string} md
@@ -48,15 +70,26 @@ async function mdToHtml(md, file) {
       jobs.push(
         codeToHtml(node.value, {
           lang: node.lang || "text",
-          theme: "github-light",
+          // Обе темы подсветки в виде CSS-переменных: цвет выбирает тема страницы, а не сборка.
+          themes: { light: "github-light", dark: "github-dark" },
+          defaultColor: false,
         }).then((html) => {
           parent.children[index] = { type: "html", value: html };
         }),
       );
     }
-    if (node.type === "image" && !/^https?:/.test(node.url)) {
+    if (
+      node.type === "image" &&
+      !/^https?:/.test(node.url) &&
+      parent &&
+      index !== undefined
+    ) {
       const p = resolve(dirname(file), node.url);
-      if (existsSync(p) && p.endsWith(".svg")) node.url = svgUri(p);
+      if (existsSync(p) && p.endsWith(".svg"))
+        parent.children[index] = {
+          type: "html",
+          value: inlineSvg(p, node.alt ?? ""),
+        };
     }
     if (node.type === "link") {
       const t = node.url;
