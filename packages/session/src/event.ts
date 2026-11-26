@@ -36,6 +36,15 @@ export interface RatingInput {
   readonly grader?: string | undefined;
 }
 
+/**
+ * The longest answer time an event records. A card left open overnight would teach the estimate and the
+ * optimizer that recall takes hours; past two minutes the time says nothing about memory.
+ */
+export const MAX_DURATION_MS = 120_000;
+
+const recordedDuration = (durMs: number): number =>
+  Math.min(MAX_DURATION_MS, Math.max(0, Math.round(durMs)));
+
 const base = (
   origin: EventOrigin,
   now: Date,
@@ -56,7 +65,8 @@ const base = (
 
 /**
  * The event of one answer. A missing confidence or AI suggestion is written as `null`, so the log tells
- * "the learner skipped it" apart from a writer that never asked.
+ * "the learner skipped it" apart from a writer that never asked. The duration is a whole number of
+ * milliseconds capped at `MAX_DURATION_MS`.
  */
 export const ratingEvent = (
   origin: EventOrigin,
@@ -69,7 +79,10 @@ export const ratingEvent = (
   aiSuggested: input.aiSuggested ?? null,
   grader: input.grader ?? "self",
   confidence: input.confidence ?? null,
-  ...(input.durMs === undefined ? {} : { durMs: input.durMs }),
+  // A timer that never started gives NaN; no time is better than a line the schema rejects.
+  ...(input.durMs === undefined || !Number.isFinite(input.durMs)
+    ? {}
+    : { durMs: recordedDuration(input.durMs) }),
   contentHash: input.contentHash,
 });
 
@@ -107,7 +120,8 @@ export const undoEvents = (
 
 /**
  * A rating together with the `suspend` it triggered: both were written by one call at one moment, so they
- * are undone together, and undoing the rating alone would leave the item hidden.
+ * are undone together, and undoing the rating alone would leave the item hidden. A suspend is matched by
+ * item and millisecond, so a manual suspend of the same item in the same millisecond joins the group.
  */
 export const ratingGroup = <
   Event extends Pick<ReviewEvent, "kind" | "item" | "ts">,

@@ -1,6 +1,7 @@
 import { parseReviewEvent, type ReviewEvent } from "@wastech-learn/core";
 import { describe, expect, it } from "vitest";
 import {
+  MAX_DURATION_MS,
   ratingEvent,
   ratingGroup,
   resetEvent,
@@ -126,5 +127,23 @@ describe("rating groups", () => {
       rating,
       own,
     ]);
+  });
+});
+
+describe("answer time", () => {
+  it("is a whole number of milliseconds capped at two minutes", () => {
+    const answer = (durMs: number) =>
+      ratingEvent(origin(), NOW, {
+        item: "10dkrwp7:main",
+        kind: "review",
+        rating: 3,
+        contentHash: HASH,
+        durMs,
+      }).durMs;
+    expect(answer(8400.6)).toBe(8401);
+    expect(answer(MAX_DURATION_MS + 1)).toBe(MAX_DURATION_MS);
+    expect(answer(9 * 3_600_000)).toBe(120_000);
+    expect(answer(0)).toBe(0);
+    expect(answer(Number.NaN)).toBeUndefined();
   });
 });
