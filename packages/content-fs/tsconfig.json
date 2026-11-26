@@ -7,8 +7,8 @@
   },
   "include": ["src/**/*.ts"],
   "references": [
-    { "path": "../core" },
-    { "path": "../srs" },
-    { "path": "../session" }
+    { "path": "../core/tsconfig.json" },
+    { "path": "../srs/tsconfig.json" },
+    { "path": "../session/tsconfig.json" }
   ]
 }

@@ -30,6 +30,21 @@ import { appFile, fileUnder } from "./static.js";
 /** The writer of events the app sends; the server appends nothing under any other name. */
 export const WEB_WRITER = "web";
 
+// The app loads nothing from anywhere but this server. Inline styles stay allowed: Angular adds component
+// styles at run time, and the bundle's KaTeX and Shiki markup carries style attributes; scripts never.
+const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join("; ");
+
 // A proxy or the OS closes a connection that stays silent for minutes; a comment line keeps the change
 // stream open without waking the app.
 const KEEPALIVE_MS = 25_000;
@@ -244,8 +259,10 @@ const routes = (
         : await appFile(options.appDir, c.req.path);
     if (file === undefined) return c.json({ code: "not-found" }, 404);
     c.header("Content-Type", file.type);
-    if (file.type.startsWith("text/html"))
+    if (file.type.startsWith("text/html")) {
       c.header("Cache-Control", "no-cache");
+      c.header("Content-Security-Policy", CONTENT_SECURITY_POLICY);
+    }
     return c.body(file.body);
   });
 

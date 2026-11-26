@@ -8,5 +8,5 @@
     "outDir": "../../../.cache/tsc/server-test"
   },
   "include": ["**/*.ts"],
-  "references": [{ "path": ".." }]
+  "references": [{ "path": "../tsconfig.json" }]
 }

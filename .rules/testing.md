@@ -27,7 +27,8 @@ Property tests run with a fixed fast-check seed: deterministic in CI, widened lo
 | Property | `srs` (fast-check) | For any log: limits hold, siblings never share a day, learning steps come first, undo restores the previous state |
 | Backlog simulation | `srs` | A synthetic 14-day break clears in 15-minute sessions within 5 days with new cards paused (MVP exit criterion) |
 | Contract | `mcp-server`, `server` | Each tool or route on a temp copy of the golden sample: validation, idempotency by `requestId`, path confinement, `quiz_next` hides the answer |
-| UI | `app` | Tools chosen in M4 (Angular, ADR-0006); the prototype walkthrough is the baseline scenario |
+| Unit (app) | `app/test` | Vitest over the app's pure modules, without TestBed: the logic of a screen lives in plain TypeScript |
+| End to end | `app/e2e` | Playwright in Chromium with `@axe-core/playwright` on `wastech-learn serve` over a fresh golden copy with a seeded log; the browser clock pinned with `page.clock`; every scenario fails on a request outside 127.0.0.1 (`npm run test:e2e`, after `npm run build`) |
 
 ## Conventions
 

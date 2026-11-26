@@ -323,6 +323,10 @@ describe("serving the app", () => {
     const index = await get(server, "/");
     expect(index.headers.get("content-type")).toContain("text/html");
     expect(await index.text()).toContain("<title>app</title>");
+    // Nothing from other sites: no remote script, font or connection, even if a bundle tried.
+    expect(index.headers.get("content-security-policy")).toContain(
+      "default-src 'self'",
+    );
     expect(
       await (await get(server, "/topic/architecture/backpressure")).text(),
     ).toContain("<title>app</title>");

@@ -1,0 +1,28 @@
+{
+  // The app is bundled by the Angular builder, so it resolves modules like a bundler and sees the DOM. The
+  // workspace packages map to their TypeScript sources: the app always runs the core it is built with,
+  // never a stale dist/. `ngc -p` type-checks this project with its templates; it emits nothing.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "noEmit": true,
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": [],
+    "paths": {
+      "@wastech-learn/core": ["../core/src/index.ts"],
+      "@wastech-learn/srs": ["../srs/src/index.ts"],
+      "@wastech-learn/session": ["../session/src/index.ts"]
+    }
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictStandalone": true,
+    "extendedDiagnostics": { "defaultCategory": "error" }
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

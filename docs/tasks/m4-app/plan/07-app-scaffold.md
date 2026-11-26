@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** 06
 - **Даёт:** Пакет `app` на Angular 22, сборка, lint, раздача сервером, Playwright и job в CI
 
@@ -33,5 +33,5 @@ E2E-дымовой: главная открывается, ни одного з�
 
 ## Приёмка фазы
 
-- [ ] `npm run lint`, `npm run build`, `npm test` и `npm run test:e2e` зелёные локально и в CI.
-- [ ] Лицензии Angular, angular-eslint и Playwright в журнале спеки.
+- [x] `npm run lint`, `npm run build`, `npm test` и `npm run test:e2e` зелёные локально и в CI.
+- [x] Лицензии Angular, angular-eslint и Playwright в журнале спеки.

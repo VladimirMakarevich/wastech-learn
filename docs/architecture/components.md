@@ -13,7 +13,7 @@
 | `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2), `new-id`, `hook post-tool-use` (M3), `serve` (M4); `export` — позже | core, srs, content-fs, server (для `serve`) | Node |
 | `@wastech-learn/mcp-server` | `wastech-learn-mcp`: инструменты MCP ([mcp-tools](../ai/mcp-tools.md)) поверх `content-fs`, маппинг ошибок в `{ code, message, hint }` | core, srs, content-fs, `@modelcontextprotocol/sdk` | Node (stdio; позже Worker) |
 | `@wastech-learn/server` | Локальный HTTP на `127.0.0.1`: сборка приложения, bundle с `ETag`, журнал, приём событий `web`, SSE об изменениях, защита `Host`/`Origin`/`Content-Type`/размера тела | core, srs, content-fs, Hono, `@hono/node-server` | Node |
-| `app` | Angular + CDK UI | core (типы bundle), srs и session (replay, очередь и сессия в клиенте) | Браузер, Capacitor |
+| `app` | Angular 22 + CDK UI (standalone, signals, zoneless, `@angular/build`); сборку в `dist/browser` раздаёт `server` | core (типы bundle), srs и session (replay, очередь и сессия в клиенте) | Браузер, Capacitor |
 | `skills/*` | [`learn-capture`](../../skills/learn-capture/SKILL.md), [`learn-import`](../../skills/learn-import/SKILL.md), [`learn-quiz`](../../skills/learn-quiz/SKILL.md) | — (инструкции над MCP и CLI) | Claude Code |
 
 ## Правила зависимостей
