@@ -8,6 +8,8 @@ Guide for AI agents and contributors working in `wastech-learn`.
 
 **Phase:** documentation (phase 0) and M1 (content repo with a golden sample) are done; tooling is set up; M2 — the `core` and `srs` packages — is next. No package exists yet. Do not scaffold code unless the user asks; the UI stack is still open (ADR-0006 `proposed`, Q-13).
 
+**UI design work** starts from [PRODUCT.md](PRODUCT.md): users, purpose, constraints and principles condensed from `docs/` for the `impeccable` skill.
+
 ## Rules — read before working
 
 The [rules index](.rules/README.md) is the canonical "how to work here". The non-negotiables in short:
