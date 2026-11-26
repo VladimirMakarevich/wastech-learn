@@ -14,7 +14,7 @@
 | 02 | [Метрики в `srs`](02-srs-metrics.md) | True retention, прогноз нагрузки, дата последней сессии | — | ☑ |
 | 03 | [Движок и итоги сессии](03-session-engine.md) | Режимы, очередь в ходе сессии, отмена, bury, suspend, reset, рубрика, итоги | 01, 02 | ☑ |
 | 04 | [Индекс поиска в bundle](04-search-index.md) | `searchIndex` в bundle и его загрузка из `core` | — | ☑ |
-| 05 | [Наблюдение за файлами](05-watch.md) | `watchRepository` в `content-fs` | — | ☐ |
+| 05 | [Наблюдение за файлами](05-watch.md) | `watchRepository` в `content-fs` | — | ☑ |
 | 06 | [Сервер и `serve`](06-server.md) | Пакет `server`, маршруты `/api/*`, защита, SSE, команда `serve` | 04, 05 | ☐ |
 | 07 | [Каркас приложения](07-app-scaffold.md) | Пакет `app` на Angular 22, сборка, lint, раздача сервером, Playwright и job в CI | 06 | ☐ |
 | 08 | [Данные и основа UI](08-app-foundation.md) | `ReviewStore`, bundle, SSE, `bundleHtml`, i18n, токены и компоненты Evening Glass, клавиши, оболочка | 07 | ☐ |

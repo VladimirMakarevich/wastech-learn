@@ -75,3 +75,10 @@ export type { SavedFile } from "./write/summary.js";
 export { createTopic } from "./write/topic.js";
 export type { CreatedTopic } from "./write/topic.js";
 export { validateEdited, validateFiles } from "./validate-files.js";
+export { watchRepository } from "./watch.js";
+export type {
+  ChangeKind,
+  RepositoryChange,
+  RepositoryWatcher,
+  WatchOptions,
+} from "./watch.js";
