@@ -1,2 +1,4 @@
 * text=auto eol=lf
 *.png binary
+# cmd.exe misparses labels and goto in LF batch files, so Windows launchers keep CRLF.
+*.cmd text eol=crlf
