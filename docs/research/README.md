@@ -7,7 +7,7 @@
 | [learning-science.md](learning-science.md) | Какие практики обучения работают и как их встроить в продукт | Вспоминание и интервалы дают больше всего. ИИ-тьютор должен подсказывать, а не отвечать |
 | [srs-algorithms.md](srs-algorithms.md) | Какой алгоритм интервалов и какая шкала оценок | FSRS через ts-fsrs; веса по умолчанию до ~1000 повторений; оценка 1–4 в журнале |
 | [prior-art.md](prior-art.md) | Что взять из Anki, Quizlet, Obsidian SR, hashcards, Orbit и ИИ-генераторов карточек | Состояние отдельно от контента, стабильный `id`, ИИ-карточки — только черновики |
-| [tech-stack.md](tech-stack.md) | Стек, рендеринг, диаграммы, поиск, синхронизация | TS-монорепо, local-first, headless core, Angular/Ionic UI, JSONL + git |
+| [tech-stack.md](tech-stack.md) | Стек, рендеринг, диаграммы, поиск, синхронизация | TS-монорепо, local-first, headless core, Angular UI, JSONL + git |
 | [ai-capture.md](ai-capture.md) | Как переносить контент из чатов без API-ключей | Skills + stdio MCP в Claude Code; learning package для остальных; remote MCP позже |
 
 ## Как это повлияло на решения
@@ -15,7 +15,7 @@
 - Принципы → [learning/principles.md](../learning/principles.md) (LP-01…LP-16).
 - Алгоритм и параметры → [scheduling/srs.md](../scheduling/srs.md), [ADR-0004](../adr/0004-fsrs-via-ts-fsrs.md).
 - Шкала оценок: исследование рекомендовало 2 кнопки, пользователь выбрал 4 → [ADR-0005](../adr/0005-four-button-rating.md).
-- UI: исследование стека рекомендовало Astro, архитектурное ревью — Angular/Ionic из-за мобильной версии → [ADR-0006](../adr/0006-headless-core-angular-ionic-ui.md).
+- UI: исследование стека рекомендовало Astro, архитектурное ревью — Angular/Ionic из-за мобильной версии, прототип — desktop-first Angular + CDK → [ADR-0006](../adr/0006-headless-core-angular-ui.md).
 - Лимиты карточек: ни один источник не даёт чисел. Значения выведены и будут пересмотрены по метрикам → [card-writing-rules.md](../learning/card-writing-rules.md).
 
 ## Что не проверено

@@ -1,6 +1,6 @@
 # Архитектура: обзор
 
-Система local-first. Вся логика сосредоточена в headless TypeScript-ядре, хосты над ним тонкие. Источник истины — git-репозиторий контента. Ключевые решения: [ADR-0006](../adr/0006-headless-core-angular-ionic-ui.md) (ядро + UI), [ADR-0007](../adr/0007-local-server-phase-1.md) (локальный сервер), [ADR-0003](../adr/0003-append-only-review-log.md) (журнал).
+Система local-first. Вся логика сосредоточена в headless TypeScript-ядре, хосты над ним тонкие. Источник истины — git-репозиторий контента. Ключевые решения: [ADR-0006](../adr/0006-headless-core-angular-ui.md) (ядро + UI), [ADR-0007](../adr/0007-local-server-phase-1.md) (локальный сервер), [ADR-0003](../adr/0003-append-only-review-log.md) (журнал).
 
 ## Контекст (C4, уровень 1)
 
@@ -35,7 +35,7 @@ flowchart LR
     mdmcp["wastech-mdlint MCP<br/>stdio"]
     cli["wastech-learn CLI<br/>check / build / render"]
     server["Local server<br/>Hono, localhost"]
-    app["App<br/>Angular + Ionic в браузере"]
+    app["App<br/>Angular + CDK в браузере"]
     cache[(".cache<br/>node:sqlite")]
     repo[("content repo<br/>MD, SVG, JSONL")]
   end
@@ -52,7 +52,7 @@ flowchart LR
 
 | Контейнер | Ответственность | Технология |
 | --- | --- | --- |
-| App | Повторение, чтение тем, поиск, статистика, настройки, i18n | Angular + Ionic (из `wastechlab-mobile-template`), ts-fsrs в клиенте |
+| App | Повторение, чтение тем, поиск, статистика, настройки, i18n | Angular + CDK, вид Evening Glass, i18n из `wastechlab-mobile-template`, ts-fsrs в клиенте |
 | Local server | Отдаёт content bundle, принимает события и дописывает JSONL, следит за файлами, пересобирает кэш | Node 24 + Hono |
 | wastech-learn-mcp | Инструменты захвата и квиза для Claude Code | Node 24, `@modelcontextprotocol/sdk`, stdio |
 | CLI | `check`, `build` (bundle), `render` (диаграммы), `export` (CSV оптимизатора), `simulate` | Node 24 |

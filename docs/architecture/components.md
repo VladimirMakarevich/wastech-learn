@@ -12,7 +12,7 @@
 | `@wastech-learn/cli` | `check`, `build`, `render`, `serve`, `export`, `simulate`, `new-id` | core, srs, content-fs | Node |
 | `@wastech-learn/mcp-server` | Инструменты MCP ([mcp-tools](../ai/mcp-tools.md)) | core, srs, content-fs, `@wastech-mdlint/core` | Node (stdio; позже Worker) |
 | `@wastech-learn/server` | Локальный HTTP: bundle, события, статус, SSE об изменениях | core, srs, content-fs, Hono | Node |
-| `app` | Angular + Ionic UI | core (типы bundle), srs (очередь в клиенте) | Браузер, Capacitor |
+| `app` | Angular + CDK UI | core (типы bundle), srs (очередь в клиенте) | Браузер, Capacitor |
 | `skills/*` | `learn-capture`, `learn-import`, `learn-quiz`, … | — (инструкции над MCP и CLI) | Claude Code |
 
 ## Правила зависимостей
@@ -41,7 +41,7 @@ flowchart BT
 
 ## Контракты
 
-**`ReviewStore`** — единственный способ UI работать с событиями ([ADR-0006](../adr/0006-headless-core-angular-ionic-ui.md)):
+**`ReviewStore`** — единственный способ UI работать с событиями ([ADR-0006](../adr/0006-headless-core-angular-ui.md)):
 
 ```ts
 interface ReviewStore {

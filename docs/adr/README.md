@@ -11,7 +11,7 @@
 | [0003](0003-append-only-review-log.md) | Append-only JSONL для каждого устройства и writer, кэш из replay | accepted |
 | [0004](0004-fsrs-via-ts-fsrs.md) | FSRS через зафиксированную версию ts-fsrs, оптимизатор после ~1000 повторений | accepted |
 | [0005](0005-four-button-rating.md) | Четыре кнопки оценки с подписями | accepted |
-| [0006](0006-headless-core-angular-ionic-ui.md) | Headless TS-ядро + UI на Angular/Ionic из wastechlab-mobile-template | proposed |
+| [0006](0006-headless-core-angular-ui.md) | Headless TS-ядро + desktop-first UI на Angular и CDK | accepted |
 | [0007](0007-local-server-phase-1.md) | Фаза 1: локальный Hono-сервер и кэш в `node:sqlite` | accepted |
 | [0008](0008-capture-via-subscription-chats.md) | Захват через подписочные чаты: skills, stdio MCP, learning package | accepted |
 | [0009](0009-ai-suggests-user-confirms.md) | ИИ предлагает оценку, пользователь подтверждает | accepted |

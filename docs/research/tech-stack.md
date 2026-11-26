@@ -1,6 +1,6 @@
 # Исследование: технический стек
 
-Отдельное исследование стека, которое просил пользователь. Итоговое решение — в [overview.md](../architecture/overview.md) и [ADR-0006](../adr/0006-headless-core-angular-ionic-ui.md).
+Отдельное исследование стека, которое просил пользователь. Итоговое решение — в [overview.md](../architecture/overview.md) и [ADR-0006](../adr/0006-headless-core-angular-ui.md).
 
 ## Варианты архитектуры приложения
 
@@ -22,7 +22,7 @@
 - obsidian-git на телефоне работает через isomorphic-git без SSH, есть падения.
 - В Obsidian около 19 плагинов с FSRS. Spaced Repetition — около 603 тыс. загрузок.
 
-**Итог.** Исследование стека рекомендовало (a) + (e) с переходом к (b): Astro, content collections, island для повторения, Hono для журнала. Архитектурное ревью предложило headless core + Angular/Ionic из `wastechlab-mobile-template`: один UI для веба и Capacitor, готовые i18n ru/pl и офлайн SQLite. Принят второй вариант, Astro описан в ADR-0006 как альтернатива. Фаза 1 — localhost + Hono ([ADR-0007](../adr/0007-local-server-phase-1.md)).
+**Итог.** Исследование стека рекомендовало (a) + (e) с переходом к (b): Astro, content collections, island для повторения, Hono для журнала. Архитектурное ревью предложило headless core + Angular/Ionic из `wastechlab-mobile-template`: один UI для веба и Capacitor, готовые i18n ru/pl и офлайн SQLite. После кликабельного прототипа принят desktop-first Angular + CDK без Ionic: вид задаёт своя дизайн-система, из шаблона берётся i18n, Capacitor — в фазе 2. Ionic-шаблон и Astro описаны в ADR-0006 как альтернативы. Фаза 1 — localhost + Hono ([ADR-0007](../adr/0007-local-server-phase-1.md)).
 
 ## Рендеринг Markdown
 

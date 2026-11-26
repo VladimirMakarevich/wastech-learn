@@ -35,7 +35,7 @@
 | --- | --- |
 | Только подписки, без API-ключей | NFR-02, FR-107, FR-110, [ADR-0008](../adr/0008-capture-via-subscription-chats.md) |
 | Claude Code + ChatGPT и другие | FR-101, FR-110, FR-112 |
-| Десктоп-браузер сейчас, мобильное приложение потом | NFR-15, FR-410, [ADR-0006](../adr/0006-headless-core-angular-ionic-ui.md) |
+| Десктоп-браузер сейчас, мобильное приложение потом | NFR-15, FR-410, [ADR-0006](../adr/0006-headless-core-angular-ui.md) |
 | Самооценка + ИИ для открытых карточек | FR-209, FR-210, [ADR-0009](../adr/0009-ai-suggests-user-confirms.md) |
 | 4 кнопки | FR-202, FR-216, [ADR-0005](../adr/0005-four-button-rating.md) |
 | Нерегулярный ритм | FR-207, FR-208, FR-401 |

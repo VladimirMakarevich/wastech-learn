@@ -16,7 +16,7 @@ No package and no test exists yet. **Vitest** (with **fast-check** for property 
 | Property | `srs` (fast-check) | For any log: limits hold, siblings never share a day, learning steps come first, undo restores the previous state |
 | Backlog simulation | `srs` | A synthetic 14-day break clears in 15-minute sessions within 5 days with new cards paused (MVP exit criterion) |
 | Contract | `mcp-server`, `server` | Each tool or route on a temp copy of the golden sample: validation, idempotency by `requestId`, path confinement, `quiz_next` hides the answer |
-| UI | `app` | Decided with the UI stack (Q-13); the prototype walkthrough is the baseline scenario |
+| UI | `app` | Tools chosen in M4 (Angular, ADR-0006); the prototype walkthrough is the baseline scenario |
 
 ## Conventions
 

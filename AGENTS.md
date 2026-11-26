@@ -6,7 +6,7 @@ Guide for AI agents and contributors working in `wastech-learn`.
 
 `wastech-learn` is the framework half of a personal spaced-repetition learning system (chat → cards, summaries, visuals → FSRS review). The knowledge itself lives in the separate private repo `wastech-learn-content`. See [README.md](README.md) and [docs/README.md](docs/README.md).
 
-**Phase:** documentation (phase 0) and M1 (content repo with a golden sample) are done; tooling is set up; M2 — the `core` and `srs` packages — is next. No package exists yet. Do not scaffold code unless the user asks; the UI stack is still open (ADR-0006 `proposed`, Q-13).
+**Phase:** documentation (phase 0) and M1 (content repo with a golden sample) are done; tooling is set up; M2 — the `core` and `srs` packages — is next. No package exists yet. Do not scaffold code unless the user asks. The UI stack is decided: desktop-first Angular + CDK in the Evening Glass look, Capacitor in phase 2 (ADR-0006).
 
 **UI design work** starts from [PRODUCT.md](PRODUCT.md): users, purpose, constraints and principles condensed from `docs/` for the `impeccable` skill. The visual world lives in [DESIGN.md](DESIGN.md) (iOS-inspired, frosted glass, dark-first); the prototype's Review screen is built in it, the other screens only inherit its tokens.
 

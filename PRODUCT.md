@@ -10,7 +10,7 @@ web
 
 ## Stack
 
-Undecided — [Q-13](docs/risks-and-questions.md), [ADR-0006](docs/adr/0006-headless-core-angular-ionic-ui.md) is `proposed`. The choice is made after the [clickable prototype](prototypes/desktop-ui/README.md) is reviewed, before M4. Candidates: the Ionic template `wastechlab-mobile-template`; desktop-first Angular (Material/CDK) with Capacitor later; Astro with an interactive island. Fixed either way: all logic lives in the headless TypeScript packages `core`, `srs`, `content-fs`; the UI reads content from a prerendered bundle and state only through `ReviewStore`.
+Desktop-first Angular (standalone components, signals, zoneless) with Angular CDK for behavior only — focus trap, a11y, overlay; no Angular Material and no Ionic — [ADR-0006](docs/adr/0006-headless-core-angular-ui.md). The look is the Evening Glass system from [DESIGN.md](DESIGN.md), ported from the [prototype](prototypes/desktop-ui/README.md). i18n ru/en/pl is ported from `wastechlab-mobile-template`. The mobile build in phase 2 wraps the same app in Capacitor; mobile-only components (inspector sheet, pinned decision tray) are built on CDK. All logic lives in the headless TypeScript packages `core`, `srs`, `content-fs`; the UI reads content from a prerendered bundle and state only through `ReviewStore`.
 
 ## Users
 

@@ -13,7 +13,7 @@ Job: recall one review item at a time from the keyboard — question, confidence
 
 Memorable moment: the inspector's session memory field — one point per card of the session, the current card ringed in the tint; the point of the card just rated brightens to R = 1 as the next card appears.
 
-Resolved in the build: teal tint, radii 10/18/24, Title 28px. Unresolved: non-Apple UI face (bundle Inter or not), UI stack (Q-13).
+Resolved in the build: teal tint, radii 10/18/24, Title 28px. Non-Apple UI face: Inter, bundled. UI stack: desktop-first Angular + CDK (ADR-0006).
 
 ## Direction contract
 
