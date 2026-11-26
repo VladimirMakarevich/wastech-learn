@@ -16,3 +16,6 @@ docs/assets/
 .agents/
 .claude/
 skills-lock.json
+
+# Written by the Impeccable design hook on every run; local, never committed.
+.impeccable/hook.cache.json
