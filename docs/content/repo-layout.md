@@ -58,7 +58,6 @@ wastech-learn-content/
 
 ```jsonc
 {
-  "device": "desk1",                 // имя устройства; задаётся локально, по умолчанию hostname
   "timezone": "Europe/Warsaw",       // IANA-зона для границы дня
   "dayStartsAt": "04:00",
   "uiLanguage": "ru",                // ru | en | pl
@@ -69,6 +68,9 @@ wastech-learn-content/
     "maxIntervalDays": 365,
     "learningSteps": ["1m", "10m"],
     "relearningSteps": ["10m"],
+    "allowModelOverride": true,      // модель может удлинить шаг (FSRS-7)
+    "graduatingIntervalDays": 1,
+    "fuzz": true,                    // детерминированный: сид cardId + reps
     "weights": null                  // null = веса по умолчанию до оптимизации
   },
   "limits": {
@@ -81,7 +83,7 @@ wastech-learn-content/
 }
 ```
 
-Поле `device` лучше хранить в локальном `learn.local.json` (в `.gitignore`), чтобы у каждого компьютера было своё значение. Это вопрос [Q-03](../risks-and-questions.md).
+Имя устройства лежит не здесь, а в локальном `learn.local.json` (в `.gitignore`): `{ "device": "desk1" }`. У каждого компьютера своё значение, без файла берётся hostname. Иначе два компьютера писали бы в один файл `reviews/<device>/`.
 
 ## Что коммитится и что нет
 
@@ -95,7 +97,7 @@ wastech-learn-content/
 
 - Skills ставятся из `wastech-learn/skills/` и фиксируются в `skills-lock.json` (источник и хэш), как в `wastechlab-mobile-template`.
 - MCP-сервер и CLI запускаются через `npx` с фиксированной версией пакета.
-- Пресет mdlint копируется из `wastech-learn`. В mdlint нет `extends`, поэтому при обновлении пресет нужно синхронизировать вручную (Q-04).
+- Пресет mdlint копируется из `wastech-learn`: в mdlint нет `extends`. Каноничный пресет поставляется с CLI, и `check` предупреждает, если в копии правило пресета пропало или изменилось ([mdlint-policy](../quality/mdlint-policy.md)).
 
 ## См. также
 
