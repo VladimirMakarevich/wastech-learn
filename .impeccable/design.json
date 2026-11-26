@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-26T01:33:39.000Z",
+  "generatedAt": "2026-11-26T12:00:00.000Z",
   "title": "Design System: wastech-learn",
   "extensions": {
     "colorMeta": {
@@ -331,6 +331,54 @@
           "oklch(95% 0.067 255deg)"
         ],
         "note": "Day oklch(55% 0.2 258deg); text -ink, fill -weak."
+      },
+      "bar": {
+        "role": "neutral",
+        "displayName": "Chart Bar (night)",
+        "canonical": "oklch(58% 0.012 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.012 250deg)",
+          "oklch(26% 0.012 250deg)",
+          "oklch(37% 0.012 250deg)",
+          "oklch(48% 0.012 250deg)",
+          "oklch(59% 0.012 250deg)",
+          "oklch(70% 0.012 250deg)",
+          "oklch(82% 0.012 250deg)",
+          "oklch(95% 0.012 250deg)"
+        ],
+        "note": "CSS --bar in the dark rendition; neutral bars of the 7-day forecast and the 30-day chart. Today's bar uses the tint."
+      },
+      "bar-day": {
+        "role": "neutral",
+        "displayName": "Chart Bar (day)",
+        "canonical": "oklch(60% 0.012 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.012 250deg)",
+          "oklch(26% 0.012 250deg)",
+          "oklch(37% 0.012 250deg)",
+          "oklch(48% 0.012 250deg)",
+          "oklch(59% 0.012 250deg)",
+          "oklch(70% 0.012 250deg)",
+          "oklch(82% 0.012 250deg)",
+          "oklch(95% 0.012 250deg)"
+        ],
+        "note": "CSS --bar in the light rendition."
+      },
+      "bar-weak": {
+        "role": "neutral",
+        "displayName": "Chart Bar Weak",
+        "canonical": "oklch(52% 0.012 250deg)",
+        "tonalRamp": [
+          "oklch(15% 0.012 250deg)",
+          "oklch(26% 0.012 250deg)",
+          "oklch(37% 0.012 250deg)",
+          "oklch(48% 0.012 250deg)",
+          "oklch(59% 0.012 250deg)",
+          "oklch(70% 0.012 250deg)",
+          "oklch(82% 0.012 250deg)",
+          "oklch(95% 0.012 250deg)"
+        ],
+        "note": "Weekend bars in the 30-day chart; day value oklch(65% 0.012 250deg), lighter than --bar."
       }
     },
     "typographyMeta": {
@@ -382,6 +430,11 @@
         "name": "glass",
         "value": "background: var(--glass); backdrop-filter: blur(28px) saturate(170%); border: 1px solid var(--glass-edge)",
         "purpose": "Toolbar, decision tray, mobile tab bar, toast; falls back to --glass-solid."
+      },
+      {
+        "name": "thumb-shadow",
+        "value": "0 0 0 0.5px oklch(0% 0 0deg / 12%), 0 2px 6px oklch(0% 0 0deg / 25%)",
+        "purpose": "White thumb of a switch or slider; the only shadow on a library control."
       }
     ],
     "motion": [
@@ -419,6 +472,11 @@
         "name": "reduced-motion",
         "value": "transition: none; animation: none (all elements and pseudo-elements)",
         "purpose": "prefers-reduced-motion: reduce."
+      },
+      {
+        "name": "switch",
+        "value": "background 0.2s ease-out; thumb transform 0.25s ease-out",
+        "purpose": "Switch track tint and thumb travel (18px)."
       }
     ],
     "breakpoints": [
@@ -469,7 +527,7 @@
       "name": "Inset-Grouped List",
       "kind": "card",
       "refersTo": "group-row",
-      "description": "iOS-style inspector group: muted header, opaque hairline-bordered group, hairline-divided rows with tabular values.",
+      "description": "iOS inset-grouped list, the library's container and the inspector's: muted 13px header, opaque hairline-bordered 16px group, hairline-divided rows with tabular values, optional muted footer.",
       "html": "<div><div class=\"ds-group-h\">FSRS state</div><dl class=\"ds-group\"><div class=\"ds-row\"><dt>R now</dt><dd><span class=\"ds-rdot\" style=\"--r:0.72\"></span>85%</dd></div><div class=\"ds-row\"><dt>Stability</dt><dd>18 d</dd></div><button class=\"ds-row ds-action\" type=\"button\">Open in VS Code</button></dl></div>",
       "css": ".ds-group-h { margin: 0 0 7px; padding: 0 14px; font: 500 13px/1.4 var(--font); color: var(--muted); } .ds-group { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; } .ds-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 10px 14px; border: 0; background: transparent; font: 400 14px/1.4 var(--font); text-align: left; color: var(--body); } .ds-row + .ds-row { border-top: 1px solid var(--border); } .ds-row dd { margin: 0; display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; } .ds-action { color: var(--ink); font-weight: 500; cursor: pointer; } .ds-action:hover { background: var(--fill); } .ds-action:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; } .ds-rdot { width: 9px; height: 9px; border-radius: 50%; background: var(--memory); opacity: var(--r, 1); }"
     },
@@ -488,14 +546,38 @@
       "description": "Pill with translucent neutral fill for card type and metadata.",
       "html": "<span class=\"ds-chip\">why · understand</span>",
       "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; background: var(--fill); color: var(--body); font: 550 12.5px/1.5 var(--font); white-space: nowrap; } .ds-chip:hover { background: var(--fill-strong); }"
+    },
+    {
+      "name": "Topic Row",
+      "kind": "list-row",
+      "refersTo": "topic-row",
+      "description": "One topic in a grouped list: title over muted domain · language, a strip of small memory points (one per card), due today, chevron.",
+      "html": "<div class=\"ds-tgroup\"><a class=\"ds-trow\" href=\"#\"><span><b>Event loop</b><small>Programming · EN</small></span><span class=\"ds-strip\"><i style=\"--r:1\"></i><i style=\"--r:0.8\"></i><i style=\"--r:0.55\"></i><i style=\"--r:0.3\"></i><i class=\"new\"></i></span><span class=\"ds-due\">3</span><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"m9 6 6 6-6 6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg></a></div>",
+      "css": ".ds-tgroup { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; } .ds-trow { display: grid; grid-template-columns: minmax(0, 1fr) auto 104px 16px; gap: 10px 20px; align-items: center; padding: 12px 14px; color: var(--ink); text-decoration: none; font: 400 15px/1.4 var(--font); transition: background 0.18s var(--ease-out); } .ds-trow:hover { background: var(--fill); } .ds-trow:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; } .ds-trow b { display: block; font-weight: 600; } .ds-trow small { font-size: 13px; color: var(--muted); } .ds-trow svg { color: var(--muted); } .ds-strip { display: flex; gap: 2px; } .ds-strip i { display: grid; place-items: center; width: 14px; height: 14px; } .ds-strip i::before { content: \"\"; width: 8px; height: 8px; border-radius: 50%; background: var(--memory); opacity: var(--r, 1); } .ds-strip i.new::before { background: transparent; border: 1.5px solid var(--memory); opacity: 0.55; } .ds-due { color: var(--body); font-variant-numeric: tabular-nums; text-align: right; }"
+    },
+    {
+      "name": "Switch",
+      "kind": "toggle",
+      "refersTo": "switch",
+      "description": "iOS switch drawn in CSS on a native checkbox with role=switch: fill track, tint when on, white thumb with --thumb-shadow.",
+      "html": "<label class=\"ds-srow\">Voice <input class=\"ds-switch\" type=\"checkbox\" role=\"switch\" checked></label>",
+      "css": ".ds-srow { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 0 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; font: 400 15px/1.4 var(--font); color: var(--ink); } .ds-switch { appearance: none; position: relative; flex: none; width: 46px; height: 28px; margin: 0; border-radius: 999px; background: var(--fill-strong); cursor: pointer; transition: background 0.2s var(--ease-out); } .ds-switch::before { content: \"\"; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 50%; background: oklch(100% 0 0deg); box-shadow: var(--thumb-shadow); transition: transform 0.25s var(--ease-out); } .ds-switch:checked { background: var(--primary); } .ds-switch:checked::before { transform: translateX(18px); } .ds-switch:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }"
+    },
+    {
+      "name": "Stepper",
+      "kind": "input",
+      "refersTo": "stepper",
+      "description": "iOS stepper: two 34px buttons around a tabular value on the neutral fill.",
+      "html": "<div class=\"ds-stepper\"><button type=\"button\" aria-label=\"Less\">&minus;</button><output>20</output><button type=\"button\" aria-label=\"More\">+</button></div>",
+      "css": ".ds-stepper { display: inline-flex; align-items: center; padding: 2px; border-radius: 10px; background: var(--fill); } .ds-stepper button { display: grid; place-items: center; width: 34px; height: 28px; border: 0; border-radius: 8px; background: transparent; color: var(--ink); font: 500 17px/1 var(--font); cursor: pointer; } .ds-stepper button:hover { background: var(--fill-strong); } .ds-stepper button:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; } .ds-stepper output { min-width: 32px; font: 600 15px/1 var(--font); font-variant-numeric: tabular-nums; text-align: center; color: var(--ink); }"
     }
   ],
   "narrative": {
     "northStar": "Evening Glass",
-    "overview": "A native-feeling study app in the iOS and macOS grammar: system type, tinted near-black grounds, grouped surfaces lifted by lightness, one teal tint, and frosted glass only on chrome that content scrolls beneath. The usual session is in the evening in a dim room, so dark is the primary rendition; light is a complete second rendition. Both follow the OS until the user picks one, and an explicit pick wins either way.\n\nWhat the user reads (question, answer, diagram, inspector facts) sits on opaque surfaces. The signature move is **memory luminance**: retrievability (R) is the opacity of a solid point in a fixed per-theme color (warm white at night, ink by day). In Review the inspector shows the current session's cards as a field of points, the current one ringed in the tint; a just-rated card's point eases to its new value. Topic and Cards screens still draw R as a thin bar.\n\nRejected by the user: anything that reads as a SaaS dashboard, a game, or Anki.",
+    "overview": "A native-feeling study app in the iOS and macOS grammar: system type, tinted near-black grounds, grouped surfaces lifted by lightness, one teal tint, and frosted glass only on chrome that content scrolls beneath. The usual session is in the evening in a dim room, so dark is the primary rendition; light is a complete second rendition. Both follow the OS until the user picks one, and an explicit pick wins either way.\n\nWhat the user reads (question, answer, diagram, inspector facts) sits on opaque surfaces. The signature move is **memory luminance**: retrievability (R) is the opacity of a solid point in a fixed per-theme color (warm white at night, ink by day). In Review the inspector shows the current session's cards as a field of points, the current one ringed in the tint; a just-rated card's point eases to its new value, and it always brightens: right after a review R is 1 whatever the rating, which only changes stability. The point recurs on every screen: a topic row carries a strip of small points, one per card; the Cards table, the topic's card list and the card inspector show R as a point plus its percent.\n\nRejected by the user: anything that reads as a SaaS dashboard, a game, or Anki.",
     "keyCharacteristics": [
       "Dark-first, light equally finished; theme follows the OS unless chosen.",
-      "Glass only on the sticky toolbar, decision tray, mobile tab bar and toast.",
+      "Library screens are iOS inset-grouped lists; glass only on the sticky toolbar, decision tray, mobile tab bar and toast.",
       "One teal tint for \"you are here\", focus and the primary action.",
       "Memory luminance: R as the opacity of a solid point, never a glow.",
       "Tabular figures on every number."
@@ -508,7 +590,12 @@
       },
       {
         "name": "The No Red Debt Rule",
-        "body": "Red belongs to the Again rating and destructive actions. Due counts, backlog and missed days never turn red.",
+        "body": "Red belongs to the Again rating and destructive actions. Due counts, backlog and missed days never turn red; the after-a-break mode has no color signal at all, its return plan reads from the text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Rating Hues Stay Ratings Rule",
+        "body": "The four rating hues mean ratings only. Language and domain chips are neutral.",
         "section": "colors"
       },
       {

@@ -6,7 +6,7 @@ colors:
     ground: "oklch(14.5% 0.008 250deg)", ground-day: "oklch(96.4% 0.004 250deg)", sidebar: "oklch(17.5% 0.009 250deg)", sidebar-day: "oklch(94.6% 0.005 250deg)",
     surface: "oklch(20.5% 0.01 250deg)", surface-day: "oklch(100% 0 0deg)", surface-raised: "oklch(24.5% 0.011 250deg)", glass-solid: "oklch(23% 0.01 250deg)",
     ink: "oklch(96.5% 0.004 250deg)", ink-day: "oklch(21% 0.012 250deg)", body: "oklch(86% 0.008 250deg)", muted: "oklch(69% 0.012 250deg)",
-    memory: "oklch(95% 0.045 85deg)", memory-day: "oklch(27% 0.03 250deg)",
+    memory: "oklch(95% 0.045 85deg)", memory-day: "oklch(27% 0.03 250deg)", bar: "oklch(58% 0.012 250deg)", bar-day: "oklch(60% 0.012 250deg)", bar-weak: "oklch(52% 0.012 250deg)",
     again: "oklch(70% 0.19 22deg)", hard: "oklch(80% 0.15 66deg)", good: "oklch(77% 0.17 150deg)", easy: "oklch(71% 0.16 255deg)" }
 typography:
   title: { fontFamily: "-apple-system, SF Pro Text, Inter (bundled), Ubuntu Sans, Segoe UI, system-ui, sans-serif", fontSize: "28px", fontWeight: 650, lineHeight: 1.28, letterSpacing: "-0.018em" }
@@ -30,11 +30,15 @@ components:
   review-card: { backgroundColor: "{colors.surface}", rounded: "{rounded.panel}", padding: "26px 40px 22px" }
   decision-tray: { backgroundColor: "{colors.glass-solid}", rounded: "{rounded.panel}", padding: "{spacing.md}" }
   group-row: { backgroundColor: "{colors.surface}", padding: "10px 14px", typography: "{typography.callout}" }
+  topic-row: { backgroundColor: "{colors.surface}", padding: "12px 14px" }
+  field-search: { rounded: "{rounded.sm}", padding: "7px 10px", width: "320px" }
+  switch: { backgroundColor: "{colors.tint}", rounded: "{rounded.pill}", width: "46px", height: "28px" }
+  stepper: { rounded: "{rounded.sm}", padding: "2px", height: "32px" }
 ---
 
 # Design System: wastech-learn
 
-Visual system resolved by the first build of the Review screen in the [desktop prototype](prototypes/desktop-ui/README.md). Product truth, users and constraints live in [PRODUCT.md](PRODUCT.md). Tokens are oklch custom properties in `prototypes/desktop-ui/styles.css`; keys without `-day` are the dark rendition. Home, Topic, Cards, Stats and Settings only inherit these tokens; their own design passes come in that order.
+Visual system resolved by the Review build and the library pass (Home, Topics, Topic, Cards, Stats, Settings) in the [desktop prototype](prototypes/desktop-ui/README.md). Product truth, users and constraints live in [PRODUCT.md](PRODUCT.md). Tokens are oklch custom properties in `prototypes/desktop-ui/styles.css`; keys without `-day` are the dark rendition.
 
 ## Overview
 
@@ -42,14 +46,14 @@ Visual system resolved by the first build of the Review screen in the [desktop p
 
 A native-feeling study app in the iOS and macOS grammar: system type, tinted near-black grounds, grouped surfaces lifted by lightness, one teal tint, and frosted glass only on chrome that content scrolls beneath. The usual session is in the evening in a dim room, so dark is the primary rendition; light is a complete second rendition. Both follow the OS until the user picks one, and an explicit pick wins either way.
 
-What the user reads (question, answer, diagram, inspector facts) sits on opaque surfaces. The signature move is **memory luminance**: retrievability (R) is the opacity of a solid point in a fixed per-theme color (warm white at night, ink by day). In Review the inspector shows the current session's cards as a field of points, the current one ringed in the tint; a just-rated card's point eases to its new value, and it always brightens: right after a review R is 1 whatever the rating, which only changes stability. Topic and Cards screens still draw R as a thin bar.
+What the user reads (question, answer, diagram, inspector facts) sits on opaque surfaces. The signature move is **memory luminance**: retrievability (R) is the opacity of a solid point in a fixed per-theme color (warm white at night, ink by day). In Review the inspector shows the current session's cards as a field of points, the current one ringed in the tint; a just-rated card's point eases to its new value, and it always brightens: right after a review R is 1 whatever the rating, which only changes stability. The point recurs on every screen: a topic row carries a strip of small points, one per card; the Cards table, the topic's card list and the card inspector show R as a point plus its percent.
 
 Rejected by the user: anything that reads as a SaaS dashboard, a game, or Anki.
 
 **Key Characteristics:**
 
 - Dark-first, light equally finished; theme follows the OS unless chosen.
-- Glass only on the sticky toolbar, decision tray, mobile tab bar and toast.
+- Library screens are iOS inset-grouped lists; glass only on the sticky toolbar, decision tray, mobile tab bar and toast.
 - One teal tint for "you are here", focus and the primary action.
 - Memory luminance: R as the opacity of a solid point, never a glow.
 - Tabular figures on every number.
@@ -60,7 +64,7 @@ Tinted cool neutrals (hue 250) carry everything; one teal tint and four rating h
 
 ### Primary
 
-- **Evening Teal** (`tint`, `tint-day`): current navigation item (weak fill, tinted icon), focus rings, the Reveal and primary buttons, the 2px session progress line, the ring around the current memory point, text selection. Links use its `-ink` value.
+- **Evening Teal** (`tint`, `tint-day`): current navigation item (weak fill, tinted icon), focus rings, the Reveal and primary buttons, the 2px session progress line, the ring around the current memory point, today's bar in the forecast and the 30-day chart, a switch that is on, slider progress, text selection. Links use its `-ink` value.
 
 ### Semantic (ratings)
 
@@ -72,6 +76,7 @@ Tinted cool neutrals (hue 250) carry everything; one teal tint and four rating h
 - **Surface / Raised surface**: cards, the review card, grouped lists; raised is for diagram nodes and code blocks.
 - **Ink, Body, Muted**: three label levels. Separators are translucent hairlines (`--border`, `--glass-edge`).
 - **Memory** (`memory`, `memory-day`): the single point color; only opacity varies.
+- **Bar / Bar weak** (`bar`, `bar-weak`): neutral chart bars; weak marks weekends in the 30-day chart.
 
 ### Named Rules
 
@@ -79,7 +84,7 @@ Tinted cool neutrals (hue 250) carry everything; one teal tint and four rating h
 
 **The No Red Debt Rule.** Red belongs to the Again rating and destructive actions. Due counts, backlog and missed days never turn red; the after-a-break mode has no color signal at all, its return plan reads from the text.
 
-**The Rating Hues Stay Ratings Rule.** The four rating hues mean ratings only. Language chips (ru, pl) are neutral; Home and Topic still paint them in rating hues until their passes.
+**The Rating Hues Stay Ratings Rule.** The four rating hues mean ratings only. Language and domain chips are neutral.
 
 ## Typography
 
@@ -103,14 +108,14 @@ Tinted cool neutrals (hue 250) carry everything; one teal tint and four rating h
 
 ## Layout
 
-A 244px opaque sidebar plus a scrolling content column (padding 28px 32px, max 1360px). The toolbar is sticky at the top of the content column. Review is a grid of `minmax(0, 1fr)` and a 300px inspector with a 28px gap; the review column holds the card and the decision tray, which sticks 16px above the bottom of the viewport. The question keeps its position across both phases; the reveal only adds the answer below it, which fades in and rises 8px over 0.32s on `cubic-bezier(0.16, 1, 0.3, 1)`, the one authored transition. `prefers-reduced-motion` removes every transition and animation, pseudo-elements included.
+A 244px opaque sidebar plus a scrolling content column (padding 28px 32px, max 1360px). The toolbar is sticky at the top of the content column. Review is a grid of `minmax(0, 1fr)` and a 300px inspector with a 28px gap; the review column holds the card and the decision tray, which sticks 16px above the bottom of the viewport. The question keeps its position across both phases; the reveal only adds the answer below it, which fades in and rises 8px over 0.32s on `cubic-bezier(0.16, 1, 0.3, 1)`, the one authored transition. `prefers-reduced-motion` removes every transition and animation, pseudo-elements included. Home opens on the today block (count and minutes at Title size, start row) beside a 380px 7-day forecast card, then grouped lists of topics and chat workflows; topics are grouped by domain. Settings caps at 680px. The demo-state segmented control sits in the toolbar; on Cards the toolbar search hides, since the screen has its own field.
 
 - **≤1180px:** the inspector stacks below the review column (no sheet); the session-mode chip hides.
-- **≤760px:** the sidebar collapses into a top row, navigation becomes a fixed glass tab bar (58px, six columns), the tray sits above it, ratings go 2×2 and Reveal spans full width; side gutters are 16px or the safe-area inset. The inspector still stacks under the card and the tray scrolls away with it; an inspector sheet behind a button and an always-pinned tray belong to the mobile build (phase 2).
+- **≤760px:** the sidebar collapses into a top row, navigation becomes a fixed glass tab bar (58px, five columns; Settings moves to a sliders-glyph link beside language and theme), the tray sits above it, ratings go 2×2 and Reveal spans full width; the Cards table becomes a list (title, topic, R point), a topic row's point strip wraps to its own line; side gutters are 16px or the safe-area inset. The inspector still stacks under the card and the tray scrolls away with it; an inspector sheet behind a button and an always-pinned tray belong to the mobile build (phase 2).
 
 ## Elevation & Depth
 
-Content has no shadows: depth comes from lightness steps (ground, sidebar, surface, raised) plus a 1px hairline. Glass (`--glass` with `blur(28px) saturate(170%)` and a hairline edge) marks chrome floating over content. Shadows sit on floating chrome (the decision tray, toast and drawer, `--shadow`) and on one control state, the selected segment of a segmented control (`--shadow-raised`). The drawer is an opaque surface sheet, not glass. With `prefers-reduced-transparency` or no `backdrop-filter`, glass falls back to the opaque `glass-solid`.
+Content has no shadows: depth comes from lightness steps (ground, sidebar, surface, raised) plus a 1px hairline. Glass (`--glass` with `blur(28px) saturate(170%)` and a hairline edge) marks chrome floating over content. Shadows sit on floating chrome (the decision tray, toast and drawer, `--shadow`) and on two control states: the selected segment of a segmented control (`--shadow-raised`) and the white thumb of a switch or slider (`--thumb-shadow`). The drawer is an opaque surface sheet, not glass. With `prefers-reduced-transparency` or no `backdrop-filter`, glass falls back to the opaque `glass-solid`.
 
 ### Named Rules
 
@@ -138,11 +143,15 @@ One glass panel at the bottom of the review column holds the whole decision. Bef
 
 ### Inset-grouped lists
 
-The inspector is iOS-style: a muted 13px header above an opaque 16px-radius group with hairline-divided rows; labels in body color, values in ink at 600 with tabular figures.
+The library's container and the inspector's: a muted 13px header (`.group-h`) above an opaque 16px-radius group (`.group-body`) with hairline-divided rows, an optional muted 13px footer (`.group-f`) below; groups are 32px apart. Labels in body color, values in ink at 600 with tabular figures. A topic row (`.t-row`) is title over muted domain · language, the point strip, due today and a chevron; a chat row is a bold name, a one-line description and its tool.
+
+### Native controls
+
+Drawn after iOS, not left to the browser: a 46×28 switch (`role="switch"`, tint when on), a stepper (two 34px buttons around a tabular value on the fill), a slider (4px track, tint progress, 24px white thumb), segmented controls, and a type filter strip of segmented tokens. Cards search is a 320px filled field with a tint focus ring. All keep keyboard focus and labels. Charts are one labeled chart per need, never a tile: Home's 7-day forecast and Stats' 30-day chart (160px bars, Y extremes and X dates in 11.5px muted figures). Bars are `bar` with today in the tint.
 
 ### Memory field
 
-The signature component: a grid of 22px cells with 11px solid points in the memory color, opacity from R (0.16–1.0). New cards are a 1.5px outline at 0.55; the current card gets a 2px tint ring; opacity changes ease over 0.9s. A one-line legend reads three graded points as «R now» and an outline as «new».
+The signature component: a grid of 22px cells with 11px solid points in the memory color, opacity from R (0.16–1.0). New cards are a 1.5px outline at 0.55; the current card gets a 2px tint ring; opacity changes ease over 0.9s. A one-line legend reads three graded points as «R now» and an outline as «new». The small point (14px cell, 8px dot) fills topic strips; the inline R point is 9px beside its percent.
 
 ### Diagrams and code
 
