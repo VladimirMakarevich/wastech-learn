@@ -1,10 +1,10 @@
 name: CI
 
 # The code half of the definition-of-done gate, on every push to `main` and every pull request:
-# ESLint (with the package boundaries of the headless core), Stylelint, the Prettier check and `tsc -b`.
-# The steps run in the order a failure is cheapest to read. The Markdown half runs in markdown-lint.yml,
-# so `npm run lint` is covered by the two workflows together without linting anything twice.
-# Tests join this workflow with the first package (M2).
+# ESLint (with the package boundaries of the headless core), Stylelint, the Prettier check, `tsc -b` and
+# the Vitest suite. The steps run in the order a failure is cheapest to read. The Markdown half runs in
+# markdown-lint.yml, so `npm run lint` is covered by the two workflows together without linting anything
+# twice.
 #
 # No path filter, on purpose: a config, the lockfile or a tsconfig can break the gate without touching code.
 
@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   lint-code:
-    name: eslint, stylelint, prettier, tsc
+    name: eslint, stylelint, prettier, tsc, vitest
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -50,3 +50,6 @@ jobs:
 
       - name: Typecheck
         run: npm run --silent typecheck
+
+      - name: Test
+        run: npm test

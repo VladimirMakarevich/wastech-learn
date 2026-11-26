@@ -30,11 +30,11 @@ These are the **main rules** for working in this repository — the framework ha
 
 ## Key project facts
 
-- **Phase:** documentation (phase 0) is done; milestone M1 (content repository with a golden sample) is done; M2 — the `core` and `srs` packages — is next ([roadmap](../docs/roadmap.md)). No package exists yet.
+- **Phase:** documentation (phase 0), milestone M1 (content repository with a golden sample) and milestone M2 (the packages `core`, `srs`, `content-fs`, `cli`) are done; M3 — capture through MCP and skills — is next ([roadmap](../docs/roadmap.md)).
 - **Two repositories:** this public framework repo (MIT) and the private `wastech-learn-content` (topics, cards, review logs) next to it. Personal content never lands here.
 - **Runtime:** Node ≥ 24.17 (`.nvmrc`), npm workspaces under `packages/*`, ESM only, TypeScript 6.0 pinned (typescript-eslint does not support 7 yet).
 - **UI stack:** desktop-first Angular + CDK, the Evening Glass look from [DESIGN.md](../DESIGN.md), Capacitor in phase 2 ([ADR-0006](../docs/adr/0006-headless-core-angular-ui.md)). The app is scaffolded in M4, not before; the [prototype](../prototypes/desktop-ui/README.md) is the reference for layout and flows.
-- **Commands:** `npm run lint` = `lint:code` (ESLint, Stylelint, Prettier check, `tsc -b`) + `lint:docs` (wastech-mdlint). `npm run fix` runs every autofixer (ESLint, Stylelint, Prettier, wastech-mdlint) even when one leaves findings. CI runs both halves on every push to `main` and every pull request.
+- **Commands:** `npm run lint` = `lint:code` (ESLint, Stylelint, Prettier check, `tsc -b`) + `lint:docs` (wastech-mdlint); `npm test` runs Vitest over `packages/*/test`. `npm run fix` runs every autofixer (ESLint, Stylelint, Prettier, wastech-mdlint) even when one leaves findings. CI runs both halves on every push to `main` and every pull request.
 - **Every script in `package.json` works.** A dead script or an unused dependency reads as an approved pattern; delete it instead of leaving it.
 
 ## Installed skills

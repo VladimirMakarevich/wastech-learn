@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant R as Поток запроса
+  participant C as SynchronizationContext
+  participant M as GetDataAsync
+  R->>M: GetDataAsync().Result
+  M->>M: await без ConfigureAwait(false)
+  M-->>R: незавершённый Task
+  Note over R: поток заблокирован .Result
+  M->>C: продолжение просится в контекст
+  C--xM: единственный поток контекста занят
+  Note over R,M: оба ждут друг друга — дедлок

@@ -1,0 +1,11 @@
+{
+  // core also runs in the browser: the DOM lib brings the Web Crypto and TextEncoder globals it hashes with,
+  // and Node types stay out so a Node API cannot type-check here.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM"],
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"]
+}

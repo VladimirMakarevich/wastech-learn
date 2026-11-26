@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** —
 - **Даёт:** Workspaces `packages/*`, Vitest, fast-check, `npm test` в CI; Zod-схемы конфигурации, front matter и события v1 в `core`
 
@@ -36,5 +36,5 @@ Unit на каждую схему: валидный и невалидный вх
 
 ## Приёмка фазы
 
-- [ ] AC-F01b (часть схемы), AC-N05 проходят.
-- [ ] `npm run lint` и `npm test` зелёные локально и в CI.
+- [x] AC-F01b (часть схемы), AC-N05 проходят.
+- [x] `npm run lint` и `npm test` зелёные локально и в CI.

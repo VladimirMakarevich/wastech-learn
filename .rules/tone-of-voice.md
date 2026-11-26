@@ -33,7 +33,7 @@
 ## Errors and tool messages
 
 - Say what went wrong and how to fix it, in that order, with the file and line when there is one. No apologies, no vagueness.
-- CLI and MCP messages are English, single-line where possible, actionable: `content/…/cards/7k2m9xqd.md: Answer has 19 words, limit 12 for basic`.
+- CLI and MCP messages come from the ru/en/pl catalog in `core` (the `--lang` flag, else `uiLanguage` of `learn.config.json`, else English); single-line where possible, actionable, naming the file and rule: `content/…/cards/7k2m9xqd.md  answer-words  Answer has 19 words, limit 12 for basic`. Rule ids stay English in every language.
 
 ## Banned patterns
 

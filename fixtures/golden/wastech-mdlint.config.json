@@ -1,0 +1,152 @@
+{
+  // Пресет контента из wastech-learn: docs/quality/mdlint-policy.md (версия пресета 1).
+  // В mdlint нет `extends`, поэтому пресет копируется; расхождение с пресетом из CLI покажет `wastech-learn check`.
+  "$schema": "./node_modules/@wastech-mdlint/cli/schema.json",
+  "include": ["content/**/*.md", "inbox/*.md", "journal/*.md", "./*.md"],
+
+  "rules": [
+    // Front matter по семействам файлов.
+    {
+      "rule": "FM-001",
+      "options": {
+        "files": ["content/**/cards/*.md"],
+        "required": ["id", "type", "status", "bloom", "grading", "origin", "created"],
+        "allowed": {
+          "type": ["basic", "cloze", "reversed", "why", "compare", "scenario", "vocab", "grammar-cloze",
+                   "design", "bug", "explain", "occlusion", "draw", "salience"],
+          "status": ["draft", "active", "retired"],
+          "bloom": ["remember", "understand", "apply", "analyze", "evaluate", "create"],
+          "grading": ["self", "ai", "none"],
+          "origin": ["claude-code", "chatgpt", "manual", "import"],
+          "lang": ["en", "ru", "pl"],
+          "langPair": ["pl-ru", "pl-en"]
+        },
+        "patterns": {
+          "id": "^[0-9a-hjkmnp-tv-z]{8}$",
+          "created": "^\\d{4}-\\d{2}-\\d{2}$",
+          "tags": "^[a-z0-9][a-z0-9-]*$",
+          "idea": "^[a-z0-9][a-z0-9-]*$"
+        }
+      }
+    },
+    {
+      "rule": "FM-001",
+      "options": {
+        "files": ["content/*/*/index.md"],
+        "required": ["title", "domain", "lang", "status", "familiarity", "created", "origin"],
+        "allowed": {
+          "lang": ["en", "ru", "pl"],
+          "status": ["draft", "active", "archived"],
+          "familiarity": ["new", "familiar"],
+          "origin": ["claude-code", "chatgpt", "manual", "import"]
+        },
+        "patterns": { "created": "^\\d{4}-\\d{2}-\\d{2}$", "related": "^[a-z0-9-]+/[a-z0-9-]+$" }
+      }
+    },
+    { "rule": "FM-001", "options": { "files": ["content/*/*/summary.md"], "required": ["status", "updated"] } },
+    { "rule": "FM-001", "options": { "files": ["content/*/*/materials.md"], "required": ["updated"] } },
+
+    // Обязательные секции и их порядок.
+    { "rule": "SEC-001", "options": { "files": ["content/**/cards/*.md"], "sections": ["Question", "Answer"] } },
+    {
+      "rule": "SEC-002",
+      "options": {
+        "files": ["content/**/cards/*.md"],
+        "level": 2,
+        "order": ["Question", "Answer", "Rubric", "Explanation", "Sources"]
+      }
+    },
+    { "rule": "SEC-001", "options": { "files": ["content/*/*/index.md"], "sections": ["Key idea", "Pretest", "Cards"] } },
+    {
+      "rule": "SEC-001",
+      "options": {
+        "files": ["content/*/*/summary.md"],
+        "exclude": ["content/lang-*/**"],
+        "sections": ["TL;DR", "Mental model", "Diagram", "Worked example", "Trade-offs", "When not to use",
+                     "Misconceptions", "Comparison", "Self-check", "Related", "Open questions", "Sources"]
+      }
+    },
+    {
+      "rule": "SEC-002",
+      "options": {
+        "files": ["content/*/*/summary.md"],
+        "exclude": ["content/lang-*/**"],
+        "level": 2,
+        "order": ["TL;DR", "Mental model", "Diagram", "Worked example", "Trade-offs", "When not to use",
+                  "Misconceptions", "Comparison", "Self-check", "Related", "Open questions", "Sources"]
+      }
+    },
+    {
+      "rule": "SEC-001",
+      "options": {
+        "files": ["content/lang-*/*/summary.md"],
+        "sections": ["TL;DR", "Rules", "Examples", "Exceptions", "Comparison", "Self-check", "Related", "Sources"]
+      }
+    },
+    { "rule": "SEC-001", "options": { "files": ["content/*/*/materials.md"], "sections": ["Materials"] } },
+
+    // Размер. Для ru и pl основная метрика — байты: оценка токенов chars/4 занижает кириллицу.
+    {
+      "rule": "SIZE-001",
+      "options": {
+        "lines": { "warn": 300 },
+        "overrides": [
+          { "pattern": "content/**/cards/*.md", "lines": { "warn": 40, "error": 60 }, "bytes": { "warn": 2048, "error": 3072 } },
+          { "pattern": "content/*/*/index.md", "lines": { "warn": 60, "error": 90 }, "bytes": { "warn": 4096, "error": 6144 } },
+          { "pattern": "content/*/*/summary.md", "lines": { "warn": 150, "error": 220 }, "bytes": { "warn": 12288, "error": 18432 } },
+          { "pattern": "content/*/*/materials.md", "lines": { "warn": 120, "error": 200 }, "bytes": { "warn": 10240, "error": 16384 } },
+          { "pattern": "inbox/*.md", "lines": { "warn": 400, "error": 600 }, "bytes": { "warn": 40960, "error": 61440 } },
+          { "pattern": "journal/*.md", "lines": { "warn": 200, "error": 300 }, "bytes": { "warn": 16384, "error": 24576 } }
+        ]
+      }
+    },
+
+    // Ссылки, якоря, картинки, заглушки, alt-текст, язык блоков кода.
+    { "rule": "REF-001" },
+    { "rule": "REF-002" },
+    { "rule": "REF-003" },
+    { "rule": "REF-008" },
+    { "rule": "CTX-001" },
+    { "rule": "CTX-005" },
+    { "rule": "CTX-006" },
+
+    // Карточка, на которую не ссылается index.md темы, потеряна.
+    { "rule": "GRP-002", "options": { "files": ["content/**/cards/*.md"] } },
+    { "rule": "GRP-001", "severity": "off" },
+
+    { "rule": "LLM-001", "options": { "entrypoints": ["./CLAUDE.md", "./AGENTS.md"], "maxTokensPerEntrypoint": 3000 } },
+
+    // Правила формулировки, которые выражаются регулярными выражениями.
+    {
+      "rule": "custom",
+      "id": "LEARN-NO-YESNO",
+      "description": "Вопрос карточки не должен быть да/нет",
+      "options": {
+        "files": ["content/**/cards/*.md"],
+        "assert": {
+          "kind": "contentNotMatch",
+          "pattern": "## Question\\s+(\\[[^\\]]+\\]\\s*)?(Верно ли|Можно ли|Является ли|Is |Does |Can )"
+        }
+      }
+    },
+    {
+      "rule": "custom",
+      "id": "LEARN-NO-TOKENS",
+      "description": "Не осталось незаполненных {{TOKENS}} шаблона",
+      "options": {
+        "files": ["content/**/*.md"],
+        "assert": { "kind": "contentNotMatch", "pattern": "\\{\\{[A-Z][A-Z0-9_]*\\}\\}" }
+      }
+    },
+    {
+      "rule": "custom",
+      "id": "LEARN-LOCAL-IMAGES",
+      "severity": "warning",
+      "description": "Картинки лежат в репозитории, а не по внешним URL",
+      "options": {
+        "files": ["content/**/*.md"],
+        "assert": { "kind": "contentNotMatch", "pattern": "!\\[[^\\]]*\\]\\(https?://" }
+      }
+    }
+  ]
+}

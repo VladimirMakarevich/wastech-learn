@@ -6,10 +6,10 @@
 
 | Пакет | Ответственность | Зависит от | Где работает |
 | --- | --- | --- | --- |
-| `@wastech-learn/core` | Zod-схемы (front matter, `learn.config.json`, событие, learning package), парсер Markdown (unified/remark — тот же стек, что в mdlint), компилятор content bundle (remark → rehype → Shiki, KaTeX, sanitize), правила `check` | unified, remark, rehype, zod, yaml | Node, браузер (парсинг) |
-| `@wastech-learn/srs` | Адаптер ts-fsrs, replay журнала, очередь (лимиты, siblings, бэклог, режим «5 минут»), метрики | ts-fsrs | Node, браузер |
-| `@wastech-learn/content-fs` | Чтение репозитория, дозапись JSONL (атомарно, свой файл на writer), кэш `node:sqlite`, watch файлов, рендер Mermaid | core, srs, mermaid-cli | Node |
-| `@wastech-learn/cli` | `check`, `build`, `render`, `serve`, `export`, `simulate`, `new-id` | core, srs, content-fs | Node |
+| `@wastech-learn/core` | Zod-схемы (front matter, `learn.config.json`, событие, learning package), парсер Markdown (unified/remark — тот же стек, что в mdlint), компилятор content bundle (remark → rehype → Shiki, KaTeX, sanitize), правила `check`, каталог сообщений ru/en/pl, каноничный пресет mdlint `preset/content.mdlint.jsonc` | unified, remark, rehype, zod, yaml, shiki | Node, браузер |
+| `@wastech-learn/srs` | Адаптер ts-fsrs, replay журнала, очередь (лимиты, siblings, бэклог, режим «5 минут»), симуляция бэклога, метрики | ts-fsrs | Node, браузер |
+| `@wastech-learn/content-fs` | Чтение репозитория, дозапись JSONL (атомарно, свой файл на writer), кэш `node:sqlite`, watch файлов, рендер Mermaid | core, srs; mermaid-cli через `npx` с точной версией, не зависимостью | Node |
+| `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2); `serve`, `export`, `new-id` — позже | core, srs, content-fs | Node |
 | `@wastech-learn/mcp-server` | Инструменты MCP ([mcp-tools](../ai/mcp-tools.md)) | core, srs, content-fs, `@wastech-mdlint/core` | Node (stdio; позже Worker) |
 | `@wastech-learn/server` | Локальный HTTP: bundle, события, статус, SSE об изменениях | core, srs, content-fs, Hono | Node |
 | `app` | Angular + CDK UI | core (типы bundle), srs (очередь в клиенте) | Браузер, Capacitor |
@@ -53,19 +53,23 @@ interface ReviewStore {
 // Фаза 2: SqliteOutboxReviewStore → Capacitor SQLite + синхронизация с Worker/D1
 ```
 
+**Порты `srs`.** `srs` не импортирует `core`, поэтому объявляет узкие входы: `ReplayEvent` (`id`, `ts`, `kind`, `item`, `rating`, `target`, `due`), `QueueCard` (`item`, `cardId`, `idea`, `domain`, `type`, `status`) и `SrsConfig`. Хост передаёт разобранные значения `core`; совместимость форм проверяет `satisfies` в `content-fs/load.ts`, поэтому переименование поля ломает сборку, а не replay.
+
 **Content bundle** — результат `wastech-learn build`, его читает UI:
 
 ```ts
 interface ContentBundle {
   version: 1;
-  builtAt: string;
+  builtAt: string;          // передаётся снаружи: повторная сборка даёт тот же файл
   domains: DomainMeta[];
   topics: TopicMeta[];      // путь, title, lang, familiarity, related, html секций summary
   cards: CardEntry[];       // id, type, variants[], questionHtml, answerHtml, rubric[], contentHash, topic
-  assets: Record<string, string>; // путь → URL (SVG, audio)
-  searchIndex: unknown;     // сериализованный MiniSearch
+  assets: Record<string, string>; // локальные картинки, которые не встроены; SVG встраиваются в HTML
+  searchIndex?: unknown;    // сериализованный MiniSearch, появится в M4
 }
 ```
+
+Пропуски cloze в HTML — `<span class="cloze" data-cloze="N">`: UI скрывает пропуск показываемого варианта.
 
 **Grader** — подключаемая оценка открытых ответов ([tutor-and-grading](../ai/tutor-and-grading.md)): `grade(question, rubric, answer) → { verdicts[], suggestedRating, explanation }`. Реализации: `chat` (сам ИИ в чате, MVP), `claude-cli` и `api` (Later).
 

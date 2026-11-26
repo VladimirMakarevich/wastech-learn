@@ -1,0 +1,5 @@
+flowchart LR
+  P["Producer<br/>fast"] -->|"items ≤ n"| B[("Bounded buffer<br/>capacity 100")]
+  B -->|"items"| C["Consumer<br/>slow"]
+  C -.->|"request(n)"| P
+  B -.->|"full → WriteAsync waits"| P

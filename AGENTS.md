@@ -6,7 +6,7 @@ Guide for AI agents and contributors working in `wastech-learn`.
 
 `wastech-learn` is the framework half of a personal spaced-repetition learning system (chat → cards, summaries, visuals → FSRS review). The knowledge itself lives in the separate private repo `wastech-learn-content`. See [README.md](README.md) and [docs/README.md](docs/README.md).
 
-**Phase:** documentation (phase 0) and M1 (content repo with a golden sample) are done; tooling is set up; M2 — the `core` and `srs` packages — is next. No package exists yet. Do not scaffold code unless the user asks. The UI stack is decided: desktop-first Angular + CDK in the Evening Glass look, Capacitor in phase 2 (ADR-0006).
+**Phase:** documentation (phase 0), M1 (content repo with a golden sample) and M2 (the headless packages `core`, `srs`, `content-fs` and the CLI `check`, `build`, `render`, `simulate`) are done; M3 — capture through MCP and skills — is next. Do not scaffold a new package unless the user asks. The UI stack is decided: desktop-first Angular + CDK in the Evening Glass look, Capacitor in phase 2 (ADR-0006).
 
 **UI design work** starts from [PRODUCT.md](PRODUCT.md): users, purpose, constraints and principles condensed from `docs/` for the `impeccable` skill. The visual world lives in [DESIGN.md](DESIGN.md) (iOS-inspired, frosted glass, dark-first); the prototype's Review screen is built in it, the other screens only inherit its tokens.
 
@@ -32,12 +32,14 @@ The [rules index](.rules/README.md) is the canonical "how to work here". The non
 ```bash
 npm ci               # Node >=24.17 (.nvmrc); every tool is an exact devDependency
 npm run lint         # lint:code (ESLint, Stylelint, Prettier check, tsc -b) + lint:docs (wastech-mdlint)
+npm test             # Vitest over packages/*/test, with fast-check property tests
+npm run build        # tsc -b; the CLI runs from dist/: npx wastech-learn check --content <dir>
 npm run fix          # every autofix: ESLint, Stylelint, Prettier
 npm run docs:view    # local viewer for the docs with rendered Mermaid
 npm run proto:data   # rebuild the prototype's data.js from ../wastech-learn-content
 ```
 
-`npm run lint` must be green before a change is done; CI runs it on every push to `main` and every pull request. The `wastech-mdlint` MCP server is registered in [.mcp.json](.mcp.json): use `lint` on a draft before writing it and `impact-analysis` before renaming or splitting a doc.
+`npm run lint` and `npm test` must be green before a change is done; CI runs it on every push to `main` and every pull request. The `wastech-mdlint` MCP server is registered in [.mcp.json](.mcp.json): use `lint` on a draft before writing it and `impact-analysis` before renaming or splitting a doc.
 
 ## Language
 
