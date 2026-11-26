@@ -19,7 +19,7 @@
 | 07 | [Инструменты квиза](07-quiz-tools.md) | `queue_status`, `quiz_next`, `reveal`, `record_review`, `undo_last`, автоматический `suspend` | 05, M2 08 | ☑ |
 | 08 | [Hook `PostToolUse`](08-hook.md) | Подкоманда `wastech-learn hook post-tool-use` | 04 | ☑ |
 | 09 | [Skills и промпт экспорта](09-skills.md) | `learn-capture`, `learn-import`, `learn-quiz` и промпт экспорта на трёх языках | 05–07 | ☑ |
-| 10 | [Публикация и подключение контента](10-publish-and-wire.md) | Пакеты в npm, контент-репозиторий с сервером, hook и skills | 01–09 | ☐ |
+| 10 | [Подключение контента](10-publish-and-wire.md) | Контент-репозиторий на локальной сборке: сервер, hook и skills; публикация в npm — после приёмки | 01–09 | ☐ |
 | 11 | [Приёмка и документы](11-acceptance-and-docs.md) | Две реальные темы, замер времени, статусы требований и документы | 10 | ☐ |
 
 «M2 NN» — фаза плана [M2](../../m2-core/plan/index.md). Фазы 03 и 08 не зависят от соседних и могут идти раньше.

@@ -23,6 +23,13 @@ export interface Renderer {
  */
 export const MERMAID_CLI = "@mermaid-js/mermaid-cli@11.12.0";
 
+/**
+ * The first render on a machine downloads mermaid-cli and Chromium, which takes minutes on a slow
+ * connection; a render that has not finished in five is a hung browser, and waiting longer only hangs
+ * the caller with it.
+ */
+export const RENDER_TIMEOUT_MS = 5 * 60_000;
+
 export const npxMermaidRenderer: Renderer = {
   render: async (sourcePath, outputPath) => {
     await run(
@@ -40,6 +47,7 @@ export const npxMermaidRenderer: Renderer = {
       ],
       {
         maxBuffer: 16 * 1024 * 1024,
+        timeout: RENDER_TIMEOUT_MS,
       },
     );
   },

@@ -119,6 +119,8 @@ export const en = {
   "error.card-not-found": "There is no card with id {subject}",
   "error.package-not-found": "There is no learning package at {subject}",
   "error.nothing-to-undo": "There is no review from this device to undo",
+  "error.content-changed":
+    "{subject} changed while the write was being prepared; nothing was written",
   "error.input-invalid": "Input field {field} is invalid",
   "error.tool-unknown": "There is no tool named {subject}",
   "error.config-invalid": "{file}: {field} is invalid",
@@ -149,6 +151,8 @@ export const en = {
     "Pass the path of a file in inbox/, such as inbox/topic.md",
   "hint.nothing-to-undo":
     "Only reviews recorded with record_review on this device can be undone here",
+  "hint.content-changed":
+    "Someone saved the file in the meantime: call the tool again to build on the new text",
   "hint.input-invalid": "Fix that field and call the tool again",
   "hint.tool-unknown": "List the tools to see what this server offers",
   "hint.config-invalid": "Fix the value in the file and call again",

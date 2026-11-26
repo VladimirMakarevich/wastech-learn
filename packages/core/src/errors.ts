@@ -16,7 +16,8 @@ export type LearnErrorCode =
   | "topic-not-found"
   | "card-not-found"
   | "package-not-found"
-  | "nothing-to-undo";
+  | "nothing-to-undo"
+  | "content-changed";
 
 /**
  * Where an error points: a repository-relative file and, for schema errors, the dotted field path; `subject`

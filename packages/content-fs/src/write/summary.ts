@@ -80,7 +80,11 @@ export const saveSummary = async (
           });
   return applyWrite(
     workspace,
-    { files: new Map([[path, writeDocument(document)]]), result: { path } },
+    {
+      basis: snapshot,
+      files: new Map([[path, writeDocument(document)]]),
+      result: { path },
+    },
     { dryRun: input.dryRun === true },
   );
 };

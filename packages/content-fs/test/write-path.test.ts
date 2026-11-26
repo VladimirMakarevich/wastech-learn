@@ -4,6 +4,7 @@ import { seededRng } from "@wastech-learn/srs";
 import { describe, expect, it } from "vitest";
 import {
   REQUESTS_FILE,
+  applyWrite,
   openWorkspace,
   runIdempotent,
   validateOverlay,
@@ -70,6 +71,31 @@ describe("validateOverlay", () => {
         }),
       ]),
     );
+  });
+});
+
+describe("applyWrite", () => {
+  it("refuses to overwrite a file the learner saved after the plan was made", async () => {
+    const root = await goldenCopy();
+    const workspace = workspaceOn(root);
+    const basis = await workspace.snapshot();
+    const planned = (await readFile(join(root, INDEX), "utf8")).replace(
+      "# Backpressure",
+      "# Backpressure (tool)",
+    );
+    const edited = (await readFile(join(root, INDEX), "utf8")).replace(
+      "# Backpressure",
+      "# Backpressure (editor)",
+    );
+    await writeFile(join(root, INDEX), edited);
+    await expect(
+      applyWrite(
+        workspace,
+        { basis, files: new Map([[INDEX, planned]]), result: {} },
+        { dryRun: false },
+      ),
+    ).rejects.toMatchObject({ code: "content-changed", subject: INDEX });
+    expect(await readFile(join(root, INDEX), "utf8")).toBe(edited);
   });
 });
 

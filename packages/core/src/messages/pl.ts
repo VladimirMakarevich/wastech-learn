@@ -144,6 +144,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "error.card-not-found": "Nie ma karty o id {subject}",
   "error.package-not-found": "Pod ścieżką {subject} nie ma learning package",
   "error.nothing-to-undo": "Nie ma oceny z tego urządzenia do cofnięcia",
+  "error.content-changed":
+    "{subject} zmienił się podczas przygotowania zapisu; nic nie zapisano",
   "error.input-invalid": "Pole wejścia {field} jest niepoprawne",
   "error.tool-unknown": "Nie ma narzędzia o nazwie {subject}",
   "error.config-invalid": "{file}: pole {field} jest niepoprawne",
@@ -174,6 +176,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Podaj ścieżkę pliku w inbox/, na przykład inbox/topic.md",
   "hint.nothing-to-undo":
     "Tu można cofnąć tylko oceny zapisane przez record_review na tym urządzeniu",
+  "hint.content-changed":
+    "Ktoś w tym czasie zapisał plik: wywołaj narzędzie ponownie, by oprzeć się na nowym tekście",
   "hint.input-invalid": "Popraw to pole i wywołaj narzędzie ponownie",
   "hint.tool-unknown": "Pobierz listę narzędzi, by zobaczyć, co oferuje serwer",
   "hint.config-invalid": "Popraw wartość w pliku i wywołaj ponownie",

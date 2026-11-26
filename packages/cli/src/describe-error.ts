@@ -29,6 +29,7 @@ const describeLearnError = (
     case "card-not-found":
     case "package-not-found":
     case "nothing-to-undo":
+    case "content-changed":
       return t(`error.${error.code}`, { subject: error.subject ?? "" });
   }
 };

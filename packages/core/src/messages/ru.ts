@@ -144,6 +144,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "error.package-not-found": "По пути {subject} нет learning package",
   "error.nothing-to-undo":
     "Нет оценки с этого устройства, которую можно отменить",
+  "error.content-changed":
+    "{subject} изменился, пока готовилась запись; ничего не записано",
   "error.input-invalid": "Поле входа {field} неверно",
   "error.tool-unknown": "Инструмента {subject} нет",
   "error.config-invalid": "{file}: поле {field} неверно",
@@ -174,6 +176,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Передай путь к файлу в inbox/, например inbox/topic.md",
   "hint.nothing-to-undo":
     "Здесь отменяются только оценки, записанные через record_review на этом устройстве",
+  "hint.content-changed":
+    "Файл сохранили в это время: вызови инструмент снова, чтобы опереться на новый текст",
   "hint.input-invalid": "Исправь это поле и вызови инструмент снова",
   "hint.tool-unknown":
     "Запроси список инструментов, чтобы увидеть, что есть у сервера",

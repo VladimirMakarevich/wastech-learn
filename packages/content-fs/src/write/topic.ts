@@ -88,7 +88,11 @@ export const createTopic = async (
   }
   return applyWrite(
     workspace,
-    { files, result: { topic, paths: [...files.keys()] } },
+    {
+      basis: snapshot,
+      files,
+      result: { topic, paths: [...files.keys()] },
+    },
     { dryRun: input.dryRun === true },
   );
 };

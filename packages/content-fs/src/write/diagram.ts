@@ -108,6 +108,7 @@ export const saveDiagram = async (
   return applyWrite(
     workspace,
     {
+      basis: snapshot,
       files: new Map([
         [sourcePath, rendered.source],
         [svgPath, rendered.svg],

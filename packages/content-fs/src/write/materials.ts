@@ -53,7 +53,11 @@ export const saveMaterials = async (
       : withMaterials(current, input.items, updated);
   return applyWrite(
     workspace,
-    { files: new Map([[path, writeDocument(document)]]), result: { path } },
+    {
+      basis: snapshot,
+      files: new Map([[path, writeDocument(document)]]),
+      result: { path },
+    },
     { dryRun: input.dryRun === true },
   );
 };

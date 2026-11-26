@@ -72,6 +72,7 @@ export const addCards = async (
   return applyWrite(
     workspace,
     {
+      basis: snapshot,
       files,
       incidental: [topic.indexPath],
       result: {
@@ -127,6 +128,7 @@ export const updateCard = async (
     return applyWrite(
       workspace,
       {
+        basis: snapshot,
         files,
         incidental: [topic.indexPath],
         result: { id: card.id, retired: undefined, paths: [card.file] },
@@ -162,6 +164,7 @@ export const updateCard = async (
   return applyWrite(
     workspace,
     {
+      basis: snapshot,
       files,
       incidental: [topic.indexPath],
       result: { id, retired: card.id, paths: [card.file, path] },

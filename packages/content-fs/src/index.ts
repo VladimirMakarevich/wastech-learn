@@ -9,7 +9,12 @@ export type { AppendResult } from "./log-append.js";
 export { readReviewLog } from "./log-read.js";
 export type { LogFinding, LogFindingCode, ReviewLog } from "./log-read.js";
 export { readCanonicalPreset } from "./preset.js";
-export { MERMAID_CLI, npxMermaidRenderer, renderDiagrams } from "./render.js";
+export {
+  MERMAID_CLI,
+  RENDER_TIMEOUT_MS,
+  npxMermaidRenderer,
+  renderDiagrams,
+} from "./render.js";
 export type { RenderReport, Renderer } from "./render.js";
 export {
   CONFIG_FILE,

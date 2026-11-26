@@ -57,7 +57,7 @@ Skills лежат в `wastech-learn/skills/<name>/SKILL.md` и ставятся 
 
 ## Конфигурация Claude Code в контент-репозитории
 
-Пакеты `@wastech-learn/mcp-server`, `@wastech-learn/cli` и `@wastech-mdlint/mcp-server` стоят в контенте точными devDependencies, поэтому версию фиксирует lockfile, а запуск не ходит в сеть:
+Пакеты `@wastech-learn/mcp-server`, `@wastech-learn/cli` и `@wastech-mdlint/mcp-server` стоят в контенте точными devDependencies, поэтому версию фиксирует lockfile, а запуск не ходит в сеть. Пока пакеты фреймворка не опубликованы, devDependencies ссылаются на его папки — `file:../wastech-learn/packages/mcp-server` и `…/cli`; конфигурация ниже от этого не меняется:
 
 ```jsonc
 // .mcp.json
