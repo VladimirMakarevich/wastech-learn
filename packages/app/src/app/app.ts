@@ -34,6 +34,12 @@ import { Icon, type IconName } from "./ui/icon";
 import { Toast, Toasts } from "./ui/toast";
 import type { MessageKey } from "./i18n/en";
 
+/** The screen on show; no title until the first navigation ends. */
+interface Navigation {
+  readonly title: MessageKey | undefined;
+  readonly url: string;
+}
+
 interface NavItem {
   readonly path: string;
   readonly label: MessageKey;
@@ -87,16 +93,20 @@ export class App {
     globalThis.matchMedia("(prefers-color-scheme: dark)").matches,
   );
 
-  private readonly navigation = toSignal(
+  private readonly navigation = toSignal<Navigation, Navigation>(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       map((event) => {
         let route = this.route.snapshot;
         while (route.firstChild !== null) route = route.firstChild;
-        return { title: titleOf(route.data), url: event.urlAfterRedirects };
+        return {
+          title: titleOf(route.data),
+          url: event.urlAfterRedirects,
+        };
       }),
     ),
-    { initialValue: { title: "title.home" as const, url: "/" } },
+    // Until the first navigation ends no screen is known: a deep link must not flash the home title.
+    { initialValue: { title: undefined, url: "" } },
   );
   protected readonly title = computed(() => this.navigation().title);
 
@@ -171,8 +181,17 @@ export class App {
       if (theme === "system") delete document.documentElement.dataset.theme;
       else document.documentElement.dataset.theme = theme;
     });
+    // Screen-wide styles key off the view: in review the toast moves away from the decision tray.
     effect(() => {
-      document.title = `${this.i18n.t(this.title())} · ${this.i18n.t("app.name")}`;
+      const url = this.navigation().url;
+      if (url.startsWith("/review")) document.body.dataset.view = "review";
+      else delete document.body.dataset.view;
+    });
+    effect(() => {
+      const title = this.title();
+      const name = this.i18n.t("app.name");
+      document.title =
+        title === undefined ? name : `${this.i18n.t(title)} · ${name}`;
     });
     // The repository's language applies until this browser has picked one of its own.
     effect(() => {

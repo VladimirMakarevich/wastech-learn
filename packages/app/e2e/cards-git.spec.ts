@@ -229,7 +229,7 @@ test.describe("cards and topics from the app", () => {
       await expect(block).toContainText("summary.md");
       await expect(block.locator(".git-entry")).toHaveCount(2);
       await page.goto("/topic/dotnet/async-await");
-      await expect(page.locator("main.screen")).toBeVisible();
+      await expect(page.locator(".screen")).toBeVisible();
       await expect(page.locator("[data-uncommitted]")).toHaveCount(0);
       await page.goto("/browser");
       await expect(

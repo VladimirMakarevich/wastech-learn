@@ -28,7 +28,7 @@ const sessionSummary = async (page: Page): Promise<void> => {
 
 const screenReady = async (page: Page): Promise<void> => {
   await expect(
-    page.locator("main.screen, wl-review article, wl-review .end").first(),
+    page.locator(".screen, wl-review article, wl-review .end").first(),
   ).toBeVisible();
 };
 

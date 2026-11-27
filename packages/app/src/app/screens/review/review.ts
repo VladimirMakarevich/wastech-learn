@@ -18,9 +18,10 @@ import {
 import { Router, RouterLink } from "@angular/router";
 import type { CardEntry } from "@wastech-learn/core";
 import type { SessionMode } from "@wastech-learn/session";
-import type { Rating } from "@wastech-learn/srs";
+import { buildQueue, type Rating } from "@wastech-learn/srs";
 import { AppData } from "../../data/app-data";
 import { CardActions } from "../../data/card-actions";
+import { Library } from "../../data/library";
 import { daysAgo, intervalLabel, percent } from "../../format/duration";
 import { BundleHtml } from "../../html/bundle-html";
 import { askedGap, type ClozeView } from "../../html/cloze";
@@ -107,6 +108,29 @@ export class Review {
   protected readonly ratings = RATINGS;
   protected readonly confidences = CONFIDENCES;
   protected readonly started = signal(false);
+  private readonly library = inject(Library);
+
+  /**
+   * New cards the day still offers. A short session takes none of them, so an empty short session says
+   * where they are instead of looking like a finished day.
+   */
+  protected readonly newWaiting = computed(() => {
+    const snapshot = this.library.snapshot();
+    if (snapshot === undefined) return 0;
+    const { state, deck, context, now, estimates } = snapshot;
+    return buildQueue(state, deck.cards, context.config, now, {
+      mode: { kind: "full" },
+      estimates,
+    }).entries.filter((entry) => entry.kind === "new").length;
+  });
+
+  protected startFull(): void {
+    this.session.start({ kind: "full" });
+    void this.router.navigate([], {
+      queryParams: { mode: "all" },
+      replaceUrl: true,
+    });
+  }
 
   private readonly revealButton =
     viewChild<ElementRef<HTMLButtonElement>>("reveal");

@@ -110,6 +110,7 @@ export class Topic {
         title: key === undefined ? section.name : this.i18n.t(key),
         anchor: sectionAnchor(section.name),
         html: section.html,
+        empty: section.html.trim() === "",
         selfCheck: section.name === SELF_CHECK,
       };
     }),

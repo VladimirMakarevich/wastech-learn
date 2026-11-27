@@ -1,4 +1,4 @@
-<main class="screen" data-screen="home">
+<div class="screen" data-screen="home">
   @if (model(); as model) {
   <div class="home-top">
     <section
@@ -33,6 +33,17 @@
       <p class="today-sub">{{ "home.nothing-sub" | t }}</p>
       }
       <div class="row start-row">
+        @if (onlyNew()) {
+        <a
+          class="btn primary"
+          [routerLink]="['/review']"
+          [queryParams]="{ mode: 'all' }"
+          aria-keyshortcuts="Enter"
+          data-start="full"
+        >
+          {{ "session.full" | t }} <kbd>Enter</kbd>
+        </a>
+        } @else {
         <a
           class="btn primary"
           [routerLink]="['/review']"
@@ -56,6 +67,7 @@
         >
           {{ "session.full" | t }}
         </a>
+        }
       </div>
     </section>
     <section class="card forecast-card" aria-labelledby="forecast-h">
@@ -69,7 +81,7 @@
           [attr.aria-label]="'home.forecast-day' | t: { day: day.name, cards: count(day.due) }"
         >
           <small class="tnum">{{ day.due }}</small>
-          <span class="bar-fill" [style.height.%]="day.height"></span>
+          <span class="bar-fill" [style.--fill]="day.height / 100"></span>
           <small>{{ day.name }}</small>
         </div>
         }
@@ -142,4 +154,4 @@
     }
   </section>
   } }
-</main>
+</div>

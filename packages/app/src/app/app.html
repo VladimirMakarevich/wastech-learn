@@ -74,7 +74,7 @@
 </aside>
 <main>
   <header class="topbar">
-    <h1>{{ title() | t }}</h1>
+    <h1>@if (title(); as title) { {{ title | t }} }</h1>
     <div class="topbar-session">
       @if (sessionBar(); as bar) {
       <span class="session-mode">{{ bar.mode }}</span>

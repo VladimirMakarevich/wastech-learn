@@ -1,4 +1,4 @@
-<main class="screen" data-screen="session-end">
+<div class="screen" data-screen="session-end">
   @if (summary(); as summary) { @if (summary.reviewed > 0) {
   <section class="end">
     <h2
@@ -6,8 +6,8 @@
       data-reviewed
       [attr.data-count]="summary.reviewed"
     >
-      {{ "end.title" | t: { cards: count(summary.reviewed), minutes:
-      minutes(summary.minutes) } }}
+      {{ "end.title" | t: { cards: count(summary.cards), minutes:
+      minutesIn(summary.minutes) } }}
     </h2>
     <p class="today-sub tnum">
       @if (summary.retention.total > 0) { {{ "end.recalled" | t: { passed:
@@ -87,4 +87,4 @@
     </div>
   </section>
   }
-</main>
+</div>

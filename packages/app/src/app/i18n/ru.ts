@@ -43,6 +43,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "session.left": "ещё ≈ {minutes}",
   "session.finish": "Закончить",
   "review.empty": "Сейчас повторять нечего: следующие карточки вернутся позже",
+  "review.new-waiting":
+    "Короткая сессия не берёт новые карточки, а сегодня их ждёт {cards}: они во «Всей очереди»",
   "review.confidence": "Уверенность до ответа",
   "review.confidence-1": "не уверен",
   "review.confidence-2": "скорее да",
@@ -110,7 +112,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "end.title": "Готово: {cards} за {minutes}",
   "end.recalled": "Вспомнил {passed} из {total}",
   "end.only-new":
-    "В этот раз только новые карточки: вспоминание измерится со следующего повторения",
+    "В этот раз только новые и недавно начатые карточки: вспоминание измерится, когда до них дойдёт повторение",
   "end.misses":
     "Забыто при уверенности «точно»: кандидаты на карточку различения",
   "end.misses-none": "Таких нет: уверенность совпала с памятью",
@@ -151,6 +153,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "topic.selfcheck-first": "Показать первый вопрос",
   "topic.selfcheck-next": "Показать следующий вопрос",
   "topic.selfcheck-done": "Все вопросы показаны",
+  "topic.section-empty": "Пока пусто",
   "topic.missing": "Такой темы в контенте нет",
   "browser.search": "Поиск по карточкам и темам",
   "browser.domain": "Домен",
@@ -413,6 +416,12 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   },
   "count.minutes": {
     one: "{count} минута",
+    few: "{count} минуты",
+    many: "{count} минут",
+    other: "{count} минуты",
+  },
+  "count.minutes-in": {
+    one: "{count} минуту",
     few: "{count} минуты",
     many: "{count} минут",
     other: "{count} минуты",

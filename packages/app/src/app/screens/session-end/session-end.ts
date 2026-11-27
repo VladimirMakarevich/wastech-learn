@@ -59,6 +59,10 @@ export class SessionEnd {
   protected readonly minutes = (count: number): string =>
     this.i18n.t("count.minutes", { count });
 
+  /** "за 1 минуту", "w 1 minutę": after the preposition the title needs the accusative. */
+  protected readonly minutesIn = (count: number): string =>
+    this.i18n.t("count.minutes-in", { count });
+
   constructor() {
     const release = inject(Keyboard).register((name) =>
       name === "u" || name === "Ctrl+z" ? this.undo() : false,

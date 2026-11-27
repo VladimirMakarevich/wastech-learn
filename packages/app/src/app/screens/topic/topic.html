@@ -1,4 +1,4 @@
-<main class="screen" data-screen="topic">
+<div class="screen" data-screen="topic">
   @if (shownMeta(); as topic) {
   <div class="topic-head">
     <div>
@@ -14,7 +14,7 @@
         [wlBundleHtml]="topic.keyIdeaHtml"
       ></div>
     </div>
-    <div class="row">
+    <div class="row topic-actions">
       <button
         #editButton
         class="btn"
@@ -87,7 +87,9 @@
           >
         </button>
       </div>
-      @if (section.selfCheck) {
+      @if (section.empty || (section.selfCheck && questions() === 0)) {
+      <p class="muted" data-section-empty>{{ "topic.section-empty" | t }}</p>
+      } @else if (section.selfCheck) {
       <div
         class="self-check"
         [wlBundleHtml]="section.html"
@@ -175,4 +177,4 @@
   } } @else if (data.bundle() !== undefined) {
   <p class="muted">{{ "topic.missing" | t }}</p>
   }
-</main>
+</div>

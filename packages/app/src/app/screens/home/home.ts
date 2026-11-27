@@ -52,6 +52,12 @@ export class Home {
   protected readonly minutes = (count: number): string =>
     this.i18n.t("count.minutes", { count });
 
+  /** A short session takes no new cards: with nothing else due, Enter starts the whole queue instead. */
+  protected readonly onlyNew = computed(() => {
+    const entries = this.model()?.queue.entries ?? [];
+    return entries.length > 0 && entries.every((entry) => entry.kind === "new");
+  });
+
   protected readonly newList = computed(() =>
     (this.model()?.newByDomain ?? [])
       .map((entry) => this.i18n.t("home.new-domain", entry))
@@ -67,7 +73,7 @@ export class Home {
       key: day.day.key,
       due: day.due,
       today: index === 0,
-      height: Math.round((day.due / max) * 80),
+      height: Math.round((day.due / max) * 100),
       name: this.i18n.date(
         day.day.start + 12 * 3_600_000,
         { weekday: "short" },
@@ -79,7 +85,7 @@ export class Home {
   constructor() {
     const release = inject(Keyboard).register((name) => {
       if (name !== "Enter") return false;
-      this.start(this.lengths()[0]);
+      this.start(this.onlyNew() ? "all" : this.lengths()[0]);
       return true;
     });
     inject(DestroyRef).onDestroy(release);

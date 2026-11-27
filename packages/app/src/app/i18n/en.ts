@@ -47,6 +47,8 @@ export const en = {
   "session.left": "≈ {minutes} more",
   "session.finish": "Finish",
   "review.empty": "Nothing to review right now: the next cards come back later",
+  "review.new-waiting":
+    "Short sessions take no new cards; {cards} new are waiting in the whole queue today",
   "review.confidence": "Confidence before the answer",
   "review.confidence-1": "unsure",
   "review.confidence-2": "probably",
@@ -114,7 +116,7 @@ export const en = {
   "end.title": "Done: {cards} in {minutes}",
   "end.recalled": "Recalled {passed} of {total}",
   "end.only-new":
-    "Only new cards this time: recall is measured from their next review",
+    "Only new and still-learning cards this time: recall is measured once they come up for review",
   "end.misses":
     "Forgotten while sure: candidates for a card that tells them apart",
   "end.misses-none": "None: confidence matched recall",
@@ -150,6 +152,7 @@ export const en = {
   "topic.selfcheck-first": "Show the first question",
   "topic.selfcheck-next": "Show the next question",
   "topic.selfcheck-done": "All questions are shown",
+  "topic.section-empty": "Nothing here yet",
   "topic.missing": "This topic is not in the content",
   "browser.search": "Search cards and topics",
   "browser.domain": "Domain",
@@ -396,6 +399,7 @@ export const en = {
   "shortcut.vscode": "VS Code",
   "count.cards": { one: "{count} card", other: "{count} cards" },
   "count.minutes": { one: "{count} minute", other: "{count} minutes" },
+  "count.minutes-in": { one: "{count} minute", other: "{count} minutes" },
   "count.events": { one: "{count} rating", other: "{count} ratings" },
   "count.errors": { one: "{count} error", other: "{count} errors" },
 } as const satisfies Record<string, Message>;

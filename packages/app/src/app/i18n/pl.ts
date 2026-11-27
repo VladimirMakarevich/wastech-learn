@@ -44,6 +44,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "session.finish": "Zakończ",
   "review.empty":
     "Na razie nie ma czego powtarzać: kolejne karty wrócą później",
+  "review.new-waiting":
+    "Krótka sesja nie bierze nowych kart, a dziś czeka ich {cards}: są w całej kolejce",
   "review.confidence": "Pewność przed odpowiedzią",
   "review.confidence-1": "nie wiem",
   "review.confidence-2": "raczej tak",
@@ -111,7 +113,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "end.title": "Gotowe: {cards} w {minutes}",
   "end.recalled": "Zapamiętane {passed} z {total}",
   "end.only-new":
-    "Tym razem tylko nowe karty: pamięć zmierzy się przy ich następnej powtórce",
+    "Tym razem tylko nowe i świeżo zaczęte karty: pamięć zmierzy się, gdy przyjdzie pora ich powtórki",
   "end.misses": "Zapomniane mimo pewności: kandydaci na kartę rozróżniającą",
   "end.misses-none": "Brak: pewność zgadzała się z pamięcią",
   "end.misses-open": "Otwórz te karty",
@@ -150,6 +152,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "topic.selfcheck-first": "Pokaż pierwsze pytanie",
   "topic.selfcheck-next": "Pokaż następne pytanie",
   "topic.selfcheck-done": "Wszystkie pytania są widoczne",
+  "topic.section-empty": "Na razie pusto",
   "topic.missing": "Takiego tematu nie ma w treściach",
   "browser.search": "Szukaj w kartach i tematach",
   "browser.domain": "Domena",
@@ -413,6 +416,12 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   },
   "count.minutes": {
     one: "{count} minuta",
+    few: "{count} minuty",
+    many: "{count} minut",
+    other: "{count} minuty",
+  },
+  "count.minutes-in": {
+    one: "{count} minutę",
     few: "{count} minuty",
     many: "{count} minut",
     other: "{count} minuty",
