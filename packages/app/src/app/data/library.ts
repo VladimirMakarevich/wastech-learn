@@ -1,33 +1,9 @@
 import { Injectable, computed, inject } from "@angular/core";
-import type { ContentBundle, ReviewEvent } from "@wastech-learn/core";
-import {
-  deckFromBundle,
-  toReplayEvents,
-  type ReplayContext,
-  type SessionDeck,
-} from "@wastech-learn/session";
-import {
-  estimateDurations,
-  prepareEvents,
-  replay,
-  type DurationEstimates,
-  type ReplayState,
-} from "@wastech-learn/srs";
+import { deckFromBundle, toReplayEvents } from "@wastech-learn/session";
+import { estimateDurations, prepareEvents, replay } from "@wastech-learn/srs";
 import { AppData } from "./app-data";
 import { Clock } from "./clock";
-
-/** The whole log replayed at one moment, with what the library screens derive from it. */
-export interface LibrarySnapshot {
-  readonly now: Date;
-  readonly bundle: ContentBundle;
-  readonly context: ReplayContext;
-  readonly deck: SessionDeck;
-  readonly events: readonly ReviewEvent[];
-  readonly state: ReplayState;
-  readonly estimates: DurationEstimates;
-  /** The content hash each item was last answered on, to mark changed cards. */
-  readonly answeredHash: ReadonlyMap<string, string>;
-}
+import type { LibrarySnapshot } from "./snapshot";
 
 /**
  * The replayed log for Home, Topic, Cards and Stats. A full replay of a large log takes up to a second, so
@@ -71,13 +47,3 @@ export class Library {
     };
   });
 }
-
-/** Whether the card changed since its item was last answered, as the session decides it too. */
-export const changedSince = (
-  snapshot: LibrarySnapshot,
-  item: string,
-  cardHash: string,
-): boolean => {
-  const answered = snapshot.answeredHash.get(item);
-  return answered !== undefined && answered !== cardHash;
-};

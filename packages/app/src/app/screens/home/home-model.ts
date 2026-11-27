@@ -7,7 +7,7 @@ import {
   type ForecastDay,
   type Queue,
 } from "@wastech-learn/srs";
-import type { LibrarySnapshot } from "../../data/library";
+import type { LibrarySnapshot } from "../../data/snapshot";
 
 export interface TopicRow {
   readonly path: string;

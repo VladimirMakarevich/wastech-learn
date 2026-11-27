@@ -1,0 +1,90 @@
+<main class="screen" data-screen="topic">
+  @if (meta(); as topic) {
+  <div class="topic-head">
+    <div>
+      <div class="row topic-tags">
+        <span class="chip">{{ topic.domain }}</span>
+        <span class="chip">{{ topic.lang.toUpperCase() }}</span>
+        <span class="chip">{{ topic.familiarity }}</span>
+      </div>
+      <h2 [attr.lang]="topic.lang">{{ topic.title }}</h2>
+      <div
+        class="topic-idea"
+        [attr.lang]="topic.lang"
+        [wlBundleHtml]="topic.keyIdeaHtml"
+      ></div>
+    </div>
+    @if (editorHref(); as href) {
+    <div class="row">
+      <a class="btn" [href]="href" aria-keyshortcuts="e"
+        >{{ "topic.vscode" | t }}</a
+      >
+    </div>
+    }
+  </div>
+  <div class="topic-layout">
+    <nav class="toc" [attr.aria-label]="'topic.sections' | t">
+      @for (section of sections(); track section.anchor) {
+      <a [routerLink]="[]" [fragment]="section.anchor">{{ section.title }}</a>
+      }
+    </nav>
+    <article class="card md summary" [attr.lang]="topic.lang">
+      @for (section of sections(); track section.anchor) {
+      <h2 [id]="section.anchor">{{ section.title }}</h2>
+      @if (section.selfCheck) {
+      <div
+        class="self-check"
+        [wlBundleHtml]="section.html"
+        [listShown]="shown()"
+      ></div>
+      @if (shown() < questions()) {
+      <button class="btn" type="button" (click)="showNextQuestion()">
+        {{ (shown() === 0 ? "topic.selfcheck-first" : "topic.selfcheck-next") |
+        t }}
+      </button>
+      } @else {
+      <p class="muted">{{ "topic.selfcheck-done" | t }}</p>
+      } } @else {
+      <div [wlBundleHtml]="section.html"></div>
+      } }
+    </article>
+    <aside class="context">
+      <section>
+        <h3 class="group-h">
+          {{ "topic.cards" | t }}<span class="tnum">{{ cards().length }}</span>
+        </h3>
+        <div class="group-body">
+          @for (card of cards(); track card.id) {
+          <a
+            class="g-row g-action card-row"
+            [routerLink]="['/browser']"
+            [queryParams]="{ items: card.items }"
+          >
+            <span class="cr-main">
+              <span [attr.lang]="card.lang">{{ card.title }}</span>
+              <small>{{ card.type }} · {{ card.due }}</small>
+            </span>
+            <span class="r-cell">
+              <wl-memory-point size="small" [retrievability]="card.r" />{{
+              card.percent ?? ("context.new" | t) }}
+            </span>
+          </a>
+          }
+        </div>
+      </section>
+      @if (topic.materialsHtml !== "") {
+      <section>
+        <h3 class="group-h">{{ "topic.materials" | t }}</h3>
+        <div
+          class="group-body pad md materials"
+          [attr.lang]="topic.lang"
+          [wlBundleHtml]="topic.materialsHtml"
+        ></div>
+      </section>
+      }
+    </aside>
+  </div>
+  } @else if (data.bundle() !== undefined) {
+  <p class="muted">{{ "topic.missing" | t }}</p>
+  }
+</main>

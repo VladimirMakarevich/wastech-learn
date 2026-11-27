@@ -21,6 +21,8 @@ export class BundleHtml {
   /** For a cloze card: which gap to hide and whether the answer is revealed. */
   readonly cloze = input<ClozeView | undefined>(undefined);
   readonly clozePlaceholder = input("[…]");
+  /** Shows only the first N items of the lists: self-check questions come one at a time. */
+  readonly listShown = input<number | undefined>(undefined);
 
   private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly sanitizer = inject(DomSanitizer);
@@ -36,6 +38,13 @@ export class BundleHtml {
         this.sanitizer.sanitize(SecurityContext.HTML, this.trusted()) ?? "";
       const view = this.cloze();
       if (view !== undefined) applyCloze(host, view, this.clozePlaceholder());
+      const shown = this.listShown();
+      if (shown !== undefined)
+        host
+          .querySelectorAll<HTMLElement>(":scope > ol > li, :scope > ul > li")
+          .forEach((item, index) => {
+            item.hidden = index >= shown;
+          });
     });
   }
 }

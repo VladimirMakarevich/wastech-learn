@@ -7,7 +7,7 @@ import type {
 import { deckFromBundle } from "@wastech-learn/session";
 import { createScheduler, replay, type SrsConfig } from "@wastech-learn/srs";
 import { describe, expect, it } from "vitest";
-import type { LibrarySnapshot } from "../src/app/data/library";
+import type { LibrarySnapshot } from "../src/app/data/snapshot";
 import { homeModel } from "../src/app/screens/home/home-model";
 
 const CONFIG: SrsConfig = {
