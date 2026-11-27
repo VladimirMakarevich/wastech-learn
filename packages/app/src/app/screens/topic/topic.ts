@@ -1,4 +1,5 @@
 import {
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -6,7 +7,8 @@ import {
   input,
   linkedSignal,
 } from "@angular/core";
-import { RouterLink } from "@angular/router";
+import { toSignal } from "@angular/core/rxjs-interop";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { AppData } from "../../data/app-data";
 import { Library } from "../../data/library";
 import { intervalLabel, percent } from "../../format/duration";
@@ -43,6 +45,9 @@ export class Topic {
   protected readonly data = inject(AppData);
   private readonly library = inject(Library);
   protected readonly i18n = inject(I18n);
+  private readonly fragment = toSignal(inject(ActivatedRoute).fragment);
+  /** The fragment already scrolled to, so a later render of the same topic leaves the reader where they are. */
+  private scrolledTo: string | null = null;
   /** Self-check questions shown so far; the section starts closed, also when another topic opens here. */
   protected readonly shown = linkedSignal({
     source: () => `${this.domain()}/${this.topic()}`,
@@ -136,6 +141,21 @@ export class Topic {
       ];
     });
   });
+
+  constructor() {
+    // The router scrolls the window to a fragment, but the page scrolls inside `main`, so the topic does it.
+    afterRenderEffect(() => {
+      const fragment = this.fragment() ?? null;
+      if (this.sections().length === 0 || fragment === this.scrolledTo) return;
+      this.scrolledTo = fragment;
+      if (fragment !== null) this.scrollToSection(fragment);
+    });
+  }
+
+  /** A click on the section already in the URL is no navigation for the router, so the link scrolls itself. */
+  protected scrollToSection(anchor: string): void {
+    document.getElementById(anchor)?.scrollIntoView({ block: "start" });
+  }
 
   protected showNextQuestion(): void {
     this.shown.update((count) => Math.min(this.questions(), count + 1));

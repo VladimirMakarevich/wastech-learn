@@ -64,7 +64,7 @@
                 (change)="session.toggleMark($index)"
               />
               <span>
-                <span [wlBundleHtml]="item.html"></span>
+                <span class="rubric-text" [wlBundleHtml]="item.html"></span>
                 @if (item.required) {
                 <span class="req">{{ "review.required" | t }}</span>
                 }

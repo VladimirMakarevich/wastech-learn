@@ -25,7 +25,12 @@
   <div class="topic-layout">
     <nav class="toc" [attr.aria-label]="'topic.sections' | t">
       @for (section of sections(); track section.anchor) {
-      <a [routerLink]="[]" [fragment]="section.anchor">{{ section.title }}</a>
+      <a
+        [routerLink]="[]"
+        [fragment]="section.anchor"
+        (click)="scrollToSection(section.anchor)"
+        >{{ section.title }}</a
+      >
       }
     </nav>
     <article class="card md summary" [attr.lang]="topic.lang">
