@@ -57,6 +57,30 @@ describe("session summary", () => {
     );
   });
 
+  it("counts a forgotten card shown again as one card with two answers", async () => {
+    const context = await contextOf();
+    let state = startSession(context, {
+      deck: deckOf([{ id: "c0000001" }]),
+      events: [pastReview("c0000001:main", at(-40), 3, ulid(0))],
+      mode: { kind: "full" },
+      now: NOW,
+    });
+    state = rate(context, state, { rating: 1 }, NOW).state;
+    expect(state.current?.item).toBe("c0000001:main");
+    state = rate(
+      context,
+      state,
+      { rating: 3 },
+      new Date(NOW.getTime() + MINUTE),
+    ).state;
+    const summary = summarize(
+      context,
+      state,
+      new Date(NOW.getTime() + 2 * MINUTE),
+    );
+    expect(summary).toMatchObject({ reviewed: 2, cards: 1 });
+  });
+
   it("is empty but calm before any answer", async () => {
     const context = await contextOf();
     const state = startSession(context, {

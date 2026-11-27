@@ -9,6 +9,8 @@ import type { SessionContext, SessionState } from "./engine.js";
 /** What the end screen shows: what was done, how recall went, and what tomorrow holds. No streaks. */
 export interface SessionSummary {
   readonly reviewed: number;
+  /** Distinct review items answered: a forgotten card shown again is one card, though two answers. */
+  readonly cards: number;
   /** Whole minutes from the start to `now`; at least one once anything was answered. */
   readonly minutes: number;
   /** Answers given in the review phase, young and mature together. */
@@ -50,6 +52,7 @@ export const summarize = (
   );
   return {
     reviewed,
+    cards: new Set(state.answers.map((answer) => answer.entry.item)).size,
     minutes:
       reviewed === 0
         ? 0
