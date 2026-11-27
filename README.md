@@ -11,7 +11,7 @@
 
 ## Статус
 
-**Фаза 0 (документация) и вехи M1 (контент-репозиторий с golden sample) и M2 (ядро: `core`, `srs`, `content-fs` и CLI `check`, `build`, `render`, `simulate`) завершены.** Идёт веха M3 — захват через MCP и skills: MCP-сервер `wastech-learn-mcp`, hook, `new-id` и skills `learn-capture`, `learn-import`, `learn-quiz` готовы; контент-репозиторий подключён к локальной сборке; впереди приёмка на реальных темах, публикация в npm — после неё. Требования, методика, модель данных и архитектура описаны в [docs/](docs/README.md), план фаз — в [roadmap](docs/roadmap.md). UI — desktop-first Angular + CDK в стиле [прототипа](prototypes/desktop-ui/README.md) ([ADR-0006](docs/adr/0006-headless-core-angular-ui.md)).
+**Фаза 0 (документация) и вехи M1 (контент-репозиторий с golden sample) и M2 (ядро: `core`, `srs`, `content-fs` и CLI `check`, `build`, `render`, `simulate`) завершены.** Идёт веха M3 — захват через MCP и skills: MCP-сервер `wastech-learn-mcp`, hook, `new-id` и skills `learn-capture`, `learn-import`, `learn-quiz` готовы; контент-репозиторий подключён к локальной сборке; впереди приёмка на реальных темах, публикация в npm — после неё. Веха M4 — приложение — собрана: пакет `session`, локальный сервер `wastech-learn serve` и Angular-приложение с экранами Home, Review, итоги, Topic, Cards, Stats, Settings; приёмка на реальном контенте — за владельцем. Требования, методика, модель данных и архитектура описаны в [docs/](docs/README.md), план фаз — в [roadmap](docs/roadmap.md). UI — desktop-first Angular + CDK в стиле [прототипа](prototypes/desktop-ui/README.md) ([ADR-0006](docs/adr/0006-headless-core-angular-ui.md)).
 
 ## Два репозитория
 
@@ -51,6 +51,14 @@ npm run lint:code      # ESLint (границы пакетов ядра), Stylel
 npm run lint:docs      # wastech-mdlint по docs/, .rules/, skills
 npm run fix            # все автоисправления: ESLint, Stylelint, Prettier
 npm run docs:view      # просмотр документации на 127.0.0.1:4180: схемы, подсветка, граф ссылок
+npm run build          # пакеты и приложение
+npm run test:e2e       # сценарии Playwright на копии golden (после build)
+```
+
+Запуск приложения над контент-репозиторием (после `npm run build`): сервер слушает только `127.0.0.1` и сам открывает браузер.
+
+```bash
+node packages/cli/bin/wastech-learn.mjs serve --content ../wastech-learn-content
 ```
 
 Правила разработки — в [.rules/](.rules/README.md) (на английском: их читают и агенты), вход для агентов — [AGENTS.md](AGENTS.md). CI на каждый push в `main` и каждый pull request: `.github/workflows/ci.yml` (код) и `.github/workflows/markdown-lint.yml` (документация).
