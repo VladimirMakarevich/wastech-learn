@@ -8,7 +8,11 @@ import type {
 } from "@wastech-learn/content-fs";
 import type { ReviewEvent } from "@wastech-learn/core";
 import { afterEach } from "vitest";
-import { createServer, type LearnServer } from "../src/index.js";
+import {
+  createServer,
+  type LearnServer,
+  type ServerOptions,
+} from "../src/index.js";
 
 export const GOLDEN = fileURLToPath(
   new URL("../../../fixtures/golden", import.meta.url),
@@ -53,6 +57,7 @@ export interface FakeWatcher {
 export const serverOver = async (
   root: string,
   appDir?: string,
+  extra: Partial<ServerOptions> = {},
 ): Promise<{ server: LearnServer; watcher: FakeWatcher }> => {
   const watcher: FakeWatcher = {
     announce: () => undefined,
@@ -73,6 +78,7 @@ export const serverOver = async (
         },
       };
     },
+    ...extra,
   });
   servers.push(server);
   await server.ready;

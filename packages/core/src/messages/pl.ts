@@ -86,6 +86,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "W Sources brak linku do sekcji ../summary.md#: dodaj go",
   "finding.active-edit":
     "{section} aktywnej karty zmieniono w {percent}%: jeśli zmienił się sens, przenieś ją do retired i dodaj nową",
+  "finding.card-id-changed":
+    "id zostaje {id}: pod nim jest zapisana historia powtórek karty",
   "finding.preset-invalid":
     "To nie jest poprawny config wastech-mdlint: skopiuj preset z CLI",
   "finding.preset-drift":
@@ -148,6 +150,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Karta {subject} nie została usunięta od ostatniego commitu — nie ma czego przywracać",
   "error.content-changed":
     "{subject} zmienił się podczas przygotowania zapisu; nic nie zapisano",
+  "error.source-not-found":
+    "{subject} nie jest plikiem tematu ani karty, który można edytować w aplikacji",
   "error.search-index-invalid":
     "Indeks wyszukiwania w content bundle jest nieczytelny dla tej wersji",
   "error.id-unavailable":
@@ -186,6 +190,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Usunięcie można cofnąć tylko przed commitem; potem plik zostaje w historii git",
   "hint.content-changed":
     "Ktoś w tym czasie zapisał plik: wywołaj narzędzie ponownie, by oprzeć się na nowym tekście",
+  "hint.source-not-found":
+    "Otwórz plik z tematu lub karty widocznych w aplikacji",
   "hint.search-index-invalid":
     "Przebuduj bundle poleceniem wastech-learn build albo uruchom ponownie wastech-learn serve",
   "hint.id-unavailable":

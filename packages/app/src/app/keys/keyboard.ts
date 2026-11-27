@@ -59,6 +59,7 @@ export class Keyboard {
       ctrlKey: event.ctrlKey,
       metaKey: event.metaKey,
       altKey: event.altKey,
+      shiftKey: event.shiftKey,
       editable: isEditable(event.target),
       code: event.code,
     };

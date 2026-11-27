@@ -32,6 +32,7 @@ const describeLearnError = (
     case "nothing-to-undo":
     case "nothing-to-restore":
     case "content-changed":
+    case "source-not-found":
     case "search-index-invalid":
     case "id-unavailable":
       return t(`error.${error.code}`, { subject: error.subject ?? "" });

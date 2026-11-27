@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** —
 - **Даёт:** `editableKind`, `cardEditDecision`, схемы `/api/source`
 

@@ -6,33 +6,14 @@ import {
   readDocument,
   successorCardDocument,
   withCardLinks,
-  withFrontMatterValue,
   writeDocument,
   type AddCardsInput,
   type UpdateCardInput,
 } from "@wastech-learn/core";
-import type { ContentFiles, ContentModel } from "@wastech-learn/core";
 import { calendarDate, type Workspace } from "../workspace.js";
 import { applyWrite, type WriteOutcomeOf } from "./apply.js";
-import { requireTopic, topicDir } from "./topic-paths.js";
-
-const CARD_FILE = /\/cards\/([^/]+)\.md$/;
-
-/**
- * Every id in use: those of parsed cards and the file names of cards that failed to parse, which still
- * own their id. A new id must avoid both. Without a model, the file names alone.
- */
-export const takenCardIds = (
-  files: ContentFiles,
-  model?: ContentModel,
-): Set<string> => {
-  const ids = new Set(model?.cards.map((card) => card.id) ?? []);
-  for (const path of files.keys()) {
-    const id = CARD_FILE.exec(path)?.[1];
-    if (id !== undefined) ids.add(id);
-  }
-  return ids;
-};
+import { planSuccessor, takenCardIds } from "./successor.js";
+import { requireTopic } from "./topic-paths.js";
 
 export interface AddedCards {
   readonly ids: readonly string[];
@@ -136,31 +117,20 @@ export const updateCard = async (
       { dryRun },
     );
   }
-  const id = newUniqueCardId(
-    workspace.options.random,
-    takenCardIds(snapshot.files, snapshot.parsed.model),
+  const { id, path, files } = planSuccessor(
+    workspace,
+    snapshot,
+    {
+      file: card.file,
+      topic: card.topic,
+      origin: card.frontMatter.origin,
+      document,
+    },
+    (meta) => ({
+      document: successorCardDocument(document, input.fields, meta),
+      title: input.fields.title ?? card.title ?? meta.id,
+    }),
   );
-  const path = `${topicDir(card.topic)}/cards/${id}.md`;
-  const successor = successorCardDocument(document, input.fields, {
-    id,
-    origin: card.frontMatter.origin,
-    created: calendarDate(workspace.options.now(), snapshot.config.timezone),
-  });
-  const files = new Map([
-    [
-      card.file,
-      writeDocument(withFrontMatterValue(document, "status", "retired")),
-    ],
-    [path, writeDocument(successor)],
-    [
-      topic.indexPath,
-      writeDocument(
-        withCardLinks(topic.index, [
-          { id, title: input.fields.title ?? card.title ?? id },
-        ]),
-      ),
-    ],
-  ]);
   return applyWrite(
     workspace,
     {

@@ -4,6 +4,8 @@ export interface KeyInput {
   readonly ctrlKey: boolean;
   readonly metaKey: boolean;
   readonly altKey: boolean;
+  /** Only letters read it: Shift turns `e` into `Shift+e`, while `!` stays the key it types. */
+  readonly shiftKey?: boolean;
   /** The event came from a text field, where letters are typing, not commands. */
   readonly editable: boolean;
   /** The physical key, `KeyU` for the key that types `u` on a Latin layout. */
@@ -25,9 +27,10 @@ const letterOf = (input: KeyInput): string => {
 };
 
 /**
- * A key as the screens name it: `Space`, `Escape`, `1`, `u`, `!`, `Ctrl+z`. Cmd on a Mac counts as Ctrl,
- * so undo is the same chord everywhere; letters are lower case, so Caps Lock changes nothing, and named by
- * their key, so the keyboard layout changes nothing either.
+ * A key as the screens name it: `Space`, `Escape`, `1`, `u`, `Shift+e`, `!`, `Ctrl+z`. Cmd on a Mac counts
+ * as Ctrl, so undo is the same chord everywhere; letters are lower case, so Caps Lock changes nothing, and
+ * named by their key, so the keyboard layout changes nothing either. Shift is named only on a letter,
+ * where it is a separate command; on a digit or a sign it is how the character is typed.
  */
 export const keyName = (input: KeyInput): string => {
   const base =
@@ -36,7 +39,9 @@ export const keyName = (input: KeyInput): string => {
       : input.key.length === 1
         ? letterOf(input)
         : input.key;
-  return input.ctrlKey || input.metaKey ? `Ctrl+${base}` : base;
+  const shifted =
+    input.shiftKey === true && /^[a-z]$/.test(base) ? `Shift+${base}` : base;
+  return input.ctrlKey || input.metaKey ? `Ctrl+${shifted}` : shifted;
 };
 
 export type GlobalCommand = "search" | "go-home";

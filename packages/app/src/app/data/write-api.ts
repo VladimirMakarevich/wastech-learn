@@ -3,12 +3,17 @@ import {
   gitStateSchema,
   gitSyncResultSchema,
   parseContentWriteAnswer,
+  parseSourceSaveAnswer,
+  sourceFileSchema,
   type AppCardStatus,
   type AppTopicStatus,
   type ContentWriteAnswer,
   type GitFailure,
   type GitState,
   type GitSyncResult,
+  type SourceFile,
+  type SourceSaveAnswer,
+  type SourceSaveBody,
 } from "@wastech-learn/core";
 import { ApiError, type Fetch } from "./api";
 
@@ -37,6 +42,9 @@ export interface WriteApi {
     topic: string,
     status: AppTopicStatus,
   ) => Promise<WriteAnswer>;
+  /** A topic or card file as text, with the version a save names; a file the app may not edit is a 404. */
+  readonly source: (path: string) => Promise<SourceFile>;
+  readonly saveSource: (body: SourceSaveBody) => Promise<SourceSaveAnswer>;
 }
 
 const invalid = (what: string): ApiError =>
@@ -56,6 +64,21 @@ export const parseWriteAnswer = (status: number, raw: unknown): WriteAnswer => {
   const answer = parseContentWriteAnswer(raw);
   if (answer === undefined || (answer.kind === "written" && status !== 200))
     throw invalid("write answer");
+  return answer;
+};
+
+// Every answer of a save the editor knows how to show, a text over the body limit (413) among them;
+// anything else is a failure of the call itself.
+const SAVE_STATUSES = [200, 400, 404, 409, 413, 422];
+
+/** A save's answer, through core's schema, so server and app agree on one shape. */
+export const parseSaveAnswer = (
+  status: number,
+  raw: unknown,
+): SourceSaveAnswer => {
+  const answer = parseSourceSaveAnswer(raw);
+  if (answer === undefined || (answer.kind === "saved") !== (status === 200))
+    throw invalid("save answer");
   return answer;
 };
 
@@ -147,6 +170,33 @@ export const createWriteApi = (fetcher: Fetch): WriteApi => {
       write(`/api/cards/${encodeURIComponent(id)}`, "DELETE", {}),
     restoreCard: (id) =>
       write(`/api/cards/${encodeURIComponent(id)}/restore`, "POST", {}),
+    source: async (path) => {
+      const response = await call(
+        `/api/source?path=${encodeURIComponent(path)}`,
+        "GET",
+      );
+      if (response.status === 404)
+        throw new ApiError("source-not-found", 404, "HTTP 404");
+      if (!response.ok)
+        throw new ApiError(
+          "http",
+          response.status,
+          `HTTP ${String(response.status)}`,
+        );
+      const parsed = sourceFileSchema.safeParse(await bodyOf(response));
+      if (!parsed.success) throw invalid("source");
+      return parsed.data;
+    },
+    saveSource: async (body) => {
+      const response = await call("/api/source", "PUT", body);
+      if (!SAVE_STATUSES.includes(response.status))
+        throw new ApiError(
+          "http",
+          response.status,
+          `HTTP ${String(response.status)}`,
+        );
+      return parseSaveAnswer(response.status, await bodyOf(response));
+    },
     topicStatus: (topic, status) => {
       const [domain = "", name = ""] = topic.split("/");
       return write(

@@ -183,11 +183,7 @@
           [class.selected]="selected() === row.item"
         >
           <td class="title">
-            <button
-              type="button"
-              class="row-open"
-              (click)="selected.set(row.item)"
-            >
+            <button type="button" class="row-open" (click)="select(row.item)">
               {{ rowTitle(row) }}
             </button>
             @if (row.changed) {
@@ -226,9 +222,10 @@
       </tbody>
     </table>
   </div>
-  @if (panel(); as panel) {
+  @if (drawer(); as panel) {
   <aside
     class="drawer"
+    [class.editing]="editing() !== undefined"
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
     [attr.aria-label]="panel.card.title"
@@ -239,11 +236,20 @@
         class="btn"
         type="button"
         aria-keyshortcuts="Escape"
-        (click)="selected.set(undefined)"
+        (click)="select(undefined)"
       >
         {{ "panel.close" | t }} <kbd>Esc</kbd>
       </button>
     </div>
+    @if (editing() !== undefined) {
+    <h3 [attr.lang]="panel.card.lang">{{ panel.card.title }}</h3>
+    <wl-source-editor
+      [files]="[{ path: panel.card.file, label: 'edit.action' }]"
+      [initial]="panel.card.file"
+      [lang]="panel.card.lang"
+      (closed)="closeEditor($event)"
+    />
+    } @else {
     <div class="row">
       <span class="chip">{{ panel.card.type }} · {{ panel.card.bloom }}</span>
       <span class="chip">{{ panel.row.item }}</span>
@@ -303,15 +309,26 @@
       >
         {{ "action.delete" | t }}
       </button>
+      <button
+        #editButton
+        class="btn"
+        type="button"
+        data-edit
+        aria-keyshortcuts="e"
+        (click)="edit()"
+      >
+        <wl-icon name="pencil" />{{ "edit.action" | t }} <kbd>e</kbd>
+      </button>
       @if (panel.editor; as href) {
-      <a #editor class="btn" [href]="href" aria-keyshortcuts="e"
-        >{{ "context.vscode" | t }} <kbd>e</kbd></a
+      <a #editor class="btn" [href]="href" aria-keyshortcuts="Shift+E"
+        >{{ "context.vscode" | t }} <kbd>⇧E</kbd></a
       >
       }
       <a class="btn" [routerLink]="panel.topicLink" aria-keyshortcuts="o"
         >{{ "panel.open-topic" | t }} <kbd>o</kbd></a
       >
     </div>
+    }
   </aside>
   }
 </main>

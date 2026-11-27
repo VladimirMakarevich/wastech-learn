@@ -10,11 +10,13 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
   signal,
   untracked,
   viewChild,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
+import type { CardEntry } from "@wastech-learn/core";
 import type { SessionMode } from "@wastech-learn/session";
 import type { Rating } from "@wastech-learn/srs";
 import { AppData } from "../../data/app-data";
@@ -33,6 +35,8 @@ import {
   type Notice,
 } from "../../session/review-session";
 import { vscodeLink } from "../../shell/vscode";
+import { SourceEditor } from "../../edit/source-editor";
+import { UnsavedEdits } from "../../edit/unsaved-guard";
 import { Speech } from "../../tts/speech";
 import { Icon } from "../../ui/icon";
 import { MemoryPoint } from "../../ui/memory-point";
@@ -81,7 +85,7 @@ const modeOf = (raw: string | undefined, fallback: number): SessionMode => {
  */
 @Component({
   selector: "wl-review",
-  imports: [RouterLink, TPipe, BundleHtml, Icon, MemoryPoint],
+  imports: [RouterLink, TPipe, BundleHtml, Icon, MemoryPoint, SourceEditor],
   templateUrl: "./review.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -112,6 +116,25 @@ export class Review {
   private readonly spoken = viewChild<ElementRef<HTMLElement>>("spoken");
 
   protected readonly card = this.session.card;
+  private readonly unsaved = inject(UnsavedEdits);
+  /**
+   * The card whose file is open as text. Only after the answer: the learner has seen what is wrong, and
+   * the rating that follows applies to the corrected text. Another card closes a clean editor; one with
+   * unsaved text stays on its card, because the session moves on by itself when the content changes
+   * elsewhere (the card retired from a chat), and that must not throw the text away.
+   */
+  protected readonly editing = linkedSignal<
+    string | undefined,
+    CardEntry | undefined
+  >({
+    source: () => this.session.current()?.item,
+    computation: (_item, previous) =>
+      previous?.value !== undefined && untracked(() => this.unsaved.dirty())
+        ? previous.value
+        : undefined,
+  });
+  /** The card the screen is about: the one being edited, else the session's. */
+  protected readonly shown = computed(() => this.editing() ?? this.card());
   protected readonly topic = this.session.topic;
   protected readonly revealed = computed(
     () => this.session.phase() === "answer",
@@ -309,8 +332,25 @@ export class Review {
     this.speech.speak(this.spoken()?.nativeElement.textContent ?? "");
   }
 
-  protected openEditor(): void {
+  protected openVsCode(): void {
     this.editorLink()?.nativeElement.click();
+  }
+
+  protected openEditor(): void {
+    if (this.revealed()) this.editing.set(this.card());
+  }
+
+  /** The card comes back with its answer, rebuilt from the saved file; focus returns to the ratings. */
+  protected closeEditor(): void {
+    this.editing.set(undefined);
+    afterNextRender(
+      () => {
+        this.host.nativeElement
+          .querySelector<HTMLButtonElement>('[data-rating="3"]')
+          ?.focus({ preventScroll: true });
+      },
+      { injector: this.injector },
+    );
   }
 
   /**
@@ -328,7 +368,8 @@ export class Review {
   }
 
   private onKey(name: string): boolean {
-    if (this.session.current() === undefined) return false;
+    if (this.session.current() === undefined || this.editing() !== undefined)
+      return false;
     const answer = this.revealed();
     switch (name) {
       case "Space":
@@ -356,6 +397,9 @@ export class Review {
       }
       case "e":
         this.openEditor();
+        return answer;
+      case "Shift+e":
+        this.openVsCode();
         return true;
       case "!":
         this.session.suspend();

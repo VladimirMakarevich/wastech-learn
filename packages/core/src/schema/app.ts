@@ -196,13 +196,22 @@ export const parseAppBody = <Value>(
     : { ok: false, ...firstIssue(parsed.error) };
 };
 
-const findingSchema = z.object({
+/** A `check` finding as it travels to the app; the app renders it in its own language. */
+export const findingSchema = z.object({
   ruleId: z.enum(RULE_IDS),
   severity: z.enum(["error", "warning"]),
   file: z.string(),
   line: z.number().int().positive().optional(),
   params: z.record(z.string(), z.union([z.string(), z.number()])),
 });
+
+/** Parsed findings as core's `Finding`: an absent line is left out rather than kept as `undefined`. */
+export const toFindings = (
+  parsed: readonly z.infer<typeof findingSchema>[],
+): readonly Finding[] =>
+  parsed.map(({ line, ...finding }): Finding =>
+    line === undefined ? finding : { ...finding, line },
+  );
 
 /**
  * What a card or topic write from the app answers: on disk, stopped by the checks with their findings,
@@ -232,10 +241,5 @@ export const parseContentWriteAnswer = (
   const answer = parsed.data;
   if ("code" in answer) return { kind: "refused", code: answer.code };
   if (answer.status === "written") return { kind: "written" };
-  return {
-    kind: "blocked",
-    findings: answer.findings.map(({ line, ...finding }): Finding =>
-      line === undefined ? finding : { ...finding, line },
-    ),
-  };
+  return { kind: "blocked", findings: toFindings(answer.findings) };
 };

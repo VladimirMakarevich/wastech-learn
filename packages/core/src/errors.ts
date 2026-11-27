@@ -19,6 +19,7 @@ export type LearnErrorCode =
   | "nothing-to-undo"
   | "nothing-to-restore"
   | "content-changed"
+  | "source-not-found"
   | "search-index-invalid"
   | "id-unavailable";
 

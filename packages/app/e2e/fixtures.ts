@@ -52,7 +52,15 @@ export const test = base.extend<Fixtures>({
     async ({ page }, use) => {
       const errors: string[] = [];
       page.on("console", (message) => {
-        if (message.type() === "error") errors.push(message.text());
+        // A save the server refuses by contract (a missing file, a conflict or a question about the
+        // meaning, blocked by the checks) answers 404, 409 or 422, and Chromium reports every such
+        // answer; the editor shows it, nothing failed. Any other status there is a real failure.
+        const refusedSave =
+          /^Failed to load resource: .* status of (?:404|409|422)\b/.test(
+            message.text(),
+          ) && message.location().url.includes("/api/source");
+        if (message.type() === "error" && !refusedSave)
+          errors.push(message.text());
       });
       page.on("pageerror", (error) => errors.push(error.message));
       await use(errors);
