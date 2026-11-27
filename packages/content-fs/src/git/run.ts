@@ -24,7 +24,17 @@ export interface GitRunOptions {
   /** Extra environment, such as an ssh command or, in tests, an askpass helper that always fails. */
   readonly env?: Readonly<Record<string, string>>;
   readonly timeoutMs?: number;
+  /**
+   * Text for git's standard input, such as a NUL-separated pathspec list: a long list of paths on the
+   * command line would hit the platform's limit on its length (about 32K characters on Windows).
+   */
+  readonly input?: string;
 }
+
+// Git removes its lock files when it is asked to stop; a hard kill would leave `index.lock` behind and
+// every later git, the owner's terminal included, would refuse to start. The hard kill comes only for a
+// process that ignores the polite request.
+const KILL_GRACE_MS = 5_000;
 
 // Git's messages are parsed for a few known phrases (a conflict, a missing identity); a translated git
 // would hide them. Prompts are refused outright: there is no terminal behind the server to type into, so
@@ -65,7 +75,7 @@ const isWindows = process.platform === "win32";
  * entry, so text such as a commit message can never become a command, whatever characters it holds.
  * Git runs in a process group of its own, so the timeout stops ssh or a credential helper it started
  * too, instead of waiting for them to let go of the output. Resolves with the exit code and output; it
- * never rejects.
+ * never rejects, also when the process cannot be started at all.
  */
 export const runGit = (
   root: string,
@@ -73,26 +83,54 @@ export const runGit = (
   options: GitRunOptions = {},
 ): Promise<GitResult> =>
   new Promise((resolve) => {
-    const child = spawn("git", ["-C", root, ...args], {
-      env: gitEnvironment(options.env),
-      stdio: ["ignore", "pipe", "pipe"],
-      detached: !isWindows,
-      windowsHide: true,
-    });
+    let child: ReturnType<typeof spawn>;
+    try {
+      child = spawn("git", ["-C", root, ...args], {
+        env: gitEnvironment(options.env),
+        stdio: [
+          options.input === undefined ? "ignore" : "pipe",
+          "pipe",
+          "pipe",
+        ],
+        detached: !isWindows,
+        windowsHide: true,
+      });
+    } catch (error) {
+      // Node throws instead of emitting for some spawn failures, such as an argument list too long for
+      // the platform; the caller still gets an answer it can read.
+      resolve({
+        exitCode: 1,
+        stdout: "",
+        stderr: error instanceof Error ? error.message : String(error),
+        missing: false,
+        timedOut: false,
+      });
+      return;
+    }
     const out: Buffer[] = [];
     const err: Buffer[] = [];
     let size = 0;
     let timedOut = false;
     let settled = false;
 
-    const stopGroup = (): void => {
+    const signalGroup = (signal: NodeJS.Signals): void => {
       try {
         if (!isWindows && child.pid !== undefined)
-          process.kill(-child.pid, "SIGKILL");
-        else child.kill("SIGKILL");
+          process.kill(-child.pid, signal);
+        else child.kill(signal);
       } catch {
         // The group is already gone: there is nothing left to stop.
       }
+    };
+    // Left running after git itself exited: ssh or a credential helper it started may ignore SIGTERM.
+    let killTimer: ReturnType<typeof setTimeout> | undefined;
+    const stopGroup = (): void => {
+      if (killTimer !== undefined) return;
+      signalGroup("SIGTERM");
+      killTimer = setTimeout(() => {
+        signalGroup("SIGKILL");
+      }, KILL_GRACE_MS);
+      killTimer.unref();
     };
 
     const finish = (result: Omit<GitResult, "stdout" | "stderr">): void => {
@@ -114,8 +152,14 @@ export const runGit = (
       }
       into.push(chunk);
     };
-    child.stdout.on("data", collect(out));
-    child.stderr.on("data", collect(err));
+    child.stdout?.on("data", collect(out));
+    child.stderr?.on("data", collect(err));
+    if (options.input !== undefined && child.stdin !== null) {
+      // Git may exit before reading everything (a bad option, a missing repository); its answer says why,
+      // and the broken pipe says nothing more.
+      child.stdin.on("error", () => undefined);
+      child.stdin.end(options.input);
+    }
 
     const timer = setTimeout(() => {
       timedOut = true;

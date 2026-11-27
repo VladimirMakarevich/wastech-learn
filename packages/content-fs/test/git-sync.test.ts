@@ -252,6 +252,28 @@ describe("Sync", () => {
 });
 
 describe("Sync on the edges", () => {
+  it("commits a file whose name holds pathspec characters as that one file", async () => {
+    const { root, bare } = await goldenRemote();
+    const odd = "content/architecture/backpressure/notes[1]*.md";
+    await writeFile(join(root, odd), "odd\n");
+
+    expect((await syncRepository(root, "chore: odd")).ok).toBe(true);
+    expect(await committedPaths(bare)).toEqual([odd]);
+  });
+
+  it("runs the owner's hooks without its own pathspec settings", async () => {
+    const { root } = await goldenRemote();
+    const hook = join(root, ".git/hooks/pre-commit");
+    await writeFile(
+      hook,
+      '#!/bin/sh\nif [ -n "$GIT_LITERAL_PATHSPECS" ]; then echo leaked >&2; exit 1; fi\n',
+    );
+    await chmod(hook, 0o755);
+    await writeLog(root);
+
+    expect((await syncRepository(root, "chore: sync")).ok).toBe(true);
+  });
+
   it("commits a card the owner removed with git rm", async () => {
     const { root, bare } = await goldenRemote();
     await git(root, "rm", "-q", CARD);

@@ -304,4 +304,11 @@ describe("running git", () => {
       import("node:fs/promises").then((fs) => fs.stat(marker)),
     ).rejects.toThrow();
   });
+
+  it("answers instead of rejecting when the process cannot even start", async () => {
+    // One argument past the kernel's limit for a single argument: spawn throws instead of emitting.
+    const result = await runGit(await tempDir(), ["x".repeat(200_000)]);
+    expect(result.exitCode).toBe(1);
+    expect(result.missing).toBe(false);
+  });
 });

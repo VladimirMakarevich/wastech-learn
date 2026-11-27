@@ -6,7 +6,7 @@ import type {
 import { stat } from "node:fs/promises";
 import { join } from "node:path";
 import { isSynced } from "./message.js";
-import { firstLine, runGit, type GitResult } from "./run.js";
+import { GIT_TIMEOUT_MS, firstLine, runGit, type GitResult } from "./run.js";
 import {
   isIndexLocked,
   isRebasing,
@@ -27,8 +27,23 @@ export interface SyncOptions {
 
 const fail = (failure: GitFailure): SyncOutcome => ({ ok: false, failure });
 
-// A file named with `*` or `[` is still one file: paths from `git status` are passed as they are.
-const LITERAL = { GIT_LITERAL_PATHSPECS: "1" } as const;
+// A local step may run the owner's hooks, which can take minutes on a large repository; it only has to
+// be stopped when it truly hangs. The network commands keep the short limit.
+const LOCAL_TIMEOUT_MS = 10 * 60_000;
+
+/**
+ * Paths for `--pathspec-from-file`: on standard input, so no list is too long for the command line, and
+ * each marked literal, so a file named with `*` or `[` is still one file. The mark is per path, not the
+ * `GIT_LITERAL_PATHSPECS` variable, which would reach the owner's hooks and change what their own git
+ * commands match.
+ */
+const pathspecInput = (paths: readonly string[]): string =>
+  paths.map((path) => `:(literal)${path}`).join("\0");
+
+const PATHSPEC_FROM_STDIN = [
+  "--pathspec-from-file=-",
+  "--pathspec-file-nul",
+] as const;
 
 const onDisk = async (path: string): Promise<boolean> => {
   try {
@@ -100,15 +115,21 @@ const gitFor = async (root: string, gitDir: string, options: SyncOptions) => {
   const run = (
     args: readonly string[],
     env: Readonly<Record<string, string>> = {},
-    timeoutMs?: number,
+    timeoutMs: number = LOCAL_TIMEOUT_MS,
+    input?: string,
   ) =>
     runGit(root, args, {
       env: { ...base, ...env },
-      ...(timeoutMs === undefined ? {} : { timeoutMs }),
+      timeoutMs,
+      ...(input === undefined ? {} : { input }),
     });
+  // `GIT_SSH` names the owner's ssh program (plink with Pageant, a wrapper script); a `GIT_SSH_COMMAND`
+  // of ours would win over it and drop the keys it knows about.
   const ownSsh =
     process.env.GIT_SSH_COMMAND !== undefined ||
+    process.env.GIT_SSH !== undefined ||
     base.GIT_SSH_COMMAND !== undefined ||
+    base.GIT_SSH !== undefined ||
     (await run(["config", "--get", "core.sshCommand"])).stdout.trim() !== "";
   const networkEnv: Record<string, string> = ownSsh
     ? {}
@@ -116,7 +137,7 @@ const gitFor = async (root: string, gitDir: string, options: SyncOptions) => {
   return {
     run,
     network: (args: readonly string[]) =>
-      run(args, networkEnv, options.networkTimeoutMs),
+      run(args, networkEnv, options.networkTimeoutMs ?? GIT_TIMEOUT_MS),
     gitDir,
   };
 };
@@ -138,13 +159,17 @@ const countBetween = async (
   return result.exitCode === 0 && Number.isInteger(count) ? count : 0;
 };
 
-/** The paths `git add` accepts: present in the work tree, or tracked in the index. */
+/**
+ * The paths `git add` accepts: present in the work tree, or tracked in the index. The whole index is
+ * listed rather than the paths named: `ls-files` reads no pathspec file, and a content repository's
+ * index is small.
+ */
 const knownPaths = async (
   git: Git,
   root: string,
   paths: readonly string[],
 ): Promise<readonly string[]> => {
-  const tracked = await git.run(["ls-files", "-z", "--", ...paths], LITERAL);
+  const tracked = await git.run(["ls-files", "-z"]);
   const inIndex = new Set(tracked.stdout.split("\0"));
   const present = await Promise.all(
     paths.map((path) => onDisk(join(root, path))),
@@ -153,10 +178,13 @@ const knownPaths = async (
 };
 
 const conflictedFiles = async (git: Git): Promise<string[]> => {
+  // Relative to the content root, as every other path the app shows: git would name them from the top
+  // of a larger work tree the content folder sits in.
   const result = await git.run([
     "diff",
     "--name-only",
     "-z",
+    "--relative",
     "--diff-filter=U",
   ]);
   return result.stdout
@@ -171,9 +199,28 @@ interface Checkpoint {
   readonly index: string;
 }
 
-const restore = async (git: Git, checkpoint: Checkpoint): Promise<void> => {
-  await git.run(["reset", "-q", "--soft", checkpoint.head]);
-  await git.run(["read-tree", checkpoint.index]);
+/** Puts HEAD and the index back; a step that fails is returned, so the press reports it instead. */
+const restore = async (
+  git: Git,
+  checkpoint: Checkpoint,
+): Promise<GitResult | undefined> => {
+  const reset = await git.run(["reset", "-q", "--soft", checkpoint.head]);
+  if (reset.exitCode !== 0) return reset;
+  const read = await git.run(["read-tree", checkpoint.index]);
+  return read.exitCode === 0 ? undefined : read;
+};
+
+/**
+ * The failure to report after putting the repository back: the original one, unless putting back failed
+ * too, which the owner must hear about first because the repository is not where the press found it.
+ */
+const restoredFailure = async (
+  git: Git,
+  checkpoint: Checkpoint,
+  failure: GitFailure,
+): Promise<GitFailure> => {
+  const failed = await restore(git, checkpoint);
+  return failed === undefined ? failure : failureOf(failed);
 };
 
 /**
@@ -197,13 +244,26 @@ const pullRebase = async (
   ]);
   if (pulled.exitCode !== 0 && (await isRebasing(git.gitDir))) {
     const files = await conflictedFiles(git);
-    await git.run(["rebase", "--abort"]);
-    await restore(git, checkpoint);
-    return { ok: false, failure: { code: "conflict", files } };
+    const aborted = await git.run(["rebase", "--abort"]);
+    if (aborted.exitCode !== 0 || (await isRebasing(git.gitDir)))
+      return { ok: false, failure: failureOf(aborted) };
+    return {
+      ok: false,
+      failure: await restoredFailure(git, checkpoint, {
+        code: "conflict",
+        files,
+      }),
+    };
   }
   if (pulled.exitCode !== 0) {
-    await restore(git, checkpoint);
-    return { ok: false, failure: failureOf(pulled, true) };
+    // The pull moved HEAD before it failed (a submodule update after the rebase, say): the commits it
+    // brought stay, because undoing them now would turn them into edits of the work tree.
+    if ((await revParse(git, "HEAD")) !== before)
+      return { ok: false, failure: failureOf(pulled, true) };
+    return {
+      ok: false,
+      failure: await restoredFailure(git, checkpoint, failureOf(pulled, true)),
+    };
   }
   // The pull itself finished, but the edits set aside for it did not go back cleanly: they wait in the
   // stash, and the conflicting files are named so the owner can settle them in the editor.
@@ -302,11 +362,14 @@ export const syncRepository = async (
     const added =
       addable.length === 0
         ? undefined
-        : await git.run(["add", "--all", "--", ...addable], LITERAL);
-    if (added !== undefined && added.exitCode !== 0) {
-      await restore(git, checkpoint);
-      return fail(failureOf(added));
-    }
+        : await git.run(
+            ["add", "--all", ...PATHSPEC_FROM_STDIN],
+            {},
+            undefined,
+            pathspecInput(addable),
+          );
+    if (added !== undefined && added.exitCode !== 0)
+      return fail(await restoredFailure(git, checkpoint, failureOf(added)));
     // --only keeps whatever else the owner staged out of this commit; whitespace cleanup keeps a line
     // starting with # instead of dropping it as a comment and leaving an empty message.
     const commit = await git.run(
@@ -316,15 +379,14 @@ export const syncRepository = async (
         "--cleanup=whitespace",
         "-m",
         message,
-        "--",
-        ...paths,
+        ...PATHSPEC_FROM_STDIN,
       ],
-      LITERAL,
+      {},
+      undefined,
+      pathspecInput(paths),
     );
-    if (commit.exitCode !== 0) {
-      await restore(git, checkpoint);
-      return fail(failureOf(commit));
-    }
+    if (commit.exitCode !== 0)
+      return fail(await restoredFailure(git, checkpoint, failureOf(commit)));
     committed = 1;
   }
 
