@@ -1,5 +1,6 @@
 import {
   LearnError,
+  type AppCardStatus,
   readDocument,
   withRestoredCardLink,
   withoutCardLink,
@@ -144,9 +145,6 @@ export const restoreCard = async (
     { dryRun: false },
   );
 };
-
-/** The card statuses the app sets: it archives and returns a card, it never makes one a draft again. */
-export type AppCardStatus = "active" | "retired";
 
 /**
  * Archives or returns a card by its `status` alone, through the same `updateCard` the MCP tool uses, so

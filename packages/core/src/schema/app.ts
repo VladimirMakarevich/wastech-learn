@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { LearnErrorCode } from "../errors.js";
+import { RULE_IDS, type Finding } from "../finding.js";
 import {
   CARD_ID_PATTERN,
   firstIssue,
@@ -29,6 +30,17 @@ export const GIT_AREAS = [
   "other",
 ] as const;
 export type GitArea = (typeof GIT_AREAS)[number];
+
+/** The areas Sync commits; the app lists them as going into the commit and the rest as staying out. */
+export const SYNC_AREAS = [
+  "topic",
+  "card",
+  "reviews",
+  "inbox",
+] as const satisfies readonly GitArea[];
+
+export const isSyncedArea = (area: GitArea): boolean =>
+  (SYNC_AREAS as readonly GitArea[]).includes(area);
 
 /**
  * Why Sync and Pull are unavailable. Each names a state the owner resolves in a terminal; pressing a
@@ -97,6 +109,7 @@ export const emptyBodySchema = z.strictObject({});
 
 /** The app archives and returns a card; `draft` stays a capture-time state the app never sets. */
 export const APP_CARD_STATUSES = ["active", "retired"] as const;
+export type AppCardStatus = (typeof APP_CARD_STATUSES)[number];
 
 export const cardStatusBodySchema = z.strictObject({
   status: z.enum(APP_CARD_STATUSES),
@@ -104,6 +117,7 @@ export const cardStatusBodySchema = z.strictObject({
 export type CardStatusBody = z.infer<typeof cardStatusBodySchema>;
 
 export const APP_TOPIC_STATUSES = ["active", "archived"] as const;
+export type AppTopicStatus = (typeof APP_TOPIC_STATUSES)[number];
 
 export const topicStatusBodySchema = z.strictObject({
   status: z.enum(APP_TOPIC_STATUSES),
@@ -180,4 +194,48 @@ export const parseAppBody = <Value>(
   return parsed.success
     ? { ok: true, value: parsed.data }
     : { ok: false, ...firstIssue(parsed.error) };
+};
+
+const findingSchema = z.object({
+  ruleId: z.enum(RULE_IDS),
+  severity: z.enum(["error", "warning"]),
+  file: z.string(),
+  line: z.number().int().positive().optional(),
+  params: z.record(z.string(), z.union([z.string(), z.number()])),
+});
+
+/**
+ * What a card or topic write from the app answers: on disk, stopped by the checks with their findings,
+ * or not tried for the reason a code names (the file changed meanwhile, the card is gone).
+ */
+export const contentWriteAnswerSchema = z.union([
+  z.object({ status: z.literal("written") }),
+  z.object({
+    status: z.literal("blocked"),
+    findings: z.array(findingSchema),
+    lint: z.array(z.unknown()),
+  }),
+  z.object({ code: z.string().min(1) }),
+]);
+
+/** A write's answer in the app's terms, with findings shaped as core's `Finding`. */
+export type ContentWriteAnswer =
+  | { readonly kind: "written" }
+  | { readonly kind: "blocked"; readonly findings: readonly Finding[] }
+  | { readonly kind: "refused"; readonly code: string };
+
+export const parseContentWriteAnswer = (
+  raw: unknown,
+): ContentWriteAnswer | undefined => {
+  const parsed = contentWriteAnswerSchema.safeParse(raw);
+  if (!parsed.success) return undefined;
+  const answer = parsed.data;
+  if ("code" in answer) return { kind: "refused", code: answer.code };
+  if (answer.status === "written") return { kind: "written" };
+  return {
+    kind: "blocked",
+    findings: answer.findings.map(({ line, ...finding }): Finding =>
+      line === undefined ? finding : { ...finding, line },
+    ),
+  };
 };

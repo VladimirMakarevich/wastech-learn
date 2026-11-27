@@ -1,15 +1,7 @@
-import type { GitEntry } from "@wastech-learn/core";
+import { isSyncedArea, type GitEntry } from "@wastech-learn/core";
 
-/** The areas Sync commits; `other` paths are the owner's to commit by hand. */
-export const SYNC_AREAS: readonly GitEntry["area"][] = [
-  "topic",
-  "card",
-  "reviews",
-  "inbox",
-];
-
-export const isSynced = (item: GitEntry): boolean =>
-  SYNC_AREAS.includes(item.area);
+/** Whether Sync commits the path; `other` paths are the owner's to commit by hand. */
+export const isSynced = (item: GitEntry): boolean => isSyncedArea(item.area);
 
 const plural = (count: number, one: string, many: string): string =>
   `${String(count)} ${count === 1 ? one : many}`;

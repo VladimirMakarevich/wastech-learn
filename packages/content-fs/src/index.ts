@@ -74,9 +74,9 @@ export type { SavedMaterials } from "./write/materials.js";
 export { saveSummary } from "./write/summary.js";
 export type { SavedFile } from "./write/summary.js";
 export { createTopic, setTopicStatus } from "./write/topic.js";
-export type { AppTopicStatus, CreatedTopic } from "./write/topic.js";
+export type { CreatedTopic } from "./write/topic.js";
 export { deleteCard, restoreCard, setCardStatus } from "./write/card-life.js";
-export type { AppCardStatus, ChangedCard } from "./write/card-life.js";
+export type { ChangedCard } from "./write/card-life.js";
 export { validateEdited, validateFiles } from "./validate-files.js";
 export { watchRepository } from "./watch.js";
 export type {
@@ -104,6 +104,6 @@ export type {
   ParsedStatus,
   RepositoryGitState,
 } from "./git/status.js";
-export { SYNC_AREAS, isSynced, suggestCommitMessage } from "./git/message.js";
+export { isSynced, suggestCommitMessage } from "./git/message.js";
 export { pullRepository, syncRepository } from "./git/sync.js";
 export type { SyncOptions, SyncOutcome } from "./git/sync.js";

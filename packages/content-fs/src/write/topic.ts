@@ -7,6 +7,7 @@ import {
   topicIndexDocument,
   withFrontMatterValue,
   writeDocument,
+  type AppTopicStatus,
   type CreateTopicInput,
 } from "@wastech-learn/core";
 import { calendarDate, type Workspace } from "../workspace.js";
@@ -97,9 +98,6 @@ export const createTopic = async (
     { dryRun: input.dryRun === true },
   );
 };
-
-/** The topic statuses the app sets; `draft` belongs to capture. */
-export type AppTopicStatus = "active" | "archived";
 
 /**
  * Archives or returns a topic by the `status` in its index. An archived topic keeps its files and its
