@@ -73,8 +73,10 @@ export { saveMaterials } from "./write/materials.js";
 export type { SavedMaterials } from "./write/materials.js";
 export { saveSummary } from "./write/summary.js";
 export type { SavedFile } from "./write/summary.js";
-export { createTopic } from "./write/topic.js";
-export type { CreatedTopic } from "./write/topic.js";
+export { createTopic, setTopicStatus } from "./write/topic.js";
+export type { AppTopicStatus, CreatedTopic } from "./write/topic.js";
+export { deleteCard, restoreCard, setCardStatus } from "./write/card-life.js";
+export type { AppCardStatus, ChangedCard } from "./write/card-life.js";
 export { validateEdited, validateFiles } from "./validate-files.js";
 export { watchRepository } from "./watch.js";
 export type {

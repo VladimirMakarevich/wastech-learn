@@ -119,6 +119,8 @@ export const en = {
   "error.card-not-found": "There is no card with id {subject}",
   "error.package-not-found": "There is no learning package at {subject}",
   "error.nothing-to-undo": "There is no review from this device to undo",
+  "error.nothing-to-restore":
+    "Card {subject} is not deleted since the last commit, so there is nothing to bring back",
   "error.content-changed":
     "{subject} changed while the write was being prepared; nothing was written",
   "error.search-index-invalid":
@@ -155,6 +157,8 @@ export const en = {
     "Pass the path of a file in inbox/, such as inbox/topic.md",
   "hint.nothing-to-undo":
     "Only reviews recorded with record_review on this device can be undone here",
+  "hint.nothing-to-restore":
+    "A deletion can be undone only until it is committed; after that, git history keeps the file",
   "hint.content-changed":
     "Someone saved the file in the meantime: call the tool again to build on the new text",
   "hint.search-index-invalid":

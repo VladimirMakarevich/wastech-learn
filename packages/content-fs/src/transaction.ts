@@ -12,10 +12,10 @@ import { basename, dirname, join } from "node:path";
 import { LearnError } from "@wastech-learn/core";
 import { isMissing } from "./fs-utils.js";
 
-/** One file of a transaction: its absolute path and the full text it ends up with. */
+/** One file of a transaction: its absolute path and the full text it ends up with, or `null` to remove it. */
 export interface FileWrite {
   readonly path: string;
-  readonly text: string;
+  readonly text: string | null;
   /** How an error names the file: repository-relative, so no home folder reaches a chat. */
   readonly label?: string;
 }
@@ -61,7 +61,8 @@ export const nodeTransactionFs: TransactionFs = {
 
 interface Staged {
   readonly target: string;
-  readonly temporary: string;
+  /** Absent for a removal: there is no new text to stage. */
+  readonly temporary: string | undefined;
   readonly backup: string | undefined;
 }
 
@@ -80,11 +81,12 @@ const quietly = async (step: () => Promise<void>): Promise<void> => {
 };
 
 /**
- * Writes a group of files all or nothing. Every new text goes to a temporary file next to its target
- * and is flushed; every file about to be replaced is copied aside; then each temporary file is renamed
- * over its target. A failure at any step renames the copies back, deletes files that did not exist
- * before, and removes temporary files and folders it created, so the repository is left exactly as it
- * was. A rename within a folder is atomic, so a reader never sees half a file either way.
+ * Writes and removes a group of files all or nothing. Every new text goes to a temporary file next to its
+ * target and is flushed; every file about to be replaced or removed is copied aside; then each temporary
+ * file is renamed over its target and each removed file is unlinked. A failure at any step renames the
+ * copies back, deletes files that did not exist before, and removes temporary files and folders it
+ * created, so the repository is left exactly as it was. A rename within a folder is atomic, so a reader
+ * never sees half a file either way.
  */
 export const commitFiles = async (
   writes: readonly FileWrite[],
@@ -98,6 +100,14 @@ export const commitFiles = async (
   try {
     for (const write of writes) {
       failing = write;
+      if (write.text === null) {
+        staged.push({
+          target: write.path,
+          temporary: undefined,
+          backup: undefined,
+        });
+        continue;
+      }
       const created = await fs.mkdir(dirname(write.path));
       // mkdir names only the topmost folder it created; rollback removes the whole chain, deepest first.
       for (
@@ -121,12 +131,16 @@ export const commitFiles = async (
     }
     for (const [index, entry] of staged.entries()) {
       failing = writes[index];
-      await fs.rename(entry.temporary, entry.target);
+      const { temporary } = entry;
+      // A removal of a file that is already gone has nothing to do; its copy aside was never made.
+      if (temporary !== undefined) await fs.rename(temporary, entry.target);
+      else if (entry.backup !== undefined) await fs.unlink(entry.target);
       committed.push(entry);
     }
   } catch (error) {
     for (const entry of [...committed].reverse()) {
       const { backup } = entry;
+      if (backup === undefined && entry.temporary === undefined) continue;
       await quietly(() =>
         backup === undefined
           ? fs.unlink(entry.target)
@@ -134,8 +148,9 @@ export const commitFiles = async (
       );
     }
     for (const entry of staged) {
-      if (!committed.includes(entry))
-        await quietly(() => fs.unlink(entry.temporary));
+      const { temporary } = entry;
+      if (!committed.includes(entry) && temporary !== undefined)
+        await quietly(() => fs.unlink(temporary));
       const { backup } = entry;
       if (backup !== undefined && !committed.includes(entry)) {
         await quietly(() => fs.unlink(backup));

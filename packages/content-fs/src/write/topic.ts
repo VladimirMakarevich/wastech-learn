@@ -5,12 +5,13 @@ import {
   summaryDocument,
   summaryTemplateFor,
   topicIndexDocument,
+  withFrontMatterValue,
   writeDocument,
   type CreateTopicInput,
 } from "@wastech-learn/core";
 import { calendarDate, type Workspace } from "../workspace.js";
 import { applyWrite, type WriteOutcomeOf } from "./apply.js";
-import { topicDir } from "./topic-paths.js";
+import { requireTopic, topicDir } from "./topic-paths.js";
 
 export interface CreatedTopic {
   readonly topic: string;
@@ -94,5 +95,35 @@ export const createTopic = async (
       result: { topic, paths: [...files.keys()] },
     },
     { dryRun: input.dryRun === true },
+  );
+};
+
+/** The topic statuses the app sets; `draft` belongs to capture. */
+export type AppTopicStatus = "active" | "archived";
+
+/**
+ * Archives or returns a topic by the `status` in its index. An archived topic keeps its files and its
+ * history; only the queue stops offering its cards, so archiving is undone by one more write.
+ */
+export const setTopicStatus = async (
+  workspace: Workspace,
+  topic: string,
+  status: AppTopicStatus,
+): Promise<WriteOutcomeOf<CreatedTopic>> => {
+  const snapshot = await workspace.snapshot();
+  const files = requireTopic(snapshot, topic);
+  return applyWrite(
+    workspace,
+    {
+      basis: snapshot,
+      files: new Map([
+        [
+          files.indexPath,
+          writeDocument(withFrontMatterValue(files.index, "status", status)),
+        ],
+      ]),
+      result: { topic, paths: [files.indexPath] },
+    },
+    { dryRun: false },
   );
 };

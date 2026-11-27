@@ -212,6 +212,8 @@ export {
   pretestMarkdown,
   topicIndexDocument,
   withCardLinks,
+  withRestoredCardLink,
+  withoutCardLink,
 } from "./serialize/topic.js";
 export type { CardLink, TopicIndexInput } from "./serialize/topic.js";
 export {

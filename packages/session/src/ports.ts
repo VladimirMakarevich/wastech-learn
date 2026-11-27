@@ -28,17 +28,29 @@ interface QueueSource {
   readonly status: string;
 }
 
+// Cards of an archived topic never reach the queue: archiving a topic is how the owner sets a whole
+// subject aside without retiring its cards one by one, and the chat quiz and the app must agree on it.
 // The most recently captured topic first, so what was just learned in a chat comes up while it is fresh,
 // then by card creation date and id. The chat quiz reads the model and the app reads the bundle; both go
 // through this one order, so they introduce new cards identically.
 const ordered = (
-  topics: readonly { readonly path: string; readonly created: string }[],
+  topics: readonly {
+    readonly path: string;
+    readonly created: string;
+    readonly status: string;
+  }[],
   sources: readonly QueueSource[],
 ): readonly QueueCard[] => {
   const topicCreated = new Map(
     topics.map((topic) => [topic.path, topic.created]),
   );
-  return [...sources]
+  const archived = new Set(
+    topics
+      .filter((topic) => topic.status === "archived")
+      .map((topic) => topic.path),
+  );
+  return sources
+    .filter((source) => !archived.has(source.topic))
     .sort(
       (a, b) =>
         (topicCreated.get(b.topic) ?? "").localeCompare(
@@ -67,6 +79,7 @@ export const toQueueCards = (model: ContentModel): readonly QueueCard[] =>
     model.topics.map((topic) => ({
       path: topic.path,
       created: topic.index.frontMatter.created,
+      status: topic.index.frontMatter.status,
     })),
     model.cards.map((card) => ({
       topic: card.topic,

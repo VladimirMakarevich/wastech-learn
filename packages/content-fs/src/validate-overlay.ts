@@ -161,7 +161,7 @@ const lintKey = (finding: LintFinding): string =>
  */
 export const validateOverlay = async (
   workspace: Workspace,
-  overlay: ReadonlyMap<string, string>,
+  overlay: ReadonlyMap<string, string | null>,
   options: OverlayOptions = {},
 ): Promise<ValidationReport> => {
   const snapshot = await workspace.snapshot();
