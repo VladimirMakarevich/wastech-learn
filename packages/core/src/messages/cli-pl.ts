@@ -140,6 +140,8 @@ export const cliPl: Readonly<Record<CliMessageKey, Message>> = {
     "To nie jest repozytorium git: uruchom git init -b main",
   "cli.doctor.git-identity":
     "W git nie ustawiono user.name lub user.email: bez nich „Synchronizuj” nie zrobi commita, ustaw je przez git config --global",
+  "cli.doctor.git-no-commit":
+    'Brak commitów: zrób pierwszy poleceniem git add . && git commit -m "chore: start the content repository"',
   "cli.doctor.git-upstream":
     "Gałąź {branch} nie ma gałęzi zdalnej: „Synchronizuj” jej potrzebuje, wypchnij gałąź raz poleceniem git push -u origin {branch}",
   "cli.doctor.passed": "Wszystko gotowe",

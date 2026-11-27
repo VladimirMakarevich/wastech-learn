@@ -241,14 +241,17 @@ describe("doctor", () => {
     await git(root, "init", "-q", "-b", "main");
     const unborn = await diagnose(root);
     expect(find(unborn, "git-identity")).toBeDefined();
-    // Nothing to push before the first commit, so no advice to push.
+    // Nothing to push before the first commit: the advice is the commit, and never a check mark.
+    expect(find(unborn, "git-no-commit")).toBeDefined();
     expect(find(unborn, "git-upstream")).toBeUndefined();
+    expect(find(unborn, "git")).toBeUndefined();
     await git(root, "config", "user.name", "desk1");
     await git(root, "config", "user.email", "desk1@example.test");
     await git(root, "add", "--all");
     await git(root, "commit", "-q", "-m", "chore: start");
     const checks = await diagnose(root);
     expect(find(checks, "git-identity")).toBeUndefined();
+    expect(find(checks, "git-no-commit")).toBeUndefined();
     expect(find(checks, "git-upstream")?.params).toEqual({ branch: "main" });
     expect(SETUP_CHECK_LEVELS["git-upstream"]).toBe("warning");
   });

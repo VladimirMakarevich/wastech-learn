@@ -142,6 +142,8 @@ export const cliEn = {
   "cli.doctor.git-none": "Not a git repository: run git init -b main",
   "cli.doctor.git-identity":
     "git has no user.name or user.email: Sync cannot commit until you set them with git config --global",
+  "cli.doctor.git-no-commit":
+    'No commit yet: make the first one with git add . && git commit -m "chore: start the content repository"',
   "cli.doctor.git-upstream":
     "Branch {branch} has no remote branch: Sync needs one, push it once with git push -u origin {branch}",
   "cli.doctor.passed": "Everything is set up",

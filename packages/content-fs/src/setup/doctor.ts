@@ -48,6 +48,7 @@ export const SETUP_CHECK_LEVELS = {
   "git-missing": "warning",
   "git-none": "warning",
   "git-identity": "warning",
+  "git-no-commit": "warning",
   "git-upstream": "warning",
 } as const satisfies Readonly<Record<string, SetupLevel>>;
 
@@ -283,11 +284,12 @@ const checkGit = async (root: string): Promise<readonly SetupCheck[]> => {
   if (!(await isSet(root, "user.name")) || !(await isSet(root, "user.email")))
     found.push(check("git-identity"));
   const state = await readGitState(root);
-  // Before the first commit there is nothing to push yet; the warning would send the learner into an error.
+  // Before the first commit there is nothing to push yet: the advice is the commit, not the push.
   const hasCommit =
     (await runGit(root, ["rev-parse", "--verify", "--quiet", "HEAD"]))
       .exitCode === 0;
-  if (hasCommit && state.branch !== null && state.upstream === null)
+  if (!hasCommit) found.push(check("git-no-commit"));
+  else if (state.branch !== null && state.upstream === null)
     found.push(check("git-upstream", { branch: state.branch }));
   if (found.length > 0) return found;
   return [

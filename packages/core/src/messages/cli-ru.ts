@@ -138,6 +138,8 @@ export const cliRu: Readonly<Record<CliMessageKey, Message>> = {
   "cli.doctor.git-none": "Это не git-репозиторий: запусти git init -b main",
   "cli.doctor.git-identity":
     "В git не заданы user.name или user.email: без них «Синхронизировать» не сделает коммит, задай их через git config --global",
+  "cli.doctor.git-no-commit":
+    'Коммитов ещё нет: сделай первый командой git add . && git commit -m "chore: start the content repository"',
   "cli.doctor.git-upstream":
     "У ветки {branch} нет удалённой ветки: она нужна «Синхронизировать», отправь ветку один раз командой git push -u origin {branch}",
   "cli.doctor.passed": "Всё настроено",
