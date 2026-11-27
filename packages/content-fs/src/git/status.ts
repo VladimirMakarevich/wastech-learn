@@ -20,6 +20,8 @@ export interface BranchInfo {
 export interface ParsedStatus {
   readonly branch: BranchInfo;
   readonly entries: readonly GitEntry[];
+  /** Files with unresolved conflict markers in the index, as an unfinished stash leaves them. */
+  readonly unmerged: boolean;
 }
 
 /** Where a repository-relative path belongs, read from its shape alone, so a deleted card is known too. */
@@ -90,6 +92,7 @@ export const parsePorcelainV2 = (output: string): ParsedStatus => {
   let ahead = 0;
   let behind = 0;
   let diverged = false;
+  let unmerged = false;
   const entries: GitEntry[] = [];
   for (let at = 0; at < records.length; at += 1) {
     const record = records[at] ?? "";
@@ -120,7 +123,8 @@ export const parsePorcelainV2 = (output: string): ParsedStatus => {
         kind === "C" ? entry(path, "added") : entry(path, "renamed", from),
       );
     } else if (record.startsWith("u ")) {
-      // u XY sub m1 m2 m3 mW h1 h2 h3 path: only seen while a merge or rebase is under way.
+      // u XY sub m1 m2 m3 mW h1 h2 h3 path: a conflict not settled yet.
+      unmerged = true;
       entries.push(entry(record.split(" ").slice(10).join(" "), "modified"));
     } else if (record.startsWith("? ")) {
       entries.push(entry(record.slice(2), "untracked"));
@@ -130,7 +134,7 @@ export const parsePorcelainV2 = (output: string): ParsedStatus => {
   // An upstream whose remote branch was deleted or renamed gets no divergence line: there is nothing to
   // pull from or push to, which is the same as having no upstream.
   if (!diverged) upstream = null;
-  return { branch: { head, upstream, ahead, behind }, entries };
+  return { branch: { head, upstream, ahead, behind }, entries, unmerged };
 };
 
 /** The repository's state as `GET /api/git` reports it, before the commit message is suggested. */
@@ -184,6 +188,15 @@ export const locateRepository = async (
 /** True while another git process holds the index, such as a commit from a terminal. */
 export const isIndexLocked = (gitDir: string): Promise<boolean> =>
   exists(join(gitDir, "index.lock"));
+
+/** True while a rebase is stopped: the directories git keeps for it, whatever it printed. */
+export const isRebasing = async (gitDir: string): Promise<boolean> =>
+  (
+    await Promise.all([
+      exists(join(gitDir, "rebase-merge")),
+      exists(join(gitDir, "rebase-apply")),
+    ])
+  ).some(Boolean);
 
 const operationInProgress = async (gitDir: string): Promise<boolean> =>
   (
@@ -242,11 +255,13 @@ export const readGitState = async (
   const parsed = parsePorcelainV2(status.stdout);
   const reason: GitBlockReason | undefined = busy
     ? "operation-in-progress"
-    : parsed.branch.head === null
-      ? "detached"
-      : parsed.branch.upstream === null
-        ? "no-upstream"
-        : undefined;
+    : parsed.unmerged
+      ? "unmerged"
+      : parsed.branch.head === null
+        ? "detached"
+        : parsed.branch.upstream === null
+          ? "no-upstream"
+          : undefined;
   return {
     branch: parsed.branch.head,
     upstream: parsed.branch.upstream,

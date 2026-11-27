@@ -270,6 +270,7 @@ export {
   gitSyncBodySchema,
   gitSyncResultSchema,
   kebabParamSchema,
+  parseAppBody,
   topicStatusBodySchema,
 } from "./schema/app.js";
 export type {

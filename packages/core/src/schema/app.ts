@@ -1,6 +1,11 @@
 import { z } from "zod";
 import type { LearnErrorCode } from "../errors.js";
-import { CARD_ID_PATTERN, kebabSchema } from "./common.js";
+import {
+  CARD_ID_PATTERN,
+  firstIssue,
+  kebabSchema,
+  type SchemaIssue,
+} from "./common.js";
 
 /** How a path differs from the last commit, in the words the app shows; a copy counts as an addition. */
 export const GIT_CHANGES = [
@@ -35,17 +40,20 @@ export const GIT_BLOCK_REASONS = [
   "detached",
   "no-upstream",
   "operation-in-progress",
+  "unmerged",
 ] as const;
 export type GitBlockReason = (typeof GIT_BLOCK_REASONS)[number];
 
 /**
- * Stable codes of a Sync or Pull that did not finish. Every one of them leaves the repository as it was
- * before the press, except `push-rejected`, after which the local commit stays and the next Sync retries.
+ * Stable codes of a Sync or Pull that did not finish. A failure before the pull finishes leaves the
+ * repository as it was before the press. After it, a failed push or local edits that wait in the stash
+ * keep the local commit (and what the pull brought), and the next Sync picks up from there.
  */
 export const GIT_FAILURE_CODES = [
   "conflict",
   "auth-required",
   "identity-missing",
+  "offline",
   "busy",
   "blocked",
   "push-rejected",
@@ -157,3 +165,19 @@ export const gitFailureSchema = z.object({
   stashKept: z.boolean().optional(),
 });
 export type GitFailure = z.infer<typeof gitFailureSchema>;
+
+/**
+ * Parses a request body with one of the schemas above, for a host that has no zod of its own: the
+ * schema stays the single owner of the shape, and a refusal names the first bad field.
+ */
+export const parseAppBody = <Value>(
+  schema: z.ZodType<Value>,
+  raw: unknown,
+):
+  | { readonly ok: true; readonly value: Value }
+  | ({ readonly ok: false } & SchemaIssue) => {
+  const parsed = schema.safeParse(raw);
+  return parsed.success
+    ? { ok: true, value: parsed.data }
+    : { ok: false, ...firstIssue(parsed.error) };
+};

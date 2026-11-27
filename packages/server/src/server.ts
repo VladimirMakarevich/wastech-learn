@@ -7,16 +7,22 @@ import {
   loadConfigSource,
   loadDevice,
   openWorkspace,
+  pullRepository,
   readGitState,
   readReviewLog,
   suggestCommitMessage,
+  syncRepository,
   watchRepository,
+  type SyncOutcome,
   type Workspace,
   type RepositoryChange,
   type RepositoryWatcher,
   type WatchOptions,
 } from "@wastech-learn/content-fs";
 import {
+  emptyBodySchema,
+  gitSyncBodySchema,
+  parseAppBody,
   isLearnError,
   parseReviewEvent,
   type GitState,
@@ -86,6 +92,36 @@ export interface LearnServer {
 type Refusal = { readonly code: string } & Readonly<Record<string, unknown>>;
 
 const refusal = (c: Context, body: Refusal) => c.json(body, 400);
+
+/**
+ * Reads a JSON body through a core schema, once, at the edge. A refusal names the first bad field so
+ * the app's developer sees what it sent wrong; the app itself never sends one.
+ */
+export const parseBody = async <Value>(
+  c: Context,
+  schema: Parameters<typeof parseAppBody<Value>>[0],
+): Promise<
+  | { readonly ok: true; readonly value: Value }
+  | { readonly ok: false; readonly response: Response }
+> => {
+  let raw: unknown;
+  try {
+    raw = await c.req.json();
+  } catch {
+    // Not JSON at all: the app never sends that, so the answer is a refusal, not a crash.
+    return { ok: false, response: refusal(c, { code: "body-not-json" }) };
+  }
+  const parsed = parseAppBody(schema, raw);
+  if (parsed.ok) return parsed;
+  return {
+    ok: false,
+    response: refusal(c, {
+      code: "body-invalid",
+      field: parsed.field,
+      message: parsed.message,
+    }),
+  };
+};
 
 /**
  * Checks a batch from the app: every event is a valid v1 event written by the app on this device. One bad
@@ -243,6 +279,30 @@ const routes = ({
   });
 
   api.get("/git", async (c) => c.json(await gitState()));
+
+  // A git operation waits for any write in flight and blocks the next one: a commit taken halfway
+  // through an append, or an append landing in the middle of a rebase, could lose a line.
+  const gitOperation = async (
+    c: Context,
+    operation: () => Promise<SyncOutcome>,
+  ): Promise<Response> => {
+    const outcome = await workspace.exclusive(operation);
+    workspace.invalidate();
+    hub.publish({ type: "git-changed" });
+    return outcome.ok ? c.json(outcome.result) : c.json(outcome.failure, 409);
+  };
+
+  api.post("/git/sync", limitBody(), async (c) => {
+    const body = await parseBody(c, gitSyncBodySchema);
+    if (!body.ok) return body.response;
+    return gitOperation(c, () => syncRepository(root, body.value.message));
+  });
+
+  api.post("/git/pull", limitBody(), async (c) => {
+    const body = await parseBody(c, emptyBodySchema);
+    if (!body.ok) return body.response;
+    return gitOperation(c, () => pullRepository(root));
+  });
 
   api.get("/changes", (c) =>
     streamSSE(c, async (stream) => {

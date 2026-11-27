@@ -112,3 +112,108 @@ describe("git-changed", () => {
     ]);
   });
 });
+
+const sync = (
+  server: Awaited<ReturnType<typeof serverOver>>["server"],
+  message: string,
+  headers: Record<string, string> = {},
+) => post(server, "/api/git/sync", JSON.stringify({ message }), headers);
+
+describe("POST /api/git/sync and /api/git/pull", () => {
+  it("commits, pushes and answers what happened", async () => {
+    const { root, bare } = await goldenRemote();
+    await appendFile(join(root, CARD), "\nEdited.\n");
+    const { server } = await serverOver(root);
+
+    const response = await sync(server, "chore: 1 topic from desk1");
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      committed: 1,
+      pulled: 0,
+      pushed: 1,
+    });
+    expect((await git(bare, "log", "-1", "--format=%s", "main")).trim()).toBe(
+      "chore: 1 topic from desk1",
+    );
+  });
+
+  it("answers a conflict with the file and leaves the commit where it was", async () => {
+    const { root, clone } = await goldenRemote();
+    const laptop = await clone();
+    await appendFile(join(laptop, CARD), "\nLaptop.\n");
+    await git(laptop, "commit", "-qam", "laptop edit");
+    await git(laptop, "push", "-q");
+    await appendFile(join(root, CARD), "\nDesk.\n");
+    await git(root, "commit", "-qam", "desk edit");
+    const head = await git(root, "rev-parse", "HEAD");
+    const { server } = await serverOver(root);
+
+    const response = await sync(server, "chore: sync");
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({ code: "conflict", files: [CARD] });
+    expect(await git(root, "rev-parse", "HEAD")).toBe(head);
+    expect(await git(root, "status", "--porcelain")).toBe("");
+  });
+
+  it("refuses with the block reason when there is no upstream", async () => {
+    const { root } = await goldenRemote();
+    await git(root, "branch", "--unset-upstream");
+    const { server } = await serverOver(root);
+    const response = await post(server, "/api/git/pull", "{}");
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({
+      code: "blocked",
+      blocked: { reason: "no-upstream" },
+    });
+  });
+
+  it("is busy while another git holds the index", async () => {
+    const { root } = await goldenRemote();
+    await writeFile(join(root, ".git/index.lock"), "");
+    const { server } = await serverOver(root);
+    expect(await (await sync(server, "m")).json()).toEqual({ code: "busy" });
+  });
+
+  it("runs two presses one after the other, the second seeing the first's result", async () => {
+    const { root, bare } = await goldenRemote();
+    await appendFile(join(root, CARD), "\nEdited.\n");
+    const { server } = await serverOver(root);
+
+    const [first, second] = await Promise.all([
+      sync(server, "chore: first"),
+      sync(server, "chore: second"),
+    ]);
+
+    expect(await first.json()).toEqual({ committed: 1, pulled: 0, pushed: 1 });
+    expect(await second.json()).toEqual({
+      committed: 0,
+      pulled: 0,
+      pushed: 0,
+    });
+    expect((await git(bare, "rev-list", "--count", "main")).trim()).toBe("2");
+  });
+
+  it("refuses an empty message, another field, another Origin and a body that is not JSON", async () => {
+    const { root } = await goldenRemote();
+    await appendFile(join(root, CARD), "\nEdited.\n");
+    const { server } = await serverOver(root);
+
+    const empty = await sync(server, "  ");
+    expect(empty.status).toBe(400);
+    expect(await empty.json()).toMatchObject({
+      code: "body-invalid",
+      field: "message",
+    });
+    const extra = await post(server, "/api/git/pull", '{"force":true}');
+    expect(extra.status).toBe(400);
+    const foreign = await sync(server, "m", {
+      origin: "http://evil.test",
+    });
+    expect(foreign.status).toBe(403);
+    const text = await sync(server, "m", { "content-type": "text/plain" });
+    expect(text.status).toBe(415);
+    expect(await git(root, "rev-list", "--count", "HEAD")).toBe("1\n");
+  });
+});

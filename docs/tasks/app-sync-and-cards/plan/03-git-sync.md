@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** 02
 - **Даёт:** `syncRepository` и `pullRepository`; маршруты `/api/git/sync` и `/api/git/pull`
 
@@ -33,5 +33,5 @@
 
 ## Приёмка фазы
 
-- [ ] Unit и контрактная части AC-F06…AC-F08, AC-N01a, AC-N01b, AC-N02.
-- [ ] Lint и тесты зелёные.
+- [x] Unit и контрактная части AC-F06…AC-F08, AC-N01a, AC-N01b, AC-N02.
+- [x] Lint и тесты зелёные.

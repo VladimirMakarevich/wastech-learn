@@ -36,6 +36,17 @@ describe("parsing git status", () => {
     expect(parsed.entries).toEqual([]);
   });
 
+  it("notices conflicts left unsettled in the index", () => {
+    expect(
+      parsePorcelainV2(
+        records(
+          "# branch.head main",
+          "u UU N... 100644 100644 100644 100644 a b c content/a/b/index.md",
+        ),
+      ).unmerged,
+    ).toBe(true);
+  });
+
   it("treats an upstream whose remote branch is gone as no upstream", () => {
     expect(
       parsePorcelainV2(

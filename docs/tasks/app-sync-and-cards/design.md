@@ -37,7 +37,7 @@
 ## Контракты
 
 - `GET /api/git` → `{ branch, upstream, ahead, behind, blocked?: { reason }, entries: [{ path, change, area, topic?, card?, from? }], suggestedMessage }`; `change` — `added | modified | deleted | renamed | untracked`, `area` — `topic | card | reviews | inbox | other`.
-- `POST /api/git/sync { message }` и `POST /api/git/pull {}` → `{ committed, pulled, pushed }` или `{ code, files?, blocked?, detail?, stashKept? }`: `conflict` (с `files`), `auth-required`, `identity-missing` (AS-Q7), `busy`, `blocked` (с `blocked: { reason }`, в том числе нет upstream — AS-Q9), `push-rejected`, `git-failed`. Схемы — `core/schema/app.ts`.
+- `POST /api/git/sync { message }` и `POST /api/git/pull {}` → `{ committed, pulled, pushed }` или `{ code, files?, blocked?, detail?, stashKept? }`: `conflict` (с `files`), `auth-required`, `offline` (AS-Q10), `identity-missing` (AS-Q7), `busy`, `blocked` (с `blocked: { reason }`, в том числе нет upstream — AS-Q9), `push-rejected`, `git-failed`. Схемы — `core/schema/app.ts`.
 - `POST /api/cards/:id/status { status: "active" | "retired" }`, `DELETE /api/cards/:id {}`, `POST /api/cards/:id/restore {}`, `POST /api/topics/:domain/:topic/status { status: "active" | "archived" }` → `{ status: "written" }` или `{ status: "blocked", findings }`, `content-changed`, `card-not-found`, `topic-not-found`, `nothing-to-restore`.
 - Все не-GET — через существующий `guard` (свой `Origin`, JSON, лимит тела).
 

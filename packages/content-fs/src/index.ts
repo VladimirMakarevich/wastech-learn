@@ -103,3 +103,5 @@ export type {
   RepositoryGitState,
 } from "./git/status.js";
 export { SYNC_AREAS, isSynced, suggestCommitMessage } from "./git/message.js";
+export { pullRepository, syncRepository } from "./git/sync.js";
+export type { SyncOptions, SyncOutcome } from "./git/sync.js";
