@@ -1,0 +1,79 @@
+<main class="screen settings" data-screen="settings">
+  <wl-group
+    [header]="'settings.interface' | t"
+    [footer]="'settings.language-note' | t"
+  >
+    <div class="g-row">
+      <span class="g-label">{{ "settings.language" | t }}</span>
+      <wl-segmented
+        data-setting="lang"
+        [segments]="langs()"
+        [label]="'settings.language' | t"
+        [value]="i18n.lang()"
+        (valueChange)="setLang($event)"
+      />
+    </div>
+    <div class="g-row">
+      <span class="g-label">{{ "settings.theme" | t }}</span>
+      <wl-segmented
+        data-setting="theme"
+        [segments]="themes()"
+        [label]="'settings.theme' | t"
+        [value]="preferences.theme()"
+        (valueChange)="setTheme($event)"
+      />
+    </div>
+  </wl-group>
+  <wl-group [header]="'settings.review' | t">
+    <div class="g-row">
+      <span class="g-label">{{ "settings.session" | t }}</span>
+      <wl-segmented
+        data-setting="session"
+        [segments]="lengths()"
+        [label]="'settings.session' | t"
+        [value]="preferences.sessionMinutes()"
+        (valueChange)="setLength($event)"
+      />
+    </div>
+  </wl-group>
+  <wl-group [header]="'settings.voice' | t">
+    <button
+      type="button"
+      class="g-row g-action tint"
+      data-voice-check
+      (click)="checkVoice()"
+    >
+      {{ "settings.voice-check" | t }} @if (voiceResult(); as result) {
+      <span class="muted" role="status">{{ result }}</span>
+      }
+    </button>
+  </wl-group>
+  @if (repository(); as repo) {
+  <wl-group [header]="'settings.repository' | t" [footer]="'settings.edit' | t">
+    <div class="g-row" data-repo="retention">
+      <span class="g-label">{{ "settings.retention" | t }}</span>
+      <b class="tnum">{{ repo.retention }}</b>
+    </div>
+    <div class="g-row stack" data-repo="limits">
+      <span class="g-label">{{ "settings.limits" | t }}</span>
+      @for (limit of repo.limits; track limit.domain) {
+      <span class="tnum"
+        >{{ "settings.limit-row" | t: { domain: limit.domain, new:
+        limit.newPerDay, reviews: limit.reviewsPerDay } }}</span
+      >
+      }
+    </div>
+    <div class="g-row" data-repo="device">
+      <span class="g-label">{{ "settings.device" | t }}</span>
+      <b>{{ repo.device }}</b>
+    </div>
+    <div class="g-row path">
+      <span class="g-label">{{ "settings.path" | t }}</span>
+      <span>{{ repo.path }}</span>
+    </div>
+    <a class="g-row g-action" [href]="repo.editor"
+      >{{ "settings.edit-open" | t }}</a
+    >
+  </wl-group>
+  }
+</main>
