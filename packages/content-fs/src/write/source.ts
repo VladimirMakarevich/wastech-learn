@@ -190,11 +190,19 @@ export const saveSource = async (
     if (meaningAsked && input.meaning === undefined)
       return { status: "decision-needed", decision };
     decided = meaningAsked && input.meaning === "same";
-    const next =
-      meaningAsked && input.meaning === "new"
-        ? planNewCard(workspace, snapshot, path, current, text)
-        : undefined;
-    plan = next ?? planCardEdit(snapshot, path, text);
+    if (meaningAsked && input.meaning === "new") {
+      const next = planNewCard(workspace, snapshot, path, current, text);
+      // The learner let the old history go; writing the text in place would quietly keep it on the
+      // new question. The checks name why the card cannot get a successor.
+      if (next === undefined)
+        return {
+          status: "blocked",
+          report: await validateOverlay(workspace, new Map([[path, text]])),
+        };
+      plan = next;
+    } else {
+      plan = planCardEdit(snapshot, path, text);
+    }
   } else if (kind === "summary" || kind === "materials") {
     const today = calendarDate(
       workspace.options.now(),

@@ -1,4 +1,11 @@
-import { mkdir, readFile, stat, symlink, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  readFile,
+  readdir,
+  stat,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
 import { join } from "node:path";
 import { sha256Hex } from "@wastech-learn/core";
 import { seededRng } from "@wastech-learn/srs";
@@ -288,6 +295,26 @@ describe("saveSource", () => {
     expect(await read(root, INDEX)).toContain(
       `- [Reactive Streams: requesting items](cards/${id}.md)`,
     );
+  });
+
+  it("on 'new' for a card outside the model blocks instead of keeping the id on the new text", async () => {
+    const root = await goldenCopy();
+    // A topic whose index cannot be read leaves its cards out of the model: there is no list to put a
+    // successor in.
+    await writeFile(join(root, INDEX), "# No front matter\n");
+    const before = await read(root, CARD);
+    const cards = await readdir(join(root, DIR, "cards"));
+    const outcome = await edit(
+      workspaceOn(root),
+      CARD,
+      REWRITTEN_ANSWER,
+      "new",
+    );
+    expect(outcome.status).toBe("blocked");
+    if (outcome.status !== "blocked") return;
+    expect(outcome.report.errorCount).toBeGreaterThan(0);
+    expect(await read(root, CARD)).toBe(before);
+    expect(await readdir(join(root, DIR, "cards"))).toEqual(cards);
   });
 
   it("puts a new card title into the topic's list in the same write", async () => {
