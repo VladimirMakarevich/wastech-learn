@@ -26,6 +26,7 @@ export {
   LOCAL_FILE,
   MDLINT_CONFIG_FILE,
   loadConfig,
+  loadConfigSource,
   loadContentFiles,
   loadDevice,
   loadRepository,

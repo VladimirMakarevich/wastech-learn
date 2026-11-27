@@ -51,8 +51,13 @@ const parseJsonFile = (file: string, text: string): unknown => {
   }
 };
 
-/** Reads and validates `learn.config.json`; a missing or invalid file stops the work with its field named. */
-export const loadConfig = async (root: string): Promise<LearnConfig> => {
+/**
+ * Reads and validates `learn.config.json` and keeps the file's own JSON too: a host that hands the config
+ * on (the local server to the app) sends the file's shape, which the receiver parses with the same schema.
+ */
+export const loadConfigSource = async (
+  root: string,
+): Promise<{ readonly config: LearnConfig; readonly source: unknown }> => {
   const text = await readText(root, CONFIG_FILE);
   if (text === undefined) {
     throw new LearnError(
@@ -63,7 +68,8 @@ export const loadConfig = async (root: string): Promise<LearnConfig> => {
       },
     );
   }
-  const parsed = learnConfigSchema.safeParse(parseJsonFile(CONFIG_FILE, text));
+  const source = parseJsonFile(CONFIG_FILE, text);
+  const parsed = learnConfigSchema.safeParse(source);
   if (!parsed.success) {
     const issue = firstIssue(parsed.error);
     throw new LearnError(
@@ -75,8 +81,12 @@ export const loadConfig = async (root: string): Promise<LearnConfig> => {
       },
     );
   }
-  return parsed.data;
+  return { config: parsed.data, source };
 };
+
+/** Reads and validates `learn.config.json`; a missing or invalid file stops the work with its field named. */
+export const loadConfig = async (root: string): Promise<LearnConfig> =>
+  (await loadConfigSource(root)).config;
 
 /**
  * The configured UI language, read without validating the rest of the file, so a host can report an

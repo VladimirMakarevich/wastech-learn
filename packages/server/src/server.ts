@@ -2,7 +2,7 @@ import { stat } from "node:fs/promises";
 import { join } from "node:path";
 import {
   appendReviewEvents,
-  loadConfig,
+  loadConfigSource,
   loadDevice,
   readReviewLog,
   watchRepository,
@@ -131,8 +131,8 @@ const routes = (
   const api = new Hono();
 
   api.get("/status", async (c) => {
-    const [config, device] = await Promise.all([
-      loadConfig(root),
+    const [{ config, source }, device] = await Promise.all([
+      loadConfigSource(root),
       loadDevice(root, options.hostname),
     ]);
     const failure = holder.failure();
@@ -140,7 +140,8 @@ const routes = (
       device: device.device,
       deviceSource: device.source,
       contentPath: root,
-      config,
+      // The file's own shape, already validated: the app parses it with the same schema at its edge.
+      config: source,
       sched: `${SCHEDULER_PACKAGE}/${config.srs.model}`,
       build:
         failure === undefined

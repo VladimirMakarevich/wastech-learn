@@ -1,6 +1,7 @@
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { learnConfigSchema } from "@wastech-learn/core";
 import { MAX_BODY_BYTES } from "../src/index.js";
 import {
   CARD,
@@ -25,7 +26,7 @@ const exists = async (path: string): Promise<boolean> =>
   );
 
 describe("GET /api/status", () => {
-  it("names the device, the absolute content path, the parsed config and the scheduler", async () => {
+  it("names the device, the absolute content path, the config as the file has it and the scheduler", async () => {
     const root = await goldenCopy();
     const { server } = await serverOver(root);
     const response = await get(server, "/api/status");
@@ -34,10 +35,22 @@ describe("GET /api/status", () => {
       device: "desk1",
       deviceSource: "local",
       contentPath: root,
-      config: { timezone: "Europe/Warsaw", leechThreshold: 8 },
+      config: {
+        timezone: "Europe/Warsaw",
+        leechThreshold: 8,
+        limits: { "lang-pl": { newPerDay: 10, reviewsPerDay: 150 } },
+      },
       sched: "ts-fsrs@6.0.1/FSRS-7",
       build: { ok: true, builtAt: NOW.toISOString() },
     });
+  });
+
+  it("sends a config the app can parse with core's schema", async () => {
+    const { server } = await serverOver(await goldenCopy());
+    const status = (await (await get(server, "/api/status")).json()) as {
+      config: unknown;
+    };
+    expect(learnConfigSchema.safeParse(status.config).success).toBe(true);
   });
 
   it("answers a broken config with its code and nothing else", async () => {
