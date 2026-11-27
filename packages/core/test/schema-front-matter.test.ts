@@ -32,6 +32,15 @@ describe("card front matter", () => {
     expect(cardFrontMatterSchema.parse(card)).toEqual(card);
   });
 
+  it("accepts a card captured in Codex and rejects an unknown client", () => {
+    expect(
+      cardFrontMatterSchema.parse({ ...card, origin: "codex" }).origin,
+    ).toBe("codex");
+    expect(
+      fieldOf(cardFrontMatterSchema.safeParse({ ...card, origin: "gemini" })),
+    ).toBe("origin");
+  });
+
   it("names status when it is missing", () => {
     expect(
       fieldOf(cardFrontMatterSchema.safeParse({ ...card, status: undefined })),

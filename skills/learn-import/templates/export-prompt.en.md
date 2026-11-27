@@ -9,7 +9,9 @@ Output ONE markdown code block and nothing else. Rules:
   Summary — ### subsections: TL;DR, Mental model, Diagram, Worked example, Trade-offs,
     When not to use, Misconceptions, Comparison, Self-check, Related, Open questions, Sources.
   Materials — a table Title | Kind | Why; Title is a link; Kind is docs, article, video, book,
-    repo, course or chat.
+    repo, course or chat. Besides what we used, add 1–3 primary sources to go deeper: official
+    docs or specification, the project's repository, an authoritative source. Only links you
+    have checked open; otherwise leave them out.
   Diagrams — mermaid code blocks, at most 7 nodes, labels on the edges.
   Cards — 8–15 candidates.
 - Each card: a heading "### <type> · <bloom> · <idea>", then a "Q:" line and an "A:" line;

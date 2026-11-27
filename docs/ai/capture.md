@@ -7,9 +7,10 @@
 | Клиент | Механизм | Фаза |
 | --- | --- | --- |
 | Claude Code (CLI, Desktop Code) | Skills `learn-capture`/`learn-import`/`learn-quiz` + stdio MCP `wastech-learn-mcp` + MCP `wastech-mdlint` + hook | MVP |
-| ChatGPT, Gemini и другие без MCP | Промпт экспорта → один MD-файл [learning package](learning-package.md) → `inbox/` → `learn-import` в Claude Code | MVP |
+| Codex (приложение ChatGPT на десктопе, CLI) | Те же skills из `.agents/skills` + тот же stdio MCP через `.codex/config.toml` контент-репозитория; hook нет — правки через `apply_patch` проверяют только инструменты MCP и `check` | MVP |
+| Чаты в браузере (chatgpt.com, Gemini и другие) без MCP | Промпт экспорта → один MD-файл [learning package](learning-package.md) → `inbox/` → `learn-import` в Claude Code | MVP |
 | Claude Desktop (чат) | Тот же stdio MCP через `claude_desktop_config.json` | Later |
-| claude.ai web/mobile, ChatGPT developer mode | Remote MCP (HTTPS + OAuth) на Cloudflare Worker ([ADR-0013](../adr/0013-cloud-sync-phase-2.md)) | Later |
+| claude.ai web/mobile, ChatGPT developer mode | Remote MCP требует сервера в интернете | Вне скоупа ([ADR-0016](../adr/0016-local-only.md)) |
 | Любой клиент с MCP Apps | Карточка с кнопками оценки прямо в чате | Later |
 
 ## Skills (MVP)
@@ -36,7 +37,7 @@ Skills лежат в `wastech-learn/skills/<name>/SKILL.md` и ставятся 
 3. **Диалог** по правилам [тьютора](tutor-and-grading.md).
 4. **Brain dump:** пользователь формулирует TL;DR и ментальную модель. ИИ отмечает пробелы.
 5. **Кандидаты:** `search` по дублям → 8–15 кандидатов разных типов → `add_cards` с `dryRun: true` (валидация) → пользователь отбирает и правит → `add_cards` без `dryRun`.
-6. **Summary, материалы, визуал:** `save_summary`, `save_materials`, `save_diagram`.
+6. **Summary, материалы, визуал:** `save_summary`, `save_materials`, `save_diagram`. В материалы, кроме источников из разговора, идут 1–3 первоисточника для углубления: официальная документация или спецификация, репозиторий проекта, признанный источник. Каждую ссылку агент открывает перед записью; адреса по памяти не пишутся.
 7. **Мини-квиз:** 3 только что созданные карточки через `quiz_next` и `record_review`.
 8. Короткий итог: что создано, сколько карточек, сколько времени займёт первое повторение.
 
@@ -69,10 +70,27 @@ Skills лежат в `wastech-learn/skills/<name>/SKILL.md` и ставятся 
 }
 ```
 
+## Конфигурация Codex в контент-репозитории
+
+Codex (в приложении ChatGPT для десктопа и в CLI) запускает тот же stdio-сервер из конфига проекта. Codex читает его, только когда папке выдано доверие: приложение спрашивает об этом при первом открытии.
+
+```toml
+# .codex/config.toml
+[mcp_servers.wastech-learn]
+command = "npx"
+args = ["--no-install", "wastech-learn-mcp", "--content", "."]
+
+[mcp_servers.wastech-mdlint]
+command = "npx"
+args = ["--no-install", "wastech-mdlint-mcp"]
+```
+
+Skills Codex берёт из `.agents/skills`; они ставятся тем же `npx skills add ../wastech-learn/skills --agent codex --copy` и фиксируются в том же `skills-lock.json`. Skill узнаёт клиента сам и пишет `origin: codex` и `grader: ai:codex`. Hook из `.claude/settings.json` Codex не запускает: он правит файлы через `apply_patch`, и событие у него другое. Поэтому в Codex ручные правки файлов темы проверяются только `check` и `npm run lint`, а запись через инструменты MCP проверяется так же, как в Claude Code.
+
 ## Риски
 
 - Лимиты подписки: длинный захват и квиз тратят сообщения. Поэтому квиз идёт батчами по 5–10 карточек, а тексты инструментов короткие (R-04).
-- Доступность MCP в ChatGPT зависит от плана, документация противоречива. Поэтому базовый путь для ChatGPT — learning package (R-05).
+- MCP есть только у локальных клиентов (Claude Code, Codex). Для чатов в браузере путь — learning package; remote MCP вне скоупа (R-05, [ADR-0016](../adr/0016-local-only.md)).
 
 ## См. также
 

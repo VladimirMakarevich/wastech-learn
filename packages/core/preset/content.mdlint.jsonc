@@ -48,7 +48,7 @@
             "create",
           ],
           "grading": ["self", "ai", "none"],
-          "origin": ["claude-code", "chatgpt", "manual", "import"],
+          "origin": ["claude-code", "codex", "chatgpt", "manual", "import"],
           "lang": ["en", "ru", "pl"],
           "langPair": ["pl-ru", "pl-en"],
         },
@@ -77,7 +77,7 @@
           "lang": ["en", "ru", "pl"],
           "status": ["draft", "active", "archived"],
           "familiarity": ["new", "familiar"],
-          "origin": ["claude-code", "chatgpt", "manual", "import"],
+          "origin": ["claude-code", "codex", "chatgpt", "manual", "import"],
         },
         "patterns": {
           "created": "^\\d{4}-\\d{2}-\\d{2}$",

@@ -14,6 +14,7 @@ Turn a conversation into a topic the learner owns: files that pass validation, c
 - Never give an answer before the learner has tried. Hints go one step at a time and only after a new attempt: a leading question, a direction, a keyword or partial answer, a worked example, and only then the full answer.
 - One idea at a time, in short segments. Ask the learner to predict ("what does this print?") before showing. Use contrast pairs (Saga vs 2PC) and examples from their stack and projects.
 - Short replies: no preambles, no recaps of what was just said. Every message costs the subscription.
+- Name the client you run in: `origin` is `claude-code` in Claude Code and `codex` in Codex, and an AI grade is `ai:<origin>`. The tools default to `claude-code`, so pass `origin` on every `create_topic` and `add_cards`.
 - Write content only through the MCP tools. Every write takes a `requestId` unique to that write, such as `<topic>-<YYYYMMDD-HHMM>-cards`; repeat an id only to retry the same call, which then returns the first result.
 
 ## Steps
@@ -31,9 +32,9 @@ Turn a conversation into a topic the learner owns: files that pass validation, c
    - The learner keeps, edits or drops each one; what they want later gets `status: draft`. Write only the picked ones with `add_cards`.
 7. **Summary, materials, diagram.**
    - `save_summary`: TL;DR and Mental model in the learner's own words from the brain dump; the rest from the dialogue; leave a section empty rather than pad it.
-   - `save_materials`: only sources the conversation actually used or recommended.
+   - `save_materials`: the sources the conversation used or recommended, plus 1–3 primary sources to go deeper — the official documentation or specification, the project's own repository, or a source the field treats as authoritative, such as the maintainers' writing or a standard. Open every link before saving it and keep only those that load and say what the row claims; never write a URL from memory. A primary source gets `Kind` `docs` or `repo`.
    - `save_diagram`: Mermaid, at most 7 nodes, labels on the edges, alt text that says what the diagram shows. Put the returned `embed` with one or two lines of explanation into the summary's Diagram section with `save_summary`.
-8. **Mini quiz.** `quiz_next` with `scope.topic` and `limit: 3`. For each item: ask, wait for the answer and the confidence, `reveal`, suggest a rating with one line of reasons, then `record_review` with the rating the learner settled on, `aiSuggested`, `grader: ai:claude-code` and the confidence. When the day's new-card limit is used up, `quiz_next` returns fewer items: say so in one line and run the rest with `mode: practice`, which does not schedule them.
+8. **Mini quiz.** `quiz_next` with `scope.topic` and `limit: 3`. For each item: ask, wait for the answer and the confidence, `reveal`, suggest a rating with one line of reasons, then `record_review` with the rating the learner settled on, `aiSuggested`, `grader: ai:<origin>` and the confidence. When the day's new-card limit is used up, `quiz_next` returns fewer items: say so in one line and run the rest with `mode: practice`, which does not schedule them.
 9. **Close** with one line in the format of [templates/result.md](templates/result.md).
 
 ## Card rules

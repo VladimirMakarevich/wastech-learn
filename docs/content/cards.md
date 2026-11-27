@@ -49,7 +49,7 @@ Saga не держит глобальных блокировок, доступн
 | `grading` | да | `self`, `ai`, `none` | Кто предлагает оценку |
 | `idea` | нет | `kebab-case` | Группирует 2–3 карточки одной мысли, для bury siblings |
 | `tags` | нет | список `kebab-case` | Фильтры, cram, версии (`angular-19`) |
-| `origin` | да | `claude-code`, `chatgpt`, `manual`, `import` | Откуда пришла карточка |
+| `origin` | да | `claude-code`, `codex`, `chatgpt`, `manual`, `import` | Откуда пришла карточка |
 | `created` | да | `YYYY-MM-DD` | Аудит |
 | `lang` | нет | `en`, `ru`, `pl` | Переопределяет язык темы (редко) |
 | `langPair` | для `vocab` | `pl-ru`, `pl-en` | Направления вариантов и TTS |

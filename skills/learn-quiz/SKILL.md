@@ -26,7 +26,7 @@ Recall first, then the answer, then a rating the learner owns. The server never 
    - Open answers (scenario, design, explain, and any card with a rubric): grade in the format of [templates/grading.md](templates/grading.md) — each rubric point present, partial or missing with a quote from the answer, then the suggested rating.
    - Rating rules: a required `(!)` point missing → Again (1); all required points with mistakes or slowly → Hard (2); all required points → Good (3); everything, quickly and with extra precision → Easy (4).
    - After a miss, explain it in 1–3 sentences and name the summary section to reread.
-5. **Record** with `record_review`: the rating the learner settled on, `aiSuggested` when you suggested one, `grader: ai:claude-code` when you graded and `self` when the learner did, the confidence, `mode` as in step 2, and a `requestId` unique to this answer, such as `quiz-<YYYYMMDD-HHMM>-<item>`. Reuse an id only to retry the same call after a lost reply.
+5. **Record** with `record_review`: the rating the learner settled on, `aiSuggested` when you suggested one, `grader: ai:claude-code` (in Codex, `ai:codex`) when you graded and `self` when the learner did, the confidence, `mode` as in step 2, and a `requestId` unique to this answer, such as `quiz-<YYYYMMDD-HHMM>-<item>`. Reuse an id only to retry the same call after a lost reply.
 6. **Follow up.**
    - `suspended: true` means the card lapsed too often and was set aside: say in one line that it waits to be rewritten, not repeated.
    - A wrong answer given with confidence 3 is worth a card that tells the two ideas apart: offer it, and write it only through learn-capture's picking step.

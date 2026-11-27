@@ -43,7 +43,7 @@
           "status": ["draft", "active", "retired"],
           "bloom": ["remember", "understand", "apply", "analyze", "evaluate", "create"],
           "grading": ["self", "ai", "none"],
-          "origin": ["claude-code", "chatgpt", "manual", "import"] },
+          "origin": ["claude-code", "codex", "chatgpt", "manual", "import"] },
         "patterns": { "id": "^[0-9a-hjkmnp-tv-z]{8}$", "created": "^\\d{4}-\\d{2}-\\d{2}$",
                       "tags": "^[a-z0-9][a-z0-9-]*$", "idea": "^[a-z0-9][a-z0-9-]*$" } } },
     { "rule": "FM-001", "options": {

@@ -12,7 +12,7 @@ lang: en               # en | ru | pl — язык контента темы
 status: active         # draft | active | archived
 familiarity: new       # new | familiar — влияет на поведение тьютора (LP-14)
 created: 2026-11-25
-origin: claude-code    # claude-code | chatgpt | manual | import
+origin: claude-code    # claude-code | codex | chatgpt | manual | import
 tags: [streaming, reliability]
 related: [architecture/rate-limiting, dotnet/channels]
 ---
@@ -61,6 +61,8 @@ Front matter: `updated`. Одна секция `## Materials` с таблице�
 | `Kind` | `docs`, `article`, `video`, `book`, `repo`, `course`, `chat` |
 | `Why` | Зачем читать, одна строка |
 | `Status` | `to-read`, `read`, `reference` |
+
+Skills захвата добавляют хотя бы один первоисточник (`docs` или `repo`): официальную документацию, спецификацию или репозиторий проекта — и записывают только ссылки, которые открылись. `check` это не проверяет.
 
 Ссылки на чаты (`Kind: chat`) хранятся только если чат доступен по ссылке. Текст чата в репозиторий не копируется.
 

@@ -8,7 +8,13 @@ export const KEBAB_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
 export const CONTENT_LANGS = ["en", "ru", "pl"] as const;
 export type ContentLang = (typeof CONTENT_LANGS)[number];
 
-export const ORIGINS = ["claude-code", "chatgpt", "manual", "import"] as const;
+export const ORIGINS = [
+  "claude-code",
+  "codex",
+  "chatgpt",
+  "manual",
+  "import",
+] as const;
 
 export const kebabSchema = z.string().regex(KEBAB_PATTERN);
 

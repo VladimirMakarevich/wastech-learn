@@ -9,7 +9,9 @@
   Summary — подсекции ###: TL;DR, Mental model, Diagram, Worked example, Trade-offs,
     When not to use, Misconceptions, Comparison, Self-check, Related, Open questions, Sources.
   Materials — таблица Title | Kind | Why; Title — ссылка; Kind — docs, article, video, book,
-    repo, course или chat.
+    repo, course или chat. Кроме того, что мы использовали, добавь 1–3 первоисточника для
+    углубления: официальную документацию или спецификацию, репозиторий проекта, авторитетный
+    источник. Только ссылки, которые ты проверил; иначе не добавляй.
   Diagrams — блоки кода mermaid, не больше 7 узлов, подписи на стрелках.
   Cards — 8–15 кандидатов.
 - Каждая карточка: заголовок "### <type> · <bloom> · <idea>", затем строка "Q:" и строка "A:";

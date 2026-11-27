@@ -9,7 +9,9 @@ Odpowiedz JEDNYM blokiem kodu markdown i niczym więcej. Zasady:
   Summary — podsekcje ###: TL;DR, Mental model, Diagram, Worked example, Trade-offs,
     When not to use, Misconceptions, Comparison, Self-check, Related, Open questions, Sources.
   Materials — tabela Title | Kind | Why; Title to link; Kind to docs, article, video, book,
-    repo, course albo chat.
+    repo, course albo chat. Poza tym, czego używaliśmy, dodaj 1–3 źródła pierwotne do
+    pogłębienia: oficjalną dokumentację lub specyfikację, repozytorium projektu, uznane źródło.
+    Tylko linki, które sprawdziłeś; w przeciwnym razie je pomiń.
   Diagrams — bloki kodu mermaid, najwyżej 7 węzłów, podpisy na strzałkach.
   Cards — 8–15 kandydatów.
 - Każda karta: nagłówek "### <type> · <bloom> · <idea>", potem linia "Q:" i linia "A:";

@@ -30,7 +30,7 @@ When the learner asks how to export from another chat, give them the prompt in t
    - A new topic (`topicExists: false`): `create_topic` with the package's domain, topic, `lang`, `familiarity` and key idea, `origin: chatgpt` when `source` is chatgpt and `import` otherwise; then `save_summary` with the package's summary sections.
    - An existing topic: `save_summary` with `merge: true`. Empty sections take the imported text; sections that already say something keep it, and the imported version lands under Open questions for the learner to reconcile.
    - `add_cards` with the picked cards and the same `origin`.
-   - `save_materials` with the package's materials.
+   - `save_materials` with the package's materials. Open every link first and drop the ones that do not load. When no row is a primary source (official docs or specification, the project's repository), add 1–3 the way learn-capture does.
    - `save_diagram` for each Mermaid block: a kebab-case name and alt text you write from what the diagram shows. Put the returned `embed` into the summary's Diagram section when that section is empty.
 6. **Validate** the topic's files with `validate`; fix what it reports.
 7. **Archive** the package with `archive_package` and a `requestId`.
