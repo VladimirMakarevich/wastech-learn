@@ -250,3 +250,39 @@ export type { Reveal } from "./study/prompt.js";
 
 export { postToolUseEventSchema } from "./schema/hook.js";
 export type { PostToolUseEvent } from "./schema/hook.js";
+
+export {
+  APP_CARD_STATUSES,
+  APP_TOPIC_STATUSES,
+  CONTENT_WRITE_FAILURE_CODES,
+  GIT_AREAS,
+  GIT_BLOCK_REASONS,
+  GIT_CHANGES,
+  GIT_FAILURE_CODES,
+  cardIdParamSchema,
+  cardStatusBodySchema,
+  commitMessageSchema,
+  emptyBodySchema,
+  gitBlockSchema,
+  gitEntrySchema,
+  gitFailureSchema,
+  gitStateSchema,
+  gitSyncBodySchema,
+  gitSyncResultSchema,
+  kebabParamSchema,
+  topicStatusBodySchema,
+} from "./schema/app.js";
+export type {
+  CardStatusBody,
+  ContentWriteFailureCode,
+  GitArea,
+  GitBlockReason,
+  GitChange,
+  GitEntry,
+  GitFailure,
+  GitFailureCode,
+  GitState,
+  GitSyncBody,
+  GitSyncResult,
+  TopicStatusBody,
+} from "./schema/app.js";

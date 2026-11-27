@@ -17,6 +17,10 @@
 
 - Binds **`127.0.0.1` only**, no wildcard CORS, no authentication needed because nothing leaves the machine.
 - Validates every incoming event with the `core` schema, caps body size, and appends only to its own writer file.
+- Writes content only through `content-fs` with the same validation and file check as the MCP tools, one operation at a time (ADR-0017).
+- Runs git only through `execFile` without a shell, with a fixed argument list, `GIT_TERMINAL_PROMPT=0`, a timeout and batch-mode ssh unless the owner configured their own ssh command; user text such as a commit message is a separate argument, never part of a command.
+- Stages only `content/`, `reviews/` and `inbox/`, never the whole repository, and never skips the owner's git hooks.
+- Opens the network only through git and only when the user presses Sync or Pull; it never sees or stores keys or passwords.
 
 ## The MCP server
 

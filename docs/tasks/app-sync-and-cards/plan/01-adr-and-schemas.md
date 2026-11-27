@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** —
 - **Даёт:** ADR, правила безопасности для сервера, схемы тел и коды ошибок в `core`
 
@@ -15,7 +15,7 @@
 1. `docs/adr/0017-app-server-writes-and-git.md` (accepted): контекст, решение (design D1, D2, D4, D6), альтернативы; строка в «Последствиях» [ADR-0007](../../../adr/0007-local-server-phase-1.md); строка в `docs/adr/README.md`.
 2. [.rules/security.md](../../../../.rules/security.md), раздел о локальном сервере: git без оболочки с фиксированными аргументами, `GIT_TERMINAL_PROMPT=0`, только пути `content/`, `reviews/`, `inbox/`, сеть только по нажатию.
 3. `core/src/schema/app.ts`: тела `/api/git/sync`, `/api/cards/:id/status`, `/api/topics/:domain/:topic/status` (design D12); экспорт из `index.ts`.
-4. Коды ошибок `git-*` и `card-*` с сообщениями ru/en/pl в каталоге `core`.
+4. Коды ошибок `git-*` и записи контента и схемы ответов в `core/schema/app.ts`; тексты к ним — в каталоге приложения в фазе 05 (AS-Q8).
 
 ## Затронутые файлы
 
@@ -24,7 +24,7 @@
 - `docs/adr/README.md`
 - `.rules/security.md`
 - `packages/core/src/schema/app.ts`
-- `packages/core/src/messages/{en,ru,pl}.ts`
+- `packages/core/src/{index,browser}.ts`
 - `packages/core/test/schema-app.test.ts`
 
 ## Правила
@@ -33,9 +33,9 @@ ADR до кода ([documentation](../../../../.rules/documentation.md)); Zod-с
 
 ## Тесты
 
-Схемы принимают допустимые тела и называют поле в недопустимых; паритет сообщений на трёх языках.
+Схемы принимают допустимые тела и называют поле в недопустимых; ответы `GET /api/git` и синхронизации разбираются одной схемой. Паритет текстов на трёх языках — в фазе 05.
 
 ## Приёмка фазы
 
 - [ ] ADR-0017 и правила согласованы владельцем.
-- [ ] Lint и тесты зелёные.
+- [x] Lint и тесты зелёные.

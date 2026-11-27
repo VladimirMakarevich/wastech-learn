@@ -10,7 +10,7 @@
 
 | # | Фаза | Даёт | Зависит от | Статус |
 | --- | --- | --- | --- | --- |
-| 01 | [ADR-0017, правила и схемы](01-adr-and-schemas.md) | ADR, правила безопасности для сервера, схемы тел и коды ошибок в `core` | — | ☐ |
+| 01 | [ADR-0017, правила и схемы](01-adr-and-schemas.md) | ADR, правила безопасности для сервера, схемы тел и коды ошибок в `core` | — | ☑ |
 | 02 | [Состояние git](02-git-status.md) | `content-fs/git`: запуск, разбор `status`, сообщение коммита; `GET /api/git` и событие `git-changed` | 01 | ☐ |
 | 03 | [Синхронизация](03-git-sync.md) | `syncRepository` и `pullRepository`; маршруты `/api/git/sync` и `/api/git/pull` | 02 | ☐ |
 | 04 | [Архив, удаление и статус темы](04-card-and-topic-writes.md) | `deleteCard`, `restoreCard`, `setTopicStatus`, очередь без архивных тем; маршруты карточек и тем | 01 | ☐ |
