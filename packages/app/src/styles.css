@@ -105,3 +105,114 @@ table.list tr.selected td {
   font-size: 19px;
   line-height: 1.45;
 }
+
+/* The save status doubles as the way into Sync: a quiet row that reads as status until it is hovered. */
+button.sync {
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  text-align: left;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+button.sync:hover {
+  background: var(--fill);
+  color: var(--ink);
+}
+
+.sync .dot.waiting {
+  background: var(--amber);
+}
+
+/* Modal dialogs: an opaque panel over a dimmed page, so the text inside never sits on moving content. */
+.dialog-backdrop {
+  background: oklch(0% 0 0deg / 38%);
+}
+
+.dialog-panel {
+  width: min(600px, calc(100vw - 32px));
+}
+
+.sync-panel,
+.confirm-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: calc(100vh - 64px);
+  overflow: auto;
+  padding: 24px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.dialog-head h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.dialog-head p {
+  margin: 4px 0 0;
+}
+
+.git-entry {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.git-path {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+}
+
+.git-message {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.git-message textarea {
+  font: inherit;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--fill);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.git-note {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--body);
+}
+
+.git-files {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.dialog-actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.end-unsent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}

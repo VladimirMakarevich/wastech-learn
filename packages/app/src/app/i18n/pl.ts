@@ -223,6 +223,86 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "settings.path": "Treści",
   "settings.edit": "Te wartości zmienia się w learn.config.json, nie tutaj",
   "settings.edit-open": "Otwórz learn.config.json w VS Code",
+  "git.open": "Otwórz panel synchronizacji",
+  "git.indicator.clean": "{device} · wszystko zsynchronizowane",
+  "git.indicator.changes": {
+    one: "{device} · {count} zmiana bez commitu",
+    few: "{device} · {count} zmiany bez commitu",
+    many: "{device} · {count} zmian bez commitu",
+    other: "{device} · {count} zmiany bez commitu",
+  },
+  "git.indicator.ready": "{device} · gotowe do wysłania",
+  "git.indicator.blocked": "{device} · synchronizacja niedostępna",
+  "git.indicator.incoming": "{device} · są commity do pobrania",
+  "git.ahead": {
+    one: "{count} commit do wysłania",
+    few: "{count} commity do wysłania",
+    many: "{count} commitów do wysłania",
+    other: "{count} commitu do wysłania",
+  },
+  "git.behind": {
+    one: "{count} commit do pobrania",
+    few: "{count} commity do pobrania",
+    many: "{count} commitów do pobrania",
+    other: "{count} commitu do pobrania",
+  },
+  "git.panel.title": "Synchronizacja",
+  "git.panel.branch": "{branch} → {upstream}",
+  "git.panel.in": "Trafi do commitu",
+  "git.panel.out": "Nie trafi: commit ręcznie",
+  "git.panel.none": "Nie ma czego commitować",
+  "git.panel.message": "Opis commitu",
+  "git.panel.sync": "Synchronizuj",
+  "git.panel.pull": "Pobierz",
+  "git.panel.close": "Zamknij",
+  "git.panel.running": "Git pracuje…",
+  "git.panel.loading": "Czytam repozytorium…",
+  "git.change.added": "nowy",
+  "git.change.untracked": "nowy",
+  "git.change.modified": "zmieniony",
+  "git.change.deleted": "usunięty",
+  "git.change.renamed": "przeniesiony",
+  "git.result.nothing": "Nic nowego: oba komputery już się zgadzają",
+  "git.result.sent": {
+    one: "Wysłano {count} commit",
+    few: "Wysłano {count} commity",
+    many: "Wysłano {count} commitów",
+    other: "Wysłano {count} commitu",
+  },
+  "git.result.received": {
+    one: "Pobrano {count} commit",
+    few: "Pobrano {count} commity",
+    many: "Pobrano {count} commitów",
+    other: "Pobrano {count} commitu",
+  },
+  "git.result.both": "Commity wysłane: {sent}, pobrane: {received}",
+  "git.failure.conflict":
+    "Te same pliki zmieniono na obu komputerach. Rozwiąż konflikt w VS Code i zrób commit, potem zsynchronizuj ponownie; repozytorium jest takie jak przed kliknięciem",
+  "git.failure.conflict-stash":
+    "Commity pobrane, ale lokalne zmiany w tych plikach się z nimi rozchodzą. Zmiany czekają w git stash: rozwiąż konflikt w VS Code",
+  "git.failure.auth-required":
+    "Git prosi o hasło lub klucz. Uruchom raz git pull w terminalu, potem synchronizuj tutaj",
+  "git.failure.offline":
+    "Zdalne repozytorium jest niedostępne. Sprawdź połączenie i zsynchronizuj ponownie",
+  "git.failure.identity-missing":
+    "Git nie wie, kto robi commit. Uruchom git config user.name i git config user.email w repozytorium treści",
+  "git.failure.busy":
+    "Działa inne polecenie git. Poczekaj na nie i spróbuj ponownie",
+  "git.failure.push-rejected":
+    "Drugi komputer wysłał zmiany wcześniej. Zsynchronizuj ponownie, żeby je pobrać; twój commit jest zachowany",
+  "git.failure.git-failed": "Git się zatrzymał: {detail}",
+  "git.blocked.no-git": "Git nie jest zainstalowany albo nie ma go w PATH",
+  "git.blocked.not-a-repository": "Folder treści nie jest repozytorium git",
+  "git.blocked.detached":
+    "Repozytorium jest na detached HEAD. Przełącz się na gałąź w terminalu",
+  "git.blocked.no-upstream":
+    "Gałąź nie ma upstream. Uruchom raz git push -u w terminalu",
+  "git.blocked.operation-in-progress":
+    "Trwa merge albo rebase. Dokończ go w terminalu",
+  "git.blocked.unmerged":
+    "W plikach został konflikt. Rozwiąż go w VS Code i zrób commit",
+  "end.unsent": "Oceny tej sesji nie zostały jeszcze wysłane na drugi komputer",
+  "end.sync": "Synchronizuj",
   "count.cards": {
     one: "{count} karta",
     few: "{count} karty",

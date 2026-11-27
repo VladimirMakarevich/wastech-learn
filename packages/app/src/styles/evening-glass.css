@@ -1030,10 +1030,11 @@ body[data-view="cards"] .topbar-right {
   margin: 0;
 }
 
+/* Body ink, not muted: at 11.5 px on the fill the muted grey misses AA contrast in the dark theme. */
 .rubric .req {
   font-size: 11.5px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--body);
   background: var(--fill);
   padding: 1px 7px;
   border-radius: 999px;

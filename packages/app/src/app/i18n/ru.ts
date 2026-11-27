@@ -223,6 +223,85 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "settings.path": "Контент",
   "settings.edit": "Эти значения меняются в learn.config.json, а не здесь",
   "settings.edit-open": "Открыть learn.config.json в VS Code",
+  "git.open": "Открыть панель синхронизации",
+  "git.indicator.clean": "{device} · всё синхронизировано",
+  "git.indicator.changes": {
+    one: "{device} · {count} изменение не закоммичено",
+    few: "{device} · {count} изменения не закоммичены",
+    many: "{device} · {count} изменений не закоммичено",
+    other: "{device} · {count} изменения не закоммичены",
+  },
+  "git.indicator.ready": "{device} · готово к отправке",
+  "git.indicator.blocked": "{device} · синхронизация недоступна",
+  "git.indicator.incoming": "{device} · есть коммиты к получению",
+  "git.ahead": {
+    one: "{count} коммит к отправке",
+    few: "{count} коммита к отправке",
+    many: "{count} коммитов к отправке",
+    other: "{count} коммита к отправке",
+  },
+  "git.behind": {
+    one: "{count} коммит к получению",
+    few: "{count} коммита к получению",
+    many: "{count} коммитов к получению",
+    other: "{count} коммита к получению",
+  },
+  "git.panel.title": "Синхронизация",
+  "git.panel.branch": "{branch} → {upstream}",
+  "git.panel.in": "Войдёт в коммит",
+  "git.panel.out": "Не войдёт: коммитится вручную",
+  "git.panel.none": "Коммитить нечего",
+  "git.panel.message": "Сообщение коммита",
+  "git.panel.sync": "Синхронизировать",
+  "git.panel.pull": "Получить",
+  "git.panel.close": "Закрыть",
+  "git.panel.running": "Git работает…",
+  "git.panel.loading": "Читаю репозиторий…",
+  "git.change.added": "новый",
+  "git.change.untracked": "новый",
+  "git.change.modified": "изменён",
+  "git.change.deleted": "удалён",
+  "git.change.renamed": "переименован",
+  "git.result.nothing": "Нового нет: компьютеры уже совпадают",
+  "git.result.sent": {
+    one: "Отправлен {count} коммит",
+    few: "Отправлено {count} коммита",
+    many: "Отправлено {count} коммитов",
+    other: "Отправлено {count} коммита",
+  },
+  "git.result.received": {
+    one: "Получен {count} коммит",
+    few: "Получено {count} коммита",
+    many: "Получено {count} коммитов",
+    other: "Получено {count} коммита",
+  },
+  "git.result.both": "Коммитов отправлено: {sent}, получено: {received}",
+  "git.failure.conflict":
+    "Одни и те же файлы изменены на обоих компьютерах. Реши конфликт в VS Code и закоммить, потом синхронизируй снова; репозиторий такой же, как до нажатия",
+  "git.failure.conflict-stash":
+    "Коммиты получены, но локальные правки в этих файлах с ними расходятся. Правки ждут в git stash: реши конфликт в VS Code",
+  "git.failure.auth-required":
+    "Git просит пароль или ключ. Выполни git pull в терминале один раз, потом синхронизируй здесь",
+  "git.failure.offline":
+    "Удалённый репозиторий недоступен. Проверь связь и синхронизируй снова",
+  "git.failure.identity-missing":
+    "Git не знает, от чьего имени коммитить. Выполни git config user.name и git config user.email в контент-репозитории",
+  "git.failure.busy": "Идёт другая команда git. Дождись её и попробуй снова",
+  "git.failure.push-rejected":
+    "Другой компьютер отправил изменения раньше. Синхронизируй снова, чтобы их получить; твой коммит сохранён",
+  "git.failure.git-failed": "Git остановился: {detail}",
+  "git.blocked.no-git": "Git не установлен или его нет в PATH",
+  "git.blocked.not-a-repository": "Папка контента — не git-репозиторий",
+  "git.blocked.detached":
+    "Репозиторий на detached HEAD. Переключись на ветку в терминале",
+  "git.blocked.no-upstream":
+    "У ветки нет upstream. Выполни git push -u в терминале один раз",
+  "git.blocked.operation-in-progress":
+    "Идёт merge или rebase. Заверши его в терминале",
+  "git.blocked.unmerged":
+    "В файлах остался конфликт. Реши его в VS Code и закоммить",
+  "end.unsent": "Оценки этой сессии ещё не отправлены на другой компьютер",
+  "end.sync": "Синхронизировать",
   "count.cards": {
     one: "{count} карточка",
     few: "{count} карточки",

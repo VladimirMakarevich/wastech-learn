@@ -7,11 +7,13 @@ import {
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { AppData } from "../../data/app-data";
+import { GitStatus } from "../../data/git-state";
 import { I18n } from "../../i18n/i18n";
 import { TPipe } from "../../i18n/t.pipe";
 import { Keyboard } from "../../keys/keyboard";
 import { Preferences } from "../../prefs/preferences";
 import { ReviewSession } from "../../session/review-session";
+import { SyncPanels } from "../../shell/sync-panels";
 import { Icon } from "../../ui/icon";
 
 /**
@@ -31,6 +33,10 @@ export class SessionEnd {
   protected readonly i18n = inject(I18n);
   protected readonly preferences = inject(Preferences);
   protected readonly summary = this.session.summary;
+  // Ratings are only on this computer until they are committed and pushed; the summary says so once,
+  // calmly, and sends nothing by itself.
+  protected readonly git = inject(GitStatus);
+  protected readonly syncPanels = inject(SyncPanels);
 
   protected readonly misses = computed(() => {
     const cards = new Map(

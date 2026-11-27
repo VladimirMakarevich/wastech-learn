@@ -89,3 +89,30 @@ export const isEditable = (target: EventTarget | null): boolean => {
     );
   return false;
 };
+
+/**
+ * Enter on a button or link presses it; a screen's Enter on top would start a session when the learner
+ * meant the button they tabbed to. Space stays with the screen: on Review it reveals and rates even
+ * after a mouse click left a confidence button focused.
+ */
+export const isControlActivation = (
+  key: string,
+  target: EventTarget | null,
+): boolean => {
+  if (key !== "Enter") return false;
+  if (typeof HTMLElement === "undefined" || !(target instanceof HTMLElement))
+    return false;
+  return (
+    target instanceof HTMLButtonElement ||
+    (target instanceof HTMLAnchorElement && target.href !== "") ||
+    target.getAttribute("role") === "button"
+  );
+};
+
+/**
+ * A modal dialog is open: the screen beneath is inert, and its keys must not rate or archive a card
+ * meanwhile. Asked of the page, not of the key's target: a button that turns disabled while git runs
+ * drops focus to the body, and the next key must still stay out of the screen.
+ */
+export const isDialogOpen = (document: Document): boolean =>
+  document.querySelector(".cdk-dialog-container") !== null;

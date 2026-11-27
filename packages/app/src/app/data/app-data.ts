@@ -4,7 +4,11 @@ import { toSrsConfig, type ReplayContext } from "@wastech-learn/session";
 import { createScheduler } from "@wastech-learn/srs";
 import { browserStore } from "../prefs/local-store";
 import { ApiError, createApi, type Api, type ServerStatus } from "./api";
-import { createChangeStream, type ChangeStream } from "./changes";
+import {
+  createChangeStream,
+  type ChangeStream,
+  type ServerChange,
+} from "./changes";
 import {
   createHttpReviewStore,
   type OutboxReport,
@@ -90,6 +94,7 @@ export class AppData {
           this.buildFailure.set({ findings: change.findings, error: null });
           break;
         case "events-changed":
+        case "git-changed":
           break;
       }
     });
@@ -97,6 +102,11 @@ export class AppData {
       void this.loadEvents();
     });
     void this.reload();
+  }
+
+  /** Every change the server announces, for a service that keeps state of its own, such as git. */
+  onChange(listener: (change: ServerChange) => void): () => void {
+    return this.changes.subscribe(listener);
   }
 
   /** Loads the status, the bundle and the log again: the shell's "reload" and the first start. */
