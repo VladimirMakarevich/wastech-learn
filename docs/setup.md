@@ -1,33 +1,48 @@
 # Установка с чистого листа
 
-Как поднять систему на новом компьютере: фреймворк, контент-репозиторий, приложение и захват через Claude Code и Codex. Обе папки лежат рядом, потому что контент ссылается на локальную сборку фреймворка (`file:../wastech-learn/...`), пока пакеты не опубликованы в npm.
+Как поднять wastech-learn на новом компьютере: фреймворк, контент-репозиторий, агенты и приложение. Гайд можно пройти самому или отдать агенту: «Установи wastech-learn по <ссылка на этот файл>». Платформы — Linux и macOS, Windows — через WSL2.
 
 ```text
 ~/Projects/
 ├── wastech-learn/           # фреймворк: код, приложение, CLI, MCP, skills, шаблон контента
-└── wastech-learn-content/   # твои темы, карточки и журнал повторений (приватный)
+└── wastech-learn-content/   # темы, карточки и журнал повторений (приватный)
 ```
 
-## 1. Что поставить
+Папки лежат рядом, а папка фреймворка называется `wastech-learn`: контент ссылается на его сборку путём `file:../wastech-learn/...`, пока пакеты не опубликованы в npm.
 
-| Что | Зачем |
+## Для агента
+
+1. Прочитай гайд целиком. Потом одним сообщением спроси у пользователя:
+   - есть ли уже контент-репозиторий (его URL) или нужен новый;
+   - имя этого компьютера для журнала: `desk1`, `laptop1` — строчные латинские буквы, цифры, дефис;
+   - часовой пояс IANA и язык интерфейса (`ru`, `en`, `pl`); по умолчанию берутся системные;
+   - какие агенты нужны: Claude Code, Codex или оба;
+   - создать ли приватный репозиторий на GitHub и отправить ли туда контент.
+2. Перед каждым шагом проверь, не сделан ли он уже. Команды можно повторять, но не перезаписывай существующие папки, `git config` и `learn.local.json`.
+3. Шаги с пометкой **Человек** делает только пользователь: вход в GitHub и доверие к папке в агенте. Объясни, что нажать, и продолжи после ответа.
+4. Не коммить и не пушь без согласия пользователя.
+5. Установка закончена, когда `npx wastech-learn doctor` в контент-репозитории завершается с кодом 0.
+
+## 1. Инструменты
+
+Проверь, что уже стоит: `git --version`, `node -v` (нужен ≥ 24.17), `gh --version`. Недостающее поставь:
+
+| Что | Как |
 | --- | --- |
-| git | Оба репозитория и синхронизация между компьютерами |
-| Node ≥ 24.17 (удобно через nvm) | Всё остальное. В обоих репозиториях `engine-strict`, со старым Node `npm ci` откажется |
-| GitHub CLI `gh` | Клонирование приватного репозитория, push из приложения |
-| VS Code | Кнопки «Открыть в VS Code» и `Shift+E` открывают файл по ссылке `vscode://` |
+| git | Linux: `sudo apt install git`; macOS: `xcode-select --install` |
+| Node 24 | [nvm](https://github.com/nvm-sh/nvm#installing-and-updating), затем `nvm install 24 && nvm alias default 24` |
+| GitHub CLI `gh` | [cli.github.com](https://cli.github.com/); нужен для приватного репозитория и push из приложения |
 | Claude Code и/или Codex | Захват тем и квиз через MCP и skills |
-| Браузер на Chromium | Приложение; для e2e-тестов фреймворка — Playwright |
+| VS Code (по желанию) | Кнопки «Открыть в VS Code» и `Shift+E` |
+
+`nvm alias default 24` обязателен: Claude Code и Codex запускают MCP-серверы через `npx` того Node, который видят сами. У агента в неинтерактивной оболочке `nvm` может не загрузиться — тогда в начале команды `. "$HOME/.nvm/nvm.sh"`.
+
+**Человек:** `gh auth login` (вход через браузер), затем `gh auth setup-git`. Если `git config --global user.name` пуст, задай имя и почту — без них «Синхронизировать» не сделает коммит:
 
 ```bash
-nvm install 24
-gh auth login          # HTTPS и токен; дальше git берёт его сам
-gh auth setup-git
-git config --global user.name "Твоё имя"
+git config --global user.name "Имя"
 git config --global user.email "почта@example.com"
 ```
-
-Без имени и почты в git кнопка «Синхронизировать» не сможет сделать коммит.
 
 ## 2. Фреймворк
 
@@ -35,74 +50,27 @@ git config --global user.email "почта@example.com"
 mkdir -p ~/Projects && cd ~/Projects
 git clone https://github.com/VladimirMakarevich/wastech-learn.git
 cd wastech-learn
-nvm use                # версия из .nvmrc
 npm ci
-npm run build          # пакеты в dist/ и приложение; без этого контент не запустится
-npm run lint && npm test
+npm run build
 ```
 
-Для e2e один раз: `npx playwright install chromium`, затем `npm run test:e2e`. Если Chromium скачать нельзя, подойдёт установленный Chrome: `PW_CHANNEL=chrome npm run test:e2e`.
+`npm ci` предупреждает `npm warn install-scripts …` — так и задумано, одобрять ничего не нужно: сборка работает без этих скриптов. Линтеры, тесты и e2e нужны только для разработки фреймворка — в [README](../README.md#разработка).
 
-## 3а. Контент уже есть: клонировать
-
-```bash
-cd ~/Projects
-git clone https://github.com/VladimirMakarevich/wastech-learn-content.git
-cd wastech-learn-content
-npm ci
-echo '{ "device": "laptop1" }' > learn.local.json
-npm run lint
-npx wastech-learn check --content .
-```
-
-Имя устройства у каждого компьютера **своё** (`desk1`, `laptop1`): по нему журнал пишется в `reviews/<device>/`, и два компьютера не правят один файл. Без `learn.local.json` берётся hostname. Файл в `.gitignore`.
-
-Дальше — [шаг 4](#4-агенты-claude-code-и-codex).
-
-## 3б. Контента ещё нет: создать новый репозиторий
-
-Шаблон лежит во фреймворке, в `templates/content-repo/`: та же инфраструктура, что у рабочего контента, только без тем и журналов.
+## 3а. Новый контент-репозиторий
 
 ```bash
-cd ~/Projects
-mkdir wastech-learn-content && cd wastech-learn-content
+cd ~/Projects/wastech-learn
+npx wastech-learn init --content ../wastech-learn-content --device desk1 --timezone Europe/Warsaw --ui-language ru
+cd ../wastech-learn-content
 git init -b main
-cp -r ../wastech-learn/templates/content-repo/. .
+npm install
 ```
 
-Что приехало из шаблона:
+`init` создаёт папку из шаблона `templates/content-repo/`: конфиги, MCP для Claude Code и Codex, hook, CI, пустые `content/`, `inbox/`, `journal/`, `reviews/`. Он вписывает пояс и язык в `learn.config.json`, имя компьютера в `learn.local.json` (он в `.gitignore`), кладёт skills `learn-capture`, `learn-import` и `learn-quiz` в `.claude/skills/` и `.agents/skills/` и фиксирует их в `skills-lock.json`. Существующие файлы `init` не перезаписывает, а в папку с посторонними файлами не пишет вовсе. Остальные параметры конфига — в [repo-layout](content/repo-layout.md).
 
-| Файл | Что делает |
-| --- | --- |
-| `package.json`, `.npmrc`, `.nvmrc` | CLI и MCP-сервер из `../wastech-learn`, wastech-mdlint, Node ≥ 24.17 |
-| `learn.config.json` | Часовой пояс, начало дня, язык интерфейса, параметры FSRS и лимиты |
-| `wastech-mdlint.config.json` | Пресет проверки контента |
-| `.mcp.json`, `.codex/config.toml` | MCP-серверы `wastech-learn` и `wastech-mdlint` для Claude Code и Codex |
-| `.claude/settings.json` | Hook: каждая правка под `content/` проверяется сразу |
-| `AGENTS.md`, `CLAUDE.md` | Правила для ИИ в этом репозитории |
-| `.gitattributes`, `.gitignore` | `merge=union` для журналов, `eol=lf`; кэш и `learn.local.json` не коммитятся |
-| `scripts/render-diagrams.mjs`, `.github/workflows/content-lint.yml` | Рендер Mermaid в SVG и CI: lint и свежесть диаграмм |
-| `content/`, `inbox/`, `journal/`, `reviews/` | Пустые папки под темы, пакеты, журнал рефлексии и повторения |
+Посмотреть приложение на готовых темах можно, скопировав эталон: `cp -r ../wastech-learn/fixtures/golden/content/. content/`.
 
-Поправь `learn.config.json` под себя: `timezone` (IANA, например `Europe/Warsaw`), `dayStartsAt`, `uiLanguage` (`ru`, `en`, `pl`), лимиты новых карточек. Остальные параметры описаны в [repo-layout](content/repo-layout.md).
-
-```bash
-echo '{ "device": "desk1" }' > learn.local.json
-npm install            # создаст package-lock.json, его тоже коммитим
-npx skills add ../wastech-learn/skills --skill '*' --agent claude-code codex --copy -y
-npm run lint
-npx wastech-learn check --content .
-```
-
-`npx skills add` копирует `learn-capture`, `learn-import` и `learn-quiz` в `.claude/skills/` и `.agents/skills/` и фиксирует их хэши в `skills-lock.json`.
-
-Хочешь сразу посмотреть приложение на живых данных — скопируй эталонные темы:
-
-```bash
-cp -r ../wastech-learn/fixtures/golden/content/. content/
-```
-
-Первый коммит и приватный репозиторий на GitHub:
+С согласия пользователя — первый коммит и приватный репозиторий на GitHub:
 
 ```bash
 git add .
@@ -110,67 +78,62 @@ git commit -m "chore: start the content repository"
 gh repo create wastech-learn-content --private --source . --push
 ```
 
-`learn.local.json`, `node_modules/` и `.cache/` в коммит не попадут: они в `.gitignore`.
+## 3б. Контент-репозиторий уже есть
 
-## 4. Агенты: Claude Code и Codex
-
-**Claude Code.** Открой сессию в папке `wastech-learn-content`. При первом запуске он спросит, доверять ли серверам из `.mcp.json`: разреши `wastech-learn` и `wastech-mdlint`. Проверка — команда `/mcp`: оба сервера в статусе connected. Hook из `.claude/settings.json` и skills из `.claude/skills/` подхватываются сами.
-
-**Codex.** Открой папку и выдай ей доверие, когда приложение спросит: без этого Codex не читает `.codex/config.toml`. Skills он берёт из `.agents/skills/`. Hook в Codex не работает, поэтому после ручной правки файлов запускай `npm run lint` и `npx wastech-learn check --content .`.
-
-Как пользоваться захватом и квизом — в [capture](ai/capture.md) и [learning-package](ai/learning-package.md).
-
-## 5. Приложение
-
-Из папки контента:
+Второй компьютер того же человека: клонировать свой репозиторий и назвать компьютер по-новому.
 
 ```bash
-npx wastech-learn serve
-```
-
-Сервер слушает только `127.0.0.1:4747` и сам открывает браузер. Другой порт — `--port 4848`, без браузера — `--no-open`. Из любой папки:
-
-```bash
-node ~/Projects/wastech-learn/packages/cli/bin/wastech-learn.mjs serve --content ~/Projects/wastech-learn-content
-```
-
-## 6. Работа на нескольких компьютерах
-
-1. Начало работы: «Получить» в панели синхронизации приложения (или `git pull`).
-2. Конец работы: «Синхронизировать» — коммит `content/`, `reviews/`, `inbox/`, `pull --rebase` и push.
-3. Остальные файлы (`AGENTS.md`, `.claude/`, `skills-lock.json`) коммитишь сам.
-
-Подробности и что будет, если забыть pull, — в [sync](architecture/sync.md).
-
-## 7. Обновить фреймворк
-
-```bash
-cd ~/Projects/wastech-learn
-git pull
+cd ~/Projects
+git clone <URL контент-репозитория> wastech-learn-content
+cd wastech-learn-content
 npm ci
-npm run build
+npx wastech-learn init --device laptop1
 ```
 
-После сборки перезапусти `serve` и сессии Claude Code и Codex: MCP-сервер и hook читают новый `dist/` только при старте. Если менялись skills в `skills/`, повтори в контенте `npx skills add …` из шага 3б и закоммить обновлённые `.claude/skills/`, `.agents/skills/` и `skills-lock.json`.
+Здесь `init` пишет `learn.local.json` и обновляет skills, если фреймворк новее. По имени устройства журнал пишется в `reviews/<device>/`, поэтому у каждого компьютера оно своё.
 
-## Проверить, что всё работает
+## 4. Проверка
 
-- [ ] `npm run lint` и `npm test` во фреймворке — без ошибок.
-- [ ] `npm run lint` и `npx wastech-learn check --content .` в контенте — без ошибок.
-- [ ] `npx wastech-learn serve` открывает главную, в боковой панели — имя этого устройства.
-- [ ] В Claude Code `/mcp` показывает `wastech-learn` и `wastech-mdlint`.
-- [ ] После сессии повторения в `reviews/<device>/` появился файл, а «Синхронизировать» отправляет его на GitHub.
+```bash
+npx wastech-learn doctor
+```
+
+`doctor` проверяет Node, сборку фреймворка, конфиг, устройство, зависимости, skills, файлы шаблона и git. Строка с `✗` — ошибка, рядом сказано, что сделать; `!` — предупреждение, оно не мешает. Например, «нет удалённой ветки» держится до первого push. Код выхода 0 — установка закончена.
+
+Приложение агент проверяет без браузера:
+
+```bash
+./node_modules/.bin/wastech-learn serve --no-open --port 4799 & SERVE=$!
+curl -s --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:4799/api/status
+kill "$SERVE"
+```
+
+В ответе — `"deviceSource":"local"` и `"build":{"ok":true`.
+
+## 5. Агенты
+
+**Человек**, Claude Code: открой сессию в папке `wastech-learn-content` и разреши серверы `wastech-learn` и `wastech-mdlint` из `.mcp.json`. Команда `/mcp` показывает оба в статусе connected; hook и skills подхватываются сами.
+
+**Человек**, Codex: открой папку и выдай ей доверие, иначе Codex не прочитает `.codex/config.toml`. Hook в Codex не работает: после ручной правки файлов запускай `npm run lint` и `npx wastech-learn check --content .`.
+
+Как захватывать темы и проходить квиз — в [capture](ai/capture.md) и [learning-package](ai/learning-package.md).
+
+## 6. Каждый день
+
+- **Приложение:** `npx wastech-learn serve` в папке контента. Сервер слушает только `127.0.0.1:4747` и сам открывает браузер; другой порт — `--port 4848`.
+- **Несколько компьютеров:** в начале «Получить», в конце «Синхронизировать» — коммит `content/`, `reviews/`, `inbox/`, `pull --rebase` и push. Остальное (`AGENTS.md`, `.claude/`, `skills-lock.json`) коммитишь сам. Подробности — в [sync](architecture/sync.md).
+- **Обновить фреймворк:** `git pull && npm ci && npm run build` в `wastech-learn`, затем `npx wastech-learn init` и `doctor` в контенте. Перезапусти `serve` и сессии агентов: MCP-сервер и hook читают новую сборку только при старте. Обновлённые skills и `skills-lock.json` закоммить.
 
 ## Частые проблемы
 
-| Симптом | Причина и что делать |
+| Симптом | Что делать |
 | --- | --- |
-| `npm ci` пишет `Unsupported engine` | Старый Node: `nvm use` в папке репозитория |
-| `Cannot find module …/dist/…` при `npx wastech-learn` | Фреймворк не собран или лежит не рядом: `npm run build` в `../wastech-learn` |
-| `ENOSPC: System limit for number of file watchers reached` (Linux) | Сервер следит за файлами, а лимит inotify мал: `echo fs.inotify.max_user_watches=524288 \| sudo tee /etc/sysctl.d/60-inotify.conf && sudo sysctl --system` |
+| `npm ci` пишет `Unsupported engine` | Node старше 24.17: `nvm install 24 && nvm alias default 24`, новый терминал |
+| `nvm: command not found` у агента | В начале команды `. "$HOME/.nvm/nvm.sh"` |
+| `doctor` чист, а MCP-серверов нет в `/mcp` | Агент запущен не из терминала и видит другой Node: запусти его из терминала или поставь Node 24 системно; серверы нужно разрешить |
+| `ENOSPC: System limit for number of file watchers reached` | Linux: `echo fs.inotify.max_user_watches=524288 \| sudo tee /etc/sysctl.d/60-inotify.conf && sudo sysctl --system` |
 | Порт 4747 занят | Уже запущен другой `serve`: закрой его или `--port 4848` |
-| MCP-серверов нет в `/mcp` | Сессия открыта не в папке контента, серверы не разрешены или не выполнен `npm ci` в контенте |
-| «Синхронизировать» просит закончить в терминале | git ждёт пароль или ключ, либо идёт чужой rebase: `gh auth setup-git` или закончи rebase вручную |
+| «Синхронизировать» просит закончить в терминале | git ждёт пароль или идёт чужой rebase: `gh auth setup-git` или закончи rebase вручную |
 
 ## См. также
 

@@ -95,7 +95,7 @@ wastech-learn-content/
 
 ## Связь с фреймворком
 
-- Skills ставятся из `wastech-learn/skills/` и фиксируются в `skills-lock.json` (источник и хэш), как в `wastechlab-mobile-template`.
+- Skills ставятся из `wastech-learn/skills/` командой `wastech-learn init` и фиксируются в `skills-lock.json` (источник и хэш), как в `wastechlab-mobile-template`. Остальная инфраструктура берётся из шаблона `templates/content-repo/` фреймворка; `wastech-learn doctor` показывает файлы, которые от него отличаются.
 - MCP-сервер и CLI запускаются через `npx` с фиксированной версией пакета.
 - Пресет mdlint копируется из `wastech-learn`: в mdlint нет `extends`. Каноничный пресет поставляется с CLI, и `check` предупреждает, если в копии правило пресета пропало или изменилось ([mdlint-policy](../quality/mdlint-policy.md)).
 

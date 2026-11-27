@@ -2,7 +2,7 @@ import { createServer, type Server } from "node:net";
 import { seededRng } from "@wastech-learn/srs";
 import { describe, expect, it } from "vitest";
 import { run, type ExitCode } from "../src/index.js";
-import { FIXED_NOW, goldenCopy } from "./helpers.js";
+import { FIXED_NOW, TEST_SYSTEM, goldenCopy } from "./helpers.js";
 
 /** Runs `serve` in-process and hands the test its URL; the test decides when the learner presses Ctrl+C. */
 const serve = (argv: readonly string[], cwd: string) => {
@@ -30,6 +30,7 @@ const serve = (argv: readonly string[], cwd: string) => {
     readStdin: () => Promise.resolve(""),
     openUrl: (target) => opened.push(target),
     untilInterrupted: () => stopped,
+    system: TEST_SYSTEM,
   });
   return { url, exit, stop, out, err, opened };
 };

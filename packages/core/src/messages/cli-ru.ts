@@ -75,6 +75,74 @@ export const cliRu: Readonly<Record<CliMessageKey, Message>> = {
   "cli.hook.bad-event":
     "На stdin нет события инструмента: запускай команду из hook PostToolUse",
 
+  "cli.init.done": "Контент-репозиторий готов в {root}",
+  "cli.init.refused":
+    "В {root} есть файлы, которых нет в контент-репозитории ({entries}): выбери пустую папку или сам контент-репозиторий",
+  "cli.init.created": "Создано из шаблона: {files}",
+  "cli.init.kept":
+    "{file} остаётся как есть: он отличается от шаблона, сравни их, если изменение не намеренное",
+  "cli.init.config":
+    "learn.config.json: часовой пояс {timezone}, язык интерфейса {language}",
+  "cli.init.config-kept": "learn.config.json уже есть и остаётся как есть",
+  "cli.init.device":
+    "Этот компьютер пишет повторения как устройство {device} (learn.local.json)",
+  "cli.init.device-kept":
+    "В learn.local.json этот компьютер уже назван {device}, файл остаётся как есть",
+  "cli.init.skills-installed":
+    "Skills установлены для Claude Code и Codex: {skills}",
+  "cli.init.skills-updated": "Skills обновлены до версии фреймворка: {skills}",
+  "cli.init.skills-current": "Skills актуальны: {skills}",
+  "cli.init.skill-kept":
+    "{dir}/{skill} остаётся как есть: его меняли вручную; удали папку и запусти init снова, чтобы получить версию фреймворка",
+  "cli.init.next": "Дальше:",
+  "cli.doctor.node": "Node {version}",
+  "cli.doctor.node-old":
+    "Node {version} старше {required}: поставь Node 24 (nvm install 24) и запусти снова",
+  "cli.doctor.build": "Фреймворк собран",
+  "cli.doctor.build-missing":
+    "Фреймворк не собран ({packages}): запусти npm run build в {dir}",
+  "cli.doctor.build-stale":
+    "Исходники фреймворка менялись после сборки ({packages}): запусти npm run build в {dir} и перезапусти serve и сессии агентов",
+  "cli.doctor.config":
+    "learn.config.json: часовой пояс {timezone}, язык интерфейса {language}",
+  "cli.doctor.config-missing":
+    "В {root} нет learn.config.json: создай репозиторий командой wastech-learn init или укажи его в --content",
+  "cli.doctor.config-invalid":
+    "learn.config.json: неверное значение {field}, исправь его",
+  "cli.doctor.config-json":
+    "learn.config.json — не валидный JSON, исправь синтаксис",
+  "cli.doctor.device":
+    "Устройство {device}: повторения пишутся в reviews/{device}/",
+  "cli.doctor.device-hostname":
+    "Нет learn.local.json: повторения пишутся в reviews/{device}/ по имени хоста; назови компьютер командой wastech-learn init --device <имя>",
+  "cli.doctor.device-invalid":
+    "learn.local.json: неверное значение {field}, используй строчные латинские буквы, цифры и дефисы",
+  "cli.doctor.device-json":
+    "learn.local.json — не валидный JSON, исправь синтаксис",
+  "cli.doctor.deps": "Зависимости контента установлены",
+  "cli.doctor.deps-missing":
+    "В контент-репозитории не установлены {bins}: запусти там npm install",
+  "cli.doctor.deps-other-framework":
+    "Контент-репозиторий использует фреймворк из {dir}, а не этот: проверь пути file: в package.json и запусти npm install",
+  "cli.doctor.skills": "Skills совпадают с фреймворком: {skills}",
+  "cli.doctor.skill-missing": "Нет {dir}/{skill}: запусти wastech-learn init",
+  "cli.doctor.skill-differs":
+    "{dir}/{skill} отличается от фреймворка: wastech-learn init обновит его, если его не меняли вручную",
+  "cli.doctor.template": "Файлы репозитория совпадают с шаблоном фреймворка",
+  "cli.doctor.template-missing": "Нет {file}: wastech-learn init добавит его",
+  "cli.doctor.template-differs":
+    "{file} отличается от шаблона {template}: сравни их, если изменение не намеренное",
+  "cli.doctor.git": "git: ветка {branch} связана с {upstream}",
+  "cli.doctor.git-missing":
+    "git не установлен: он нужен для синхронизации между компьютерами",
+  "cli.doctor.git-none": "Это не git-репозиторий: запусти git init -b main",
+  "cli.doctor.git-identity":
+    "В git не заданы user.name или user.email: без них «Синхронизировать» не сделает коммит, задай их через git config --global",
+  "cli.doctor.git-upstream":
+    "У ветки {branch} нет удалённой ветки: она нужна «Синхронизировать», отправь ветку один раз командой git push -u origin {branch}",
+  "cli.doctor.passed": "Всё настроено",
+  "cli.doctor.summary": "{errors}, {warnings}",
+
   "cli.help": [
     "Использование: wastech-learn <команда> [параметры]",
     "",
@@ -86,6 +154,8 @@ export const cliRu: Readonly<Record<CliMessageKey, Message>> = {
     "  new-id     Вывести новые id карточек (--count <n>, по умолчанию 1)",
     "  hook       post-tool-use: проверить файл, который только что записал агент (JSON события на stdin)",
     "  serve      Открыть приложение в браузере через локальный сервер на 127.0.0.1",
+    "  init       Создать контент-репозиторий из шаблона или дополнить его и обновить skills",
+    "  doctor     Проверить установку на этом компьютере: Node, сборку, контент-репозиторий, skills, git",
     "",
     "Параметры:",
     "  --content <папка>  Контент-репозиторий (по умолчанию текущая папка)",
@@ -96,5 +166,6 @@ export const cliRu: Readonly<Record<CliMessageKey, Message>> = {
     "render:   --check",
     "simulate: --cards, --warmup-days, --break-days, --session-minutes, --seed, --runs",
     "serve:    --port <n> (по умолчанию 4747), --no-open",
+    "init:     --device <имя>, --timezone <зона IANA>, --ui-language <ru|en|pl> (по умолчанию: имя хоста, пояс и язык системы)",
   ].join("\n"),
 };

@@ -21,7 +21,8 @@ export const MDLINT_CONFIG_FILE = "wastech-mdlint.config.json";
 /** Text files that make up the content: Markdown, diagram sources and their rendered SVGs. */
 const CONTENT_GLOB = "content/**/*.{md,mmd,svg}";
 
-const readText = async (
+/** A repository file as text, or `undefined` when it does not exist; any other failure stops the work. */
+export const readText = async (
   root: string,
   file: string,
 ): Promise<string | undefined> => {

@@ -27,6 +27,12 @@ export type {
 } from "./schema/config.js";
 
 export {
+  skillsLockEntrySchema,
+  skillsLockSchema,
+} from "./schema/skills-lock.js";
+export type { SkillsLock, SkillsLockEntry } from "./schema/skills-lock.js";
+
+export {
   CARD_STATUSES,
   CARD_TYPES,
   cardFrontMatterSchema,

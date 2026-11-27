@@ -85,7 +85,7 @@ command = "npx"
 args = ["--no-install", "wastech-mdlint-mcp"]
 ```
 
-Skills Codex берёт из `.agents/skills`; они ставятся тем же `npx skills add ../wastech-learn/skills --agent codex --copy` и фиксируются в том же `skills-lock.json`. Skill узнаёт клиента сам и пишет `origin: codex` и `grader: ai:codex`. Hook из `.claude/settings.json` Codex не запускает: он правит файлы через `apply_patch`, и событие у него другое. Поэтому в Codex ручные правки файлов темы проверяются только `check` и `npm run lint`, а запись через инструменты MCP проверяется так же, как в Claude Code.
+Skills Codex берёт из `.agents/skills`. `wastech-learn init` кладёт их туда и в `.claude/skills` и фиксирует в `skills-lock.json` в формате CLI `skills`, поэтому `npx skills add ../wastech-learn/skills --copy` даёт тот же результат; повторный `init` обновляет skills, которые не правили вручную. Skill узнаёт клиента сам и пишет `origin: codex` и `grader: ai:codex`. Hook из `.claude/settings.json` Codex не запускает: он правит файлы через `apply_patch`, и событие у него другое. Поэтому в Codex ручные правки файлов темы проверяются только `check` и `npm run lint`, а запись через инструменты MCP проверяется так же, как в Claude Code.
 
 ## Риски
 

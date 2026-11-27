@@ -9,6 +9,20 @@ import {
 export const EXIT = { clean: 0, findings: 1, failure: 2 } as const;
 export type ExitCode = (typeof EXIT)[keyof typeof EXIT];
 
+/**
+ * Facts about this computer that the setup commands read: the defaults of a new repository and the Node
+ * that will run it. They are read once in the bin, so tests pass fixed ones and never depend on the
+ * machine they run on.
+ */
+export interface SystemFacts {
+  /** The IANA zone of the system clock. */
+  readonly timeZone: string;
+  /** The BCP 47 locale of the environment, such as `ru-RU`. */
+  readonly locale: string;
+  readonly nodeVersion: string;
+  readonly hostname: string;
+}
+
 /** The process surface a command may touch; tests pass their own to run commands in-process. */
 export interface CliIo {
   readonly out: (line: string) => void;
@@ -24,6 +38,7 @@ export interface CliIo {
   readonly openUrl: (url: string) => void;
   /** Resolves when the learner stops a long-running command (Ctrl+C); tests resolve it themselves. */
   readonly untilInterrupted: () => Promise<void>;
+  readonly system: SystemFacts;
 }
 
 export interface CommandContext {

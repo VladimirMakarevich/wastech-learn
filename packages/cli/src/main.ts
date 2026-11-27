@@ -24,6 +24,8 @@ const COMMANDS: Readonly<Record<CommandName, Command>> = {
   "new-id": async (ctx) => (await import("./new-id.js")).runNewId(ctx),
   hook: async (ctx) => (await import("./hook.js")).runHook(ctx),
   serve: async (ctx) => (await import("./serve.js")).runServe(ctx),
+  init: async (ctx) => (await import("./init.js")).runInit(ctx),
+  doctor: async (ctx) => (await import("./doctor.js")).runDoctor(ctx),
 };
 
 /**

@@ -111,3 +111,31 @@ export type {
 export { isSynced, suggestCommitMessage } from "./git/message.js";
 export { pullRepository, syncRepository } from "./git/sync.js";
 export type { SyncOptions, SyncOutcome } from "./git/sync.js";
+export { diagnoseSetup, SETUP_CHECK_LEVELS } from "./setup/doctor.js";
+export type {
+  DiagnoseOptions,
+  SetupCheck,
+  SetupCheckId,
+  SetupLevel,
+} from "./setup/doctor.js";
+export { frameworkBuilds, frameworkLayout } from "./setup/framework.js";
+export type { BuildUnit, FrameworkLayout } from "./setup/framework.js";
+export { initRepository } from "./setup/init.js";
+export type {
+  InitConfig,
+  InitOptions,
+  InitOutcome,
+  InitReport,
+} from "./setup/init.js";
+export {
+  AGENT_SKILL_DIRS,
+  SKILLS_LOCK_FILE,
+  installSkills,
+} from "./setup/skills.js";
+export type {
+  AgentSkillDir,
+  SkillInstall,
+  SkillInstallStatus,
+} from "./setup/skills.js";
+export { hashSkillFiles, skillFolderHash } from "./setup/skill-hash.js";
+export type { SkillFile } from "./setup/skill-hash.js";

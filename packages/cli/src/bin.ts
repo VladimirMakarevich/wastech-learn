@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 import { getRandomValues } from "node:crypto";
+import { hostname } from "node:os";
 import { text } from "node:stream/consumers";
 import { run } from "./main.js";
 
@@ -20,6 +21,8 @@ const openUrl = (url: string): void => {
   child.unref();
 };
 
+const { timeZone, locale } = Intl.DateTimeFormat().resolvedOptions();
+
 process.exitCode = await run(process.argv.slice(2), {
   out: (line) => {
     process.stdout.write(`${line}\n`);
@@ -37,4 +40,10 @@ process.exitCode = await run(process.argv.slice(2), {
       process.once("SIGINT", resolve);
       process.once("SIGTERM", resolve);
     }),
+  system: {
+    timeZone,
+    locale,
+    nodeVersion: process.versions.node,
+    hostname: hostname(),
+  },
 });

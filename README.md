@@ -57,6 +57,8 @@ npm run build          # пакеты и приложение
 npm run test:e2e       # сценарии Playwright на копии golden (после build)
 ```
 
+Для e2e браузер ставится один раз: `npx playwright install chromium`. Если скачать Chromium нельзя, подойдёт установленный Chrome: `PW_CHANNEL=chrome npm run test:e2e`.
+
 Запуск приложения над контент-репозиторием (после `npm run build`): сервер слушает только `127.0.0.1` и сам открывает браузер.
 
 ```bash

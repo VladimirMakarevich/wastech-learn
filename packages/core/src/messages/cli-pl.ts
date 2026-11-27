@@ -74,6 +74,77 @@ export const cliPl: Readonly<Record<CliMessageKey, Message>> = {
   "cli.hook.bad-event":
     "Brak zdarzenia narzędzia na stdin: uruchamiaj to polecenie z hooka PostToolUse",
 
+  "cli.init.done": "Repozytorium treści gotowe w {root}",
+  "cli.init.refused":
+    "W {root} są pliki, których repozytorium treści nie ma ({entries}): wybierz pusty folder albo samo repozytorium treści",
+  "cli.init.created": "Utworzono z szablonu: {files}",
+  "cli.init.kept":
+    "{file} zostaje bez zmian: różni się od szablonu, porównaj je, jeśli zmiana nie była celowa",
+  "cli.init.config":
+    "learn.config.json: strefa czasowa {timezone}, język interfejsu {language}",
+  "cli.init.config-kept": "learn.config.json już istnieje i zostaje bez zmian",
+  "cli.init.device":
+    "Ten komputer zapisuje powtórki jako urządzenie {device} (learn.local.json)",
+  "cli.init.device-kept":
+    "learn.local.json już nazywa ten komputer {device} i zostaje bez zmian",
+  "cli.init.skills-installed":
+    "Skills zainstalowane dla Claude Code i Codex: {skills}",
+  "cli.init.skills-updated":
+    "Skills zaktualizowane do wersji frameworka: {skills}",
+  "cli.init.skills-current": "Skills są aktualne: {skills}",
+  "cli.init.skill-kept":
+    "{dir}/{skill} zostaje bez zmian: zmieniono go ręcznie; usuń folder i uruchom init ponownie, aby dostać wersję frameworka",
+  "cli.init.next": "Dalej:",
+  "cli.doctor.node": "Node {version}",
+  "cli.doctor.node-old":
+    "Node {version} jest starszy niż {required}: zainstaluj Node 24 (nvm install 24) i uruchom ponownie",
+  "cli.doctor.build": "Framework zbudowany",
+  "cli.doctor.build-missing":
+    "Framework nie jest zbudowany ({packages}): uruchom npm run build w {dir}",
+  "cli.doctor.build-stale":
+    "Źródła frameworka zmieniły się po ostatnim budowaniu ({packages}): uruchom npm run build w {dir} i zrestartuj serve oraz sesje agentów",
+  "cli.doctor.config":
+    "learn.config.json: strefa czasowa {timezone}, język interfejsu {language}",
+  "cli.doctor.config-missing":
+    "W {root} nie ma learn.config.json: utwórz repozytorium poleceniem wastech-learn init albo wskaż je przez --content",
+  "cli.doctor.config-invalid":
+    "learn.config.json: nieprawidłowa wartość {field}, popraw ją",
+  "cli.doctor.config-json":
+    "learn.config.json nie jest poprawnym JSON-em, popraw składnię",
+  "cli.doctor.device":
+    "Urządzenie {device}: powtórki trafiają do reviews/{device}/",
+  "cli.doctor.device-hostname":
+    "Brak learn.local.json: powtórki trafiają do reviews/{device}/ według nazwy hosta; nazwij ten komputer poleceniem wastech-learn init --device <nazwa>",
+  "cli.doctor.device-invalid":
+    "learn.local.json: nieprawidłowa wartość {field}, użyj małych liter łacińskich, cyfr i myślników",
+  "cli.doctor.device-json":
+    "learn.local.json nie jest poprawnym JSON-em, popraw składnię",
+  "cli.doctor.deps": "Zależności treści zainstalowane",
+  "cli.doctor.deps-missing":
+    "W repozytorium treści brakuje {bins}: uruchom tam npm install",
+  "cli.doctor.deps-other-framework":
+    "Repozytorium treści używa frameworka z {dir}, nie tego: sprawdź ścieżki file: w package.json i uruchom npm install",
+  "cli.doctor.skills": "Skills zgadzają się z frameworkiem: {skills}",
+  "cli.doctor.skill-missing": "Brak {dir}/{skill}: uruchom wastech-learn init",
+  "cli.doctor.skill-differs":
+    "{dir}/{skill} różni się od frameworka: wastech-learn init go zaktualizuje, jeśli nie był zmieniany ręcznie",
+  "cli.doctor.template":
+    "Pliki repozytorium zgadzają się z szablonem frameworka",
+  "cli.doctor.template-missing": "Brak {file}: wastech-learn init go doda",
+  "cli.doctor.template-differs":
+    "{file} różni się od szablonu {template}: porównaj je, jeśli zmiana nie była celowa",
+  "cli.doctor.git": "git: gałąź {branch} śledzi {upstream}",
+  "cli.doctor.git-missing":
+    "git nie jest zainstalowany: jest potrzebny do synchronizacji między komputerami",
+  "cli.doctor.git-none":
+    "To nie jest repozytorium git: uruchom git init -b main",
+  "cli.doctor.git-identity":
+    "W git nie ustawiono user.name lub user.email: bez nich „Synchronizuj” nie zrobi commita, ustaw je przez git config --global",
+  "cli.doctor.git-upstream":
+    "Gałąź {branch} nie ma gałęzi zdalnej: „Synchronizuj” jej potrzebuje, wypchnij gałąź raz poleceniem git push -u origin {branch}",
+  "cli.doctor.passed": "Wszystko gotowe",
+  "cli.doctor.summary": "{errors}, {warnings}",
+
   "cli.help": [
     "Użycie: wastech-learn <polecenie> [opcje]",
     "",
@@ -85,6 +156,8 @@ export const cliPl: Readonly<Record<CliMessageKey, Message>> = {
     "  new-id     Wypisz nowe id kart (--count <n>, domyślnie 1)",
     "  hook       post-tool-use: sprawdź plik, który agent właśnie zapisał (JSON zdarzenia na stdin)",
     "  serve      Otwórz aplikację w przeglądarce przez lokalny serwer na 127.0.0.1",
+    "  init       Utwórz repozytorium treści z szablonu albo uzupełnij je i zaktualizuj skills",
+    "  doctor     Sprawdź instalację na tym komputerze: Node, build, repozytorium treści, skills, git",
     "",
     "Opcje:",
     "  --content <folder> Repozytorium treści (domyślnie bieżący folder)",
@@ -95,5 +168,6 @@ export const cliPl: Readonly<Record<CliMessageKey, Message>> = {
     "render:   --check",
     "simulate: --cards, --warmup-days, --break-days, --session-minutes, --seed, --runs",
     "serve:    --port <n> (domyślnie 4747), --no-open",
+    "init:     --device <nazwa>, --timezone <strefa IANA>, --ui-language <ru|en|pl> (domyślnie: nazwa hosta, strefa i język systemu)",
   ].join("\n"),
 };

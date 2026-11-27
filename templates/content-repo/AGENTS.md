@@ -38,6 +38,7 @@ card before writing the file.
   `npm run lint` and `npx wastech-learn check --content .`.
 - Until the framework is published, `@wastech-learn/*` link to the sibling checkout `../wastech-learn`:
   run `npm run build` there and restart the session after changing the framework.
+  `npx wastech-learn doctor` checks the whole setup and names the fix for each problem.
 
 ## Do not
 
