@@ -40,6 +40,26 @@ describe("parseContent", () => {
     ]);
   });
 
+  it("points a wrong front matter value at the line of its key", async () => {
+    const { findings } = await parseContent(
+      repoWith([{ id: "7k2m9xqd", status: "bogus" }]),
+    );
+    const text = repoWith([{ id: "7k2m9xqd", status: "bogus" }]).get(
+      "content/arch/flow/cards/7k2m9xqd.md",
+    );
+    const line =
+      (text ?? "").split("\n").findIndex((row) => row.startsWith("status:")) +
+      1;
+    expect(line).toBeGreaterThan(1);
+    expect(findings).toEqual([
+      expect.objectContaining({
+        ruleId: "front-matter-schema",
+        line,
+        params: { field: "status" },
+      }),
+    ]);
+  });
+
   it("reports a card whose topic has no index.md", async () => {
     const files = new Map([
       ["content/lost/topic/cards/7k2m9xqd.md", cardText()],

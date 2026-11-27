@@ -28,7 +28,7 @@ related: [architecture/rate-limiting, dotnet/channels]
 
 ## `summary.md` — справочник по теме
 
-Summary нужен для чтения и углубления, а не для заучивания. Вспоминание идёт через карточки (LP-01). Front matter: `status`, `updated`.
+Summary нужен для чтения и углубления, а не для заучивания. Вспоминание идёт через карточки (LP-01). Front matter: `status` (`draft | active | archived`, как у паспорта темы), `updated`.
 
 **Шаблон технической темы — 12 секций по порядку:**
 

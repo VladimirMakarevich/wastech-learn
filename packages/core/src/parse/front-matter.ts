@@ -40,3 +40,17 @@ export const splitFrontMatter = (text: string): FrontMatterSplit => {
     bodyLine: head.split("\n").length - (head.endsWith("\n") ? 0 : 1),
   };
 };
+
+/**
+ * File line of a top-level front matter key, so a schema error points at the value to fix. A key that is
+ * absent has no line of its own, and the finding stays on the opening fence.
+ */
+export const frontMatterFieldLine = (text: string, field: string): number => {
+  const match = FENCE.exec(text);
+  const key = field.split(".")[0] ?? "";
+  if (match === null || key === "") return 1;
+  const index = (match[1] ?? "")
+    .split(/\r?\n/)
+    .findIndex((line) => line.startsWith(`${key}:`));
+  return index === -1 ? 1 : index + 2;
+};

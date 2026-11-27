@@ -84,8 +84,9 @@ export const topicIndexFrontMatterSchema = z.object({
 });
 export type TopicIndexFrontMatter = z.infer<typeof topicIndexFrontMatterSchema>;
 
+// The summary moves with its topic, so it takes the topic's statuses: a free string let a typo through.
 export const summaryFrontMatterSchema = z.object({
-  status: z.string().min(1),
+  status: z.enum(TOPIC_STATUSES),
   updated: isoDateSchema,
 });
 export type SummaryFrontMatter = z.infer<typeof summaryFrontMatterSchema>;

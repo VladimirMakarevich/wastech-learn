@@ -16,7 +16,7 @@ import {
   summaryFrontMatterSchema,
   topicIndexFrontMatterSchema,
 } from "../schema/front-matter.js";
-import { splitFrontMatter } from "./front-matter.js";
+import { frontMatterFieldLine, splitFrontMatter } from "./front-matter.js";
 import { findSection, readSections } from "./sections.js";
 import { variantsFor } from "./variants.js";
 
@@ -65,7 +65,7 @@ const parseDoc = <FrontMatter>(
         ruleId: "front-matter-schema",
         severity: "error",
         file,
-        line: 1,
+        line: frontMatterFieldLine(text, field),
         params: { field },
       },
     };

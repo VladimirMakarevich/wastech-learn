@@ -110,6 +110,14 @@ describe("topic front matter", () => {
     ).toBeTruthy();
   });
 
+  it("rejects a summary status that is not a topic status", () => {
+    const parsed = summaryFrontMatterSchema.safeParse({
+      status: "bogus",
+      updated: "2026-11-25",
+    });
+    expect(parsed.success).toBe(false);
+  });
+
   it("rejects materials without an updated date", () => {
     expect(materialsFrontMatterSchema.safeParse({}).success).toBe(false);
   });
