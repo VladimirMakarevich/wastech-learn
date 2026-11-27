@@ -4,6 +4,7 @@ import type {
   EditMeaning,
   Finding,
   LintFinding,
+  SavedCard,
   SourceFile,
   SourceSaveAnswer,
   SourceSaveBody,
@@ -35,6 +36,12 @@ export type EditorPhase =
   | "failed"
   | "done";
 
+/** Why the server gave no useful answer, and whether it happened opening the file or saving it. */
+export interface EditorFailure {
+  readonly code: string;
+  readonly during: "load" | "save";
+}
+
 /** A finding as the editor lists it: whether it is in the open file, so choosing it can move the cursor. */
 export interface EditorFinding {
   readonly file: string;
@@ -53,9 +60,16 @@ export interface EditorFinding {
 export interface SaveResult {
   readonly status: "written" | "unchanged";
   readonly warnings: readonly EditorFinding[];
+  /** The card the text now lives on; a new id when the learner said the meaning changed. */
+  readonly card: SavedCard | undefined;
 }
 
 const LINE_BREAKS = /\r\n?/g;
+
+// Every line break is CRLF: a lone `\n` anywhere means the file mixes endings, and LF is then the
+// honest choice for the lines the learner touched.
+const usesCrlf = (text: string): boolean =>
+  text.includes("\r\n") && !/(?:^|[^\r])\n/.test(text);
 
 const editorFindings = (
   path: string,
@@ -104,7 +118,7 @@ export class EditorModel {
   readonly draft = signal("");
   readonly findings = signal<readonly EditorFinding[]>([]);
   readonly question = signal<CardEditDecision | undefined>(undefined);
-  readonly failure = signal<string | undefined>(undefined);
+  readonly failure = signal<EditorFailure | undefined>(undefined);
   /** Bumped whenever the text is replaced from the server, so the view puts it into the field. */
   readonly revision = signal(0);
   private readonly opened = signal<SourceFile | undefined>(undefined);
@@ -118,9 +132,14 @@ export class EditorModel {
     );
   });
 
-  readonly busy = computed(
-    () => this.phase() === "loading" || this.phase() === "saving",
-  );
+  /**
+   * The field takes no typing while the server has the text, nor once it is saved: the editor closes
+   * after the screen catches up, and anything typed meanwhile would close with it unsaved.
+   */
+  readonly busy = computed(() => {
+    const phase = this.phase();
+    return phase === "loading" || phase === "saving" || phase === "done";
+  });
 
   constructor(private readonly deps: EditorDeps) {}
 
@@ -129,6 +148,12 @@ export class EditorModel {
     this.phase.set("loading");
     this.findings.set([]);
     this.question.set(undefined);
+    this.failure.set(undefined);
+    // Until the new file arrives the field holds nothing: a failed load must not leave the previous
+    // file's text under this file's name, where a save would send it.
+    this.opened.set(undefined);
+    this.draft.set("");
+    this.revision.update((revision) => revision + 1);
     try {
       const source = await this.deps.load(path);
       // A slow answer for a file the learner already left must not replace the one now open.
@@ -137,7 +162,7 @@ export class EditorModel {
       this.phase.set("editing");
     } catch (error) {
       if (this.path() !== path) return;
-      this.fail(error);
+      this.fail(error, "load");
     }
   }
 
@@ -156,32 +181,38 @@ export class EditorModel {
       return undefined;
     if (!this.dirty()) {
       this.phase.set("done");
-      return { status: "unchanged", warnings: [] };
+      return { status: "unchanged", warnings: [], card: undefined };
     }
     this.phase.set("saving");
     this.question.set(undefined);
+    this.failure.set(undefined);
+    // The field gave `\n` only; a CRLF file goes back with CRLF, so one fixed word is one changed line.
+    const text = usesCrlf(opened.text)
+      ? this.draft().replaceAll("\n", "\r\n")
+      : this.draft();
     let answer: SourceSaveAnswer;
     try {
       answer = await this.deps.save({
         path,
         version: opened.version,
-        text: this.draft(),
+        text,
         ...(meaning === undefined ? {} : { meaning }),
       });
     } catch (error) {
-      this.fail(error);
+      this.fail(error, "save");
       return undefined;
     }
     switch (answer.kind) {
       case "saved":
         this.findings.set([]);
         // The draft is on disk now: a navigation before the editor closes must not ask to drop it.
-        this.opened.set({ ...opened, text: this.draft() });
+        this.opened.set({ ...opened, text });
         this.phase.set("done");
         await this.deps.afterWrite();
         return {
           status: answer.status,
           warnings: editorFindings(path, answer.findings, answer.lint),
+          card: answer.card,
         };
       case "blocked":
         this.findings.set(editorFindings(path, answer.findings, answer.lint));
@@ -195,7 +226,7 @@ export class EditorModel {
         this.phase.set("decision");
         return undefined;
       case "refused":
-        this.refused(answer.code);
+        this.refused(answer.code, "save");
         return undefined;
     }
   }
@@ -218,17 +249,17 @@ export class EditorModel {
     this.revision.update((revision) => revision + 1);
   }
 
-  private refused(code: string): void {
+  private refused(code: string, during: EditorFailure["during"]): void {
     if (code === "content-changed") this.phase.set("conflict");
     else if (code === "source-not-found") this.phase.set("missing");
     else {
-      this.failure.set(code);
+      this.failure.set({ code, during });
       this.phase.set("failed");
     }
   }
 
-  private fail(error: unknown): void {
+  private fail(error: unknown, during: EditorFailure["during"]): void {
     if (!(error instanceof ApiError)) throw error;
-    this.refused(error.code);
+    this.refused(error.code, during);
   }
 }

@@ -17,7 +17,7 @@ import {
   viewChild,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
-import type { GitEntry } from "@wastech-learn/core";
+import type { CardEntry, GitEntry } from "@wastech-learn/core";
 import { unsuspendEvent } from "@wastech-learn/session";
 import { AppData } from "../../data/app-data";
 import { CardActions } from "../../data/card-actions";
@@ -35,7 +35,7 @@ import type { MessageKey } from "../../i18n/en";
 import { I18n } from "../../i18n/i18n";
 import { TPipe } from "../../i18n/t.pipe";
 import { Keyboard } from "../../keys/keyboard";
-import { SourceEditor } from "../../edit/source-editor";
+import { SourceEditor, type EditorClose } from "../../edit/source-editor";
 import { UnsavedEdits } from "../../edit/unsaved-guard";
 import { ReviewSession } from "../../session/review-session";
 import { vscodeLink } from "../../shell/vscode";
@@ -69,6 +69,14 @@ const RATING_KEYS: Readonly<Record<number, MessageKey>> = {
   3: "rating.3",
   4: "rating.4",
 };
+
+/** What the side panel shows for the chosen item. */
+interface DrawerPanel {
+  readonly row: BrowserRow;
+  readonly card: CardEntry;
+  readonly editor: string | null;
+  readonly topicLink: readonly string[];
+}
 
 /**
  * The card browser: search over the bundle's index and filters by domain, topic, tag, type, status, leech and
@@ -112,10 +120,17 @@ export class Browser {
     viewChild<ElementRef<HTMLButtonElement>>("editButton");
   private readonly unsaved = inject(UnsavedEdits);
   private readonly injector = inject(Injector);
-  /** The open card is shown as its file's text; choosing another card closes the editor. */
-  protected readonly editing = linkedSignal({
+  /**
+   * The panel whose card is open as text. It is held here rather than read from the table, so a reload
+   * that drops the row (the card moved or deleted elsewhere) leaves the editor and its text in place;
+   * choosing another card, which asks first, closes it.
+   */
+  protected readonly editing = linkedSignal<
+    string | undefined,
+    DrawerPanel | undefined
+  >({
     source: this.selected,
-    computation: () => false,
+    computation: () => undefined,
   });
 
   private readonly index = computed(() =>
@@ -167,7 +182,7 @@ export class Browser {
     };
   });
 
-  protected readonly panel = computed(() => {
+  protected readonly panel = computed((): DrawerPanel | undefined => {
     const item = this.selected();
     if (item === undefined) return undefined;
     const row = this.rows().find((candidate) => candidate.item === item);
@@ -183,6 +198,9 @@ export class Browser {
       topicLink: ["/topic", ...card.topic.split("/")],
     };
   });
+
+  /** What the side panel shows: the card being edited, else the chosen row's card. */
+  protected readonly drawer = computed(() => this.editing() ?? this.panel());
 
   constructor() {
     effect(() => {
@@ -201,17 +219,26 @@ export class Browser {
   /** Another card, or none, after the learner agreed to drop an unsaved edit of this one. */
   protected async select(item: string | undefined): Promise<void> {
     if (item === this.selected()) return;
-    if (this.editing() && !(await this.unsaved.mayDiscard())) return;
+    if (this.editing() !== undefined && !(await this.unsaved.mayDiscard()))
+      return;
     this.selected.set(item);
   }
 
   protected edit(): void {
-    this.editing.set(true);
+    this.editing.set(this.panel());
   }
 
-  /** Back to the card, with focus on the button that opened the editor. */
-  protected closeEditor(): void {
-    this.editing.set(false);
+  /**
+   * Back to the card, with focus on the button that opened the editor. After "new card" the old card is
+   * retired with the old text, so the panel moves to the card that now holds the edited text.
+   */
+  protected closeEditor(close: EditorClose): void {
+    this.editing.set(undefined);
+    const card = close.kind === "saved" ? close.card : undefined;
+    if (card !== undefined && card.retired !== null) {
+      const successor = this.rows().find((row) => row.cardId === card.id);
+      if (successor !== undefined) this.selected.set(successor.item);
+    }
     afterNextRender(
       () => {
         this.editButton()?.nativeElement.focus();
@@ -312,7 +339,7 @@ export class Browser {
 
   private onKey(name: string): boolean {
     const panel = this.panel();
-    if (panel === undefined || this.editing()) return false;
+    if (panel === undefined || this.editing() !== undefined) return false;
     switch (name) {
       case "Escape":
         this.selected.set(undefined);

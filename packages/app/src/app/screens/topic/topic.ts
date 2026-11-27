@@ -14,6 +14,7 @@ import {
 } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { ActivatedRoute, RouterLink } from "@angular/router";
+import type { TopicMeta } from "@wastech-learn/core";
 import { AppData } from "../../data/app-data";
 import { CardActions } from "../../data/card-actions";
 import { topicEntries } from "../../data/git-model";
@@ -149,15 +150,28 @@ export class Topic {
     ];
   });
 
-  /** The file open in the editor and the section to start at, or `undefined` while the topic is read. */
+  /**
+   * The file open in the editor and the section to start at, or `undefined` while the topic is read. The
+   * topic is held with it, so a reload that drops the topic (its folder renamed elsewhere) keeps the
+   * editor and its text on screen.
+   */
   protected readonly editing = linkedSignal<
     string,
-    | { readonly initial: string; readonly section: string | undefined }
+    | {
+        readonly initial: string;
+        readonly section: string | undefined;
+        readonly topic: TopicMeta;
+      }
     | undefined
   >({
     source: () => `${this.domain()}/${this.topic()}`,
     computation: () => undefined,
   });
+
+  /** The topic on screen: as the bundle has it, or as it was when the editor opened. */
+  protected readonly shownMeta = computed(
+    () => this.meta() ?? this.editing()?.topic,
+  );
 
   private readonly editButton =
     viewChild<ElementRef<HTMLButtonElement>>("editButton");
@@ -249,10 +263,11 @@ export class Topic {
    */
   protected edit(section?: string): void {
     const first = this.files()[0];
-    if (first === undefined) return;
+    const topic = this.meta();
+    if (first === undefined || topic === undefined) return;
     if (section !== undefined) {
       this.returnFocus = "edit";
-      this.editing.set({ initial: first.path, section });
+      this.editing.set({ initial: first.path, section, topic });
       return;
     }
     const limit = window.innerHeight / 5;
@@ -265,16 +280,17 @@ export class Topic {
       })
       .at(-1);
     this.returnFocus = "edit";
-    this.editing.set({ initial: first.path, section: reading?.name });
+    this.editing.set({ initial: first.path, section: reading?.name, topic });
   }
 
   protected editMaterials(): void {
     const materials = this.files().find((file) =>
       file.path.endsWith("/materials.md"),
     );
-    if (materials === undefined) return;
+    const topic = this.meta();
+    if (materials === undefined || topic === undefined) return;
     this.returnFocus = "materials";
-    this.editing.set({ initial: materials.path, section: undefined });
+    this.editing.set({ initial: materials.path, section: undefined, topic });
   }
 
   /** Back to reading, with focus on the button that opened the editor. */

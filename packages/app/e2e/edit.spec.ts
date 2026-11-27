@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
@@ -99,6 +99,22 @@ test.describe("editing in the app", () => {
         page,
         text.replace("ask for more items", "ask for more elements"),
       );
+      // AltGr+S types the Polish `ś` and reaches the page as Ctrl+Alt+S: the key is the letter's.
+      const altGrSaved = await editor(page).evaluate(
+        (area: HTMLTextAreaElement) => {
+          const event = new KeyboardEvent("keydown", {
+            key: "ś",
+            code: "KeyS",
+            ctrlKey: true,
+            altKey: true,
+            bubbles: true,
+            cancelable: true,
+          });
+          area.dispatchEvent(event);
+          return event.defaultPrevented;
+        },
+      );
+      expect(altGrSaved).toBe(false);
       await save(page);
       await expect(page.locator(".toast")).toContainText("Saved");
       await expect(editor(page)).toHaveCount(0);
@@ -220,6 +236,52 @@ test.describe("editing in the app", () => {
     }
   });
 
+  test("Cards: 'New card' retires the old card and the panel follows the text to its new card", async ({
+    page,
+  }) => {
+    try {
+      await openCard(page, "10dkrwp7");
+      await page.keyboard.press("e");
+      await setText(
+        page,
+        (await loadedText(page)).replace(
+          "`Subscription.request(n)`",
+          "The subscriber calls `Subscription.request(n)` when ready",
+        ),
+      );
+      await save(page);
+      await page.locator('[data-choice="new"]').click();
+      await expect(page.locator(".toast")).toContainText("Saved");
+      await expect(editor(page)).toHaveCount(0);
+      await expect(page.locator("aside.drawer .answer")).toContainText(
+        "when ready",
+      );
+      await expect(
+        page.locator("aside.drawer .row .chip").nth(1),
+      ).not.toHaveText(/^10dkrwp7:/);
+      expect(await read(CARD)).toContain("status: retired");
+    } finally {
+      await restore(CARD, INDEX);
+      await git(contentRoot(), "clean", "-f", "-q", "--", `${TOPIC}/cards`);
+    }
+  });
+
+  test("Cards: unsaved text stays when the card drops out of the content meanwhile", async ({
+    page,
+  }) => {
+    try {
+      await openCard(page, "10dkrwp7");
+      await page.keyboard.press("e");
+      await loadedText(page);
+      await setText(page, "mine\n");
+      await rm(join(contentRoot(), CARD));
+      await expect(page.locator('tr[data-item^="10dkrwp7:"]')).toHaveCount(0);
+      await expect(editor(page)).toHaveValue("mine\n");
+    } finally {
+      await restore(CARD);
+    }
+  });
+
   test("Topic: the pencil opens the summary at the section being read, with the other files as tabs", async ({
     page,
   }) => {
@@ -242,6 +304,20 @@ test.describe("editing in the app", () => {
         (area: HTMLTextAreaElement) => area.selectionStart,
       );
       expect(value.slice(offset).split("\n")[0]).toBe("## Trade-offs");
+      // Long paragraphs above the heading wrap in the field: counting line breaks alone would leave
+      // the heading below the visible part, so the field scrolls further than that count.
+      const scroll = await editor(page).evaluate(
+        (area: HTMLTextAreaElement) => {
+          const line = area.value
+            .slice(0, area.selectionStart)
+            .split("\n").length;
+          const lineHeight = Number.parseFloat(
+            getComputedStyle(area).lineHeight,
+          );
+          return { top: area.scrollTop, byLines: (line - 3) * lineHeight };
+        },
+      );
+      expect(scroll.top).toBeGreaterThan(scroll.byLines);
 
       await page.locator(`[data-tab="${INDEX}"]`).click();
       await expect(editor(page)).toHaveValue(await read(INDEX));

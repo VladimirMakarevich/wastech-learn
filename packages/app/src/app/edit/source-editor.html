@@ -72,9 +72,7 @@
   } @case ("missing") {
   <p class="editor-note error">{{ "edit.missing" | t }}</p>
   } @case ("failed") {
-  <p class="editor-note error">
-    {{ "edit.failed" | t: { code: model.failure() ?? "" } }}
-  </p>
+  <p class="editor-note error">{{ failureText() }}</p>
   } }
 </div>
 <div class="row editor-actions">

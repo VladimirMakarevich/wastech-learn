@@ -371,6 +371,10 @@ export const en = {
   "edit.reload.replace": "Replace",
   "edit.missing":
     "This file is no longer in the content or cannot be edited here",
+  "edit.load-failed":
+    "The file did not open ({code}). Close the editor and try again",
+  "edit.too-large":
+    "This file is too large to save from the app. Your text is still here; VS Code can save it (Shift+E)",
   "edit.failed":
     "The server did not save the text ({code}). Your text is still here",
   "edit.discard.title": "Close without saving?",

@@ -67,8 +67,9 @@ export const parseWriteAnswer = (status: number, raw: unknown): WriteAnswer => {
   return answer;
 };
 
-// Every answer of a save the editor knows how to show; anything else is a failure of the call itself.
-const SAVE_STATUSES = [200, 400, 404, 409, 422];
+// Every answer of a save the editor knows how to show, a text over the body limit (413) among them;
+// anything else is a failure of the call itself.
+const SAVE_STATUSES = [200, 400, 404, 409, 413, 422];
 
 /** A save's answer, through core's schema, so server and app agree on one shape. */
 export const parseSaveAnswer = (

@@ -383,6 +383,10 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "edit.reload.replace": "Zastąp",
   "edit.missing":
     "Tego pliku nie ma już w treści albo nie można go tu edytować",
+  "edit.load-failed":
+    "Plik się nie otworzył ({code}). Zamknij edytor i spróbuj ponownie",
+  "edit.too-large":
+    "Ten plik jest za duży, by zapisać go z aplikacji. Twój tekst został tutaj; zapiszesz go w VS Code (Shift+E)",
   "edit.failed": "Serwer nie zapisał tekstu ({code}). Twój tekst został tutaj",
   "edit.discard.title": "Zamknąć bez zapisywania?",
   "edit.discard.body": "Zmiany w edytorze przepadną",

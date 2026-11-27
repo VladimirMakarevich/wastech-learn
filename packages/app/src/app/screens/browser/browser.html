@@ -222,10 +222,10 @@
       </tbody>
     </table>
   </div>
-  @if (panel(); as panel) {
+  @if (drawer(); as panel) {
   <aside
     class="drawer"
-    [class.editing]="editing()"
+    [class.editing]="editing() !== undefined"
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
     [attr.aria-label]="panel.card.title"
@@ -241,13 +241,13 @@
         {{ "panel.close" | t }} <kbd>Esc</kbd>
       </button>
     </div>
-    @if (editing()) {
+    @if (editing() !== undefined) {
     <h3 [attr.lang]="panel.card.lang">{{ panel.card.title }}</h3>
     <wl-source-editor
       [files]="[{ path: panel.card.file, label: 'edit.action' }]"
       [initial]="panel.card.file"
       [lang]="panel.card.lang"
-      (closed)="closeEditor()"
+      (closed)="closeEditor($event)"
     />
     } @else {
     <div class="row">

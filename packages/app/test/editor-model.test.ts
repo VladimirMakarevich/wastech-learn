@@ -66,16 +66,49 @@ describe("EditorModel", () => {
     expect(sent).toEqual([
       { path: PATH, version: FILE.version, text: "a\nB\n" },
     ]);
-    expect(result).toEqual({ status: "written", warnings: [] });
+    expect(result).toEqual({
+      status: "written",
+      warnings: [],
+      card: { id: "10dkrwp7", retired: null },
+    });
     expect(model.phase()).toBe("done");
+    // Saved and about to close: the field takes no more typing that the close would drop.
+    expect(model.busy()).toBe(true);
     expect(model.dirty()).toBe(false);
     expect(refreshed()).toBe(1);
+  });
+
+  it("sends a CRLF file back with CRLF, so an edit changes only its own line", async () => {
+    const crlf: SourceFile = { ...FILE, text: "a\r\nb\r\nc\r\n" };
+    const { model, sent } = setup([SAVED], [crlf]);
+    await model.open(PATH);
+    expect(model.draft()).toBe("a\nb\nc\n");
+    model.setDraft("a\nB\nc\n");
+    await model.save();
+    expect(sent[0]?.text).toBe("a\r\nB\r\nc\r\n");
+    expect(model.dirty()).toBe(false);
+  });
+
+  it("passes on the successor a 'new card' answer names", async () => {
+    const { model } = setup([
+      { ...SAVED, card: { id: "newcard1", retired: "10dkrwp7" } },
+    ]);
+    await model.open(PATH);
+    model.setDraft("other question");
+    expect((await model.save("new"))?.card).toEqual({
+      id: "newcard1",
+      retired: "10dkrwp7",
+    });
   });
 
   it("closes an untouched file without a request", async () => {
     const { model, sent } = setup([]);
     await model.open(PATH);
-    expect(await model.save()).toEqual({ status: "unchanged", warnings: [] });
+    expect(await model.save()).toEqual({
+      status: "unchanged",
+      warnings: [],
+      card: undefined,
+    });
     expect(sent).toEqual([]);
   });
 
@@ -179,8 +212,36 @@ describe("EditorModel", () => {
     other.model.setDraft("mine");
     await other.model.save();
     expect(other.model.phase()).toBe("failed");
-    expect(other.model.failure()).toBe("unreachable");
+    expect(other.model.failure()).toEqual({
+      code: "unreachable",
+      during: "save",
+    });
     expect(other.model.draft()).toBe("mine");
+  });
+
+  it("drops the previous file when another one fails to open, so nothing can be saved under its name", async () => {
+    const index: SourceFile = {
+      path: "content/architecture/backpressure/index.md",
+      text: "index\n",
+      version: "d".repeat(64),
+    };
+    let loads = 0;
+    const model = new EditorModel({
+      load: () =>
+        loads++ === 0
+          ? Promise.resolve(index)
+          : Promise.reject(new ApiError("http", 500, "HTTP 500")),
+      save: () => Promise.reject(new Error("nothing may be sent")),
+      afterWrite: () => Promise.resolve(),
+    });
+    await model.open(index.path);
+    model.setDraft("index, edited\n");
+    await model.open(PATH);
+    expect(model.phase()).toBe("failed");
+    expect(model.failure()).toEqual({ code: "http", during: "load" });
+    expect(model.draft()).toBe("");
+    expect(model.dirty()).toBe(false);
+    expect(await model.save()).toBeUndefined();
   });
 });
 
@@ -228,5 +289,9 @@ describe("parseSaveAnswer", () => {
       }),
     ).toThrow(ApiError);
     expect(() => parseSaveAnswer(200, { nonsense: true })).toThrow(ApiError);
+    expect(parseSaveAnswer(413, { code: "body-too-large" })).toEqual({
+      kind: "refused",
+      code: "body-too-large",
+    });
   });
 });

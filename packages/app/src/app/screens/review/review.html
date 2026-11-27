@@ -1,7 +1,7 @@
-@if (card(); as card) {
+@if (shown(); as card) {
 <div class="review-wrap">
   <div class="review-col">
-    @if (editing()) {
+    @if (editing() !== undefined) {
     <wl-source-editor
       class="review-card review-editor"
       [files]="[{ path: card.file, label: 'edit.action' }]"

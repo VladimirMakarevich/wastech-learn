@@ -11,7 +11,7 @@ import {
   untracked,
   viewChild,
 } from "@angular/core";
-import { formatFinding } from "@wastech-learn/core";
+import { formatFinding, type SavedCard } from "@wastech-learn/core";
 import { AppData } from "../data/app-data";
 import { GitStatus } from "../data/git-state";
 import type { MessageKey } from "../i18n/en";
@@ -20,6 +20,7 @@ import { TPipe } from "../i18n/t.pipe";
 import { Confirm } from "../ui/confirm-dialog";
 import { Toasts } from "../ui/toast";
 import { EditorModel, type EditorFinding } from "./editor-model";
+import { scrollToLine } from "./scroll-to-line";
 import { lineOffset, sectionLine } from "./text-position";
 import { UnsavedEdits } from "./unsaved-guard";
 
@@ -29,7 +30,10 @@ export interface EditorFile {
   readonly label: MessageKey;
 }
 
-export type EditorClose = "saved" | "cancelled";
+/** How the editor closed; a save names the card the text now lives on, which may be a new one. */
+export type EditorClose =
+  | { readonly kind: "saved"; readonly card: SavedCard | undefined }
+  | { readonly kind: "cancelled" };
 
 /**
  * The whole file as plain Markdown in a text field, saved through the server's validated write. Tab is
@@ -71,7 +75,18 @@ export class SourceEditor {
     () => this.model.path()?.split("/").at(-1) ?? "",
   );
 
-  // A save can take the card out of the session while it runs; the screen has then moved on already.
+  /** Why nothing happened: the file did not open, or the text did not save, or it was too large to send. */
+  protected readonly failureText = computed(() => {
+    const failure = this.model.failure();
+    if (failure === undefined) return "";
+    if (failure.code === "body-too-large") return this.i18n.t("edit.too-large");
+    return this.i18n.t(
+      failure.during === "load" ? "edit.load-failed" : "edit.failed",
+      { code: failure.code },
+    );
+  });
+
+  // The screen can close the editor while a save runs (a navigation, say); nothing listens any more.
   private destroyed = false;
 
   constructor() {
@@ -92,6 +107,8 @@ export class SourceEditor {
       if (area === undefined || revision === 0) return;
       untracked(() => {
         area.value = this.model.draft();
+        // An empty field while the file loads is no place to put the cursor yet.
+        if (this.model.phase() === "loading") return;
         const section = this.section();
         const opensSummary = this.model.path()?.endsWith("/summary.md");
         const line =
@@ -109,6 +126,10 @@ export class SourceEditor {
   }
 
   protected onKey(event: KeyboardEvent): void {
+    // AltGr reaches the page as Ctrl+Alt on Windows, and AltGr+S types the Polish `ś`; a key that is
+    // still composing belongs to the input method. Neither is a command.
+    if (event.altKey || event.isComposing || event.getModifierState("AltGraph"))
+      return;
     if (
       (event.ctrlKey || event.metaKey) &&
       (event.key.toLowerCase() === "s" || event.code === "KeyS")
@@ -136,12 +157,13 @@ export class SourceEditor {
         ? this.i18n.t("edit.saved")
         : this.i18n.t("edit.saved-warning", { detail: this.describe(warning) }),
     );
-    if (!this.destroyed) this.closed.emit("saved");
+    if (!this.destroyed) this.closed.emit({ kind: "saved", card: result.card });
   }
 
+  // A file still loading has nothing to lose, so it closes; a save on its way has to finish first.
   protected async cancel(): Promise<void> {
-    if (this.model.busy()) return;
-    if (await this.unsavedMayGo()) this.closed.emit("cancelled");
+    if (this.model.phase() === "saving") return;
+    if (await this.unsavedMayGo()) this.closed.emit({ kind: "cancelled" });
   }
 
   protected async switchTo(path: string): Promise<void> {
@@ -193,9 +215,7 @@ export class SourceEditor {
     const offset = lineOffset(area.value, line);
     area.focus();
     area.setSelectionRange(offset, offset);
-    const lineHeight = Number.parseFloat(getComputedStyle(area).lineHeight);
-    if (Number.isFinite(lineHeight))
-      area.scrollTop = Math.max(0, (line - 3) * lineHeight);
+    scrollToLine(area, offset);
   }
 
   private async unsavedMayGo(): Promise<boolean> {
