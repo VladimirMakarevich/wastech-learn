@@ -1,6 +1,6 @@
 # Development rules for `wastech-learn`
 
-These are the **main rules** for working in this repository — the framework half of a personal spaced-repetition learning system (chat → cards, summaries, visuals → FSRS review). Read them before starting work; for the details they point into [`docs/`](../docs/README.md), which is written in Russian.
+These are the **main rules** for working in this repository - the framework half of a personal spaced-repetition learning system (chat → cards, summaries, visuals → FSRS review). Read them before starting work; for the details they point into [`docs/`](../docs/README.md), which is written in Russian.
 
 ## Code rules (HOW)
 
@@ -30,13 +30,13 @@ These are the **main rules** for working in this repository — the framework ha
 
 ## Key project facts
 
-- **Phase:** documentation (phase 0), milestone M1 (content repository with a golden sample) and milestone M2 (the packages `core`, `srs`, `content-fs`, `cli`) are done; M3 — capture through MCP and skills — is in progress: the MCP server, the hook and the skills are in; the acceptance on real topics on a local build remains, publishing to npm comes after. M4 — the app on the local server, with the `session` package — is built; its acceptance on real content is the owner's ([roadmap](../docs/roadmap.md)).
+- **Phase:** documentation (phase 0), milestone M1 (content repository with a golden sample) and milestone M2 (the packages `core`, `srs`, `content-fs`, `cli`) are done; M3 - capture through MCP and skills - is in progress: the MCP server, the hook and the skills are in; the acceptance on real topics on a local build remains, publishing to npm comes after. M4 - the app on the local server, with the `session` package - is built; its acceptance on real content is the owner's ([roadmap](../docs/roadmap.md)).
 - **Two repositories:** this public framework repo (MIT) and the private `wastech-learn-content` (topics, cards, review logs) next to it. Personal content never lands here.
 - **Runtime:** Node ≥ 24.17 (`.nvmrc`), npm workspaces under `packages/*`, ESM only, TypeScript 6.0 pinned (typescript-eslint does not support 7 yet).
-- **UI stack:** desktop-first Angular + CDK, the Evening Glass look from [DESIGN.md](../DESIGN.md), local only — no Capacitor or cloud ([ADR-0006](../docs/adr/0006-headless-core-angular-ui.md), [ADR-0016](../docs/adr/0016-local-only.md)). The app lives in `packages/app` since M4; the [prototype](../prototypes/desktop-ui/README.md) stays the reference for layout and flows and is not changed.
+- **UI stack:** desktop-first Angular + CDK, the Evening Glass look from [DESIGN.md](../DESIGN.md), local only - no Capacitor or cloud ([ADR-0006](../docs/adr/0006-headless-core-angular-ui.md), [ADR-0016](../docs/adr/0016-local-only.md)). The app lives in `packages/app` since M4; the [prototype](../prototypes/desktop-ui/README.md) stays the reference for layout and flows and is not changed.
 - **Commands:** `npm run lint` = `lint:code` (ESLint, Stylelint, Prettier check, `tsc -b`) + `lint:docs` (wastech-mdlint); `npm test` runs Vitest over `packages/*/test`; `npm run test:e2e` runs the Playwright scenarios after `npm run build`, and `wastech-learn serve --content <dir>` opens the app. `npm run fix` runs every autofixer (ESLint, Stylelint, Prettier, wastech-mdlint) even when one leaves findings. CI runs both halves on every push to `main` and every pull request.
 - **Every script in `package.json` works.** A dead script or an unused dependency reads as an approved pattern; delete it instead of leaving it.
 
 ## Installed skills
 
-`implement`, `assess-refactor`, `spec-task`, `interview`, `interview-to-spec`, `handoff` and `park` come from `VladimirMakarevich/wastech-skills` (pinned in `skills-lock.json`). `park` keeps its backlog in `docs/backlog/`; its WIP commits follow the exception in [git-workflow.md](git-workflow.md). **`implement` and `assess-refactor` are edited for this repository** — `npx skills update` overwrites them, so re-apply the edits after an update.
+`implement`, `assess-refactor`, `spec-task`, `interview`, `interview-to-spec`, `handoff` and `park` come from `VladimirMakarevich/wastech-skills` (pinned in `skills-lock.json`). `park` keeps its backlog in `docs/backlog/`; its WIP commits follow the exception in [git-workflow.md](git-workflow.md). **`implement` and `assess-refactor` are edited for this repository** - `npx skills update` overwrites them, so re-apply the edits after an update.

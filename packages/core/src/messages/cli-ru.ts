@@ -47,7 +47,7 @@ export const cliRu: Readonly<Record<CliMessageKey, Message>> = {
   "cli.error.config-invalid":
     "{file}: поле {field} неверно, исправь значение и запусти снова",
   "cli.error.config-json":
-    "{file} — не валидный JSON, исправь синтаксис и запусти снова",
+    "{file} - не валидный JSON, исправь синтаксис и запусти снова",
   "cli.error.event-invalid":
     "В событии повторения неверно поле {field}; ничего не записано",
   "cli.error.repository-not-found":
@@ -110,7 +110,7 @@ export const cliRu: Readonly<Record<CliMessageKey, Message>> = {
   "cli.doctor.config-invalid":
     "learn.config.json: неверное значение {field}, исправь его",
   "cli.doctor.config-json":
-    "learn.config.json — не валидный JSON, исправь синтаксис",
+    "learn.config.json - не валидный JSON, исправь синтаксис",
   "cli.doctor.device":
     "Устройство {device}: повторения пишутся в reviews/{device}/",
   "cli.doctor.device-hostname":
@@ -118,7 +118,7 @@ export const cliRu: Readonly<Record<CliMessageKey, Message>> = {
   "cli.doctor.device-invalid":
     "learn.local.json: неверное значение {field}, используй строчные латинские буквы, цифры и дефисы",
   "cli.doctor.device-json":
-    "learn.local.json — не валидный JSON, исправь синтаксис",
+    "learn.local.json - не валидный JSON, исправь синтаксис",
   "cli.doctor.deps": "Зависимости контента установлены",
   "cli.doctor.deps-missing":
     "В контент-репозитории не установлены {bins}: запусти там npm install",

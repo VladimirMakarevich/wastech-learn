@@ -212,7 +212,7 @@ describe("review fixes: quiz", () => {
     const reverse = (await session.call("reveal", { item: "e4ej1s8e:rev" }))
       .body;
     expect(reverse).toMatchObject({
-      example: "счёт (м. р.) — *Poproszę rachunek.*",
+      example: "счёт (м. р.) - *Poproszę rachunek.*",
     });
   });
 

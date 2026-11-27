@@ -15,6 +15,8 @@ https://github.com/VladimirMakarevich/wastech-learn/tree/main/docs (content/, le
 - Never edit or delete lines in `reviews/**/*.jsonl`. They are append-only; undo is a new event.
 - Diagrams: edit `diagrams/*.mmd`, then run `npm run render:diagrams`. Do not hand-edit the SVG.
 - Card size limits and writing rules: `docs/learning/card-writing-rules.md` in the framework repo.
+- Dashes: write the ASCII hyphen-minus `-` in every card, summary, file, commit message and reply, never
+  the em dash (U+2014) or the en dash (U+2013). The `LEARN-ASCII-DASH` lint rule rejects them.
 
 ## Checks
 

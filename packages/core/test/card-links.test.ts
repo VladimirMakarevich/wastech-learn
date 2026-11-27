@@ -20,7 +20,7 @@ const cardsOf = (document: ContentDocument): string =>
   sectionMarkdown(document, "Cards") ?? "";
 
 const A = "- [A](cards/aaaaaaaa.md)";
-const B = "- [B](cards/bbbbbbbb.md) — a note";
+const B = "- [B](cards/bbbbbbbb.md) - a note";
 const C = "- [C](cards/cccccccc.md)";
 
 describe("removing a card's line", () => {

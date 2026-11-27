@@ -4,7 +4,7 @@
 <defs><filter id="sh" x="-5%" y="-10%" width="110%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0F172A" flood-opacity="0.08"/></filter><linearGradient id="rgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#10B981" stop-opacity="0.28"/><stop offset="1" stop-color="#10B981" stop-opacity="0.02"/></linearGradient><marker id="m94A3B8" viewBox="0 0 10 10" refX="8.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94A3B8"/></marker></defs>
 <rect width="1800" height="860" fill="#F5F7FB"/>
 <text x="40.0" y="62.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="30" font-weight="800" fill="#0F172A" text-anchor="start" >День 0 · разбор темы в Claude Code</text>
-<text x="40.0" y="94.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="16" font-weight="400" fill="#64748B" text-anchor="start" >Кто что делает на каждом шаге: я, ИИ-тьютор, MCP-сервер и репозиторий — всё по подписке, без API-ключей</text>
+<text x="40.0" y="94.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="16" font-weight="400" fill="#64748B" text-anchor="start" >Кто что делает на каждом шаге: я, ИИ-тьютор, MCP-сервер и репозиторий - всё по подписке, без API-ключей</text>
 <rect x="40.0" y="128.0" width="1720.0" height="150.0" rx="16" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.2"/>
 <path d="M40,144 a16,16 0 0 1 16,-16 h4 v150 h-4 a16,16 0 0 1 -16,-16 z" fill="#2563EB"/>
 <text x="70.0" y="196.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="17" font-weight="800" fill="#1D4ED8" text-anchor="start" >Я</text>
@@ -57,14 +57,14 @@
 <text x="440.0" y="542.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >нет</text>
 <rect x="594.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
 <text x="606.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Pre-questions</text>
-<text x="606.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >3–5 вопросов</text>
+<text x="606.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >3-5 вопросов</text>
 <text x="606.0" y="380.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >до объяснения</text>
 <circle cx="596.0" cy="319.0" r="12" fill="#7C3AED"/>
 <text x="596.0" y="323.3" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" >3</text>
 <rect x="594.0" y="155.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#BFDBFE" stroke-width="1.2" filter="url(#sh)"/>
 <text x="606.0" y="181.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Отвечаю</text>
 <text x="606.0" y="202.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >как могу +</text>
-<text x="606.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >уверенность 1–3</text>
+<text x="606.0" y="218.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >уверенность 1-3</text>
 <rect x="760.0" y="317.0" width="140.0" height="96.0" rx="10" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.2" filter="url(#sh)"/>
 <text x="772.0" y="343.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="700" fill="#0F172A" text-anchor="start" >Диалог</text>
 <text x="772.0" y="364.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="12" font-weight="400" fill="#334155" text-anchor="start" >сократический,</text>
@@ -138,7 +138,7 @@
 <text x="700.0" y="706.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start" >сначала мой отбор карточек, потом validate (mdlint + check)</text>
 <text x="600.0" y="534.0" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start" >Тонкий слой над ядром: core · srs · content-fs</text>
 <rect x="40.0" y="790.0" width="860.0" height="38.0" rx="19.0" fill="#FFFFFF" stroke="#C7D2FE" stroke-width="1.3"/>
-<text x="470.0" y="813.9" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="600" fill="#3730A3" text-anchor="middle" >≈ 20–40 минут разговора · захват после диалога ≤ 15 минут · всё по подписке</text>
+<text x="470.0" y="813.9" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="600" fill="#3730A3" text-anchor="middle" >≈ 20-40 минут разговора · захват после диалога ≤ 15 минут · всё по подписке</text>
 <rect x="920.0" y="790.0" width="840.0" height="38.0" rx="19.0" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.3"/>
 <text x="1340.0" y="813.9" font-family="Inter, 'Segoe UI', Roboto, 'Noto Sans', 'Helvetica Neue', Arial, 'DejaVu Sans', sans-serif" font-size="13.5" font-weight="600" fill="#334155" text-anchor="middle" >Ошибка validate → ИИ правит текст до записи: в git попадает только проверенное</text>
 </svg>

@@ -29,7 +29,7 @@ var channel = Channel.CreateBounded<Order>(new BoundedChannelOptions(100)
     FullMode = BoundedChannelFullMode.Wait // [!code highlight]
 });
 
-// producer: WriteAsync waits while the channel is full — this is backpressure
+// producer: WriteAsync waits while the channel is full - this is backpressure
 await channel.Writer.WriteAsync(order, ct);
 
 // consumer: processes at its own pace
@@ -55,9 +55,9 @@ When the worker falls behind, `WriteAsync` stops completing, request handlers wa
 
 ## Misconceptions
 
-- "A bigger buffer fixes it" — it only delays the overflow and adds latency.
-- "Rate limiting is backpressure" — a fixed limit does not react to downstream capacity.
-- "Autoscaling makes it unnecessary" — scaling takes minutes; backpressure acts in milliseconds.
+- "A bigger buffer fixes it" - it only delays the overflow and adds latency.
+- "Rate limiting is backpressure" - a fixed limit does not react to downstream capacity.
+- "Autoscaling makes it unnecessary" - scaling takes minutes; backpressure acts in milliseconds.
 
 ## Comparison
 

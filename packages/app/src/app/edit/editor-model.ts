@@ -20,10 +20,10 @@ export interface EditorDeps {
 }
 
 /**
- * `blocked` — the checks stopped the save and the findings are listed; `decision` — the learner is asked
- * whether the card is still the same; `conflict` — the file changed elsewhere since it was opened;
- * `missing` — the file is no longer there or may not be edited; `failed` — the server did not answer
- * usefully; `done` — saved, the editor is about to close.
+ * `blocked` - the checks stopped the save and the findings are listed; `decision` - the learner is asked
+ * whether the card is still the same; `conflict` - the file changed elsewhere since it was opened;
+ * `missing` - the file is no longer there or may not be edited; `failed` - the server did not answer
+ * usefully; `done` - saved, the editor is about to close.
  */
 export type EditorPhase =
   | "loading"

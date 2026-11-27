@@ -18,8 +18,8 @@ export interface WritePlan<Result> {
 }
 
 /**
- * `written` — the files are on disk; `dry-run` — they passed and nothing was written, as asked;
- * `blocked` — validation found errors and nothing was written.
+ * `written` - the files are on disk; `dry-run` - they passed and nothing was written, as asked;
+ * `blocked` - validation found errors and nothing was written.
  */
 export type WriteStatus = "written" | "dry-run" | "blocked";
 

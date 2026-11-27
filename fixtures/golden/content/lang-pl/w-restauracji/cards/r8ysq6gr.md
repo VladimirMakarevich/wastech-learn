@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-заказать (dk) / заказывать (ndk) — *Chciałbym zamówić pierogi.*
+заказать (dk) / заказывать (ndk) - *Chciałbym zamówić pierogi.*
 
 ## Sources
 

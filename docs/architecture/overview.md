@@ -1,6 +1,6 @@
 # Архитектура: обзор
 
-Система local-first. Вся логика сосредоточена в headless TypeScript-ядре, хосты над ним тонкие. Источник истины — git-репозиторий контента. Ключевые решения: [ADR-0006](../adr/0006-headless-core-angular-ui.md) (ядро + UI), [ADR-0007](../adr/0007-local-server-phase-1.md) (локальный сервер), [ADR-0003](../adr/0003-append-only-review-log.md) (журнал), [ADR-0015](../adr/0015-session-package.md) (пакет `session`, replay в клиенте).
+Система local-first. Вся логика сосредоточена в headless TypeScript-ядре, хосты над ним тонкие. Источник истины - git-репозиторий контента. Ключевые решения: [ADR-0006](../adr/0006-headless-core-angular-ui.md) (ядро + UI), [ADR-0007](../adr/0007-local-server-phase-1.md) (локальный сервер), [ADR-0003](../adr/0003-append-only-review-log.md) (журнал), [ADR-0015](../adr/0015-session-package.md) (пакет `session`, replay в клиенте).
 
 ## Контекст (C4, уровень 1)
 
@@ -60,10 +60,10 @@ flowchart LR
 | Фаза | Где работает | Синхронизация | Для чего |
 | --- | --- | --- | --- |
 | 1 (MVP) | Localhost: `npx wastech-learn serve --content <path>` открывает браузер | git push/pull вручную, журнал разделён по device и writer | Десктоп, один или несколько компьютеров |
-| 2 | Вне скоупа: облако и телефон не делаются ([ADR-0016](../adr/0016-local-only.md)) | — | — |
+| 2 | Вне скоупа: облако и телефон не делаются ([ADR-0016](../adr/0016-local-only.md)) | - | - |
 | 3 | Как в фазе 1 | Как в фазе 1 | Оптимизатор, калибровка, MCP Apps, Piper |
 
-Подробности синхронизации — в [sync.md](sync.md). Облако и телефон вне скоупа — [ADR-0016](../adr/0016-local-only.md).
+Подробности синхронизации - в [sync.md](sync.md). Облако и телефон вне скоупа - [ADR-0016](../adr/0016-local-only.md).
 
 ## Ключевые качества
 

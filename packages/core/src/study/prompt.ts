@@ -10,7 +10,8 @@ const isReverse = (card: Card, variant: string): boolean =>
   (card.frontMatter.type === "reversed" || card.frontMatter.type === "vocab");
 
 // A vocab answer is the translation plus an example sentence in italics, and that sentence uses the
-// very word the reverse side asks for: `счёт (м. р.) — *Poproszę rachunek.*`.
+// very word the reverse side asks for: `счёт (м. р.) - *Poproszę rachunek.*`. Content written before the
+// repository settled on the ASCII hyphen joins them with an em or en dash, so those are trimmed too.
 const EMPHASIS = /(\*[^*\n]+\*|_[^_\n]+_)/g;
 
 /**
@@ -23,7 +24,7 @@ const reversePrompt = (card: Card): string => {
   if (card.frontMatter.type !== "vocab") return answer;
   return answer
     .replace(EMPHASIS, "")
-    .replace(/[\s—–:-]+$/u, "")
+    .replace(/[\s\u2014\u2013:-]+$/u, "")
     .trim();
 };
 

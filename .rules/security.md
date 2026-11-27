@@ -1,6 +1,6 @@
 # Rules: security and privacy
 
-> One of the main development rules for `wastech-learn`. Index — [.rules/README.md](README.md). Requirements behind it — NFR-02, NFR-03, NFR-17 in [nfr.md](../docs/requirements/nfr.md).
+> One of the main development rules for `wastech-learn`. Index - [.rules/README.md](README.md). Requirements behind it - NFR-02, NFR-03, NFR-17 in [nfr.md](../docs/requirements/nfr.md).
 
 ## No keys, no model calls
 
@@ -11,7 +11,7 @@
 
 - The user's knowledge is private: the content repository is private, and nothing from it is copied here except the golden sample ([git-workflow.md](git-workflow.md)).
 - **No telemetry, no analytics, no third-party requests** from the app, server, CLI or MCP server. No CDN-hosted fonts or scripts in the product UI. The only network traffic is what the user starts (git, the chat client).
-- Logs never contain card, summary or answer text — identifiers and counts only.
+- Logs never contain card, summary or answer text - identifiers and counts only.
 
 ## The local server
 

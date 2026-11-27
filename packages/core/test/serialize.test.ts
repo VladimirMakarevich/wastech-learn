@@ -200,7 +200,7 @@ describe("topic, summary and materials serialization", () => {
     const index = files.get(`${DIR}/index.md`) ?? "";
     expect(index).toContain('title: "Flow: control"');
     expect(index).toContain(
-      "1. What grows first? — The buffer (2/3)\n2. Is a bigger buffer a fix?",
+      "1. What grows first? - The buffer (2/3)\n2. Is a bigger buffer a fix?",
     );
   });
 

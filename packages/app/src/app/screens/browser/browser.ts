@@ -282,7 +282,7 @@ export class Browser {
   protected rating(row: BrowserRow): string {
     const key =
       row.lastRating === null ? undefined : RATING_KEYS[row.lastRating];
-    return key === undefined ? "—" : this.i18n.t(key);
+    return key === undefined ? "-" : this.i18n.t(key);
   }
 
   protected unsuspend(item: string): void {

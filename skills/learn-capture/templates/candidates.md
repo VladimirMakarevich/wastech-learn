@@ -1,6 +1,6 @@
-# Candidates — {{TOPIC}}
+# Candidates - {{TOPIC}}
 
-One line per candidate, numbered so the learner can answer "keep 1–4, 7; drop 5; edit 6":
+One line per candidate, numbered so the learner can answer "keep 1-4, 7; drop 5; edit 6":
 
 ```text
 {{N}}. {{TYPE}} · {{BLOOM}} · {{IDEA}}

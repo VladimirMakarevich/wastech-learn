@@ -7,11 +7,11 @@
 - **материалы** для углубления;
 - **визуальные разборы**: архитектурные схемы, таблицы сравнения, карты понятий, аннотированный код.
 
-Методика опирается на книгу «Запомнить всё» (Make It Stick: Brown, Roediger, McDaniel) и другие доказательные практики: retrieval practice, интервалы, чередование, калибровку. Все данные — Markdown, SVG и JSONL в git. Размер карточек и документов держит в рамках [wastech-mdlint](https://github.com/VladimirMakarevich/wastech-mdlint).
+Методика опирается на книгу «Запомнить всё» (Make It Stick: Brown, Roediger, McDaniel) и другие доказательные практики: retrieval practice, интервалы, чередование, калибровку. Все данные - Markdown, SVG и JSONL в git. Размер карточек и документов держит в рамках [wastech-mdlint](https://github.com/VladimirMakarevich/wastech-mdlint).
 
 ## Статус
 
-**Фаза 0 (документация) и вехи M1 (контент-репозиторий с golden sample) и M2 (ядро: `core`, `srs`, `content-fs` и CLI `check`, `build`, `render`, `simulate`) завершены.** Идёт веха M3 — захват через MCP и skills: MCP-сервер `wastech-learn-mcp`, hook, `new-id` и skills `learn-capture`, `learn-import`, `learn-quiz` готовы; контент-репозиторий подключён к локальной сборке; впереди приёмка на реальных темах, публикация в npm — после неё. Веха M4 — приложение — собрана: пакет `session`, локальный сервер `wastech-learn serve` и Angular-приложение с экранами Home, Review, итоги, Topic, Cards, Stats, Settings; приёмка на реальном контенте — за владельцем. Требования, методика, модель данных и архитектура описаны в [docs/](docs/README.md), план фаз — в [roadmap](docs/roadmap.md). UI — desktop-first Angular + CDK в стиле [прототипа](prototypes/desktop-ui/README.md) ([ADR-0006](docs/adr/0006-headless-core-angular-ui.md)).
+**Фаза 0 (документация) и вехи M1 (контент-репозиторий с golden sample) и M2 (ядро: `core`, `srs`, `content-fs` и CLI `check`, `build`, `render`, `simulate`) завершены.** Идёт веха M3 - захват через MCP и skills: MCP-сервер `wastech-learn-mcp`, hook, `new-id` и skills `learn-capture`, `learn-import`, `learn-quiz` готовы; контент-репозиторий подключён к локальной сборке; впереди приёмка на реальных темах, публикация в npm - после неё. Веха M4 - приложение - собрана: пакет `session`, локальный сервер `wastech-learn serve` и Angular-приложение с экранами Home, Review, итоги, Topic, Cards, Stats, Settings; приёмка на реальном контенте - за владельцем. Требования, методика, модель данных и архитектура описаны в [docs/](docs/README.md), план фаз - в [roadmap](docs/roadmap.md). UI - desktop-first Angular + CDK в стиле [прототипа](prototypes/desktop-ui/README.md) ([ADR-0006](docs/adr/0006-headless-core-angular-ui.md)).
 
 ## Два репозитория
 
@@ -26,7 +26,7 @@
 
 ![Happy path: разбор темы в чате, короткие сессии повторения по FSRS, углубление; данные в приватном git](docs/assets/happy-path/01-overview.svg)
 
-Ещё две схемы — день 0 и сессия повторения — на странице [happy path](docs/product/happy-path.md).
+Ещё две схемы - день 0 и сессия повторения - на странице [happy path](docs/product/happy-path.md).
 
 ## С чего начать чтение
 
@@ -42,13 +42,13 @@
 
 ## Разработка
 
-Установка на новый компьютер с нуля, включая создание контент-репозитория из шаблона `templates/content-repo/`, — в [docs/setup.md](docs/setup.md).
+Установка на новый компьютер с нуля, включая создание контент-репозитория из шаблона `templates/content-repo/`, - в [docs/setup.md](docs/setup.md).
 
-Нужен Node ≥24.17 (`.nvmrc`). Все инструменты — точные версии в devDependencies.
+Нужен Node ≥24.17 (`.nvmrc`). Все инструменты - точные версии в devDependencies.
 
 ```bash
 npm ci
-npm run lint           # всё: lint:code + lint:docs (0 ошибок — условие готовности)
+npm run lint           # всё: lint:code + lint:docs (0 ошибок - условие готовности)
 npm run lint:code      # ESLint (границы пакетов ядра), Stylelint, проверка Prettier, tsc -b
 npm run lint:docs      # wastech-mdlint по docs/, .rules/, skills
 npm run fix            # все автоисправления: ESLint, Stylelint, Prettier
@@ -65,7 +65,7 @@ npm run test:e2e       # сценарии Playwright на копии golden (п�
 node packages/cli/bin/wastech-learn.mjs serve --content ../wastech-learn-content
 ```
 
-Правила разработки — в [.rules/](.rules/README.md) (на английском: их читают и агенты), вход для агентов — [AGENTS.md](AGENTS.md). CI на каждый push в `main` и каждый pull request: `.github/workflows/ci.yml` (код) и `.github/workflows/markdown-lint.yml` (документация).
+Правила разработки - в [.rules/](.rules/README.md) (на английском: их читают и агенты), вход для агентов - [AGENTS.md](AGENTS.md). CI на каждый push в `main` и каждый pull request: `.github/workflows/ci.yml` (код) и `.github/workflows/markdown-lint.yml` (документация).
 
 ## Лицензия
 

@@ -1,8 +1,8 @@
-# Критерии приёмки — M2, ядро
+# Критерии приёмки - M2, ядро
 
-[⌂ index](index.md) · требования — [requirements.md](requirements.md) · дизайн — [design.md](design.md)
+[⌂ index](index.md) · требования - [requirements.md](requirements.md) · дизайн - [design.md](design.md)
 
-Каждый критерий проверяется автоматическим тестом, если в колонке «Проверка» не сказано иное. «Golden» — копия golden sample в `fixtures/golden/`.
+Каждый критерий проверяется автоматическим тестом, если в колонке «Проверка» не сказано иное. «Golden» - копия golden sample в `fixtures/golden/`.
 
 ## Функции
 
@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | AC-F01a | Golden-конфиг без `learn.local.json` → загрузка → `device` равен hostname, остальные поля разобраны | unit `content-fs` |
 | AC-F01b | В `learn.config.json` `desiredRetention: 1.5` → загрузка → ошибка с файлом и полем `srs.desiredRetention`, код CLI `2` | unit + CLI |
-| AC-F02a | Golden → разбор → 3 темы, 30 карточек, у `cloze` варианты `c1`…`cN`, у `vocab` — `fwd` и `rev`, у остальных — `main` | golden |
+| AC-F02a | Golden → разбор → 3 темы, 30 карточек, у `cloze` варианты `c1`…`cN`, у `vocab` - `fwd` и `rev`, у остальных - `main` | golden |
 | AC-F02b | Карточка без `status` → разбор → находка-ошибка с файлом и полем | unit |
 | AC-F02c | Правка вне Question и Answer → `contentHash` не меняется; правка в Answer → меняется | unit |
 | AC-F03a | Golden → `check` → 0 ошибок, код `0` | golden + CLI |
@@ -21,7 +21,7 @@
 | AC-F04b | В summary есть `<script>` и `onclick` → `build` → в HTML их нет, SVG, KaTeX и классы Shiki на месте | unit |
 | AC-F04c | Ошибка схемы в одной карточке → `build` → bundle не записан, код `1`, файл назван | CLI |
 | AC-F05 | Изменён `.mmd` → `render --check` → файл назван устаревшим, код `1`; после `render` → маркер совпадает с хэшем, `--check` даёт `0` | CLI на временной копии; Chromium нужен |
-| AC-F06a | Два файла журнала с общим событием и строкой-мусором → чтение → дубль отброшен, мусор — находка с файлом и номером строки, порядок по `ts`, затем `id` | unit |
+| AC-F06a | Два файла журнала с общим событием и строкой-мусором → чтение → дубль отброшен, мусор - находка с файлом и номером строки, порядок по `ts`, затем `id` | unit |
 | AC-F06b | `undo` на событие `review` → чтение → отменённое событие не участвует в replay | unit |
 | AC-F06c | Дважды дописать одно и то же событие → в файле одна строка | unit, временная папка |
 | AC-F07a | Карточка: Good, Good, Again → replay → `lapses = 1`, фаза relearning, `due` по шагу `10m` или по модели, если она дольше | unit против прямого вызова ts-fsrs |

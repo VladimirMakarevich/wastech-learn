@@ -1,6 +1,6 @@
 // Временная замена будущей команды `wastech-learn render`:
 // рендерит content/**/diagrams/*.mmd в SVG рядом и вписывает в начало SVG
-// комментарий <!-- source-sha256: … --> — по нему проверяется свежесть рендера.
+// комментарий <!-- source-sha256: … --> - по нему проверяется свежесть рендера.
 // Использование: npm run render:diagrams [-- --check]
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';

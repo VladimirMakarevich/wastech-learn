@@ -1,4 +1,4 @@
-# Фаза 03 — `readSource` и `saveSource`
+# Фаза 03 - `readSource` и `saveSource`
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -8,13 +8,13 @@
 
 ## Цель
 
-Вся логика сохранения в `content-fs`, поверх `applyWrite`: здесь проверяется всё, что касается целостности данных (design D1, D4–D7).
+Вся логика сохранения в `content-fs`, поверх `applyWrite`: здесь проверяется всё, что касается целостности данных (design D1, D4-D7).
 
 ## Шаги
 
-1. `packages/content-fs/src/write/source.ts` — `readSource(workspace, path)`: `editableKind`, `confinePath`, текст и `version` = `sha256Hex`. Чего нет на диске или что не признано — `source-not-found`.
-2. `saveSource(workspace, input)` в порядке D4: версия (не совпала, но текст на диске равен новому → `unchanged`; иначе `content-changed`) → тот же текст (`unchanged`) → для карточки `id` (находка `card-id-changed` на строке `id:`; сравнение с `id` до правки, при нечитаемом старом тексте — с именем файла) → `cardEditDecision` (нужен вопрос и нет `meaning` → `decision-needed`) → план записи → `applyWrite`.
-3. План записи: `meaning: "new"` — через `write/successor.ts` из фазы 02, старый файл берётся с диска; изменённый `#` — `withCardLinks` и `index.md` как `incidental`; `summary.md` и `materials.md` с неизменённым `updated` — сегодняшняя дата через `calendarDate`. После `meaning: "same"` находка `active-edit` этого файла убирается из ответа.
+1. `packages/content-fs/src/write/source.ts` - `readSource(workspace, path)`: `editableKind`, `confinePath`, текст и `version` = `sha256Hex`. Чего нет на диске или что не признано - `source-not-found`.
+2. `saveSource(workspace, input)` в порядке D4: версия (не совпала, но текст на диске равен новому → `unchanged`; иначе `content-changed`) → тот же текст (`unchanged`) → для карточки `id` (находка `card-id-changed` на строке `id:`; сравнение с `id` до правки, при нечитаемом старом тексте - с именем файла) → `cardEditDecision` (нужен вопрос и нет `meaning` → `decision-needed`) → план записи → `applyWrite`.
+3. План записи: `meaning: "new"` - через `write/successor.ts` из фазы 02, старый файл берётся с диска; изменённый `#` - `withCardLinks` и `index.md` как `incidental`; `summary.md` и `materials.md` с неизменённым `updated` - сегодняшняя дата через `calendarDate`. После `meaning: "same"` находка `active-edit` этого файла убирается из ответа.
 4. Экспорт из `packages/content-fs/src/index.ts`.
 
 ## Затронутые файлы

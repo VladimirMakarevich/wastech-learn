@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-Приятного аппетита! — *Kelner podaje danie i mówi: „Smacznego!”*
+Приятного аппетита! - *Kelner podaje danie i mówi: „Smacznego!”*
 
 ## Sources
 

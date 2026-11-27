@@ -2483,7 +2483,7 @@ table.list tr:last-child td {
     animation-timeline: scroll(self inline);
   }
 
-  /* Diagram labels shrank to 6–7 px; better to let the diagram scroll sideways. */
+  /* Diagram labels shrank to 6-7 px; better to let the diagram scroll sideways. */
   .diagram :where(svg) {
     min-width: 560px;
   }

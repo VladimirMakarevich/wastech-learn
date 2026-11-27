@@ -107,7 +107,7 @@ export const parsePorcelainV2 = (output: string): ParsedStatus => {
       ahead = count(plus);
       behind = count(minus);
     } else if (record.startsWith("1 ")) {
-      // 1 XY sub mH mI mW hH hI path — the path is the ninth field and may itself contain spaces.
+      // 1 XY sub mH mI mW hH hI path - the path is the ninth field and may itself contain spaces.
       const fields = record.split(" ");
       const change = changeOf(fields[1] ?? "");
       if (change !== undefined)

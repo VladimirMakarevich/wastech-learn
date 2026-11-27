@@ -1,4 +1,4 @@
-# Фаза 07 — Каркас приложения
+# Фаза 07 - Каркас приложения
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -13,7 +13,7 @@
 ## Шаги
 
 1. `packages/app`: Angular 22 точной версии, standalone, zoneless, `@angular/build`; маршруты экранов-заглушек; сборка в `dist/browser`.
-2. Корневые скрипты: `build` собирает и `app`, `app:dev` — dev-сервер Angular с прокси `/api` на `serve`. `server` по умолчанию раздаёт сборку `app` и не импортирует его код.
+2. Корневые скрипты: `build` собирает и `app`, `app:dev` - dev-сервер Angular с прокси `/api` на `serve`. `server` по умолчанию раздаёт сборку `app` и не импортирует его код.
 3. Lint: angular-eslint для TS и шаблонов, Stylelint и Prettier на файлы `app`, проверка типов с шаблонами в `typecheck`.
 4. Playwright: конфиг, глобальная подготовка (копия golden, журнал-фикстура из `srs` с сидом, `serve --no-open --port 0`), аудит сети, скрипт `test:e2e`, job в CI только с Chromium и `permissions: contents: read`.
 

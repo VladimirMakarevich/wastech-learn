@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-меню (ж. р.) — *Poproszę kartę.*
+меню (ж. р.) - *Poproszę kartę.*
 
 ## Sources
 

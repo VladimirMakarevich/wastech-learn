@@ -21,7 +21,7 @@ A slow consumer must be able to slow down a fast producer; otherwise a buffer be
 
 ## Pretest
 
-Questions asked before the explanation. Answers and confidence (1–3) are filled in during capture.
+Questions asked before the explanation. Answers and confidence (1-3) are filled in during capture.
 
 1. What breaks first when a producer is faster than its consumer?
 2. Is a bigger buffer a fix for a slow consumer?

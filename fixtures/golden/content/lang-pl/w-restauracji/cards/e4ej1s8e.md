@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-счёт (м. р.) — *Poproszę rachunek.*
+счёт (м. р.) - *Poproszę rachunek.*
 
 ## Sources
 

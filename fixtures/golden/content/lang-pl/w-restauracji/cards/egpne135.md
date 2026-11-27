@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-официант (м. р.) — *Kelner przyniósł kartę.*
+официант (м. р.) - *Kelner przyniósł kartę.*
 
 ## Sources
 

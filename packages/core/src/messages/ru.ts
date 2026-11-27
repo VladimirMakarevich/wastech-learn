@@ -5,7 +5,7 @@ import type { Message } from "./types.js";
 export const ru: Readonly<Record<MessageKey, Message>> = {
   "finding.front-matter-missing": "Нет front matter: начни файл с блока ---",
   "finding.front-matter-yaml":
-    "Front matter — не валидный YAML: исправь синтаксис",
+    "Front matter - не валидный YAML: исправь синтаксис",
   "finding.front-matter-schema":
     "Поле front matter {field} отсутствует или неверно",
   "finding.section-missing": "Нет секции ## {section}: добавь её",
@@ -53,10 +53,10 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   },
   "finding.code-width": {
     count: "count",
-    one: "Строка кода — {count} символ, не больше {limit}",
-    few: "Строка кода — {count} символа, не больше {limit}",
-    many: "Строка кода — {count} символов, не больше {limit}",
-    other: "Строка кода — {count} символа, не больше {limit}",
+    one: "Строка кода - {count} символ, не больше {limit}",
+    few: "Строка кода - {count} символа, не больше {limit}",
+    many: "Строка кода - {count} символов, не больше {limit}",
+    other: "Строка кода - {count} символа, не больше {limit}",
   },
   "finding.cloze-gaps":
     "Cloze {variant} скрывает фрагментов: {count}; оставь один на вариант",
@@ -137,10 +137,10 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     other: "{count} карточки",
   },
 
-  "error.path-outside-content": "{subject} — вне контент-репозитория",
+  "error.path-outside-content": "{subject} - вне контент-репозитория",
   "error.request-id-reused":
     "requestId {subject} уже использован для другого вызова",
-  "error.item-not-active": "{subject} — не review item активной карточки",
+  "error.item-not-active": "{subject} - не review item активной карточки",
   "error.topic-exists": "Тема {subject} уже есть",
   "error.topic-not-found": "Темы {subject} нет",
   "error.card-not-found": "Карточки с id {subject} нет",
@@ -148,11 +148,11 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "error.nothing-to-undo":
     "Нет оценки с этого устройства, которую можно отменить",
   "error.nothing-to-restore":
-    "Карточка {subject} не удалена после последнего коммита — возвращать нечего",
+    "Карточка {subject} не удалена после последнего коммита - возвращать нечего",
   "error.content-changed":
     "{subject} изменился, пока готовилась запись; ничего не записано",
   "error.source-not-found":
-    "{subject} — не файл темы или карточки, который можно править в приложении",
+    "{subject} - не файл темы или карточки, который можно править в приложении",
   "error.search-index-invalid":
     "Индекс поиска в content bundle не читается этой версией",
   "error.id-unavailable":
@@ -160,7 +160,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "error.input-invalid": "Поле входа {field} неверно",
   "error.tool-unknown": "Инструмента {subject} нет",
   "error.config-invalid": "{file}: поле {field} неверно",
-  "error.config-json": "{file} — не валидный JSON",
+  "error.config-json": "{file} - не валидный JSON",
   "hint.config-json": "Исправь синтаксис файла и вызови снова",
   "error.event-invalid":
     "У события повторения неверное поле {field}; ничего не записано",

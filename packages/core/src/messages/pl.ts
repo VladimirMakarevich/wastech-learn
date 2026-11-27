@@ -148,7 +148,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "error.package-not-found": "Pod ścieżką {subject} nie ma learning package",
   "error.nothing-to-undo": "Nie ma oceny z tego urządzenia do cofnięcia",
   "error.nothing-to-restore":
-    "Karta {subject} nie została usunięta od ostatniego commitu — nie ma czego przywracać",
+    "Karta {subject} nie została usunięta od ostatniego commitu - nie ma czego przywracać",
   "error.content-changed":
     "{subject} zmienił się podczas przygotowania zapisu; nic nie zapisano",
   "error.source-not-found":

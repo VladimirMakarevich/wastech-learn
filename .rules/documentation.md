@@ -1,12 +1,13 @@
 # Rules: documentation
 
-> One of the main development rules for `wastech-learn`. Index — [.rules/README.md](README.md). Map of the docs — [docs/README.md](../docs/README.md).
+> One of the main development rules for `wastech-learn`. Index - [.rules/README.md](README.md). Map of the docs - [docs/README.md](../docs/README.md).
 
 ## Languages
 
 - **`docs/` and `README.md` are written in Russian.** File names, front matter keys, IDs, code identifiers and machine-checked table headers (`ID`, `Priority`, `Status`, `Principles`, `Journeys`) are English.
 - **`AGENTS.md`, `PRODUCT.md`, `DESIGN.md`, `.rules/` and skills are English**: they are loaded into agent context (the last two by the `impeccable` design skill), and the `LLM-001` token estimate undercounts Cyrillic.
 - Use the canonical terms from the [glossary](../docs/glossary.md); `CTX-003` flags the listed aliases.
+- **Dashes are the ASCII hyphen-minus `-`** in docs, rules, code, comments, UI copy and commit messages, Russian and Polish included, ranges too (`3-5`): no em dash (U+2014), no en dash (U+2013). Agents copy the typography around them, so one stray dash brings more back. `npm run lint:dashes` (part of `lint:code`) checks every file except installed third-party skills and the frozen prototype, the hook in `.claude/settings.json` reports a dash in each file Claude Code writes, and `npm run fix` replaces them.
 
 ## IDs and traceability
 

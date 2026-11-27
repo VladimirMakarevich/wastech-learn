@@ -1,4 +1,4 @@
-# Фаза 04 — Путь записи в `content-fs`
+# Фаза 04 - Путь записи в `content-fs`
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -26,7 +26,7 @@
 
 ## Правила
 
-Каждая запись проходит mdlint и `check`; IO только здесь. Общие правила — [.rules/README.md](../../../../.rules/README.md).
+Каждая запись проходит mdlint и `check`; IO только здесь. Общие правила - [.rules/README.md](../../../../.rules/README.md).
 
 ## Тесты
 

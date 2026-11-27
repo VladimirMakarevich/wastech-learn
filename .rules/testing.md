@@ -1,6 +1,6 @@
 # Rules: testing
 
-> One of the main development rules for `wastech-learn`. Index — [.rules/README.md](README.md). Strategy behind it — NFR-04, NFR-05, NFR-14 in [nfr.md](../docs/requirements/nfr.md).
+> One of the main development rules for `wastech-learn`. Index - [.rules/README.md](README.md). Strategy behind it - NFR-04, NFR-05, NFR-14 in [nfr.md](../docs/requirements/nfr.md).
 
 ## Current state
 
@@ -34,7 +34,7 @@ Property tests run with a fixed fast-check seed: deterministic in CI, widened lo
 
 ## Conventions
 
-- **Tests are mandatory for new or changed logic** in `core`, `srs`, `content-fs` and in every host's tool or route. A change without them is not done; CI catches a failing test, not a missing one — that is the reviewer's job.
+- **Tests are mandatory for new or changed logic** in `core`, `srs`, `content-fs` and in every host's tool or route. A change without them is not done; CI catches a failing test, not a missing one - that is the reviewer's job.
 - **Deterministic always:** inject `now` and a seeded RNG, no real clock, no network, no dependence on the machine's time zone (set `tz` explicitly).
 - Tests that write files work in a fresh temp directory and never touch the real content repository.
 - Name tests by behavior (`"pauses new cards when the backlog exceeds twice the daily limit"`), one behavior per test.

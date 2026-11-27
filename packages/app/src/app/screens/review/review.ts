@@ -258,7 +258,7 @@ export class Review {
       retrievability: memory.retrievability,
       r:
         memory.retrievability === null
-          ? "—"
+          ? "-"
           : percent(lang, memory.retrievability),
       stability: intervalLabel(lang, memory.stability * 86_400_000),
       lapses: this.i18n.number(memory.lapses),

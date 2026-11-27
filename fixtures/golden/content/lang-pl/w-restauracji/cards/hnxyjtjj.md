@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-блюдо (ср. р.) — *Jakie jest danie dnia?*
+блюдо (ср. р.) - *Jakie jest danie dnia?*
 
 ## Sources
 

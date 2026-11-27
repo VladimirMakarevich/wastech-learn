@@ -203,7 +203,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "stats.none": "brak odpowiedzi",
   "stats.retention-note":
     "Odsetek zapamiętanych odpowiedzi w fazie review. Cel: {target}, docelowe retention z learn.config.json",
-  "stats.later": "Kalibracja, równowaga Blooma i opanowanie tematów — po MVP",
+  "stats.later": "Kalibracja, równowaga Blooma i opanowanie tematów - po MVP",
   "settings.interface": "Interfejs",
   "settings.language": "Język interfejsu",
   "settings.language-note": "Treść tematów zostaje w swoim języku",

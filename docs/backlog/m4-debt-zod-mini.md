@@ -4,8 +4,8 @@
 - **Статус:** parked
 - **Отложено:** 2026-11-27
 - **Владелец:** Vladi Makarevich
-- **Осталось:** S–M: ~1 день, риск — разница API `zod/mini` в сообщениях об ошибках
-- **Код:** нет — работа не начиналась
+- **Осталось:** S-M: ~1 день, риск - разница API `zod/mini` в сообщениях об ошибках
+- **Код:** нет - работа не начиналась
 - **Базовый коммит:** `9045aff`
 
 ## Почему отложено
@@ -35,14 +35,14 @@
 ## Следующий шаг
 
 1. Собрать `npm run build` и снять текущий размер основного чанка из вывода Angular, записать как базу.
-2. Найти, какие схемы `core` реально доходят до браузера через `packages/core/src/browser.ts` (`learnConfigSchema`, `parseReviewEvent` и их зависимости), и перевести на `zod/mini` только их — или все 13 файлов `schema/`, если `firstIssue` и сообщения ошибок от этого не меняются.
+2. Найти, какие схемы `core` реально доходят до браузера через `packages/core/src/browser.ts` (`learnConfigSchema`, `parseReviewEvent` и их зависимости), и перевести на `zod/mini` только их - или все 13 файлов `schema/`, если `firstIssue` и сообщения ошибок от этого не меняются.
 3. Пересобрать, сравнить размер, опустить бюджет в `angular.json`, прогнать `npm test` (тексты ошибок схем покрыты тестами `core`).
 
 ## Находки
 
-- Zod 4.6.7 — точная зависимость `core` (`packages/core/package.json:48`); пакет экспортирует `./mini` (`node_modules/zod/package.json`, `exports`).
+- Zod 4.6.7 - точная зависимость `core` (`packages/core/package.json:48`); пакет экспортирует `./mini` (`node_modules/zod/package.json`, `exports`).
 - `zod` импортируют 13 файлов `core`, в основном `packages/core/src/schema/**` и `parse/content.ts`.
-- Браузерная точка входа — `packages/core/src/browser.ts`: она уже отсекает компилятор bundle и `check`, но отдаёт `learnConfigSchema` (`schema/config.ts`) и разбор события (`schema/event.ts`).
+- Браузерная точка входа - `packages/core/src/browser.ts`: она уже отсекает компилятор bundle и `check`, но отдаёт `learnConfigSchema` (`schema/config.ts`) и разбор события (`schema/event.ts`).
 - Приложение импортирует из `core` в `data/api.ts`, `data/review-store.ts`, `screens/browser/browser-model.ts` и типы в других модулях.
 
 ## Открытые вопросы
@@ -51,9 +51,9 @@
 
 ## Артефакты
 
-- **Skill:** не использовался; при возврате — `implement` (он запускает `assess-refactor`).
+- **Skill:** не использовался; при возврате - `implement` (он запускает `assess-refactor`).
 - Спека M4: [changelog](../tasks/m4-app/changelog.md), записи фазы 11 и приёмки AC-N10.
 
 ## Журнал изменений
 
-- 2026-11-27 — отложено.
+- 2026-11-27 - отложено.

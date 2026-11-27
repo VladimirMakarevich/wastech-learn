@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-закуска (ж. р.) — *Na przystawkę poproszę śledzia.*
+закуска (ж. р.) - *Na przystawkę poproszę śledzia.*
 
 ## Sources
 

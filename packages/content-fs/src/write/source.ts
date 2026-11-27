@@ -27,9 +27,9 @@ import { planSuccessor } from "./successor.js";
 import { requireTopic } from "./topic-paths.js";
 
 /**
- * What saving an edited file came to. `unchanged` — the text on disk already is the new text, so there
- * was nothing to write; `decision-needed` — the learner must say whether the card is still the same one
- * before anything is written; `blocked` — the checks found errors and nothing was written.
+ * What saving an edited file came to. `unchanged` - the text on disk already is the new text, so there
+ * was nothing to write; `decision-needed` - the learner must say whether the card is still the same one
+ * before anything is written; `blocked` - the checks found errors and nothing was written.
  */
 export type SourceSaveOutcome =
   | {

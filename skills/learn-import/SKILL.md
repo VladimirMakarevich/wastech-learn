@@ -1,6 +1,6 @@
 ---
 name: learn-import
-description: Import a learning package — one Markdown file exported from ChatGPT, Gemini or another chat without MCP and saved in inbox/ of the wastech-learn content repository — into a topic. Parses it with the wastech-learn MCP tools, shows the candidate cards for the learner to pick, writes the topic, summary, materials and diagrams, merges into an existing topic without overwriting it, and archives the package in inbox/done/. Use when the user says "import from inbox", "process the package", "импортируй из inbox", "разбери пакет", "zaimportuj z inbox", or a new file appears in inbox/. Also hands out the export prompt to paste into the other chat. Not for capturing a conversation held here (learn-capture).
+description: Import a learning package - one Markdown file exported from ChatGPT, Gemini or another chat without MCP and saved in inbox/ of the wastech-learn content repository - into a topic. Parses it with the wastech-learn MCP tools, shows the candidate cards for the learner to pick, writes the topic, summary, materials and diagrams, merges into an existing topic without overwriting it, and archives the package in inbox/done/. Use when the user says "import from inbox", "process the package", "импортируй из inbox", "разбери пакет", "zaimportuj z inbox", or a new file appears in inbox/. Also hands out the export prompt to paste into the other chat. Not for capturing a conversation held here (learn-capture).
 compatibility: Needs the wastech-learn MCP server (@wastech-learn/mcp-server) and wastech-mdlint, installed as exact devDependencies of the content repository.
 ---
 
@@ -25,12 +25,12 @@ When the learner asks how to export from another chat, give them the prompt in t
    - No `package` in the answer: the front matter is unusable. Say which field to fix, in one line, and stop.
    - Findings about candidate cards or material rows: mention them in one line each; broken candidates can still be fixed in the conversation before picking.
 3. **Check for duplicates.** `search` the topic and each candidate's idea. Show what already exists.
-4. **Pick the cards.** Draft every candidate into card fields — a short title, the type, bloom and idea from its heading, the topic's summary section in `sources`, `R:` lines as the rubric, `E:` as the explanation — and validate them with `add_cards` and `dryRun: true`, fixing limit findings yourself. Present them as learn-capture does; the learner keeps, edits or drops each, and what they want later gets `status: draft`.
+4. **Pick the cards.** Draft every candidate into card fields - a short title, the type, bloom and idea from its heading, the topic's summary section in `sources`, `R:` lines as the rubric, `E:` as the explanation - and validate them with `add_cards` and `dryRun: true`, fixing limit findings yourself. Present them as learn-capture does; the learner keeps, edits or drops each, and what they want later gets `status: draft`.
 5. **Write.**
    - A new topic (`topicExists: false`): `create_topic` with the package's domain, topic, `lang`, `familiarity` and key idea, `origin: chatgpt` when `source` is chatgpt and `import` otherwise; then `save_summary` with the package's summary sections.
    - An existing topic: `save_summary` with `merge: true`. Empty sections take the imported text; sections that already say something keep it, and the imported version lands under Open questions for the learner to reconcile.
    - `add_cards` with the picked cards and the same `origin`.
-   - `save_materials` with the package's materials. Open every link first and drop the ones that do not load. When no row is a primary source (official docs or specification, the project's repository), add 1–3 the way learn-capture does.
+   - `save_materials` with the package's materials. Open every link first and drop the ones that do not load. When no row is a primary source (official docs or specification, the project's repository), add 1-3 the way learn-capture does.
    - `save_diagram` for each Mermaid block: a kebab-case name and alt text you write from what the diagram shows. Put the returned `embed` into the summary's Diagram section when that section is empty.
 6. **Validate** the topic's files with `validate`; fix what it reports.
 7. **Archive** the package with `archive_package` and a `requestId`.

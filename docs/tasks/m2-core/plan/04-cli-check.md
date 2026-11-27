@@ -1,4 +1,4 @@
-# Фаза 04 — CLI и команда `check`
+# Фаза 04 - CLI и команда `check`
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -23,7 +23,7 @@
 
 ## Правила
 
-Хост тонкий: логика только в `core` и `content-fs`. Общие правила — [.rules/README.md](../../../../.rules/README.md).
+Хост тонкий: логика только в `core` и `content-fs`. Общие правила - [.rules/README.md](../../../../.rules/README.md).
 
 ## Тесты
 

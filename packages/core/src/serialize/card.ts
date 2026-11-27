@@ -107,8 +107,8 @@ const withoutSection = (
 });
 
 /**
- * An existing card with only the given fields changed. Everything the patch does not name — other front
- * matter keys and their comments, extra sections, the author's formatting — stays as it was. An empty
+ * An existing card with only the given fields changed. Everything the patch does not name - other front
+ * matter keys and their comments, extra sections, the author's formatting - stays as it was. An empty
  * rubric or source list removes the section.
  */
 export const patchCardDocument = (

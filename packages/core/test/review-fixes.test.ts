@@ -29,15 +29,29 @@ describe("quiz prompts", () => {
       type: "vocab",
       extraFrontMatter: "langPair: pl-ru",
       question: "[pl: restauracja] rachunek",
-      answer: "счёт (м. р.) — *Poproszę rachunek.*",
+      answer: "счёт (м. р.) - *Poproszę rachunek.*",
     });
     expect(promptMarkdown(card, "rev")).toBe("счёт (м. р.)");
     expect(revealFor(card, "rev")).toMatchObject({
       answer: "[pl: restauracja] rachunek",
-      example: "счёт (м. р.) — *Poproszę rachunek.*",
+      example: "счёт (м. р.) - *Poproszę rachunek.*",
     });
     expect(promptMarkdown(card, "fwd")).toBe("[pl: restauracja] rachunek");
   });
+
+  // Content written before the repository settled on the ASCII hyphen joins the two with a typographic dash.
+  it.each(["\u2014", "\u2013"])(
+    "trim a typographic dash older content left before the example sentence",
+    async (dash) => {
+      const card = await cardOf({
+        type: "vocab",
+        extraFrontMatter: "langPair: pl-ru",
+        question: "[pl: restauracja] rachunek",
+        answer: `счёт (м. р.) ${dash} *Poproszę rachunek.*`,
+      });
+      expect(promptMarkdown(card, "rev")).toBe("счёт (м. р.)");
+    },
+  );
 
   it("hide a zero-padded cloze gap of the asked variant", async () => {
     const card = await cardOf({
@@ -134,7 +148,7 @@ describe("serialization fixes", () => {
     const document = readDocument(
       index.replace(
         "## Key idea",
-        "## Cards\n\n- [Old](cards/7k2m9xqd.md) — my note\n\n## Key idea",
+        "## Cards\n\n- [Old](cards/7k2m9xqd.md) - my note\n\n## Key idea",
       ),
     );
     if (document === undefined) throw new Error("no front matter");
@@ -142,7 +156,7 @@ describe("serialization fixes", () => {
       { id: "7k2m9xqd", title: "New $& title" },
     ]);
     expect(sectionMarkdown(updated, "Cards")).toBe(
-      "- [New $& title](cards/7k2m9xqd.md) — my note",
+      "- [New $& title](cards/7k2m9xqd.md) - my note",
     );
   });
 });

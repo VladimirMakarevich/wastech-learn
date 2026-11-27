@@ -90,7 +90,7 @@ export const runSimulate = async (ctx: CommandContext): Promise<ExitCode> => {
       seeds:
         runs === 1
           ? String(firstSeed)
-          : `${String(firstSeed)}–${String(firstSeed + runs - 1)}`,
+          : `${String(firstSeed)}-${String(firstSeed + runs - 1)}`,
     }),
   );
   ctx.io.out("");

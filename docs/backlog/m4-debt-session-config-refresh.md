@@ -5,7 +5,7 @@
 - **Отложено:** 2026-11-27
 - **Владелец:** Vladi Makarevich
 - **Осталось:** S: несколько часов
-- **Код:** нет — работа не начиналась
+- **Код:** нет - работа не начиналась
 - **Базовый коммит:** `9045aff`
 
 ## Почему отложено
@@ -14,7 +14,7 @@
 
 ## Когда вернуться
 
-Перед обкаткой M5, когда владелец начнёт править лимиты и desired retention по замерам, — или когда будет время.
+Перед обкаткой M5, когда владелец начнёт править лимиты и desired retention по замерам, - или когда будет время.
 
 ## Цель
 
@@ -25,12 +25,12 @@
 ### Сделано
 
 - Сервер замечает смену конфига и шлёт `content-changed` (`packages/server/src/server.ts:302`).
-- Приложение пересоздаёт планировщик, если конфиг в `/api/status` другой (`packages/app/src/app/data/app-data.ts:162-168`); контекст сессии — `computed` от него (`packages/app/src/app/session/review-session.ts:82`).
+- Приложение пересоздаёт планировщик, если конфиг в `/api/status` другой (`packages/app/src/app/data/app-data.ts:162-168`); контекст сессии - `computed` от него (`packages/app/src/app/session/review-session.ts:82`).
 
 ### Не начато
 
 - Эффект, который вызывает `refresh` движка, следит только за `bundle` и `externalRevision`, а `this.context()` читает внутри `untracked` (`packages/app/src/app/session/review-session.ts:182-205`). Новый планировщик приходит асинхронно после `bundle`, поэтому `refresh` успевает пройти со старым контекстом и повторно не запускается.
-- Сам `refresh` в `session` берёт `context` из аргумента и пересчитывает очередь (`packages/session/src/engine.ts:364-385`) — менять, скорее всего, не нужно.
+- Сам `refresh` в `session` берёт `context` из аргумента и пересчитывает очередь (`packages/session/src/engine.ts:364-385`) - менять, скорее всего, не нужно.
 
 ## Следующий шаг
 
@@ -48,9 +48,9 @@
 
 ## Артефакты
 
-- **Skill:** не использовался; при возврате — `implement` (он запускает `assess-refactor`).
+- **Skill:** не использовался; при возврате - `implement` (он запускает `assess-refactor`).
 - Спека M4: [changelog](../tasks/m4-app/changelog.md), [design](../tasks/m4-app/design.md) D4 и D6.
 
 ## Журнал изменений
 
-- 2026-11-27 — отложено.
+- 2026-11-27 - отложено.

@@ -85,7 +85,7 @@
     },
     { "rule": "SEC-001", "options": { "files": ["content/*/*/materials.md"], "sections": ["Materials"] } },
 
-    // Размер. Для ru и pl основная метрика — байты: оценка токенов chars/4 занижает кириллицу.
+    // Размер. Для ru и pl основная метрика - байты: оценка токенов chars/4 занижает кириллицу.
     {
       "rule": "SIZE-001",
       "options": {
@@ -136,6 +136,15 @@
       "options": {
         "files": ["content/**/*.md"],
         "assert": { "kind": "contentNotMatch", "pattern": "\\{\\{[A-Z][A-Z0-9_]*\\}\\}" }
+      }
+    },
+    {
+      "rule": "custom",
+      "id": "LEARN-ASCII-DASH",
+      "description": "Тире пишется ASCII-дефисом -, без длинного и короткого типографского тире",
+      "options": {
+        "files": ["content/**/*.md", "./*.md"],
+        "assert": { "kind": "contentNotMatch", "pattern": "[\u2013\u2014]" }
       }
     },
     {

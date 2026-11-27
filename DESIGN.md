@@ -100,7 +100,7 @@ Tinted cool neutrals (hue 250) carry everything; one teal tint and four rating h
 - **Toolbar title** (650, 19px): the page name in the sticky toolbar.
 - **Body** (400, 15px, 1.5): explanations, summaries, section heads at 650.
 - **Callout** (600, 14px): buttons, grouped-list rows, inspector values.
-- **Footnote / Caption** (12.5–13.5px): breadcrumbs, group headers, hints, rating intervals, shortcut legends.
+- **Footnote / Caption** (12.5-13.5px): breadcrumbs, group headers, hints, rating intervals, shortcut legends.
 
 ### Named Rules
 
@@ -139,7 +139,7 @@ Four columns in the tray, each a weak fill of its hue with ink text: keycap, sho
 
 ### Decision tray
 
-One glass panel at the bottom of the review column holds the whole decision. Before reveal: the confidence segmented control (1–3 with keycaps) and Reveal. After reveal: the four ratings and a one-line hint. Its content fades in from 0.4 opacity over 0.24s only when the phase changes.
+One glass panel at the bottom of the review column holds the whole decision. Before reveal: the confidence segmented control (1-3 with keycaps) and Reveal. After reveal: the four ratings and a one-line hint. Its content fades in from 0.4 opacity over 0.24s only when the phase changes.
 
 ### Inset-grouped lists
 
@@ -151,7 +151,7 @@ Drawn after iOS, not left to the browser: a 46×28 switch (`role="switch"`, tint
 
 ### Memory field
 
-The signature component: a grid of 22px cells with 11px solid points in the memory color, opacity from R (0.16–1.0). New cards are a 1.5px outline at 0.55; the current card gets a 2px tint ring; opacity changes ease over 0.9s. A one-line legend reads three graded points as «R now» and an outline as «new». The small point (14px cell, 8px dot) fills topic strips; the inline R point is 9px beside its percent.
+The signature component: a grid of 22px cells with 11px solid points in the memory color, opacity from R (0.16-1.0). New cards are a 1.5px outline at 0.55; the current card gets a 2px tint ring; opacity changes ease over 0.9s. A one-line legend reads three graded points as «R now» and an outline as «new». The small point (14px cell, 8px dot) fills topic strips; the inline R point is 9px beside its percent.
 
 ### Diagrams and code
 

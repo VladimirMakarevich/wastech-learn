@@ -1,4 +1,4 @@
-# Фаза 08 — Hook `PostToolUse`
+# Фаза 08 - Hook `PostToolUse`
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -20,7 +20,7 @@
 
 ## Правила
 
-Логика проверки — в `content-fs`, CLI только связывает. Общие правила — [.rules/README.md](../../../../.rules/README.md).
+Логика проверки - в `content-fs`, CLI только связывает. Общие правила - [.rules/README.md](../../../../.rules/README.md).
 
 ## Тесты
 

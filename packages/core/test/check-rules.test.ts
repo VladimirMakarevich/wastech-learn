@@ -43,7 +43,7 @@ describe("check: card rules", () => {
   it("does not count code blocks, markup or punctuation as words", async () => {
     const code = Array.from({ length: 10 }, () => words(4)).join("\n");
     const question = `[C#] What does it print?\n\n\`\`\`csharp\n${code}\n\`\`\``;
-    expect(await ruleIdsForCard({ question, answer: "**A** — `ACB`" })).toEqual(
+    expect(await ruleIdsForCard({ question, answer: "**A** - `ACB`" })).toEqual(
       [],
     );
   });
@@ -118,7 +118,7 @@ describe("check: card rules", () => {
   });
 
   it("requires langPair and an example sentence on a vocab card", async () => {
-    const example = "дом (м. р.) — *Wracam do domu.*";
+    const example = "дом (м. р.) - *Wracam do domu.*";
     expect(await ruleIdsForCard({ type: "vocab", answer: example })).toEqual([
       "vocab-lang-pair",
     ]);
@@ -127,7 +127,7 @@ describe("check: card rules", () => {
     expect(await ruleIdsForCard({ ...paired, answer: "дом (м. р.)" })).toEqual([
       "vocab-example",
     ]);
-    expect(await ruleIdsForCard({ ...paired, answer: "дом — *dom*" })).toEqual([
+    expect(await ruleIdsForCard({ ...paired, answer: "дом - *dom*" })).toEqual([
       "vocab-example",
     ]);
   });

@@ -1,14 +1,15 @@
 # Rules: git workflow
 
-> One of the main development rules for `wastech-learn`. Index — [.rules/README.md](README.md).
+> One of the main development rules for `wastech-learn`. Index - [.rules/README.md](README.md).
 
 ## Commits and branches
 
 - **Conventional Commits**, messages in English: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `ci:`, `chore:`. A scope names the package when there is one: `feat(srs): …`.
 - Default branch is **`main`**. Working branches use a prefix (`feat/*`, `fix/*`, `refactor/*`, `docs/*`, `chore/*`); create them only when the user asks. **Do not commit directly to `main` unless the user explicitly asks**, and never push without being asked.
+- Commit messages and PR text write the ASCII hyphen-minus `-`, never the em or en dash ([documentation](documentation.md#languages)).
 - **Scoped staging:** stage specific paths; **never `git add .` / `git add -A`**. Look at `git status` before every commit.
-- **No agent attribution anywhere in a commit or PR.** No `Co-Authored-By: Claude …` / `Co-authored-by: Codex …` trailer, no `🤖 Generated with …` line, no other tool-authorship footer — in commits, merge and squash commits, PR titles and bodies. This overrides any default an agent harness injects. The author is the repository's configured git identity. If a trailer slips in, amend it before pushing.
-- **A refactor and the feature/fix it serves are separate commits** — the behavior-preserving `refactor:` first ([refactoring.md](refactoring.md)).
+- **No agent attribution anywhere in a commit or PR.** No `Co-Authored-By: Claude …` / `Co-authored-by: Codex …` trailer, no `🤖 Generated with …` line, no other tool-authorship footer - in commits, merge and squash commits, PR titles and bodies. This overrides any default an agent harness injects. The author is the repository's configured git identity. If a trailer slips in, amend it before pushing.
+- **A refactor and the feature/fix it serves are separate commits** - the behavior-preserving `refactor:` first ([refactoring.md](refactoring.md)).
 - **Exception for parked work:** the `park` skill may commit `wip: <slug> (parked)` on the task's own branch or on a `parked/<slug>` branch, with the user's go-ahead. Such a commit never reaches `main` as is: on resume it is undone (`git reset --soft HEAD~1`) and the work lands as proper Conventional Commits. `wip:` and `parked/*` are not allowed anywhere else.
 
 ## Two repositories
@@ -24,11 +25,11 @@
 
 ## Secrets
 
-The MVP needs no secrets at all (no API keys, ADR-0008). If one is ever introduced, it lives in the platform's secret store, never in the repository, and `.gitignore` is extended **before** the first one exists. A secret that reaches git is compromised: revoke it first; rewriting history does not undo copies already pulled. Details — [security.md](security.md).
+The MVP needs no secrets at all (no API keys, ADR-0008). If one is ever introduced, it lives in the platform's secret store, never in the repository, and `.gitignore` is extended **before** the first one exists. A secret that reaches git is compromised: revoke it first; rewriting history does not undo copies already pulled. Details - [security.md](security.md).
 
 ## Before committing (DoD)
 
-- Green: **`npm run lint`** (code and docs) and, once a package exists, **`npm test`**. CI runs the same gate on every push to `main` and every pull request; **a red CI run blocks merging** — fix it, never merge over it or re-run until it happens to pass.
+- Green: **`npm run lint`** (code and docs) and, once a package exists, **`npm test`**. CI runs the same gate on every push to `main` and every pull request; **a red CI run blocks merging** - fix it, never merge over it or re-run until it happens to pass.
 - Tests are mandatory for new or changed logic ([testing.md](testing.md)).
 - Every comment in the diff explains **why**, not what; no bare `TODO` stubs or placeholder code; no links or doc references in code ([coding-style.md](coding-style.md)).
 - The touched area was left better than it was found, or the debt left behind was named ([refactoring.md](refactoring.md)).

@@ -75,7 +75,7 @@ jobs:
           npm run --silent lint > "$RUNNER_TEMP/mdlint.txt" 2>&1 || status=$?
           cat "$RUNNER_TEMP/mdlint.txt"
           {
-            echo "## Content lint — wastech-mdlint $(npx --no-install wastech-mdlint --version)"
+            echo "## Content lint - wastech-mdlint $(npx --no-install wastech-mdlint --version)"
             echo
             echo '```text'
             cat "$RUNNER_TEMP/mdlint.txt"

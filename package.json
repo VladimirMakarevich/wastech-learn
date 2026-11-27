@@ -13,9 +13,10 @@
   ],
   "scripts": {
     "lint": "npm run lint:code && npm run lint:docs",
-    "lint:code": "npm run lint:es && npm run lint:css && npm run format:check && npm run typecheck",
+    "lint:code": "npm run lint:es && npm run lint:css && npm run format:check && npm run typecheck && npm run lint:dashes",
     "lint:es": "eslint . --max-warnings 0",
     "lint:css": "stylelint \"**/*.css\"",
+    "lint:dashes": "node scripts/check-dashes.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc -b && ngc -p packages/app/tsconfig.json",

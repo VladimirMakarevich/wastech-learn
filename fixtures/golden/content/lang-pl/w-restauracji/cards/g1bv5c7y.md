@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-столик (м. р.) — *Czy jest wolny stolik dla dwóch osób?*
+столик (м. р.) - *Czy jest wolny stolik dla dwóch osób?*
 
 ## Sources
 

@@ -8,7 +8,7 @@ import {
 export interface Segment<Value extends string | number> {
   readonly value: Value;
   readonly label: string;
-  /** The key that picks it, shown as a keycap: confidence 1–3 in review. */
+  /** The key that picks it, shown as a keycap: confidence 1-3 in review. */
   readonly key?: string;
 }
 

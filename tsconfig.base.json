@@ -1,6 +1,6 @@
 {
   // Shared compiler options for every package under packages/. A package's own tsconfig.json extends this
-  // file, sets rootDir/outDir and adds "types": ["node"] only when it runs on Node — core and srs also run
+  // file, sets rootDir/outDir and adds "types": ["node"] only when it runs on Node - core and srs also run
   // in the browser, so Node types are not visible there by default.
   //
   // TypeScript is pinned to 6.0.x: typescript-eslint supports TypeScript below 6.1, so the native

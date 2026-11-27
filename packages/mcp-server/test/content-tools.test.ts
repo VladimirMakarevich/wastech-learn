@@ -81,7 +81,7 @@ describe("create_topic", () => {
     expect(index).toContain("familiarity: familiar");
     expect(index).toContain("## Key idea\n\nA limiter caps how often");
     expect(index).toContain(
-      "1. What does a token bucket allow that a fixed window does not? — Bursts (2/3)",
+      "1. What does a token bucket allow that a fixed window does not? - Bursts (2/3)",
     );
     const check = await checkRepository(root);
     expect(check.errorCount).toBe(0);

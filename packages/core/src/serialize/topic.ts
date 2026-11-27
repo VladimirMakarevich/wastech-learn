@@ -25,7 +25,7 @@ const cardLinkLine = (card: CardLink): string =>
  * them. Only punctuation is added, so the line reads the same in every topic language.
  */
 const pretestLine = (item: PretestItem, index: number): string => {
-  const answer = item.answer === undefined ? "" : ` — ${oneLine(item.answer)}`;
+  const answer = item.answer === undefined ? "" : ` - ${oneLine(item.answer)}`;
   const confidence =
     item.confidence === undefined ? "" : ` (${String(item.confidence)}/3)`;
   return `${String(index + 1)}. ${oneLine(item.question)}${answer}${confidence}`;

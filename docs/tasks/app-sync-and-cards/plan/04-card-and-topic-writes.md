@@ -1,4 +1,4 @@
-# Фаза 04 — Архив, удаление и статус темы
+# Фаза 04 - Архив, удаление и статус темы
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -13,7 +13,7 @@
 ## Шаги
 
 1. `transaction.ts`: удаление файла внутри транзакции.
-2. `write/cards.ts`: `deleteCard` (файл и ссылка в `index.md`) и `restoreCard` (текст из `HEAD`) через `applyWrite` (design D8); архив и возврат — существующий `updateCard` (design D7).
+2. `write/cards.ts`: `deleteCard` (файл и ссылка в `index.md`) и `restoreCard` (текст из `HEAD`) через `applyWrite` (design D8); архив и возврат - существующий `updateCard` (design D7).
 3. `write/topic.ts`: `setTopicStatus` (design D9).
 4. `session`: `toQueueCards` и `bundleQueueCards` пропускают карточки архивных тем.
 5. Маршруты `POST /api/cards/:id/status`, `DELETE /api/cards/:id`, `POST /api/cards/:id/restore`, `POST /api/topics/:domain/:topic/status` через очередь операций.

@@ -1,4 +1,4 @@
-# Фаза 11 — Topic и Browser
+# Фаза 11 - Topic и Browser
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -24,7 +24,7 @@
 
 ## Правила
 
-Контент на `lang` темы, подписи — на языке UI ([multilang](../../../content/multilang.md)); HTML только через `bundleHtml`.
+Контент на `lang` темы, подписи - на языке UI ([multilang](../../../content/multilang.md)); HTML только через `bundleHtml`.
 
 ## Тесты
 

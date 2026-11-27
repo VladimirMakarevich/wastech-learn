@@ -7,17 +7,17 @@ updated: 2026-11-25
 
 ## TL;DR
 
-`async`/`await` — это не многопоточность, а способ не держать поток, пока идёт ожидание. Главная ловушка — sync-over-async: блокирующее ожидание (`.Result`, `.Wait()`) асинхронного кода.
+`async`/`await` - это не многопоточность, а способ не держать поток, пока идёт ожидание. Главная ловушка - sync-over-async: блокирующее ожидание (`.Result`, `.Wait()`) асинхронного кода.
 
 ## Mental model
 
-Компилятор превращает метод в конечный автомат. До первого незавершённого `await` метод выполняется синхронно в потоке вызывающего. На `await` он возвращает незавершённый `Task`, а продолжение регистрируется: если был `SynchronizationContext` (UI, классический ASP.NET), продолжение вернётся в него, иначе — в пул потоков.
+Компилятор превращает метод в конечный автомат. До первого незавершённого `await` метод выполняется синхронно в потоке вызывающего. На `await` он возвращает незавершённый `Task`, а продолжение регистрируется: если был `SynchronizationContext` (UI, классический ASP.NET), продолжение вернётся в него, иначе - в пул потоков.
 
 ## Diagram
 
 ![Дедлок sync-over-async: поток запроса заблокирован .Result, а продолжение ждёт этот же контекст](diagrams/deadlock.svg)
 
-Продолжению нужен контекст запроса, а единственный его поток ждёт `.Result` — оба ждут друг друга.
+Продолжению нужен контекст запроса, а единственный его поток ждёт `.Result` - оба ждут друг друга.
 
 ## Worked example
 
@@ -50,9 +50,9 @@ public async Task<IActionResult> Get(CancellationToken ct) =>
 
 ## Misconceptions
 
-- «`async` запускает новый поток» — нет, до первого незавершённого `await` всё идёт синхронно.
-- «В ASP.NET Core `.Result` безопасен» — классического дедлока нет (нет контекста), но поток пула заблокирован, и под нагрузкой пул голодает.
-- «`ConfigureAwait(false)` больше не нужен» — в коде приложения ASP.NET Core да, в библиотеках по-прежнему нужен: их вызывают и из UI.
+- «`async` запускает новый поток» - нет, до первого незавершённого `await` всё идёт синхронно.
+- «В ASP.NET Core `.Result` безопасен» - классического дедлока нет (нет контекста), но поток пула заблокирован, и под нагрузкой пул голодает.
+- «`ConfigureAwait(false)` больше не нужен» - в коде приложения ASP.NET Core да, в библиотеках по-прежнему нужен: их вызывают и из UI.
 
 ## Comparison
 
@@ -79,6 +79,6 @@ public async Task<IActionResult> Get(CancellationToken ct) =>
 
 ## Sources
 
-- [ConfigureAwait FAQ — .NET Blog](https://devblogs.microsoft.com/dotnet/configureawait-faq/)
-- [Don't Block on Async Code — Stephen Cleary](https://blog.stephencleary.com/2012/07/dont-block-on-async-code.html)
-- [Understanding the Whys, Whats, and Whens of ValueTask — .NET Blog](https://devblogs.microsoft.com/dotnet/understanding-the-whys-whats-and-whens-of-valuetask/)
+- [ConfigureAwait FAQ - .NET Blog](https://devblogs.microsoft.com/dotnet/configureawait-faq/)
+- [Don't Block on Async Code - Stephen Cleary](https://blog.stephencleary.com/2012/07/dont-block-on-async-code.html)
+- [Understanding the Whys, Whats, and Whens of ValueTask - .NET Blog](https://devblogs.microsoft.com/dotnet/understanding-the-whys-whats-and-whens-of-valuetask/)

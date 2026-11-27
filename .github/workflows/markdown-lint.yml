@@ -50,7 +50,7 @@ jobs:
           npm run --silent lint:docs > "$RUNNER_TEMP/mdlint.txt" 2>&1 || status=$?
           cat "$RUNNER_TEMP/mdlint.txt"
           {
-            echo "## Markdown lint — wastech-mdlint $(npx --no-install wastech-mdlint --version)"
+            echo "## Markdown lint - wastech-mdlint $(npx --no-install wastech-mdlint --version)"
             echo
             echo '```text'
             cat "$RUNNER_TEMP/mdlint.txt"

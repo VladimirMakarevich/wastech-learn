@@ -9,12 +9,12 @@
 | `@wastech-learn/core` | Zod-схемы (front matter, `learn.config.json`, событие, learning package, входы инструментов MCP), парсер Markdown (unified/remark, как в mdlint), сериализация файлов контента из полей (`serialize/`), поиск MiniSearch (`search/`), генераторы `id` и ULID с внешним RNG, компилятор content bundle (remark → rehype → Shiki, KaTeX, sanitize), `edit/`, правила `check`, каталог сообщений ru/en/pl, каноничный пресет mdlint `preset/content.mdlint.jsonc` | unified, remark, rehype, zod, yaml, shiki, minisearch | Node, браузер |
 | `@wastech-learn/srs` | Адаптер ts-fsrs, replay журнала, очередь (лимиты, siblings, бэклог, режим «5 минут»), симуляция бэклога, метрики | ts-fsrs | Node, браузер |
 | `@wastech-learn/session` | Сессия повторения поверх `core` и `srs` ([ADR-0015](../adr/0015-session-package.md)): перевод значений `core` в порты `srs`, сборка событий (`review`, `undo`, `suspend`, `unsuspend`, `reset`), правило leech, прогноз интервалов четырёх кнопок, журнал в памяти с replay по одному review item, движок сессии (режимы, learning steps в ходе сессии, отмена, bury, suspend, reset, внешние изменения), подсказка оценки по рубрике и итоги | core, srs | Node, браузер |
-| `@wastech-learn/content-fs` | Чтение репозитория и снимок по времени изменения файлов, проверка с наложением (mdlint + `check`), транзакция записи группы файлов, хранилище `requestId`, запись тем, карточек, summary, materials и диаграмм, `saveSource`, статус карточки и темы, удаление карточки с отменой до коммита (транзакция удаляет и файлы), `inbox/`, квиз (replay в памяти, дозапись событий `mcp` через `session`), дозапись JSONL (атомарно, свой файл на writer), наблюдение за файлами (`watchRepository`: `content`, `reviews`, `config`, `other`, без своей дозаписи), модуль `git/` (запуск git без оболочки, разбор `status --porcelain=v2` с классами путей и причинами блокировки, сообщение коммита, `syncRepository` и `pullRepository` с откатом при сбое — [ADR-0017](../adr/0017-app-server-writes-and-git.md)), рендер Mermaid, `setup/` (`init`, `doctor`) | core, srs, session, `@wastech-mdlint/core`; mermaid-cli через `npx` с точной версией, не зависимостью | Node |
-| `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2), `new-id`, `hook post-tool-use` (M3), `serve` (M4), `init` и `doctor` ([setup](../setup.md)); `export` — позже | core, srs, content-fs, server (для `serve`) | Node |
+| `@wastech-learn/content-fs` | Чтение репозитория и снимок по времени изменения файлов, проверка с наложением (mdlint + `check`), транзакция записи группы файлов, хранилище `requestId`, запись тем, карточек, summary, materials и диаграмм, `saveSource`, статус карточки и темы, удаление карточки с отменой до коммита (транзакция удаляет и файлы), `inbox/`, квиз (replay в памяти, дозапись событий `mcp` через `session`), дозапись JSONL (атомарно, свой файл на writer), наблюдение за файлами (`watchRepository`: `content`, `reviews`, `config`, `other`, без своей дозаписи), модуль `git/` (запуск git без оболочки, разбор `status --porcelain=v2` с классами путей и причинами блокировки, сообщение коммита, `syncRepository` и `pullRepository` с откатом при сбое - [ADR-0017](../adr/0017-app-server-writes-and-git.md)), рендер Mermaid, `setup/` (`init`, `doctor`) | core, srs, session, `@wastech-mdlint/core`; mermaid-cli через `npx` с точной версией, не зависимостью | Node |
+| `@wastech-learn/cli` | `check`, `build`, `render`, `simulate` (M2), `new-id`, `hook post-tool-use` (M3), `serve` (M4), `init` и `doctor` ([setup](../setup.md)); `export` - позже | core, srs, content-fs, server (для `serve`) | Node |
 | `@wastech-learn/mcp-server` | `wastech-learn-mcp`: инструменты MCP ([mcp-tools](../ai/mcp-tools.md)) поверх `content-fs`, маппинг ошибок в `{ code, message, hint }` | core, srs, content-fs, `@modelcontextprotocol/sdk` | Node (stdio; позже Worker) |
 | `@wastech-learn/server` | Локальный HTTP на `127.0.0.1`: сборка приложения, bundle с `ETag`, журнал, приём событий `web`, состояние git (`GET /api/git`), синхронизация и получение (`POST /api/git/sync`, `/api/git/pull`), архив, возврат и удаление карточки и архив темы (`/api/cards/:id/…`, `/api/topics/:domain/:topic/status`), `/api/source`, SSE об изменениях (и `git-changed`), общая очередь записей и git через `Workspace`, защита `Host`/`Origin`/`Content-Type`/размера тела | core, srs, content-fs, Hono, `@hono/node-server` | Node |
 | `app` | Angular 22 + CDK UI (standalone, signals, zoneless, `@angular/build`): `data/` (`ReviewStore` и `HttpReviewStore` с очередью неотправленных событий, API, SSE, состояние git `GitStatus`), `edit/`, `shell/` (индикатор и ленивая панель синхронизации на CDK Dialog), `i18n/` (ru/en/pl на signals, плюралы через `Intl.PluralRules`), `ui/` (компоненты Evening Glass), `keys/`, директива `bundleHtml`; сборку в `dist/browser` раздаёт `server` | core (типы bundle), srs и session (replay, очередь и сессия в клиенте) | Браузер, Capacitor |
-| `skills/*` | [`learn-capture`](../../skills/learn-capture/SKILL.md), [`learn-import`](../../skills/learn-import/SKILL.md), [`learn-quiz`](../../skills/learn-quiz/SKILL.md) | — (инструкции над MCP и CLI) | Claude Code |
+| `skills/*` | [`learn-capture`](../../skills/learn-capture/SKILL.md), [`learn-import`](../../skills/learn-import/SKILL.md), [`learn-quiz`](../../skills/learn-quiz/SKILL.md) | - (инструкции над MCP и CLI) | Claude Code |
 
 ## Правила зависимостей
 
@@ -45,7 +45,7 @@ flowchart BT
 
 ## Контракты
 
-**`ReviewStore`** — единственный способ UI работать с событиями ([ADR-0006](../adr/0006-headless-core-angular-ui.md)):
+**`ReviewStore`** - единственный способ UI работать с событиями ([ADR-0006](../adr/0006-headless-core-angular-ui.md)):
 
 ```ts
 interface ReviewStore {
@@ -60,9 +60,9 @@ interface ReviewStore {
 
 **Порты `srs`.** `srs` не импортирует `core`, поэтому объявляет узкие входы: `ReplayEvent` (`id`, `ts`, `kind`, `item`, `rating`, `target`, `due`), `QueueCard` (`item`, `cardId`, `idea`, `domain`, `type`, `status`) и `SrsConfig`. Хост передаёт разобранные значения `core`; совместимость форм проверяет `satisfies` в `session/ports.ts`, поэтому переименование поля ломает сборку, а не replay.
 
-**Путь записи MCP** — в `content-fs`: инструмент строит полные тексты файлов (`core/serialize`), `validateOverlay` прогоняет mdlint и `check` по репозиторию с наложенными файлами, `commitFiles` пишет группу атомарно с откатом, `runIdempotent` хранит ответы по `requestId` в `.cache/mcp/requests.jsonl`. Пути проходят `confinePath` после разрешения символических ссылок.
+**Путь записи MCP** - в `content-fs`: инструмент строит полные тексты файлов (`core/serialize`), `validateOverlay` прогоняет mdlint и `check` по репозиторию с наложенными файлами, `commitFiles` пишет группу атомарно с откатом, `runIdempotent` хранит ответы по `requestId` в `.cache/mcp/requests.jsonl`. Пути проходят `confinePath` после разрешения символических ссылок.
 
-**Content bundle** — результат `wastech-learn build`, его читает UI:
+**Content bundle** - результат `wastech-learn build`, его читает UI:
 
 ```ts
 interface ContentBundle {
@@ -76,11 +76,11 @@ interface ContentBundle {
 }
 ```
 
-Пропуски cloze в HTML — `<span class="cloze" data-cloze="N">`: UI скрывает пропуск показываемого варианта. `reverseHtml` — то, что спрашивает вариант `rev` (для `vocab` без примера, который выдал бы слово), той же функцией `promptMarkdown`, что и квиз MCP. HTML на страницу ставит только директива `bundleHtml` — единственное место с `bypassSecurityTrustHtml`.
+Пропуски cloze в HTML - `<span class="cloze" data-cloze="N">`: UI скрывает пропуск показываемого варианта. `reverseHtml` - то, что спрашивает вариант `rev` (для `vocab` без примера, который выдал бы слово), той же функцией `promptMarkdown`, что и квиз MCP. HTML на страницу ставит только директива `bundleHtml` - единственное место с `bypassSecurityTrustHtml`.
 
 **Браузерная точка входа `core`.** Условие `browser` в `exports` ведёт на `dist/browser.js`: типы, схемы, каталог сообщений, ULID и загрузку индекса поиска, без компилятора bundle и `check`. Иначе сборщик приложения превращал бы каждую грамматику Shiki в отдельный чанк.
 
-**Grader** — подключаемая оценка открытых ответов ([tutor-and-grading](../ai/tutor-and-grading.md)): `grade(question, rubric, answer) → { verdicts[], suggestedRating, explanation }`. Реализации: `chat` (сам ИИ в чате, MVP), `claude-cli` и `api` (Later).
+**Grader** - подключаемая оценка открытых ответов ([tutor-and-grading](../ai/tutor-and-grading.md)): `grade(question, rubric, answer) → { verdicts[], suggestedRating, explanation }`. Реализации: `chat` (сам ИИ в чате, MVP), `claude-cli` и `api` (Later).
 
 ## Безопасность рендера
 

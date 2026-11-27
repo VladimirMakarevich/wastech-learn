@@ -44,13 +44,13 @@ wastech-learn-content/
 
 | Что | Формат | Пример |
 | --- | --- | --- |
-| Домен | `kebab-case`, языковой домен — `lang-<iso>` | `high-load`, `lang-pl` |
+| Домен | `kebab-case`, языковой домен - `lang-<iso>` | `high-load`, `lang-pl` |
 | Тема | `kebab-case`, на английском, даже если тема на ru или pl | `cqrs`, `w-restauracji` |
-| Карточка | `<id>.md`, где `id` — 8 символов Crockford base32 | `7k2m9xqd.md` |
+| Карточка | `<id>.md`, где `id` - 8 символов Crockford base32 | `7k2m9xqd.md` |
 | Диаграмма | `kebab-case.mmd` + `kebab-case.svg` | `outbox-relay.mmd` |
 | Журнал | `reviews/<device>/<writer>-YYYY-MM.jsonl` | `reviews/desk1/web-2026-11.jsonl` |
 
-Идентичность темы — путь `<domain>/<topic>`. Переименовать тему можно без потери прогресса: журнал ссылается на review items (`<id>:<variant>`), а не на пути ([ADR-0002](../adr/0002-card-identity-and-review-items.md)).
+Идентичность темы - путь `<domain>/<topic>`. Переименовать тему можно без потери прогресса: журнал ссылается на review items (`<id>:<variant>`), а не на пути ([ADR-0002](../adr/0002-card-identity-and-review-items.md)).
 
 ## `learn.config.json`
 
@@ -89,8 +89,8 @@ wastech-learn-content/
 
 | Коммитится | Не коммитится |
 | --- | --- |
-| `content/**` (включая `.svg`), `inbox/**`, `journal/**`, `reviews/**` | `.cache/**` — производный кэш |
-| `learn.config.json`, конфиги mdlint и MCP, skills-lock | `learn.local.json` — локальное устройство |
+| `content/**` (включая `.svg`), `inbox/**`, `journal/**`, `reviews/**` | `.cache/**` - производный кэш |
+| `learn.config.json`, конфиги mdlint и MCP, skills-lock | `learn.local.json` - локальное устройство |
 | `.gitattributes` | Секреты, токены (их в MVP нет) |
 
 ## Связь с фреймворком

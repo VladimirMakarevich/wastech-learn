@@ -73,7 +73,7 @@
 ## Решения, исследования, планы
 
 - Требования: [README](requirements/README.md) · [захват](requirements/fr-capture.md) · [повторение](requirements/fr-review.md) · [контент](requirements/fr-content.md) · [аналитика](requirements/fr-insights.md) · [языки](requirements/fr-language.md) · [NFR](requirements/nfr.md)
-- [ADR — журнал архитектурных решений](adr/README.md)
+- [ADR - журнал архитектурных решений](adr/README.md)
 - [Исследования: наука обучения, SRS, стек, захват из чатов](research/README.md)
 - [Roadmap и MVP](roadmap.md)
 - [Риски и открытые вопросы](risks-and-questions.md)

@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-чаевые (м. р., ед. ч.) — *Zostawiliśmy napiwek.*
+чаевые (м. р., ед. ч.) - *Zostawiliśmy napiwek.*
 
 ## Sources
 

@@ -1,4 +1,4 @@
-# Фаза 08 — Данные и основа UI
+# Фаза 08 - Данные и основа UI
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -13,7 +13,7 @@
 ## Шаги
 
 1. `data/`: `ReviewStore` и `HttpReviewStore` с очередью неотправленных событий в памяти и `localStorage`; загрузка bundle по `ETag`, статус, `EventSource` с переподключением; ответы сервера разбираются схемами `core`.
-2. Директива `bundleHtml` — единственное место с `bypassSecurityTrustHtml`; скрытие пропусков cloze по `data-cloze`.
+2. Директива `bundleHtml` - единственное место с `bypassSecurityTrustHtml`; скрытие пропусков cloze по `data-cloze`.
 3. i18n из `wastechlab-mobile-template`: сервис на signals, pipe `t`, словари ru/en/pl, `Intl.PluralRules`, паритет ключей и аудит литералов как тесты Vitest.
 4. Evening Glass: токены и стили из прототипа, Inter с `OFL.txt`, CSS KaTeX и переменные Shiki локально; тёмная и светлая темы, следование ОС.
 5. `ui/`: кнопка, сегменты, переключатель, степпер, сгруппированный список, точки памяти, тост, баннер `build-failed`.
@@ -26,7 +26,7 @@
 
 ## Правила
 
-HTML только из bundle ([security](../../../../.rules/security.md)); тексты без вины ([tone-of-voice](../../../../.rules/tone-of-voice.md)); DESIGN.md — источник правды по виду.
+HTML только из bundle ([security](../../../../.rules/security.md)); тексты без вины ([tone-of-voice](../../../../.rules/tone-of-voice.md)); DESIGN.md - источник правды по виду.
 
 ## Тесты
 

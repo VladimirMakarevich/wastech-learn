@@ -4,7 +4,7 @@ status: accepted
 date: 2026-11-25
 ---
 
-# ADR-0012: Двухуровневая валидация — mdlint + `check`
+# ADR-0012: Двухуровневая валидация - mdlint + `check`
 
 ## Контекст
 
@@ -12,8 +12,8 @@ date: 2026-11-25
 
 ## Решение
 
-- **Уровень 1 — wastech-mdlint** с пресетом для контента ([mdlint-policy](../quality/mdlint-policy.md)). Работает в MCP `validate`, в hook Claude Code, в CI и в редакторе.
-- **Уровень 2 — `wastech-learn check`** (пакет `core`): слова в вопросе и ответе по типу, пропуски cloze, рубрика, длина кода, уникальность `id`, свежесть SVG, ссылка карточки на summary, крупная правка `active`-карточки.
+- **Уровень 1 - wastech-mdlint** с пресетом для контента ([mdlint-policy](../quality/mdlint-policy.md)). Работает в MCP `validate`, в hook Claude Code, в CI и в редакторе.
+- **Уровень 2 - `wastech-learn check`** (пакет `core`): слова в вопросе и ответе по типу, пропуски cloze, рубрика, длина кода, уникальность `id`, свежесть SVG, ссылка карточки на summary, крупная правка `active`-карточки.
 - MCP-инструменты не пишут файлы, пока оба уровня не пройдены.
 
 ## Альтернативы

@@ -1,6 +1,6 @@
 # Rules: coding style
 
-> One of the main development rules for `wastech-learn`. Index — [.rules/README.md](README.md).
+> One of the main development rules for `wastech-learn`. Index - [.rules/README.md](README.md).
 
 Formatting is Prettier's job and correctness is ESLint's ([eslint.config.js](../eslint.config.js), strict type-checked rules). Do not hand-format against them and do not silence a rule without a reason in the disable comment. `npm run fix` applies every autofix; `npm run lint:code` must be green.
 
@@ -43,7 +43,7 @@ Formatting is Prettier's job and correctness is ESLint's ([eslint.config.js](../
 
 ## Comments: WHY, not WHAT (mandatory)
 
-**Every comment explains why the code exists and what it is for — the reason, the intent, the constraint — never what it does.** What the code does is visible from the code; a comment that retells it adds noise and goes stale the first time the code changes. Clear names are part of this rule: a good name replaces a caption comment.
+**Every comment explains why the code exists and what it is for - the reason, the intent, the constraint - never what it does.** What the code does is visible from the code; a comment that retells it adds noise and goes stale the first time the code changes. Clear names are part of this rule: a good name replaces a caption comment.
 
 ```ts
 // Bad: retells the code.
@@ -64,16 +64,16 @@ const durMs = Math.min(raw, 120_000);
 ```
 
 - **Comment the non-obvious:** the reason for a choice, an invariant the code protects, a trade-off, a limit of a library or platform, the essence of a workaround, where a number comes from. **Don't comment the obvious** (`// increment i`, `// return the result`).
-- **JSDoc/TSDoc on exported functions and types** states the contract and the intent — what it guarantees, what it expects, why it is shaped this way — not a line-by-line retelling of the implementation.
-- **Comments are self-contained.** No links, URLs, ticket or PR numbers, and no paths or anchors into `docs/`, `.rules/`, `AGENTS.md` or any other file — in comments, JSDoc, string literals and log messages. Documentation tags that point elsewhere (`@see`, `@link`, `{@link …}`) are banned for the same reason. Docs move and get renamed while code lives on; if knowledge matters, state its substance in words where it applies. Links belong in commit messages and PR descriptions.
+- **JSDoc/TSDoc on exported functions and types** states the contract and the intent - what it guarantees, what it expects, why it is shaped this way - not a line-by-line retelling of the implementation.
+- **Comments are self-contained.** No links, URLs, ticket or PR numbers, and no paths or anchors into `docs/`, `.rules/`, `AGENTS.md` or any other file - in comments, JSDoc, string literals and log messages. Documentation tags that point elsewhere (`@see`, `@link`, `{@link …}`) are banned for the same reason. Docs move and get renamed while code lives on; if knowledge matters, state its substance in words where it applies. Links belong in commit messages and PR descriptions.
 - **Not banned:** functional URLs that are behavior (an endpoint the code calls), and the Markdown in `docs/` and `.rules/`, which cross-references itself and is checked by wastech-mdlint.
-- **No historical narrative** ("used to be X, now Y", "kept for compatibility") — git history keeps that. Commented-out code and tombstone comments are deleted together with the code they replaced.
-- **A `TODO` needs a reason and a condition** (`// TODO: drop once ts-fsrs exposes same-day steps — the replay test pins the current workaround`); a bare `TODO` is placeholder code and fails the DoD.
+- **No historical narrative** ("used to be X, now Y", "kept for compatibility") - git history keeps that. Commented-out code and tombstone comments are deleted together with the code they replaced.
+- **A `TODO` needs a reason and a condition** (`// TODO: drop once ts-fsrs exposes same-day steps - the replay test pins the current workaround`); a bare `TODO` is placeholder code and fails the DoD.
 - Reviewers treat a WHAT comment as a defect: replace it with a better name, or rewrite it as the WHY.
 
 ## Logs
 
-- Logs are structured and never contain card, summary or answer text — identifiers and counts only (NFR-16).
+- Logs are structured and never contain card, summary or answer text - identifiers and counts only (NFR-16).
 
 ## Dependencies
 

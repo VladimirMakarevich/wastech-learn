@@ -49,7 +49,7 @@ const REQUIRED = [
 ];
 
 const numbers = (text: string): string[] =>
-  [...text.matchAll(/(?:≤|\b)(\d+(?:–\d+)?)\b/g)]
+  [...text.matchAll(/(?:≤|\b)(\d+(?:-\d+)?)\b/g)]
     .map((match) => match[1] ?? "")
     .sort();
 

@@ -19,7 +19,7 @@ created: 2026-11-25
 
 ## Answer
 
-десерт (м. р.) — *Co pan poleca na deser?*
+десерт (м. р.) - *Co pan poleca na deser?*
 
 ## Sources
 

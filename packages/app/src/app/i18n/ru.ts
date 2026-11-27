@@ -57,7 +57,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "review.required": "обязательно",
   "review.suggested": "По рубрике предлагается: {rating}",
   "review.hard-hint":
-    "«С трудом» — это зачёт. Если не вспомнил, жми «Не вспомнил»",
+    "«С трудом» - это зачёт. Если не вспомнил, жми «Не вспомнил»",
   "review.space-good": "Space = Вспомнил",
   "review.changed": "изменена после прошлого повторения",
   "review.reset": "Начать карточку заново",
@@ -203,7 +203,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "stats.none": "ответов пока нет",
   "stats.retention-note":
     "Доля вспомненного среди ответов в фазе review. Цель: {target}, желаемая retention из learn.config.json",
-  "stats.later": "Калибровка, баланс Bloom и освоение тем — после MVP",
+  "stats.later": "Калибровка, баланс Bloom и освоение тем - после MVP",
   "settings.interface": "Интерфейс",
   "settings.language": "Язык интерфейса",
   "settings.language-note": "Текст тем остаётся на своём языке",
@@ -294,7 +294,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Другой компьютер отправил изменения раньше. Синхронизируй снова, чтобы их получить; твой коммит сохранён",
   "git.failure.git-failed": "Git остановился: {detail}",
   "git.blocked.no-git": "Git не установлен или его нет в PATH",
-  "git.blocked.not-a-repository": "Папка контента — не git-репозиторий",
+  "git.blocked.not-a-repository": "Папка контента - не git-репозиторий",
   "git.blocked.detached":
     "Репозиторий на detached HEAD. Переключись на ветку в терминале",
   "git.blocked.no-upstream":
@@ -333,7 +333,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "delete.plain":
     "Файл и строка в теме удалятся. До коммита удаление можно отменить в «Карточках»",
   "delete.history":
-    "У карточки есть история повторений. Она останется в журнале, прошлые ответы — в статистике, а карточка уйдёт из очереди. Архив сохраняет всё и отменяется в любой момент",
+    "У карточки есть история повторений. Она останется в журнале, прошлые ответы - в статистике, а карточка уйдёт из очереди. Архив сохраняет всё и отменяется в любой момент",
   "delete.anyway": "Всё равно удалить",
   "delete.cancel": "Отмена",
   "browser.uncommitted": "Не закоммичено",

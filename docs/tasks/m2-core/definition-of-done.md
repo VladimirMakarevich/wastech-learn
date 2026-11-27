@@ -1,6 +1,6 @@
-# Definition of done — M2, ядро
+# Definition of done - M2, ядро
 
-[⌂ index](index.md) · критерии — [acceptance-criteria.md](acceptance-criteria.md)
+[⌂ index](index.md) · критерии - [acceptance-criteria.md](acceptance-criteria.md)
 
 ## Базовые ворота проекта
 
@@ -12,8 +12,8 @@
 - [x] Комментарии объясняют «почему», без ссылок; нет `TODO` без причины и условия.
 - [x] Зависимости с точными версиями, lockfile закоммичен.
 - [x] Затронутая область оставлена лучше, чем была, или долг назван.
-- [x] Коммиты в стиле Conventional Commits на английском, только явные пути, без строк об агенте; коммит — только после «да» владельца.
-- [x] После реализации фазы — `/code-review` через subagents, как требует skill `implement`.
+- [x] Коммиты в стиле Conventional Commits на английском, только явные пути, без строк об агенте; коммит - только после «да» владельца.
+- [x] После реализации фазы - `/code-review` через subagents, как требует skill `implement`.
 
 ## Ворота этой задачи
 
@@ -25,7 +25,7 @@
 
 ## Документы, которые двигаются вместе с кодом
 
-- [x] Статусы требований: FR-204, FR-208, FR-307, NFR-04, NFR-14 → `done`; FR-201, FR-206, FR-207, FR-211, NFR-05 → `accepted` (логика в ядре, интерфейс и запись событий — в M3 и M4).
+- [x] Статусы требований: FR-204, FR-208, FR-307, NFR-04, NFR-14 → `done`; FR-201, FR-206, FR-207, FR-211, NFR-05 → `accepted` (логика в ядре, интерфейс и запись событий - в M3 и M4).
 - [x] [components](../../architecture/components.md): порт `ReplayEvent` и `QueueCard` в `srs`, каталог сообщений и пресет в `core`.
 - [x] [mdlint-policy](../../quality/mdlint-policy.md): где лежит каноничный пресет.
 - [x] [.rules/testing.md](../../../.rules/testing.md): раздел «Current state» описывает тесты, которые есть.

@@ -1,9 +1,9 @@
-# Фаза 01 — Правила правки в `core`
+# Фаза 01 - Правила правки в `core`
 
 [⌂ plan](index.md) · [спека](../index.md)
 
 - **Статус:** ☑
-- **Зависит от:** —
+- **Зависит от:** -
 - **Даёт:** `editableKind`, `cardEditDecision`, схемы `/api/source`
 
 ## Цель
@@ -13,7 +13,7 @@
 ## Шаги
 
 1. `packages/core/src/edit/editable.ts`: `editableKind(path)` → `card`, `topic-index`, `summary`, `materials` или `undefined` по шаблонам `content/<domain>/<topic>/…`.
-2. `packages/core/src/edit/decision.ts`: `cardEditDecision(before, after)` → `{ largeEdit: { section, percent }[], removedVariants: string[] }`. Вопрос нужен, только если `status: active` до и после; доля слов — `changedWordShare` по `Question` и `Answer` с порогом `ACTIVE_EDIT_THRESHOLD`; варианты — `variantsFor` до и после. Нечитаемый текст до или после — решения нет, его ловит проверка.
+2. `packages/core/src/edit/decision.ts`: `cardEditDecision(before, after)` → `{ largeEdit: { section, percent }[], removedVariants: string[] }`. Вопрос нужен, только если `status: active` до и после; доля слов - `changedWordShare` по `Question` и `Answer` с порогом `ACTIVE_EDIT_THRESHOLD`; варианты - `variantsFor` до и после. Нечитаемый текст до или после - решения нет, его ловит проверка.
 3. `packages/core/src/schema/source.ts`: Zod-схемы запроса `PUT` (`path`, `version`, `text`, `meaning?`) и ответов (`written`/`unchanged`, `content-changed`, `decision-needed`, `blocked`, `source-not-found`). Экспорт из `index.ts`.
 
 ## Затронутые файлы
@@ -29,7 +29,7 @@
 
 ## Тесты
 
-Unit: `editableKind` на допустимых и недопустимых путях (`reviews/…`, `diagrams/…`, `..`, файлы вне `content/`); `cardEditDecision` — порог 40% по обе стороны, смена `type` `basic` → `reversed`, удалённый и добавленный пропуск cloze, `draft` и `retired` без вопроса; разбор схем на примерах.
+Unit: `editableKind` на допустимых и недопустимых путях (`reviews/…`, `diagrams/…`, `..`, файлы вне `content/`); `cardEditDecision` - порог 40% по обе стороны, смена `type` `basic` → `reversed`, удалённый и добавленный пропуск cloze, `draft` и `retired` без вопроса; разбор схем на примерах.
 
 ## Приёмка фазы
 

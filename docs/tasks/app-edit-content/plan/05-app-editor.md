@@ -1,4 +1,4 @@
-# Фаза 05 — Основа редактора в приложении
+# Фаза 05 - Основа редактора в приложении
 
 [⌂ plan](index.md) · [спека](../index.md)
 
@@ -8,16 +8,16 @@
 
 ## Цель
 
-Один редактор для трёх экранов: экраны в фазах 06–08 только встраивают его (design D10–D12).
+Один редактор для трёх экранов: экраны в фазах 06-08 только встраивают его (design D10-D12).
 
 ## Шаги
 
-1. `packages/app/src/app/data/api.ts`: `fetchSource(path)` и `saveSource(body)`; ответы разбираются схемами `core` на краю, сбой — `ApiError` с кодом.
-2. `packages/app/src/app/edit/editor-model.ts`: чистый модуль на signals — состояния `loading`, `editing`, `saving`, `blocked`, `decision`, `conflict`; признак «текст изменён»; находки с признаком «в этом файле» и строкой; повтор с `meaning`; «загрузить свежую версию».
+1. `packages/app/src/app/data/api.ts`: `fetchSource(path)` и `saveSource(body)`; ответы разбираются схемами `core` на краю, сбой - `ApiError` с кодом.
+2. `packages/app/src/app/edit/editor-model.ts`: чистый модуль на signals - состояния `loading`, `editing`, `saving`, `blocked`, `decision`, `conflict`; признак «текст изменён»; находки с признаком «в этом файле» и строкой; повтор с `meaning`; «загрузить свежую версию».
 3. `packages/app/src/app/edit/source-editor.ts` с шаблоном: `<textarea>` моноширинным шрифтом, кнопки «Сохранить» и «Отмена», `Ctrl/Cmd+S` и `Esc`, список находок с переходом к строке (`setSelectionRange` и прокрутка), «Сохранено», вход `section` для позиции курсора. Фокус в поле при открытии, на кнопке-источнике после закрытия.
 4. `packages/app/src/app/ui/confirm-dialog.ts` на `@angular/cdk/dialog`: «та же или новая», «закрыть без сохранения», «заменить черновик свежей версией».
 5. `packages/app/src/app/edit/unsaved-guard.ts`: `canDeactivate` для маршрутов и `beforeunload`, пока текст изменён.
-6. Ключи в `i18n/ru.ts`, `en.ts`, `pl.ts` по [tone-of-voice](../../../../.rules/tone-of-voice.md); находки `check` — через `formatFinding`.
+6. Ключи в `i18n/ru.ts`, `en.ts`, `pl.ts` по [tone-of-voice](../../../../.rules/tone-of-voice.md); находки `check` - через `formatFinding`.
 
 ## Затронутые файлы
 
@@ -29,7 +29,7 @@
 
 ## Правила
 
-Компоненты тонкие, логика в чистых модулях; `app` импортирует только `core`, `srs`, `session`; пользовательский текст — только как текст, никогда как HTML; токены [DESIGN.md](../../../../DESIGN.md); без новых зависимостей.
+Компоненты тонкие, логика в чистых модулях; `app` импортирует только `core`, `srs`, `session`; пользовательский текст - только как текст, никогда как HTML; токены [DESIGN.md](../../../../DESIGN.md); без новых зависимостей.
 
 ## Тесты
 
