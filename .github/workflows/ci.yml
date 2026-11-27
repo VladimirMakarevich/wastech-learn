@@ -1,8 +1,9 @@
 name: CI
 
 # The code half of the definition-of-done gate, on every push to `main` and every pull request:
-# ESLint (with the package boundaries of the headless core), Stylelint, the Prettier check, `tsc -b` and
-# the Vitest suite. The steps run in the order a failure is cheapest to read. The Markdown half runs in
+# ESLint (with the package boundaries of the headless core and the Angular template rules), Stylelint, the
+# Prettier check, `tsc -b` with the app's templates through `ngc`, and the Vitest suite; then the app's
+# end-to-end scenarios in Chromium. The steps run in the order a failure is cheapest to read. The Markdown half runs in
 # markdown-lint.yml, so `npm run lint` is covered by the two workflows together without linting anything
 # twice.
 #
@@ -53,3 +54,30 @@ jobs:
 
       - name: Test
         run: npm test
+
+  e2e:
+    name: playwright (chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      # The scenarios run the real CLI against the built packages and serve the built app.
+      - name: Build
+        run: npm run build
+
+      # Only Chromium: the app is checked in one engine, and the browser comes from Playwright's own pinned
+      # build rather than whatever the runner has.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end
+        run: npm run test:e2e

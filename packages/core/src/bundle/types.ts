@@ -46,12 +46,21 @@ export interface CardEntry {
   readonly grading: string;
   readonly idea: string | null;
   readonly tags: readonly string[];
+  /** `YYYY-MM-DD` from the front matter: new cards of a topic come up in the order they were captured. */
+  readonly created: string;
   readonly lang: ContentLang;
   readonly langPair: string | null;
   readonly title: string;
   readonly variants: readonly string[];
+  /** Repository-relative path of the card's file, for opening it in an editor. */
+  readonly file: string;
   /** Cloze gaps are `<span class="cloze" data-cloze="N">`, so the UI hides the gap of the variant shown. */
   readonly questionHtml: string;
+  /**
+   * What the reverse variant asks, for a two-way card: the answer side, and for a vocab card without its
+   * example sentence, which would give the word away. `null` when the card has no `rev` variant.
+   */
+  readonly reverseHtml: string | null;
   readonly answerHtml: string;
   readonly rubric: readonly RubricItem[];
   readonly explanationHtml: string;
@@ -61,8 +70,8 @@ export interface CardEntry {
 
 /**
  * What the app reads instead of the content repository: metadata and pre-rendered, sanitized HTML. It is
- * derived from the content and never committed there. The search index joins it as an optional field
- * when the first host needs it, so adding it is not a version change.
+ * derived from the content and never committed there. The search index is an optional field, so a bundle
+ * without it is still version 1.
  */
 export interface ContentBundle {
   readonly version: 1;
@@ -72,4 +81,6 @@ export interface ContentBundle {
   readonly cards: readonly CardEntry[];
   /** Repository paths of local images that are not inlined, for the host to serve. */
   readonly assets: Readonly<Record<string, string>>;
+  /** The serialized search index over topics and cards; `loadSearchIndex` restores it. */
+  readonly searchIndex?: string;
 }

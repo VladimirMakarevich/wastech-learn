@@ -1,6 +1,6 @@
 import { createCalendar, type StudyDay } from "./day.js";
 import { DEFAULT_ESTIMATES, estimateFor } from "./estimate.js";
-import type { QueueCard, Rating, ReplayEvent, SrsConfig } from "./ports.js";
+import type { QueueCard, Rating, SrsConfig } from "./ports.js";
 import {
   DEFAULT_BACKLOG_ORDER,
   buildQueue,
@@ -157,7 +157,6 @@ const overdue = (
       cards.has(item.item) &&
       item.dueAt !== null &&
       !item.suspended &&
-      !item.leech &&
       item.dueAt < day.start
     ) {
       count++;
@@ -221,14 +220,27 @@ export const simulate = (
         const item = state.items.get(entry.item);
         const recall = item?.retrievability ?? FIRST_SIGHT_RECALL;
         const rating = ratingFor(rng, recall);
-        const event: ReplayEvent = {
+        const ts = new Date(now).toISOString();
+        const lapsesBefore = replayer.lapses(entry.item);
+        replayer.apply({
           id: `SIM${String(++sequence).padStart(9, "0")}`,
-          ts: new Date(now).toISOString(),
+          ts,
           kind: "review",
           item: entry.item,
           rating,
-        };
-        replayer.apply(event);
+        });
+        // Every host suspends the item whose rating makes it a leech; the simulation does the same, or a
+        // leech would be drilled again and again and inflate the load the report measures.
+        if (
+          lapsesBefore < config.leechThreshold &&
+          replayer.lapses(entry.item) >= config.leechThreshold
+        )
+          replayer.apply({
+            id: `SIM${String(++sequence).padStart(9, "0")}`,
+            ts,
+            kind: "suspend",
+            item: entry.item,
+          });
         const durMs = estimateFor(
           DEFAULT_ESTIMATES,
           typeOf.get(entry.item) ?? "basic",

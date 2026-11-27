@@ -23,6 +23,7 @@ const COMMANDS: Readonly<Record<CommandName, Command>> = {
   simulate: async (ctx) => (await import("./simulate.js")).runSimulate(ctx),
   "new-id": async (ctx) => (await import("./new-id.js")).runNewId(ctx),
   hook: async (ctx) => (await import("./hook.js")).runHook(ctx),
+  serve: async (ctx) => (await import("./serve.js")).runServe(ctx),
 };
 
 /**

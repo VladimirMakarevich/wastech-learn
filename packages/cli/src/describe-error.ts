@@ -1,4 +1,5 @@
 import { isLearnError, type LearnError } from "@wastech-learn/core";
+import { isServerError } from "@wastech-learn/server";
 import { SCHEDULER_PACKAGE, isSrsError } from "@wastech-learn/srs";
 import { UsageError, type translator } from "./context.js";
 
@@ -30,6 +31,8 @@ const describeLearnError = (
     case "package-not-found":
     case "nothing-to-undo":
     case "content-changed":
+    case "search-index-invalid":
+    case "id-unavailable":
       return t(`error.${error.code}`, { subject: error.subject ?? "" });
   }
 };
@@ -45,6 +48,9 @@ export const describeError = (
 ): string => {
   if (error instanceof UsageError) return t(error.key, error.params);
   if (isLearnError(error)) return describeLearnError(error, t, root);
+  if (isServerError(error)) {
+    return t("cli.error.port-in-use", { port: error.port });
+  }
   if (isSrsError(error)) {
     return t("cli.error.scheduler-unsupported", {
       expected: SCHEDULER_PACKAGE,

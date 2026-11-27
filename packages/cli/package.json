@@ -1,7 +1,7 @@
 {
   "name": "@wastech-learn/cli",
   "version": "0.0.0",
-  "description": "The wastech-learn command line: check, build, render and simulate over a content repository.",
+  "description": "The wastech-learn command line: check, build, render, simulate and serve over a content repository.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "dependencies": {
     "@wastech-learn/content-fs": "0.0.0",
     "@wastech-learn/core": "0.0.0",
+    "@wastech-learn/server": "0.0.0",
     "@wastech-learn/srs": "0.0.0"
   }
 }

@@ -146,6 +146,10 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "error.nothing-to-undo": "Nie ma oceny z tego urządzenia do cofnięcia",
   "error.content-changed":
     "{subject} zmienił się podczas przygotowania zapisu; nic nie zapisano",
+  "error.search-index-invalid":
+    "Indeks wyszukiwania w content bundle jest nieczytelny dla tej wersji",
+  "error.id-unavailable":
+    "Nie udało się utworzyć nowego id: źródło losowości lub zegar dały {subject}",
   "error.input-invalid": "Pole wejścia {field} jest niepoprawne",
   "error.tool-unknown": "Nie ma narzędzia o nazwie {subject}",
   "error.config-invalid": "{file}: pole {field} jest niepoprawne",
@@ -178,6 +182,10 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Tu można cofnąć tylko oceny zapisane przez record_review na tym urządzeniu",
   "hint.content-changed":
     "Ktoś w tym czasie zapisał plik: wywołaj narzędzie ponownie, by oprzeć się na nowym tekście",
+  "hint.search-index-invalid":
+    "Przebuduj bundle poleceniem wastech-learn build albo uruchom ponownie wastech-learn serve",
+  "hint.id-unavailable":
+    "Sprawdź zegar komputera i wywołaj ponownie; jeśli to się powtórzy, to błąd wastech-learn",
   "hint.input-invalid": "Popraw to pole i wywołaj narzędzie ponownie",
   "hint.tool-unknown": "Pobierz listę narzędzi, by zobaczyć, co oferuje serwer",
   "hint.config-invalid": "Popraw wartość w pliku i wywołaj ponownie",
@@ -197,6 +205,13 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "cli.build.written": "Bundle zapisany w {file}: {topics}, {cards}",
   "cli.build.blocked":
     "Bundle nie został zapisany: popraw błędy powyżej i uruchom ponownie",
+  "cli.serve.listening":
+    "wastech-learn działa pod adresem {url}; Ctrl+C zatrzymuje serwer",
+  "cli.serve.built": "Bundle zbudowany w {ms} ms: {topics}, {cards}",
+  "cli.serve.build-failed":
+    "Bundle nie został przebudowany ({errors}); aplikacja działa na poprzednim i pokazuje, gdzie jest błąd",
+  "cli.serve.watch-failed":
+    "Aktualizacje na żywo zatrzymały się: {detail}. Uruchom ponownie wastech-learn serve, aby je przywrócić",
   "cli.render.rendered": "Wyrenderowano: {file}",
   "cli.render.stale": "Nieaktualny: {file}",
   "cli.render.summary": "Diagramy: {total}, wyrenderowane: {rendered}",
@@ -240,6 +255,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Nie można odczytać ani zapisać {file}: sprawdź ścieżkę i uprawnienia",
   "cli.error.render-failed":
     "Renderowanie {file} nie powiodło się: sprawdź źródło Mermaid",
+  "cli.error.port-in-use":
+    "Port {port} jest już zajęty: uruchom z --port <inny port> albo zatrzymaj program, który go zajmuje",
   "cli.error.missing-command": "Podaj polecenie: wastech-learn --help",
   "cli.error.unknown-command":
     "Nieznane polecenie {command}: wastech-learn --help",
@@ -265,6 +282,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "  simulate   Zasymuluj przerwę i sesje, które rozładują zaległości",
     "  new-id     Wypisz nowe id kart (--count <n>, domyślnie 1)",
     "  hook       post-tool-use: sprawdź plik, który agent właśnie zapisał (JSON zdarzenia na stdin)",
+    "  serve      Otwórz aplikację w przeglądarce przez lokalny serwer na 127.0.0.1",
     "",
     "Opcje:",
     "  --content <folder> Repozytorium treści (domyślnie bieżący folder)",
@@ -274,5 +292,6 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "build:    --out <plik> (domyślnie .cache/content-bundle.json), --built-at <data ISO>",
     "render:   --check",
     "simulate: --cards, --warmup-days, --break-days, --session-minutes, --seed, --runs",
+    "serve:    --port <n> (domyślnie 4747), --no-open",
   ].join("\n"),
 };

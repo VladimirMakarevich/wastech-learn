@@ -1,0 +1,108 @@
+<main class="screen" data-screen="home">
+  @if (model(); as model) {
+  <div class="home-top">
+    <section
+      class="card today"
+      aria-labelledby="today-h"
+      [attr.data-cards]="model.queue.entries.length"
+      [attr.data-minutes]="model.queue.estimateMinutes"
+    >
+      @if (model.comeback; as back) {
+      <h2 class="today-big" id="today-h">
+        {{ "home.back" | t : { cards: count(model.queue.entries.length),
+        minutes: minutes(model.queue.estimateMinutes), } }}
+      </h2>
+      <p class="today-sub" data-plan>
+        {{ "home.back-plan" | t : { days: i18n.t("count.days", { count:
+        back.days }), session: minutes(back.sessionMinutes), } }} @if
+        (model.newPaused) {
+        <br />{{ "home.new-paused" | t }} }
+      </p>
+      } @else if (model.queue.entries.length > 0) {
+      <h2 class="today-big tnum" id="today-h">
+        {{ "home.summary" | t : { cards: count(model.queue.entries.length),
+        minutes: minutes(model.queue.estimateMinutes), } }}
+      </h2>
+      <p class="today-sub">
+        @if (model.newByDomain.length > 0) { {{ "home.new" | t: { list:
+        newList() } }} } @else if (model.newPaused) { {{ "home.new-paused" | t
+        }} } @else { {{ "home.new-none" | t }} }
+      </p>
+      } @else {
+      <h2 class="today-big" id="today-h">{{ "home.nothing" | t }}</h2>
+      <p class="today-sub">{{ "home.nothing-sub" | t }}</p>
+      }
+      <div class="row start-row">
+        <a
+          class="btn primary"
+          [routerLink]="['/review']"
+          [queryParams]="{ mode: lengths()[0] }"
+          aria-keyshortcuts="Enter"
+          data-start="short"
+        >
+          {{ minutes(lengths()[0]) }} <kbd>Enter</kbd>
+        </a>
+        <a
+          class="btn"
+          [routerLink]="['/review']"
+          [queryParams]="{ mode: lengths()[1] }"
+        >
+          {{ minutes(lengths()[1]) }}
+        </a>
+        <a
+          class="btn"
+          [routerLink]="['/review']"
+          [queryParams]="{ mode: 'all' }"
+        >
+          {{ "session.full" | t }}
+        </a>
+      </div>
+    </section>
+    <section class="card forecast-card" aria-labelledby="forecast-h">
+      <h2 class="card-h" id="forecast-h">{{ "home.forecast" | t }}</h2>
+      <div class="forecast">
+        @for (day of forecast(); track day.key) {
+        <div
+          class="bar"
+          [class.today]="day.today"
+          role="img"
+          [attr.aria-label]="'home.forecast-day' | t: { day: day.name, cards: count(day.due) }"
+        >
+          <small class="tnum">{{ day.due }}</small>
+          <span class="bar-fill" [style.height.%]="day.height"></span>
+          <small>{{ day.name }}</small>
+        </div>
+        }
+      </div>
+    </section>
+  </div>
+  @for (domain of model.domains; track domain.id) {
+  <section class="glist">
+    <h2 class="group-h">
+      {{ domain.id }}<span class="tnum">{{ domain.topics.length }}</span>
+    </h2>
+    <div class="group-body">
+      @for (row of domain.topics; track row.path) {
+      <a class="t-row" [routerLink]="['/topic', ...row.path.split('/')]">
+        <span class="t-main">
+          <span class="t-title" [attr.lang]="row.lang">{{ row.title }}</span>
+          <span class="t-meta"
+            >{{ "home.topic-meta" | t: { lang: row.lang.toUpperCase(), cards:
+            count(row.cards) } }}</span
+          >
+        </span>
+        <span class="memstrip" role="img" [attr.aria-label]="topicLabel(row)">
+          @for (point of row.points; track $index) {
+          <wl-memory-point size="small" [retrievability]="point" />
+          }
+        </span>
+        <span class="t-due tnum" [class.none]="row.due === 0"
+          >{{ "home.due" | t: { count: row.due } }}</span
+        >
+        <wl-icon name="chevron" />
+      </a>
+      }
+    </div>
+  </section>
+  } }
+</main>

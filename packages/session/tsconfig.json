@@ -1,0 +1,13 @@
+{
+  // session also runs in the browser, so Node types stay out and a Node API cannot type-check here.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../core/tsconfig.json" },
+    { "path": "../srs/tsconfig.json" }
+  ]
+}

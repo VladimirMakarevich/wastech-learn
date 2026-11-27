@@ -1,0 +1,246 @@
+@if (card(); as card) {
+<div class="review-wrap">
+  <div class="review-col">
+    <article
+      class="review-card"
+      [class.is-a]="revealed()"
+      [class.is-q]="!revealed()"
+      [attr.data-item]="session.current()?.item"
+      [attr.data-phase]="session.memory()?.phase ?? 'new'"
+      aria-labelledby="q-text"
+    >
+      <header class="review-meta">
+        <span class="crumb">
+          {{ card.domain }}<wl-icon name="chevron" />{{ topic()?.title }}
+        </span>
+        <span class="meta-tags">
+          @if (session.changed()) {
+          <span class="chip status-changed">
+            <wl-icon name="pencil" />{{ "review.changed" | t }}
+          </span>
+          <button class="btn sm" type="button" (click)="session.reset()">
+            {{ "review.reset" | t }}
+          </button>
+          }
+          <span class="chip">{{ card.type }} · {{ card.bloom }}</span>
+          @if (canSpeak()) {
+          <button
+            class="icon-btn"
+            type="button"
+            [attr.aria-label]="'review.listen' | t"
+            aria-keyshortcuts="p"
+            (click)="speak()"
+          >
+            <wl-icon name="speaker" /><kbd>p</kbd>
+          </button>
+          }
+        </span>
+      </header>
+      <div class="q-body" [attr.lang]="card.lang">
+        @if (reverse() && revealed()) {
+        <div class="question" id="q-text" [wlBundleHtml]="promptHtml()"></div>
+        <section class="answer-block enter">
+          <div class="answer" #spoken [wlBundleHtml]="card.questionHtml"></div>
+          <div class="explanation" [wlBundleHtml]="card.answerHtml"></div>
+        </section>
+        } @else {
+        <div
+          class="question"
+          id="q-text"
+          #spoken
+          [wlBundleHtml]="promptHtml()"
+          [cloze]="cloze()"
+        ></div>
+        @if (revealed()) {
+        <section class="answer-block enter">
+          @if (card.rubric.length > 0) {
+          <div class="rubric">
+            <div class="rubric-h">{{ "review.rubric" | t }}</div>
+            @for (item of card.rubric; track $index) {
+            <label>
+              <input
+                type="checkbox"
+                [checked]="session.marks()[$index] ?? false"
+                (change)="session.toggleMark($index)"
+              />
+              <span>
+                <span [wlBundleHtml]="item.html"></span>
+                @if (item.required) {
+                <span class="req">{{ "review.required" | t }}</span>
+                }
+              </span>
+            </label>
+            }
+          </div>
+          } @if (card.answerHtml !== "") {
+          <div class="answer" [wlBundleHtml]="card.answerHtml"></div>
+          } @if (card.explanationHtml !== "") {
+          <div class="explanation" [wlBundleHtml]="card.explanationHtml"></div>
+          } @if (session.suggested(); as suggested) {
+          <div class="hint">
+            {{ "review.suggested" | t: { rating: i18n.t(ratings[suggested -
+            1]!.name) } }}
+          </div>
+          }
+        </section>
+        } }
+      </div>
+      <footer class="shortcuts">
+        <span><kbd>o</kbd>{{ "shortcut.topic" | t }}</span>
+        <span><kbd>e</kbd>{{ "context.vscode" | t }}</span>
+        <span><kbd>u</kbd>{{ "shortcut.undo" | t }}</span>
+        <span><kbd>!</kbd>{{ "shortcut.suspend" | t }}</span>
+        <span><kbd>b</kbd>{{ "shortcut.bury" | t }}</span>
+      </footer>
+    </article>
+    <div class="tray">
+      <div class="tray-inner enter">
+        @if (revealed()) {
+        <div class="ratings">
+          @for (rating of ratings; track rating.rating) {
+          <button
+            type="button"
+            [class]="
+                    'rate ' +
+                    rating.tone +
+                    (session.suggested() === rating.rating ? ' suggested' : '')
+                  "
+            [attr.aria-keyshortcuts]="rating.rating === 3 ? '3 Space' : rating.rating"
+            [attr.data-rating]="rating.rating"
+            [attr.title]="rating.rating === 2 ? ('review.hard-hint' | t) : null"
+            (click)="rate(rating.rating)"
+          >
+            <!-- The visible text is the button's name: "1 Forgot 10 min". &ngsp; keeps the spaces that
+                 Angular would otherwise strip between elements, so a screen reader hears three words. -->
+            <span class="rate-top"
+              ><kbd>{{ rating.rating }}</kbd>&ngsp;{{ rating.name | t }}</span
+            >&ngsp;<span class="iv tnum"
+              >{{ intervals().get(rating.rating) }}</span
+            >
+          </button>
+          }
+        </div>
+        <div class="tray-hint">
+          {{ "review.hard-hint" | t }}<span class="kb-hint">
+            · {{ "review.space-good" | t }}</span
+          >
+        </div>
+        } @else {
+        <div class="tray-row">
+          <div class="conf">
+            <span class="tray-label" id="conf-label"
+              >{{ "review.confidence" | t }}</span
+            >
+            <div class="seg" role="group" aria-labelledby="conf-label">
+              @for (option of confidences; track option.value) {
+              <button
+                type="button"
+                [class.active]="session.confidence() === option.value"
+                [attr.aria-pressed]="session.confidence() === option.value"
+                [attr.aria-keyshortcuts]="option.value"
+                (click)="pickConfidence(option.value)"
+              >
+                <kbd>{{ option.value }}</kbd>{{ option.label | t }}
+              </button>
+              }
+            </div>
+          </div>
+          <button
+            #reveal
+            type="button"
+            class="btn primary reveal"
+            aria-keyshortcuts="Space"
+            (click)="session.reveal()"
+          >
+            {{ "review.show" | t }} <kbd>Space</kbd>
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  <aside class="context">
+    <section>
+      <h2 class="group-h">{{ "context.memory" | t }}</h2>
+      <div class="group-body mem">
+        <div class="memfield" role="img" [attr.aria-label]="memoryLabel()">
+          @for (point of memoryPoints(); track point.item) {
+          <wl-memory-point
+            [retrievability]="point.retrievability"
+            [current]="point.current"
+          />
+          }
+        </div>
+        <p class="mem-legend">
+          <span class="mem-scale" aria-hidden="true"><i></i><i></i><i></i></span
+          >{{ "context.r" | t }}
+          <span class="mem-new" aria-hidden="true"></span>{{ "context.new" | t
+          }}
+        </p>
+      </div>
+    </section>
+    <section>
+      <h2 class="group-h">{{ "context.state" | t }}</h2>
+      <dl class="group-body">
+        @if (facts(); as facts) {
+        <div class="g-row">
+          <dt>{{ "context.r" | t }}</dt>
+          <dd>
+            <wl-memory-point
+              size="small"
+              [retrievability]="facts.retrievability"
+            />{{ facts.r }}
+          </dd>
+        </div>
+        <div class="g-row">
+          <dt>{{ "context.stability" | t }}</dt>
+          <dd class="tnum">{{ facts.stability }}</dd>
+        </div>
+        <div class="g-row">
+          <dt>{{ "context.lapses" | t }}</dt>
+          <dd class="tnum">{{ facts.lapses }}</dd>
+        </div>
+        <div class="g-row">
+          <dt>{{ "context.last" | t }}</dt>
+          <dd>{{ facts.last }}</dd>
+        </div>
+        } @else {
+        <div class="g-row muted">{{ "context.never" | t }}</div>
+        }
+      </dl>
+    </section>
+    @if (topic(); as topic) {
+    <section>
+      <h2 class="group-h">{{ "context.key-idea" | t }}</h2>
+      <div class="group-body pad">
+        <div
+          class="key-idea"
+          [attr.lang]="topic.lang"
+          [wlBundleHtml]="topic.keyIdeaHtml"
+        ></div>
+        @if (topicLink(); as link) {
+        <a class="ctx-link" [routerLink]="link" aria-keyshortcuts="o">
+          {{ "context.open-topic" | t }}<wl-icon name="chevron" />
+        </a>
+        }
+      </div>
+    </section>
+    }
+    <section>
+      <h2 class="group-h">{{ "context.file" | t }}</h2>
+      <div class="group-body">
+        <div class="g-row path">{{ card.file }}</div>
+        @if (editorHref(); as href) {
+        <a #editor class="g-row g-action" [href]="href" aria-keyshortcuts="e">
+          {{ "context.vscode" | t }}<kbd>e</kbd>
+        </a>
+        }
+      </div>
+    </section>
+  </aside>
+</div>
+} @else if (started()) {
+<section class="end">
+  <p class="today-sub">{{ "review.empty" | t }}</p>
+</section>
+}

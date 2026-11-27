@@ -20,6 +20,10 @@ export interface CliIo {
   readonly random: () => number;
   /** The whole of standard input, for commands fed by another program such as a Claude Code hook. */
   readonly readStdin: () => Promise<string>;
+  /** Opens a URL in the learner's browser; `serve` calls it once it listens. */
+  readonly openUrl: (url: string) => void;
+  /** Resolves when the learner stops a long-running command (Ctrl+C); tests resolve it themselves. */
+  readonly untilInterrupted: () => Promise<void>;
 }
 
 export interface CommandContext {

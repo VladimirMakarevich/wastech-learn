@@ -9,6 +9,7 @@
     "directory": "packages/srs"
   },
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "@wastech-learn/source": "./src/index.ts",

@@ -148,6 +148,15 @@ describe("replay: event semantics", () => {
     expect(state.items.get(ITEM)).toEqual(itemAfter([]));
   });
 
+  it("keeps a review whose undo was written after now", () => {
+    const extra = review(ITEM, "2026-01-10T10:00:00Z", 1);
+    const undo = event("undo", ITEM, "2026-03-01T10:00:00Z", {
+      target: extra.id,
+    });
+    expect(itemAfter([extra, undo])).toEqual(itemAfter([extra]));
+    expect(itemAfter([extra, undo])).not.toEqual(itemAfter([]));
+  });
+
   it("keeps the state of an item whose card no longer exists", () => {
     const state = replay(
       [review("deadbeef:main", "2026-01-01T10:00:00Z", 3)],

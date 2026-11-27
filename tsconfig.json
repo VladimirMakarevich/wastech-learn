@@ -1,19 +1,26 @@
 {
   // Solution file for `tsc -b` (npm run typecheck and npm run build): the JavaScript tooling, every package and
   // the tests of every package. A package's tests are a project of their own, so they are type-checked without
-  // landing in the package's dist/.
+  // landing in the package's dist/. References name the tsconfig file itself: Playwright reads this file to
+  // load its config and does not resolve a reference to a folder.
   "files": [],
   "references": [
     { "path": "./tsconfig.tooling.json" },
-    { "path": "./packages/core" },
-    { "path": "./packages/core/test" },
-    { "path": "./packages/srs" },
-    { "path": "./packages/srs/test" },
-    { "path": "./packages/content-fs" },
-    { "path": "./packages/content-fs/test" },
-    { "path": "./packages/cli" },
-    { "path": "./packages/cli/test" },
-    { "path": "./packages/mcp-server" },
-    { "path": "./packages/mcp-server/test" }
+    { "path": "./packages/core/tsconfig.json" },
+    { "path": "./packages/core/test/tsconfig.json" },
+    { "path": "./packages/srs/tsconfig.json" },
+    { "path": "./packages/srs/test/tsconfig.json" },
+    { "path": "./packages/session/tsconfig.json" },
+    { "path": "./packages/session/test/tsconfig.json" },
+    { "path": "./packages/content-fs/tsconfig.json" },
+    { "path": "./packages/content-fs/test/tsconfig.json" },
+    { "path": "./packages/cli/tsconfig.json" },
+    { "path": "./packages/cli/test/tsconfig.json" },
+    { "path": "./packages/server/tsconfig.json" },
+    { "path": "./packages/server/test/tsconfig.json" },
+    { "path": "./packages/mcp-server/tsconfig.json" },
+    { "path": "./packages/mcp-server/test/tsconfig.json" },
+    { "path": "./packages/app/test/tsconfig.json" },
+    { "path": "./packages/app/e2e/tsconfig.json" }
   ]
 }

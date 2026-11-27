@@ -9,10 +9,12 @@
     "directory": "packages/core"
   },
   "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "@wastech-learn/source": "./src/index.ts",
       "types": "./dist/index.d.ts",
+      "browser": "./dist/browser.js",
       "import": "./dist/index.js"
     },
     "./preset/content.mdlint.jsonc": "./preset/content.mdlint.jsonc"

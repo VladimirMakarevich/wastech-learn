@@ -7,6 +7,9 @@ node_modules/
 package-lock.json
 dist/
 coverage/
+.angular/
+test-results/
+playwright-report/
 
 # A byte-for-byte copy of the golden sample from wastech-learn-content, refreshed from there and never
 # reformatted here: the golden tests compare against the content repository's own formatting.

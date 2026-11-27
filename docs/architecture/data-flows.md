@@ -35,34 +35,45 @@ sequenceDiagram
   participant A as App (браузер)
   participant S as Local server
   participant R as content repo
-  A->>S: GET /bundle, GET /events
+  A->>S: GET /api/status, /api/bundle, /api/events
   S->>R: чтение content и reviews/**
-  S-->>A: bundle + журнал
-  A->>A: srs.replay → очередь
+  S-->>A: статус, bundle (ETag) и журнал
+  A->>A: session: replay → очередь srs
   loop каждая карточка
     A->>A: вопрос → уверенность → ответ → оценка
-    A->>S: POST /events [review]
+    A->>A: replay одного review item, следующая карточка
+    A->>S: POST /api/events [review]
     S->>R: append reviews/desk1/web-2026-11.jsonl
-    S-->>A: ok (идемпотентно по event.id)
+    S-->>A: { appended, duplicates }
   end
 ```
 
+Сервер принимает только события `writer: web` своего устройства, каждое через схему `core`; повтор `id` пропускается. Запрос с чужим `Host` или `Origin`, не JSON или тело больше 256 KB отклоняются (`403`, `415`, `413`), CORS-заголовков нет. Пока сервер недоступен, события ждут в `ReviewStore` приложения и досылаются позже.
+
 ## Квиз в чате (J-09)
 
-Последовательность описана в [tutor-and-grading.md](../ai/tutor-and-grading.md#квиз-в-чате-learn-quiz). MCP-сервер сам делает replay из журнала и кэша, `record_review` пишет в файл writer `mcp`.
+Последовательность описана в [tutor-and-grading.md](../ai/tutor-and-grading.md#квиз-в-чате-learn-quiz). MCP-сервер сам делает replay журнала в памяти, `record_review` пишет в файл writer `mcp`.
 
 ## Изменение файлов и пересборка
 
 ```mermaid
 sequenceDiagram
   participant V as VS Code / git pull
-  participant S as Local server (watch)
+  participant S as Local server (watchRepository)
   participant A as App
-  V->>S: изменились content/** или reviews/**
-  S->>S: инкрементальная сборка bundle и replay
-  S-->>A: SSE «content-changed» / «events-changed»
-  A->>S: GET /bundle или /events
+  V->>S: изменились content/**, reviews/** или learn.config.json
+  S->>S: тишина 200 мс; своя дозапись не в счёт
+  alt content или config
+    S->>S: полная сборка bundle
+    S-->>A: SSE content-changed или build-failed (находки)
+    A->>S: GET /api/bundle
+  else reviews
+    S-->>A: SSE events-changed
+    A->>S: GET /api/events, полный replay в клиенте
+  end
 ```
+
+При `build-failed` сервер отдаёт последний собранный bundle, а приложение показывает баннер с файлом и строкой.
 
 ## Синхронизация между компьютерами (J-08)
 
@@ -74,7 +85,7 @@ sequenceDiagram
   D1->>G: push (reviews/desk1/*)
   D2->>G: pull
   G-->>D2: новые строки в reviews/desk1/*
-  D2->>D2: replay всех журналов → кэш
+  D2->>D2: replay всех журналов
   D2->>G: push (reviews/laptop/*)
 ```
 

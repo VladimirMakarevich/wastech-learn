@@ -7,8 +7,9 @@
   },
   "include": ["src/**/*.ts"],
   "references": [
-    { "path": "../core" },
-    { "path": "../srs" },
-    { "path": "../content-fs" }
+    { "path": "../core/tsconfig.json" },
+    { "path": "../srs/tsconfig.json" },
+    { "path": "../content-fs/tsconfig.json" },
+    { "path": "../server/tsconfig.json" }
   ]
 }

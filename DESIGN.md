@@ -129,7 +129,7 @@ Softly rounded corners, concentric where nested: the 24px tray with 12px padding
 
 ### Buttons
 
-- **Primary / Reveal:** tint fill, `on-tint` text, 600 weight. Reveal is 46px tall, min 260px, 12px radius, with its `Space` keycap at 60% opacity.
+- **Primary / Reveal:** tint fill, `on-tint` text, 600 weight. Reveal is 46px tall, min 260px, 12px radius, with its `Space` keycap drawn by a softened border around full-contrast text (a faded label fails AA on the tint).
 - **Neutral:** translucent fill, ink text; hover deepens the fill, press scales to 0.98. Background transitions take 0.18s.
 - **Focus:** 2px tint outline, 2px offset, on every interactive element.
 

@@ -1,5 +1,5 @@
 import { prepareEvents } from "./events.js";
-import type { ReplayEvent, SrsConfig } from "./ports.js";
+import type { Rating, ReplayEvent, SrsConfig } from "./ports.js";
 import type { MemoryCard, Scheduler } from "./scheduler.js";
 
 export type Phase = "new" | "learning" | "review" | "relearning";
@@ -25,13 +25,17 @@ export interface ItemState {
   readonly reps: number;
   readonly lapses: number;
   readonly suspended: boolean;
-  /** Lapsed `leechThreshold` times or more: it needs rewriting, not more repetition. */
+  /**
+   * Lapsed `leechThreshold` times or more: it needs rewriting, not more repetition. Only a flag for the fix
+   * list; the `suspend` written when the item crossed the threshold is what takes it out of review, so an
+   * `unsuspend` after the rewrite brings it back.
+   */
   readonly leech: boolean;
 }
 
 /**
  * From `from` until the next segment, the item was due at `dueAt` and counted toward a backlog when
- * `countable` (reviewed at least once, not suspended, not a leech). The backlog policy reads past days
+ * `countable` (reviewed at least once and not suspended). The backlog policy reads past days
  * from these segments instead of replaying the log once per day.
  */
 export interface HistorySegment {
@@ -45,6 +49,20 @@ export interface ReplayState {
   readonly sched: string;
   readonly items: ReadonlyMap<string, ItemState>;
   readonly history: ReadonlyMap<string, readonly HistorySegment[]>;
+}
+
+/**
+ * One applied review with the item as it stood just before the answer. True retention asks whether an
+ * item in the review phase was recalled, and the phase before the answer is gone once the answer applies.
+ */
+export interface ReviewRecord {
+  readonly item: string;
+  /** Epoch milliseconds of the answer. */
+  readonly at: number;
+  readonly rating: Rating;
+  readonly phase: Phase;
+  /** The interval the item was on when it was answered, in days. */
+  readonly scheduledDays: number;
 }
 
 interface Memory {
@@ -61,11 +79,14 @@ interface Memory {
 export interface Replayer {
   readonly apply: (event: ReplayEvent) => void;
   readonly state: (now: Date) => ReplayState;
+  /** One item's lapses so far, without building the whole state: the simulation asks after every answer. */
+  readonly lapses: (item: string) => number;
 }
 
 export const createReplayer = (
   scheduler: Scheduler,
   config: Pick<SrsConfig, "leechThreshold">,
+  observe?: (record: ReviewRecord) => void,
 ): Replayer => {
   const { leechThreshold } = config;
   const memories = new Map<string, Memory>();
@@ -90,7 +111,7 @@ export const createReplayer = (
     memory.segments.push({
       from: at,
       dueAt: reviewed ? card.dueAt.getTime() : null,
-      countable: reviewed && !memory.suspended && card.lapses < leechThreshold,
+      countable: reviewed && !memory.suspended,
     });
   };
 
@@ -100,6 +121,13 @@ export const createReplayer = (
     switch (event.kind) {
       case "review":
         if (event.rating === undefined) return;
+        observe?.({
+          item: event.item,
+          at: at.getTime(),
+          rating: event.rating,
+          phase: PHASES[memory.card.state] ?? "new",
+          scheduledDays: memory.card.scheduledDays,
+        });
         if (memory.card.state === 0) memory.introducedAt = at.getTime();
         memory.card = scheduler.review(memory.card, event.rating, at);
         break;
@@ -154,7 +182,22 @@ export const createReplayer = (
     return { now: now.getTime(), sched: scheduler.sched, items, history };
   };
 
-  return { apply, state };
+  return {
+    apply,
+    state,
+    lapses: (item) => memories.get(item)?.card.lapses ?? 0,
+  };
+};
+
+const applyUntil = (
+  replayer: Replayer,
+  events: readonly ReplayEvent[],
+  now: Date,
+): void => {
+  const until = now.getTime();
+  // Cut off before undos are resolved: an undo written after `now` had not happened yet at `now`.
+  const seen = events.filter((event) => Date.parse(event.ts) <= until);
+  for (const event of prepareEvents(seen)) replayer.apply(event);
 };
 
 /**
@@ -169,10 +212,24 @@ export const replay = (
   now: Date,
 ): ReplayState => {
   const replayer = createReplayer(scheduler, config);
-  const until = now.getTime();
-  for (const event of prepareEvents(events)) {
-    if (Date.parse(event.ts) > until) break;
-    replayer.apply(event);
-  }
+  applyUntil(replayer, events, now);
   return replayer.state(now);
+};
+
+/**
+ * Every review the log applies up to `now`, in replay order, each with the item's phase and interval
+ * before the answer. Undone events are gone, as in `replay`.
+ */
+export const reviewRecords = (
+  events: readonly ReplayEvent[],
+  scheduler: Scheduler,
+  config: Pick<SrsConfig, "leechThreshold">,
+  now: Date,
+): readonly ReviewRecord[] => {
+  const records: ReviewRecord[] = [];
+  const replayer = createReplayer(scheduler, config, (record) =>
+    records.push(record),
+  );
+  applyUntil(replayer, events, now);
+  return records;
 };

@@ -3,7 +3,12 @@ export type { BundleBuild } from "./bundle.js";
 export { checkRepository } from "./check.js";
 export type { RepositoryCheck } from "./check.js";
 export { readGitBaseline } from "./git-baseline.js";
-export { toQueueCards, toReplayEvents, toSrsConfig } from "./load.js";
+// session owns the bridges to srs; a Node host gets them here together with the repository it loads.
+export {
+  toQueueCards,
+  toReplayEvents,
+  toSrsConfig,
+} from "@wastech-learn/session";
 export { appendReviewEvents, logFileOf } from "./log-append.js";
 export type { AppendResult } from "./log-append.js";
 export { readReviewLog } from "./log-read.js";
@@ -21,6 +26,7 @@ export {
   LOCAL_FILE,
   MDLINT_CONFIG_FILE,
   loadConfig,
+  loadConfigSource,
   loadContentFiles,
   loadDevice,
   loadRepository,
@@ -70,3 +76,10 @@ export type { SavedFile } from "./write/summary.js";
 export { createTopic } from "./write/topic.js";
 export type { CreatedTopic } from "./write/topic.js";
 export { validateEdited, validateFiles } from "./validate-files.js";
+export { watchRepository } from "./watch.js";
+export type {
+  ChangeKind,
+  RepositoryChange,
+  RepositoryWatcher,
+  WatchOptions,
+} from "./watch.js";

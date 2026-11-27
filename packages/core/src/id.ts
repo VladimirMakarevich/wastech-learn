@@ -1,3 +1,5 @@
+import { LearnError } from "./errors.js";
+
 /**
  * A source of numbers in [0, 1). The caller owns it: a host passes a cryptographic source, a test a
  * seeded one, so the same seed gives the same ids on every run.
@@ -16,7 +18,11 @@ const ULID_MAX_TIME = 2 ** 48 - 1;
 const symbol = (random: RandomSource): string => {
   const value = random();
   if (!(value >= 0 && value < 1)) {
-    throw new RangeError("A random source must return numbers in [0, 1)");
+    throw new LearnError(
+      "id-unavailable",
+      "A random source must return numbers in [0, 1)",
+      { subject: String(value) },
+    );
   }
   return CROCKFORD.charAt(Math.floor(value * CROCKFORD.length));
 };
@@ -43,7 +49,10 @@ export const newUniqueCardId = (
     const id = newCardId(random);
     if (!taken.has(id)) return id;
   }
-  throw new RangeError("The random source keeps repeating taken card ids");
+  throw new LearnError(
+    "id-unavailable",
+    "The random source keeps repeating taken card ids",
+  );
 };
 
 /**
@@ -54,7 +63,11 @@ export const newUniqueCardId = (
 export const newUlid = (now: Date, random: RandomSource): string => {
   let time = now.getTime();
   if (!Number.isInteger(time) || time < 0 || time > ULID_MAX_TIME) {
-    throw new RangeError("A ULID needs a time between 1970 and 10889");
+    throw new LearnError(
+      "id-unavailable",
+      "A ULID needs a time between 1970 and 10889",
+      { subject: String(time) },
+    );
   }
   const head: string[] = [];
   for (let index = 0; index < ULID_TIME_LENGTH; index++) {

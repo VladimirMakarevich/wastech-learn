@@ -233,7 +233,11 @@ export {
   oneLine,
 } from "./serialize/inline.js";
 
-export { buildSearchIndex, foldDiacritics } from "./search/search.js";
+export {
+  buildSearchIndex,
+  foldDiacritics,
+  loadSearchIndex,
+} from "./search/search.js";
 export type {
   ContentSearchIndex,
   SearchFilters,

@@ -2,6 +2,7 @@ import type { List } from "mdast";
 import type { Card, ContentModel, Topic, TopicDoc } from "../model.js";
 import type { ContentFiles } from "../parse/content.js";
 import { parseMarkdown } from "../parse/markdown.js";
+import { promptMarkdown } from "../study/prompt.js";
 import { findSection } from "../parse/sections.js";
 import { RUBRIC_REQUIRED_MARK } from "../check/limits.js";
 import {
@@ -104,11 +105,16 @@ const cardEntry = (renderer: MarkdownRenderer, card: Card): CardEntry => {
     grading: frontMatter.grading,
     idea: frontMatter.idea ?? null,
     tags: frontMatter.tags ?? [],
+    created: frontMatter.created,
     lang: card.lang,
     langPair: frontMatter.langPair ?? null,
     title: card.title ?? card.id,
     variants: card.variants,
+    file: card.file,
     questionHtml: renderer.render(card.question.markdown, card.file),
+    reverseHtml: card.variants.includes("rev")
+      ? renderer.render(promptMarkdown(card, "rev"), card.file)
+      : null,
     answerHtml: renderer.render(card.answer.markdown, card.file),
     rubric: rubricItems(renderer, card),
     explanationHtml: sectionHtml(renderer, card, "Explanation"),

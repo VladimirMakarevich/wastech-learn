@@ -1,0 +1,39 @@
+{
+  "name": "@wastech-learn/app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The wastech-learn app: review, reading and statistics in the browser, desktop-first Angular in the Evening Glass look. Served as files by the local server.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladimirMakarevich/wastech-learn.git",
+    "directory": "packages/app"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24.17.0"
+  },
+  "scripts": {
+    "build": "ng build",
+    "start": "ng serve"
+  },
+  "dependencies": {
+    "@angular/cdk": "22.3.0",
+    "@angular/common": "22.3.0",
+    "@angular/core": "22.3.0",
+    "@angular/forms": "22.3.0",
+    "@angular/platform-browser": "22.3.0",
+    "@angular/router": "22.3.0",
+    "@wastech-learn/core": "0.0.0",
+    "@wastech-learn/session": "0.0.0",
+    "@wastech-learn/srs": "0.0.0",
+    "rxjs": "7.8.2",
+    "tslib": "2.9.1"
+  },
+  "devDependencies": {
+    "@angular/build": "22.3.0",
+    "@angular/cli": "22.3.0",
+    "@angular/compiler": "22.3.0",
+    "@angular/compiler-cli": "22.3.0"
+  }
+}

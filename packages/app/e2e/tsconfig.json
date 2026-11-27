@@ -1,0 +1,18 @@
+{
+  // Type-checks the Playwright scenarios against the built workspace packages; it emits only declarations
+  // into .cache/, which tsc -b needs for a project in the solution.
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "emitDeclarationOnly": true,
+    "outDir": "../../../.cache/tsc/app-e2e"
+  },
+  "include": ["**/*.ts"],
+  "references": [
+    { "path": "../../core/tsconfig.json" },
+    { "path": "../../srs/tsconfig.json" },
+    { "path": "../../session/tsconfig.json" },
+    { "path": "../../content-fs/tsconfig.json" }
+  ]
+}

@@ -1,0 +1,257 @@
+<main class="screen" data-screen="browser">
+  <div class="cards-tools">
+    <label class="field-search">
+      <wl-icon name="search" />
+      <input
+        type="search"
+        autocomplete="off"
+        data-browser-search
+        [placeholder]="'browser.search' | t"
+        [attr.aria-label]="'browser.search' | t"
+        [value]="filters().q"
+        (input)="set('q', $any($event.target).value)"
+      />
+    </label>
+    <div
+      class="segmented"
+      role="group"
+      [attr.aria-label]="'browser.domain' | t"
+    >
+      <button
+        type="button"
+        [class.active]="filters().domain === ''"
+        [attr.aria-pressed]="filters().domain === ''"
+        (click)="set('domain', '')"
+      >
+        {{ "browser.all" | t }}
+      </button>
+      @for (domain of options().domains; track domain) {
+      <button
+        type="button"
+        [class.active]="filters().domain === domain"
+        [attr.aria-pressed]="filters().domain === domain"
+        (click)="set('domain', domain)"
+      >
+        {{ domain }}
+      </button>
+      }
+    </div>
+    <span class="found tnum" aria-live="polite"
+      >{{ "browser.found" | t: { cards: i18n.t("count.cards", { count:
+      result().rows.length }) } }}</span
+    >
+  </div>
+  <div class="cards-tools filters">
+    <label>
+      <span class="muted">{{ "browser.topic" | t }}</span>
+      <select
+        data-filter="topic"
+        [value]="filters().topic"
+        (change)="set('topic', $any($event.target).value)"
+      >
+        <option value="">{{ "browser.all" | t }}</option>
+        @for (topic of options().topics; track topic.path) {
+        <option [value]="topic.path">{{ topic.title }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      <span class="muted">{{ "browser.tag" | t }}</span>
+      <select
+        data-filter="tag"
+        [value]="filters().tag"
+        (change)="set('tag', $any($event.target).value)"
+      >
+        <option value="">{{ "browser.all" | t }}</option>
+        @for (tag of options().tags; track tag) {
+        <option [value]="tag">{{ tag }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      <span class="muted">{{ "browser.type" | t }}</span>
+      <select
+        data-filter="type"
+        [value]="filters().type"
+        (change)="set('type', $any($event.target).value)"
+      >
+        <option value="">{{ "browser.all" | t }}</option>
+        @for (type of options().types; track type) {
+        <option [value]="type">{{ type }}</option>
+        }
+      </select>
+    </label>
+    <label>
+      <span class="muted">{{ "browser.status" | t }}</span>
+      <select
+        data-filter="status"
+        [value]="filters().status"
+        (change)="set('status', $any($event.target).value)"
+      >
+        <option value="">{{ "browser.all" | t }}</option>
+        @for (status of statuses; track status) {
+        <option [value]="status">{{ statusKeys[status]! | t }}</option>
+        }
+      </select>
+    </label>
+    <label class="check">
+      <input
+        type="checkbox"
+        data-filter="leech"
+        [checked]="filters().leech"
+        (change)="set('leech', $any($event.target).checked)"
+      />
+      {{ "browser.leech" | t }}
+    </label>
+    <label class="check">
+      <input
+        type="checkbox"
+        data-filter="changed"
+        [checked]="filters().changed"
+        (change)="set('changed', $any($event.target).checked)"
+      />
+      {{ "browser.changed" | t }}
+    </label>
+    <button class="btn sm" type="button" (click)="clear()">
+      {{ "browser.clear" | t }}
+    </button>
+  </div>
+  @if (filters().items.length > 0) {
+  <p class="muted">{{ "browser.items" | t }}</p>
+  } @if (result().topics.length > 0) {
+  <section class="glist">
+    <h2 class="group-h">{{ "browser.topics" | t }}</h2>
+    <div class="group-body">
+      @for (topic of result().topics; track topic.id) {
+      <a
+        class="g-row g-action"
+        [routerLink]="['/topic', ...topic.id.split('/')]"
+      >
+        {{ topic.title }}<wl-icon name="chevron" />
+      </a>
+      }
+    </div>
+  </section>
+  }
+  <div class="group-body table-wrap">
+    <table class="list">
+      <thead>
+        <tr>
+          <th scope="col">{{ "col.card" | t }}</th>
+          <th scope="col">{{ "col.type" | t }}</th>
+          <th scope="col">{{ "col.topic" | t }}</th>
+          <th scope="col">{{ "col.r" | t }}</th>
+          <th scope="col">{{ "col.due" | t }}</th>
+          <th scope="col" class="num">{{ "col.lapses" | t }}</th>
+          <th scope="col">{{ "col.last" | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of result().rows; track row.item) {
+        <tr
+          [attr.data-item]="row.item"
+          [attr.data-due]="row.dueAt"
+          [class.selected]="selected() === row.item"
+        >
+          <td class="title">
+            <button
+              type="button"
+              class="row-open"
+              (click)="selected.set(row.item)"
+            >
+              {{ rowTitle(row) }}
+            </button>
+            @if (row.changed) {
+            <span class="status-changed"
+              ><wl-icon name="pencil" />{{ "status.changed" | t }}</span
+            >
+            } @if (row.leech) {
+            <span class="chip">{{ "status.leech" | t }}</span>
+            } @if (row.status !== "active") {
+            <span class="chip">{{ statusKeys[row.status]! | t }}</span>
+            }
+          </td>
+          <td class="type">{{ row.type }}</td>
+          <td class="topic">{{ row.topicTitle }}</td>
+          <td class="r">
+            <span class="r-cell"
+              ><wl-memory-point
+                size="small"
+                [retrievability]="row.retrievability"
+              />{{ r(row) }}</span
+            >
+          </td>
+          <td class="due">{{ due(row) }}</td>
+          <td class="num tnum">{{ row.lapses }}</td>
+          <td class="last">{{ rating(row) }}</td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="7" class="empty">{{ "browser.none" | t }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  @if (panel(); as panel) {
+  <aside
+    class="drawer"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    [attr.aria-label]="panel.card.title"
+  >
+    <div class="row drawer-head">
+      <span class="crumb">{{ panel.row.topicTitle }}</span>
+      <button
+        class="btn"
+        type="button"
+        aria-keyshortcuts="Escape"
+        (click)="selected.set(undefined)"
+      >
+        {{ "panel.close" | t }} <kbd>Esc</kbd>
+      </button>
+    </div>
+    <div class="row">
+      <span class="chip">{{ panel.card.type }} · {{ panel.card.bloom }}</span>
+      <span class="chip">{{ panel.row.item }}</span>
+    </div>
+    <h3 [attr.lang]="panel.card.lang">{{ panel.card.title }}</h3>
+    <div
+      class="question"
+      [attr.lang]="panel.card.lang"
+      [wlBundleHtml]="panel.card.questionHtml"
+    ></div>
+    <div
+      class="answer"
+      [attr.lang]="panel.card.lang"
+      [wlBundleHtml]="panel.card.answerHtml"
+    ></div>
+    @if (panel.card.explanationHtml !== "") {
+    <div
+      class="explanation"
+      [attr.lang]="panel.card.lang"
+      [wlBundleHtml]="panel.card.explanationHtml"
+    ></div>
+    }
+    <div class="row">
+      @if (panel.row.status === "suspended") {
+      <button
+        class="btn primary"
+        type="button"
+        data-unsuspend
+        (click)="unsuspend(panel.row.item)"
+      >
+        {{ "panel.unsuspend" | t }}
+      </button>
+      } @if (panel.editor; as href) {
+      <a #editor class="btn" [href]="href" aria-keyshortcuts="e"
+        >{{ "context.vscode" | t }} <kbd>e</kbd></a
+      >
+      }
+      <a class="btn" [routerLink]="panel.topicLink" aria-keyshortcuts="o"
+        >{{ "panel.open-topic" | t }} <kbd>o</kbd></a
+      >
+    </div>
+  </aside>
+  }
+</main>

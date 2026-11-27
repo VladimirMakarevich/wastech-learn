@@ -1,0 +1,70 @@
+<main class="screen" data-screen="stats">
+  @if (model(); as model) {
+  <div class="stats-layout">
+    <div class="stats-col">
+      <section>
+        <h2 class="group-h">{{ "stats.forecast" | t }}</h2>
+        <div class="group-body chart">
+          <div class="chart-y">
+            <span class="tnum">{{ model.max }}</span><span class="tnum">0</span>
+          </div>
+          <div
+            class="bars30"
+            role="img"
+            data-forecast
+            [attr.data-due]="model.forecast[0]?.due"
+            [attr.aria-label]="'stats.forecast-label' | t: { max: cards(model.max), average: cards(model.average) }"
+          >
+            @for (bar of model.forecast; track bar.key) {
+            <span
+              [class.today]="bar.today"
+              [class.wknd]="bar.weekend && !bar.today"
+              [style.height.%]="model.max === 0 ? 0 : (bar.due / model.max) * 100"
+              [attr.data-due]="bar.due"
+            ></span>
+            }
+          </div>
+          <div class="chart-x">
+            @for (day of ticks; track day) {
+            <span [class.tick-end]="day === 29" [style.--at]="day"
+              >{{ tick(day) }}</span
+            >
+            }
+          </div>
+        </div>
+        <p class="group-f">
+          {{ "stats.average" | t: { cards: cards(model.average) } }}
+        </p>
+      </section>
+    </div>
+    <div class="stats-col">
+      <section>
+        <h2 class="group-h">{{ "stats.retention" | t }}</h2>
+        <dl class="group-body">
+          <div class="g-row" data-retention="young-7">
+            <dt>{{ "stats.young" | t }} · {{ "stats.week" | t }}</dt>
+            <dd class="tnum">{{ value(model.young.week) }}</dd>
+          </div>
+          <div class="g-row" data-retention="young-30">
+            <dt>{{ "stats.young" | t }} · {{ "stats.month" | t }}</dt>
+            <dd class="tnum">{{ value(model.young.month) }}</dd>
+          </div>
+          <div class="g-row" data-retention="mature-7">
+            <dt>{{ "stats.mature" | t }} · {{ "stats.week" | t }}</dt>
+            <dd class="tnum">{{ value(model.mature.week) }}</dd>
+          </div>
+          <div class="g-row" data-retention="mature-30">
+            <dt>{{ "stats.mature" | t }} · {{ "stats.month" | t }}</dt>
+            <dd class="tnum">{{ value(model.mature.month) }}</dd>
+          </div>
+        </dl>
+        <p class="group-f">
+          {{ "stats.retention-note" | t: { target: i18n.number(model.target, {
+          minimumFractionDigits: 2 }) } }}
+        </p>
+      </section>
+      <p class="group-f later">{{ "stats.later" | t }}</p>
+    </div>
+  </div>
+  }
+</main>

@@ -1,4 +1,4 @@
-// Stylelint for every .css file (the prototype today, the app later). Run by `npm run lint:css`, and so by
+// Stylelint for every .css file (the prototype and the app). Run by `npm run lint:css`, and so by
 // `lint:code` and `lint`.
 //
 // The standard set: errors plus the modern CSS conventions (space-separated colour functions, percentage
@@ -8,7 +8,12 @@
 /** @type {import('stylelint').Config} */
 export default {
   extends: ["stylelint-config-standard"],
-  ignoreFiles: ["**/node_modules/**", "**/dist/**", "**/coverage/**"],
+  ignoreFiles: [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/coverage/**",
+    "**/.angular/**",
+  ],
   reportDescriptionlessDisables: true,
   reportNeedlessDisables: true,
   reportInvalidScopeDisables: true,
