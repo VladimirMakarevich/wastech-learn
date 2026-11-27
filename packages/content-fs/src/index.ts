@@ -83,3 +83,23 @@ export type {
   RepositoryWatcher,
   WatchOptions,
 } from "./watch.js";
+export {
+  GIT_TIMEOUT_MS,
+  firstLine,
+  gitEnvironment,
+  runGit,
+} from "./git/run.js";
+export type { GitResult, GitRunOptions } from "./git/run.js";
+export {
+  classifyPath,
+  isIndexLocked,
+  locateRepository,
+  parsePorcelainV2,
+  readGitState,
+} from "./git/status.js";
+export type {
+  BranchInfo,
+  ParsedStatus,
+  RepositoryGitState,
+} from "./git/status.js";
+export { SYNC_AREAS, isSynced, suggestCommitMessage } from "./git/message.js";

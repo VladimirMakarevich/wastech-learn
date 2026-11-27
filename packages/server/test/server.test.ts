@@ -275,7 +275,8 @@ describe("GET /api/changes", () => {
     };
     const stream = await get(server, "/api/changes");
     expect(stream.headers.get("content-type")).toContain("text/event-stream");
-    const received = readEvents(stream, 3);
+    // Every change also asks the app to reread the git state.
+    const received = readEvents(stream, 6);
 
     watcher.announce({
       kinds: ["reviews"],
@@ -303,7 +304,11 @@ describe("GET /api/changes", () => {
     );
     watcher.announce({ kinds: ["content"], paths: [CARD] });
 
-    const events = await received;
+    const all = await received;
+    expect(all.filter((event) => event.event === "git-changed")).toHaveLength(
+      3,
+    );
+    const events = all.filter((event) => event.event !== "git-changed");
     expect(events.map((event) => event.event)).toEqual([
       "events-changed",
       "content-changed",

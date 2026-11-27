@@ -5,8 +5,11 @@ import { LearnError } from "@wastech-learn/core";
 import { isMissing, toPosix } from "./fs-utils.js";
 import { CONFIG_FILE, LOCAL_FILE } from "./repo.js";
 
-/** What changed: the content (cards, topics, diagrams), the review log, or the configuration. */
-export type ChangeKind = "content" | "reviews" | "config";
+/**
+ * What changed: the content (cards, topics, diagrams), the review log, the configuration, or any other
+ * file of the work tree, which matters only to the git state the app shows.
+ */
+export type ChangeKind = "content" | "reviews" | "config" | "other";
 
 export interface RepositoryChange {
   readonly kinds: readonly ChangeKind[];
@@ -37,14 +40,24 @@ export interface RepositoryWatcher {
 const DEFAULT_DEBOUNCE_MS = 200;
 
 const IGNORED = [".git/", ".cache/", "node_modules/"];
-const KIND_ORDER: readonly ChangeKind[] = ["content", "reviews", "config"];
+const KIND_ORDER: readonly ChangeKind[] = [
+  "content",
+  "reviews",
+  "config",
+  "other",
+];
 
 const kindOf = (path: string): ChangeKind | undefined => {
-  if (IGNORED.some((prefix) => path.startsWith(prefix))) return undefined;
+  if (
+    IGNORED.some(
+      (prefix) => path.startsWith(prefix) || path === prefix.slice(0, -1),
+    )
+  )
+    return undefined;
   if (path.startsWith("content/")) return "content";
   if (path.startsWith("reviews/") && path.endsWith(".jsonl")) return "reviews";
   if (path === CONFIG_FILE || path === LOCAL_FILE) return "config";
-  return undefined;
+  return "other";
 };
 
 const sizeOf = async (path: string): Promise<number | undefined> => {
@@ -58,9 +71,10 @@ const sizeOf = async (path: string): Promise<number | undefined> => {
 
 /**
  * Watches a content repository with the platform's recursive watcher and reports, after a quiet moment,
- * which kinds of files changed: content, the review log, or the configuration. `.git/` and `.cache/` are
- * ignored. Appends this process registers with `ownAppend` are left out, so a client is told only about
- * what it does not already know: an edit in VS Code, a pull, another writer's events.
+ * which kinds of files changed: content, the review log, the configuration or another file of the work
+ * tree. `.git/`, `.cache/` and `node_modules/` are ignored: their churn says nothing about what the
+ * owner has not committed. Appends this process registers with `ownAppend` are left out, so a client is
+ * told only about what it does not already know: an edit in VS Code, a pull, another writer's events.
  */
 export const watchRepository = (
   root: string,

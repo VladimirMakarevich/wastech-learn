@@ -1,11 +1,17 @@
+import { getRandomValues } from "node:crypto";
 import { stat } from "node:fs/promises";
+import { hostname } from "node:os";
 import { join } from "node:path";
 import {
   appendReviewEvents,
   loadConfigSource,
   loadDevice,
+  openWorkspace,
+  readGitState,
   readReviewLog,
+  suggestCommitMessage,
   watchRepository,
+  type Workspace,
   type RepositoryChange,
   type RepositoryWatcher,
   type WatchOptions,
@@ -13,6 +19,8 @@ import {
 import {
   isLearnError,
   parseReviewEvent,
+  type GitState,
+  type RandomSource,
   type ReviewEvent,
 } from "@wastech-learn/core";
 import { SCHEDULER_PACKAGE } from "@wastech-learn/srs";
@@ -23,7 +31,7 @@ import {
   type BuildOutcome,
   type BundleHolder,
 } from "./bundle.js";
-import { createChangeHub, type ChangeEvent } from "./changes.js";
+import { createChangeHub, type ChangeHub } from "./changes.js";
 import { guard, limitBody } from "./guard.js";
 import { appFile, fileUnder } from "./static.js";
 
@@ -57,6 +65,8 @@ export interface ServerOptions {
   /** The port the server listens on, once known, for the `Host` and `Origin` checks. */
   readonly port?: () => number | undefined;
   readonly now?: () => Date;
+  /** The randomness of new ids; tests pass a seeded one. */
+  readonly random?: RandomSource;
   readonly hostname?: () => string;
   /** Replaced in tests, so a change can be announced without touching the disk. */
   readonly watch?: (root: string, options: WatchOptions) => RepositoryWatcher;
@@ -116,17 +126,41 @@ const checkBatch = (
   return { ok: true, events };
 };
 
-const routes = (
-  options: ServerOptions,
-  holder: BundleHolder,
-  watcher: () => RepositoryWatcher | undefined,
-  subscribe: (listener: (event: ChangeEvent) => void) => () => void,
-  ready: Promise<void>,
-): Hono => {
+const cryptoRandom: RandomSource = () =>
+  (getRandomValues(new Uint32Array(1))[0] ?? 0) / 2 ** 32;
+
+interface RouteDeps {
+  readonly options: ServerOptions;
+  readonly holder: BundleHolder;
+  readonly workspace: Workspace;
+  readonly watcher: () => RepositoryWatcher | undefined;
+  readonly hub: ChangeHub;
+  readonly ready: Promise<void>;
+}
+
+const routes = ({
+  options,
+  holder,
+  workspace,
+  watcher,
+  hub,
+  ready,
+}: RouteDeps): Hono => {
   const { root } = options;
-  // Appends are queued one after another: two batches racing for the same file could both miss an id the
-  // other is writing.
-  let appending: Promise<unknown> = Promise.resolve();
+  const subscribe = hub.subscribe;
+
+  const gitState = async (): Promise<GitState> => {
+    const [state, device] = await Promise.all([
+      readGitState(root),
+      // The device only names the suggested message; a broken learn.local.json must not hide the state.
+      workspace.device().catch(() => (options.hostname ?? hostname)()),
+    ]);
+    return {
+      ...state,
+      entries: [...state.entries],
+      suggestedMessage: suggestCommitMessage(state.entries, device),
+    };
+  };
 
   const api = new Hono();
 
@@ -188,11 +222,11 @@ const routes = (
     const { device } = await loadDevice(root, options.hostname);
     const checked = checkBatch(raw, device);
     if (!checked.ok) return refusal(c, checked.refusal);
-    const append = appending.then(() =>
+    // Appends share the queue with content writes and git: two batches racing for the same file could
+    // both miss an id the other is writing, and a line appended in the middle of a rebase could be lost.
+    const results = await workspace.exclusive(() =>
       appendReviewEvents(root, checked.events),
     );
-    appending = append.catch(() => undefined);
-    const results = await append;
     for (const result of results) {
       if (result.written === 0) continue;
       watcher()?.ownAppend(
@@ -200,11 +234,15 @@ const routes = (
         (await stat(join(root, result.file))).size,
       );
     }
+    if (results.some((result) => result.written > 0))
+      hub.publish({ type: "git-changed" });
     return c.json({
       appended: results.reduce((sum, result) => sum + result.written, 0),
       duplicates: results.reduce((sum, result) => sum + result.skipped, 0),
     });
   });
+
+  api.get("/git", async (c) => c.json(await gitState()));
 
   api.get("/changes", (c) =>
     streamSSE(c, async (stream) => {
@@ -287,6 +325,12 @@ export const createServer = (options: ServerOptions): LearnServer => {
   const now = options.now ?? (() => new Date());
   const holder = createBundleHolder(options.root, now);
   const hub = createChangeHub();
+  const workspace = openWorkspace({
+    root: options.root,
+    now,
+    random: options.random ?? cryptoRandom,
+    ...(options.hostname === undefined ? {} : { hostname: options.hostname }),
+  });
 
   const build = async (): Promise<BuildOutcome> => {
     const outcome = await holder.rebuild();
@@ -297,6 +341,9 @@ export const createServer = (options: ServerOptions): LearnServer => {
   const ready = build().then(() => undefined);
 
   const onChange = (change: RepositoryChange): void => {
+    // Any change in the work tree may change what is not committed yet; the app rereads only the cheap
+    // git state, not the bundle.
+    hub.publish({ type: "git-changed" });
     if (change.kinds.includes("reviews"))
       hub.publish({ type: "events-changed" });
     if (change.kinds.includes("content") || change.kinds.includes("config")) {
@@ -318,7 +365,14 @@ export const createServer = (options: ServerOptions): LearnServer => {
   });
 
   return {
-    app: routes(options, holder, () => watcher, hub.subscribe, ready),
+    app: routes({
+      options,
+      holder,
+      workspace,
+      watcher: () => watcher,
+      hub,
+      ready,
+    }),
     ready,
     close: () => {
       watcher.close();

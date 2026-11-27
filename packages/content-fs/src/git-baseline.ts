@@ -1,25 +1,13 @@
-import { execFile } from "node:child_process";
-import { promisify } from "node:util";
+import { runGit } from "./git/run.js";
 
-const run = promisify(execFile);
-
-// Card files are a few kilobytes; the limit only guards against a runaway diff listing.
-const MAX_BUFFER = 64 * 1024 * 1024;
-
+// Not a git repository, no commit yet, git missing, or the file is new: there is no previous version to
+// compare with, and the large-edit warning simply stays silent.
 const git = async (
   root: string,
   args: readonly string[],
 ): Promise<string | undefined> => {
-  try {
-    const { stdout } = await run("git", ["-C", root, ...args], {
-      maxBuffer: MAX_BUFFER,
-    });
-    return stdout;
-  } catch {
-    // Not a git repository, no commit yet, git missing, or the file is new: there is no previous version
-    // to compare with, and the large-edit warning simply stays silent.
-    return undefined;
-  }
+  const result = await runGit(root, args);
+  return result.exitCode === 0 ? result.stdout : undefined;
 };
 
 /**
