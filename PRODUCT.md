@@ -33,7 +33,7 @@ Not a deck app and not an Anki clone. Knowledge is born in the user's own AI con
 - **Reading** a topic: a 12-section summary with SVG diagrams, comparison tables and highlighted code; the self-check stays closed until asked.
 - **Editing** happens in VS Code; the app links out with `vscode://` (`e`).
 - **Return after a break**: the backlog is spread over days of 15-minute sessions, new cards pause automatically.
-- Two computers sync through git; a mobile app and cloud are phase 2.
+- Computers sync through git; there is no mobile app and no cloud (ADR-0016).
 
 Screens and wireframes: [screens](docs/ux/screens.md); shortcuts, labels, i18n: [interaction](docs/ux/interaction.md).
 
@@ -44,7 +44,7 @@ Screens and wireframes: [screens](docs/ux/screens.md); shortcuts, labels, i18n: 
 - Rating labels are fixed in three languages; Hard is always a pass — [interaction](docs/ux/interaction.md).
 - UI language ru/en/pl, independent of the topic's content language; CLDR plurals; key parity checked in CI.
 - Local-first and offline: no telemetry, no CDN fonts, no third-party requests, no API keys or model calls ([NFR](docs/requirements/nfr.md)).
-- Desktop-first wide layout (reading column, split panes); responsive from 360 px for the later mobile build.
+- Desktop-first wide layout (reading column, split panes); responsive from 360 px for narrow windows.
 - Light and dark themes follow the OS; diagrams have transparent backgrounds and `currentColor`.
 - The next card appears in under 50 ms.
 - Terms of the craft (FSRS, backpressure, change detection) stay in English in every UI language.

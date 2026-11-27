@@ -18,6 +18,7 @@
 | [0010](0010-diagrams-as-code.md) | Диаграммы как код: источник + закоммиченный SVG | accepted |
 | [0011](0011-language-per-topic.md) | Язык задаётся на тему, ключи секций на английском, без переводов в MVP | accepted |
 | [0012](0012-two-tier-validation.md) | Двухуровневая валидация: mdlint + `check` | accepted |
-| [0013](0013-cloud-sync-phase-2.md) | Фаза 2: Cloudflare Worker + D1 + Access, git остаётся архивом | proposed |
+| [0013](0013-cloud-sync-phase-2.md) | Фаза 2: Cloudflare Worker + D1 + Access, git остаётся архивом | rejected |
 | [0014](0014-search-minisearch.md) | Поиск: MiniSearch по content bundle | accepted |
 | [0015](0015-session-package.md) | Пакет `session` на `core` и `srs`; replay в клиенте без кэша `node:sqlite` | accepted |
+| [0016](0016-local-only.md) | Только локальный запуск на компьютере, без облака и мобильной версии | accepted |

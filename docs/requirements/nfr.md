@@ -20,9 +20,9 @@
 | NFR-12 | Кроссплатформенность: Linux, macOS, Windows; пути через POSIX-нормализацию; `.gitattributes` с `eol=lf` | MVP | proposed | CI на трёх ОС для ядра |
 | NFR-13 | Совместимость версий: ts-fsrs, wastech-mdlint, mermaid-cli закреплены точными версиями; версия планировщика пишется в каждое событие; Node ≥24.17 | MVP | proposed | `package.json` + lockfile |
 | NFR-14 | Тестируемость: golden content, тесты детерминизма replay, property-тесты очереди (лимиты, siblings, порядок), симуляция бэклога | MVP | done | Набор тестов `srs` и `core` |
-| NFR-15 | Mobile-ready: UI адаптивен от 360 px; хранение событий только через `ReviewStore`; ничего не зависит от Node API в браузере. В M4 — раскладка от 360 px и `ReviewStore`; сборка под Capacitor — фаза 2. | MVP | accepted | Сборка app под Capacitor (smoke) |
+| NFR-15 | UI адаптивен от 360 px (узкое окно); хранение событий только через `ReviewStore`; ничего не зависит от Node API в браузере. Сборка под Capacitor вне скоупа ([ADR-0016](../adr/0016-local-only.md)). | MVP | done | e2e на 360 px |
 | NFR-16 | Наблюдаемость в локальном режиме: сервер и MCP пишут структурированные логи без контента карточек | Later | proposed | Ревью логов |
-| NFR-17 | Безопасность remote-режима: OAuth и Cloudflare Access, запись в git только через PR, MCP-инструменты не выполняют код и не ходят по внешним URL | Later | proposed | Ревью безопасности перед фазой 2 |
+| NFR-17 | Безопасность remote-режима: OAuth и Cloudflare Access, запись в git только через PR, MCP-инструменты не выполняют код и не ходят по внешним URL — вне скоупа, [ADR-0016](../adr/0016-local-only.md) | Later | dropped | Ревью безопасности перед фазой 2 |
 
 ## Стратегия тестов
 

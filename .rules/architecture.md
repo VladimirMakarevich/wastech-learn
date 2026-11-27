@@ -6,7 +6,7 @@
 
 - TypeScript monorepo on npm workspaces: `packages/<name>`, published as `@wastech-learn/<name>`. ESM only, Node ≥ 24.17.
 - Markdown pipeline: unified/remark (the same parser wastech-mdlint uses), rehype, Shiki, KaTeX, `rehype-sanitize`. Validation: Zod. Scheduler: `ts-fsrs` pinned to an exact version. Local server: Hono. MCP: `@modelcontextprotocol/sdk` over stdio.
-- UI: desktop-first Angular (standalone, signals, zoneless) + Angular CDK for behavior only, no Angular Material; i18n ported from `wastechlab-mobile-template`; Capacitor in phase 2 (ADR-0006). The app consumes the content bundle and `ReviewStore` only.
+- UI: desktop-first Angular (standalone, signals, zoneless) + Angular CDK for behavior only, no Angular Material; i18n ported from `wastechlab-mobile-template`; local only, no Capacitor or cloud (ADR-0006, ADR-0016). The app consumes the content bundle and `ReviewStore` only.
 
 ## Packages and dependencies
 

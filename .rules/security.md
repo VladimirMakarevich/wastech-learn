@@ -23,7 +23,7 @@
 - Paths are resolved inside `--content` and rejected when they escape it (absolute paths, `..`, symlinks out).
 - Tools never execute user-provided code, never fetch URLs, never run shell commands built from input.
 - Mutating tools validate before writing and are idempotent by `requestId`; `quiz_next` never returns the answer.
-- **Remote mode (phase 2)** requires OAuth plus Cloudflare Access, and writes content through a branch or pull request, never straight to `main` (NFR-17). It gets a security review before it ships.
+- **No remote mode.** Everything runs on the owner's computer: the MCP server speaks stdio only and `serve` binds to `127.0.0.1`. Cloud and mobile are out of scope (ADR-0016); bringing them back needs a new ADR and a security review.
 
 ## Rendering content
 
