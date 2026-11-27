@@ -93,12 +93,14 @@ export const homeModel = (snapshot: LibrarySnapshot): HomeModel => {
   const dueByCard = new Map<string, number>();
   for (const entry of queue.entries)
     dueByCard.set(entry.cardId, (dueByCard.get(entry.cardId) ?? 0) + 1);
-  const itemsByCard = new Map<string, string[]>();
-  for (const card of deck.cards)
-    itemsByCard.set(card.cardId, [
-      ...(itemsByCard.get(card.cardId) ?? []),
-      card.item,
-    ]);
+  // From the bundle, not the queue deck: the deck leaves archived topics out, and their rows must still
+  // show what the learner remembers of them.
+  const itemsByCard = new Map(
+    bundle.cards.map((card) => [
+      card.id,
+      card.variants.map((variant) => `${card.id}:${variant}`),
+    ]),
+  );
   const topics = new Map(bundle.topics.map((topic) => [topic.path, topic]));
   const status = comebackStatus(toReplayEvents(snapshot.events), config, now);
   return {

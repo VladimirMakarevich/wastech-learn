@@ -1,3 +1,4 @@
+import { deckFromBundle } from "@wastech-learn/session";
 import { describe, expect, it } from "vitest";
 import { homeModel } from "../src/app/screens/home/home-model";
 import { review, snapshotAt } from "./snapshot";
@@ -70,5 +71,35 @@ describe("archived topics on Home", () => {
     });
     expect(model.domains.map((domain) => domain.id)).toEqual(["arch"]);
     expect(model.archived.map((row) => row.path)).toEqual(["lang-pl/words"]);
+  });
+});
+
+describe("an archived topic's memory", () => {
+  it("still shows what was learned, though its cards left the queue", async () => {
+    const events = [
+      review(
+        "a0000001:main",
+        "2026-11-20T09:00:00.000Z",
+        "01KB0000000000000000000003",
+      ),
+    ];
+    const snapshot = await snapshotAt(
+      new Date("2026-11-26T09:00:00.000Z"),
+      events,
+    );
+    const bundle = {
+      ...snapshot.bundle,
+      topics: snapshot.bundle.topics.map((topic) =>
+        topic.path === "arch/flow" ? { ...topic, status: "archived" } : topic,
+      ),
+    };
+    const model = homeModel({
+      ...snapshot,
+      bundle,
+      deck: deckFromBundle(bundle),
+    });
+    const row = model.archived.find((topic) => topic.path === "arch/flow");
+    expect(row?.points[0]).toEqual(expect.any(Number));
+    expect(row?.due).toBe(0);
   });
 });

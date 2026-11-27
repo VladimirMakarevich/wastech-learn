@@ -267,7 +267,7 @@ export const en = {
   },
   "git.result.both": "Commits sent: {sent}, received: {received}",
   "git.failure.conflict":
-    "The same files changed on both computers. Settle them in VS Code and commit, then sync again; the repository is as it was before you pressed Sync",
+    "The same files changed on both computers. The repository is as it was before you pressed Sync; run git pull --rebase in a terminal, settle these files in VS Code and finish the rebase, then sync again",
   "git.failure.conflict-stash":
     "Commits arrived, but local edits in these files clash with them. The edits wait in git stash: settle the files in VS Code",
   "git.failure.auth-required":
@@ -301,10 +301,14 @@ export const en = {
   "toast.archived": "Card archived: it no longer comes up for review",
   "toast.returned": "The card is active again, with its history",
   "toast.deleted": "Card deleted; until the commit this can be undone",
+  "toast.deleted-for-good":
+    "Card deleted. It was never committed, so there is no copy to bring back",
   "toast.restored": "The card is back in its topic",
   "toast.topic-archived": "Topic archived: its cards leave the queue",
   "toast.topic-returned": "The topic and its cards are back in the queue",
-  "write.blocked": "Nothing was changed: the check stopped the edit. {detail}",
+  "write.blocked":
+    "Nothing was changed: the check stopped the edit. {file}: {detail}",
+  "write.blocked-plain": "Nothing was changed: the check stopped the edit",
   "write.content-changed":
     "The file changed on disk meanwhile and was left as it is. Try again",
   "write.card-not-found": "This card is no longer in the content",
@@ -313,6 +317,8 @@ export const en = {
     "The deletion is already committed; git history keeps the file",
   "write.failed": "The server did not apply the change ({code})",
   "delete.title": "Delete the card?",
+  "delete.permanent":
+    "This card was never committed: git keeps no copy, and the deletion cannot be undone",
   "delete.plain":
     "The file and its line in the topic go away. Until the commit, the deletion can be undone in Cards",
   "delete.history":

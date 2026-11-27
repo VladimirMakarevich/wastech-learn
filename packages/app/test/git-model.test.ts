@@ -2,8 +2,10 @@ import type { GitState } from "@wastech-learn/core";
 import { describe, expect, it } from "vitest";
 import {
   cardChanges,
+  deletedCards,
   failureLine,
   hasUnsentReviews,
+  isCommittedCard,
   isInSync,
   resultLine,
   splitEntries,
@@ -38,6 +40,44 @@ const OTHER = {
   change: "untracked",
   area: "other",
 } as const;
+
+describe("deleted cards", () => {
+  const GONE = { ...CARD, change: "deleted" } as const;
+  const MOVED = {
+    ...CARD,
+    path: "content/a/c/cards/7k2m9xqd.md",
+    topic: "a/c",
+    change: "untracked",
+  } as const;
+
+  it("lists a card deleted since the last commit", () => {
+    expect(deletedCards(state({ entries: [GONE] }))).toEqual([
+      { path: GONE.path, card: GONE.card },
+    ]);
+  });
+
+  it("leaves out a card moved in the editor or still in the content", () => {
+    expect(deletedCards(state({ entries: [GONE, MOVED] }))).toEqual([]);
+    expect(
+      deletedCards(state({ entries: [GONE] }), new Set([GONE.card])),
+    ).toEqual([]);
+  });
+
+  it("knows a card git has never seen cannot come back", () => {
+    expect(isCommittedCard(state({ entries: [MOVED] }), MOVED.card)).toBe(
+      false,
+    );
+    expect(isCommittedCard(state({ entries: [CARD] }), CARD.card)).toBe(true);
+    expect(isCommittedCard(state(), CARD.card)).toBe(true);
+    expect(isCommittedCard(undefined, CARD.card)).toBe(false);
+    expect(
+      isCommittedCard(
+        state({ blocked: { reason: "not-a-repository" } }),
+        CARD.card,
+      ),
+    ).toBe(false);
+  });
+});
 
 describe("the git state on screen", () => {
   it("splits what Sync commits from what the owner commits by hand", () => {
@@ -134,10 +174,17 @@ describe("answers of the write routes", () => {
             params: {},
             severity: "error",
           },
-          "junk",
         ],
+        lint: [],
       }),
     ).toMatchObject({ kind: "blocked", findings: [{ file: "x.md" }] });
+    expect(() =>
+      parseWriteAnswer(409, {
+        status: "blocked",
+        findings: ["junk"],
+        lint: [],
+      }),
+    ).toThrow();
     expect(parseWriteAnswer(409, { code: "content-changed" })).toEqual({
       kind: "refused",
       code: "content-changed",

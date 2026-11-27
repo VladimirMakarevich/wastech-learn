@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { formatFinding } from "@wastech-learn/core";
+import { formatFinding, type AppTopicStatus } from "@wastech-learn/core";
 import type { MessageKey } from "../i18n/en";
 import { I18n } from "../i18n/i18n";
 import { Toasts } from "../ui/toast";
@@ -45,13 +45,18 @@ export class CardActions {
     return done;
   }
 
-  async delete(id: string): Promise<boolean> {
+  /**
+   * Deletes the card; the way back is offered only for a card the last commit holds, because restoring
+   * reads it from there and a card never committed exists nowhere else.
+   */
+  async delete(id: string, committed: boolean): Promise<boolean> {
     const done = await this.attempt(() => this.git.api.deleteCard(id));
-    if (done)
+    if (done && committed)
       this.toasts.show(this.i18n.t("toast.deleted"), {
         label: this.i18n.t("action.undo-delete"),
         run: () => void this.restore(id),
       });
+    else if (done) this.toasts.show(this.i18n.t("toast.deleted-for-good"));
     return done;
   }
 
@@ -61,10 +66,7 @@ export class CardActions {
     return done;
   }
 
-  async topicStatus(
-    topic: string,
-    status: "active" | "archived",
-  ): Promise<boolean> {
+  async topicStatus(topic: string, status: AppTopicStatus): Promise<boolean> {
     const done = await this.attempt(() =>
       this.git.api.topicStatus(topic, status),
     );
@@ -101,12 +103,12 @@ export class CardActions {
     if (answer.kind === "blocked") {
       const first = answer.findings[0];
       this.toasts.show(
-        this.i18n.t("write.blocked", {
-          detail:
-            first === undefined
-              ? ""
-              : `${first.file}: ${formatFinding(this.i18n.lang(), first)}`,
-        }),
+        first === undefined
+          ? this.i18n.t("write.blocked-plain")
+          : this.i18n.t("write.blocked", {
+              file: first.file,
+              detail: formatFinding(this.i18n.lang(), first),
+            }),
       );
       return false;
     }

@@ -2,7 +2,10 @@ import {
   gitFailureSchema,
   gitStateSchema,
   gitSyncResultSchema,
-  type Finding,
+  parseContentWriteAnswer,
+  type AppCardStatus,
+  type AppTopicStatus,
+  type ContentWriteAnswer,
   type GitFailure,
   type GitState,
   type GitSyncResult,
@@ -18,10 +21,7 @@ export type SyncAnswer =
  * A card or topic write: on disk, stopped by the checks with their findings, or not tried for a reason
  * the server names by code (the file changed meanwhile, the card is gone, nothing to bring back).
  */
-export type WriteAnswer =
-  | { readonly kind: "written" }
-  | { readonly kind: "blocked"; readonly findings: readonly Finding[] }
-  | { readonly kind: "refused"; readonly code: string };
+export type WriteAnswer = ContentWriteAnswer;
 
 export interface WriteApi {
   readonly gitState: () => Promise<GitState>;
@@ -29,24 +29,15 @@ export interface WriteApi {
   readonly pull: () => Promise<SyncAnswer>;
   readonly cardStatus: (
     id: string,
-    status: "active" | "retired",
+    status: AppCardStatus,
   ) => Promise<WriteAnswer>;
   readonly deleteCard: (id: string) => Promise<WriteAnswer>;
   readonly restoreCard: (id: string) => Promise<WriteAnswer>;
   readonly topicStatus: (
     topic: string,
-    status: "active" | "archived",
+    status: AppTopicStatus,
   ) => Promise<WriteAnswer>;
 }
-
-const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
-
-const isFinding = (value: unknown): value is Finding =>
-  isRecord(value) &&
-  typeof value.ruleId === "string" &&
-  typeof value.file === "string" &&
-  isRecord(value.params);
 
 const invalid = (what: string): ApiError =>
   new ApiError("response-invalid", 200, `The server sent an unusable ${what}`);
@@ -60,19 +51,12 @@ const bodyOf = async (response: Response): Promise<unknown> => {
   }
 };
 
-/** A card or topic write's answer, read by shape at the edge. */
+/** A card or topic write's answer, through core's schema, so server and app agree on one shape. */
 export const parseWriteAnswer = (status: number, raw: unknown): WriteAnswer => {
-  if (!isRecord(raw)) throw invalid("write answer");
-  if (status === 200 && raw.status === "written") return { kind: "written" };
-  if (raw.status === "blocked")
-    return {
-      kind: "blocked",
-      findings: Array.isArray(raw.findings)
-        ? raw.findings.filter(isFinding)
-        : [],
-    };
-  if (typeof raw.code === "string") return { kind: "refused", code: raw.code };
-  throw invalid("write answer");
+  const answer = parseContentWriteAnswer(raw);
+  if (answer === undefined || (answer.kind === "written" && status !== 200))
+    throw invalid("write answer");
+  return answer;
 };
 
 /** A Sync or Pull answer, through core's schemas, so server and app agree on one shape. */

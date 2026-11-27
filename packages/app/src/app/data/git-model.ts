@@ -1,9 +1,10 @@
-import type {
-  GitBlockReason,
-  GitEntry,
-  GitFailure,
-  GitState,
-  GitSyncResult,
+import {
+  isSyncedArea,
+  type GitBlockReason,
+  type GitEntry,
+  type GitFailure,
+  type GitState,
+  type GitSyncResult,
 } from "@wastech-learn/core";
 import type { MessageKey } from "../i18n/en";
 import type { MessageParams } from "../i18n/message";
@@ -14,13 +15,6 @@ export interface Line {
   readonly params?: MessageParams;
 }
 
-const SYNCED: readonly GitEntry["area"][] = [
-  "topic",
-  "card",
-  "reviews",
-  "inbox",
-];
-
 /** What Sync commits and what it leaves for the owner, as the panel lists them. */
 export const splitEntries = (
   state: GitState,
@@ -28,8 +22,8 @@ export const splitEntries = (
   readonly synced: readonly GitEntry[];
   readonly other: readonly GitEntry[];
 } => ({
-  synced: state.entries.filter((entry) => SYNCED.includes(entry.area)),
-  other: state.entries.filter((entry) => !SYNCED.includes(entry.area)),
+  synced: state.entries.filter((entry) => isSyncedArea(entry.area)),
+  other: state.entries.filter((entry) => !isSyncedArea(entry.area)),
 });
 
 /** Nothing to commit, send or receive: the sidebar can say everything is in place. */
@@ -66,16 +60,51 @@ export const cardChanges = (
     ),
   );
 
-/** Cards deleted since the last commit, which Cards still lists so they can be brought back. */
+/**
+ * Cards deleted since the last commit, which Cards still lists so they can be brought back. A card moved
+ * in the editor shows in git as a deletion plus a new file with the same id; it is not gone, so it is
+ * left out, as is any card the content still holds under another path.
+ */
 export const deletedCards = (
   state: GitState,
-): readonly { readonly path: string; readonly card: string }[] =>
-  state.entries.flatMap((entry) =>
+  present: ReadonlySet<string> = new Set(),
+): readonly { readonly path: string; readonly card: string }[] => {
+  const elsewhere = new Set(
+    state.entries.flatMap((entry) =>
+      entry.area === "card" &&
+      entry.change !== "deleted" &&
+      entry.card !== undefined
+        ? [entry.card]
+        : [],
+    ),
+  );
+  return state.entries.flatMap((entry) =>
     entry.area === "card" &&
     entry.change === "deleted" &&
-    entry.card !== undefined
+    entry.card !== undefined &&
+    !elsewhere.has(entry.card) &&
+    !present.has(entry.card)
       ? [{ path: entry.path, card: entry.card }]
       : [],
+  );
+};
+
+/**
+ * Whether the last commit holds the card: a card never committed, or a folder without git, leaves nothing
+ * to bring back after a deletion. An unknown state counts as not committed, so no undo is promised.
+ */
+export const isCommittedCard = (
+  state: GitState | undefined,
+  card: string,
+): boolean =>
+  state !== undefined &&
+  state.blocked?.reason !== "no-git" &&
+  state.blocked?.reason !== "not-a-repository" &&
+  !state.entries.some(
+    (entry) =>
+      entry.area === "card" &&
+      entry.card === card &&
+      (entry.change === "untracked" || entry.change === "added"),
   );
 
 const BLOCK_KEYS: Readonly<Record<GitBlockReason, MessageKey>> = {

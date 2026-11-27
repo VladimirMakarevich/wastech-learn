@@ -277,7 +277,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   },
   "git.result.both": "Commity wysłane: {sent}, pobrane: {received}",
   "git.failure.conflict":
-    "Te same pliki zmieniono na obu komputerach. Rozwiąż konflikt w VS Code i zrób commit, potem zsynchronizuj ponownie; repozytorium jest takie jak przed kliknięciem",
+    "Te same pliki zmieniono na obu komputerach. Repozytorium jest takie jak przed kliknięciem; uruchom git pull --rebase w terminalu, rozwiąż konflikt w tych plikach w VS Code i dokończ rebase, potem zsynchronizuj ponownie",
   "git.failure.conflict-stash":
     "Commity pobrane, ale lokalne zmiany w tych plikach się z nimi rozchodzą. Zmiany czekają w git stash: rozwiąż konflikt w VS Code",
   "git.failure.auth-required":
@@ -310,10 +310,14 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "toast.archived": "Karta w archiwum: nie wraca już do powtórek",
   "toast.returned": "Karta znów jest aktywna, z historią",
   "toast.deleted": "Karta usunięta; do commitu można to cofnąć",
+  "toast.deleted-for-good":
+    "Karta usunięta. Nigdy nie trafiła do commitu, więc nie ma skąd jej przywrócić",
   "toast.restored": "Karta znów jest w swoim temacie",
   "toast.topic-archived": "Temat w archiwum: jego karty zniknęły z kolejki",
   "toast.topic-returned": "Temat i jego karty wróciły do kolejki",
-  "write.blocked": "Nic nie zmieniono: sprawdzenie zatrzymało zmianę. {detail}",
+  "write.blocked":
+    "Nic nie zmieniono: sprawdzenie zatrzymało zmianę. {file}: {detail}",
+  "write.blocked-plain": "Nic nie zmieniono: sprawdzenie zatrzymało zmianę",
   "write.content-changed":
     "Plik w międzyczasie zmienił się na dysku i został bez zmian. Spróbuj ponownie",
   "write.card-not-found": "Tej karty nie ma już w treści",
@@ -322,6 +326,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Usunięcie jest już w commicie; plik został w historii git",
   "write.failed": "Serwer nie zastosował zmiany ({code})",
   "delete.title": "Usunąć kartę?",
+  "delete.permanent":
+    "Ta karta nigdy nie trafiła do commitu: git nie ma jej kopii i usunięcia nie da się cofnąć",
   "delete.plain":
     "Plik i jego wiersz w temacie znikną. Do commitu usunięcie można cofnąć w „Kartach”",
   "delete.history":

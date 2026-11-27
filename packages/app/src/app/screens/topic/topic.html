@@ -28,7 +28,7 @@
       >
         {{ "topic.unarchive" | t }}
       </button>
-      } @else {
+      } @else if (topic.status !== "draft") {
       <button
         class="btn"
         type="button"

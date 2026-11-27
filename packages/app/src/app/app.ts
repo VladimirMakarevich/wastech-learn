@@ -159,17 +159,6 @@ export class App {
     return this.i18n.t("git.indicator.clean", { device });
   });
 
-  protected readonly syncLabel = computed(() => {
-    const state = this.git.state();
-    const parts = [this.saveStatus()];
-    if (state !== undefined && state.ahead > 0)
-      parts.push(this.i18n.t("git.ahead", { count: state.ahead }));
-    if (state !== undefined && state.behind > 0)
-      parts.push(this.i18n.t("git.behind", { count: state.behind }));
-    parts.push(this.i18n.t("git.open"));
-    return parts.join(". ");
-  });
-
   constructor() {
     const document = inject(DOCUMENT);
     globalThis

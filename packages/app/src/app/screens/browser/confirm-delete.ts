@@ -5,8 +5,13 @@ import { TPipe } from "../../i18n/t.pipe";
 export interface ConfirmDeleteData {
   readonly title: string;
   readonly lang: string;
-  /** The log holds events of this card: deleting it drops them from the queue and the statistics. */
+  /**
+   * The log holds events of this card: deleting it takes the card out of the queue, while its past answers
+   * stay in the log and keep counting in the statistics.
+   */
   readonly history: boolean;
+  /** The last commit holds the card, so a deletion can be undone until the next commit. */
+  readonly committed: boolean;
 }
 
 /** What the learner chose: delete the file, archive it instead, or neither (the dialog was closed). */
@@ -15,7 +20,8 @@ export type DeleteChoice = "delete" | "archive";
 /**
  * Asks before a card is deleted. A card without history goes after one plain confirmation. A card with
  * history says what is lost and offers the archive as the first choice: it keeps the history and can be
- * undone at any time, while a deletion can be undone only until it is committed.
+ * undone at any time, while a deletion can be undone only until it is committed. A card the last commit
+ * does not hold is said to go for good: there is no copy to bring back.
  */
 @Component({
   selector: "wl-confirm-delete",
@@ -24,8 +30,11 @@ export type DeleteChoice = "delete" | "archive";
     <p [attr.lang]="data.lang">{{ data.title }}</p>
     @if (data.history) {
       <p class="git-note" data-history>{{ "delete.history" | t }}</p>
-    } @else {
+    } @else if (data.committed) {
       <p class="git-note">{{ "delete.plain" | t }}</p>
+    }
+    @if (!data.committed) {
+      <p class="git-note" data-permanent>{{ "delete.permanent" | t }}</p>
     }
     <div class="row dialog-actions">
       @if (data.history) {

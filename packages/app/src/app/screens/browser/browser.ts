@@ -18,7 +18,11 @@ import type { GitEntry } from "@wastech-learn/core";
 import { unsuspendEvent } from "@wastech-learn/session";
 import { AppData } from "../../data/app-data";
 import { CardActions } from "../../data/card-actions";
-import { cardChanges, deletedCards } from "../../data/git-model";
+import {
+  cardChanges,
+  deletedCards,
+  isCommittedCard,
+} from "../../data/git-model";
 import { GitStatus } from "../../data/git-state";
 import { Clock } from "../../data/clock";
 import { Library } from "../../data/library";
@@ -113,7 +117,8 @@ export class Browser {
   /** Cards deleted since the last commit: no longer in the content, but still possible to bring back. */
   protected readonly deleted = computed(() => {
     const state = this.git.state();
-    return state === undefined ? [] : deletedCards(state);
+    const present = new Set(this.rows().map((row) => row.cardId));
+    return state === undefined ? [] : deletedCards(state, present);
   });
 
   protected readonly result = computed(() =>
@@ -241,7 +246,8 @@ export class Browser {
       ConfirmDeleteData,
       DialogRef<DeleteChoice>
     >();
-    config.data = { title, lang, history };
+    const committed = isCommittedCard(this.git.state(), cardId);
+    config.data = { title, lang, history, committed };
     config.ariaLabelledBy = "confirm-title";
     config.autoFocus = "first-tabbable";
     config.restoreFocus = true;
@@ -254,7 +260,7 @@ export class Browser {
     ref.closed.subscribe((choice) => {
       if (choice === "archive") void this.cardActions.archive(cardId);
       if (choice === "delete")
-        void this.cardActions.delete(cardId).then((done) => {
+        void this.cardActions.delete(cardId, committed).then((done) => {
           if (done) this.selected.set(undefined);
         });
     });
