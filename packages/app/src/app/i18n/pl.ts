@@ -325,7 +325,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "delete.plain":
     "Plik i jego wiersz w temacie znikną. Do commitu usunięcie można cofnąć w „Kartach”",
   "delete.history":
-    "Ta karta ma historię powtórek. Historia zostanie w dzienniku, ale karta zniknie z kolejki i statystyk. Archiwum zachowuje wszystko i można je cofnąć w każdej chwili",
+    "Ta karta ma historię powtórek. Historia zostanie w dzienniku, dawne odpowiedzi w statystykach, a karta zniknie z kolejki. Archiwum zachowuje wszystko i można je cofnąć w każdej chwili",
   "delete.anyway": "Mimo to usuń",
   "delete.cancel": "Anuluj",
   "browser.uncommitted": "Bez commitu",

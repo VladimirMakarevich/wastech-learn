@@ -38,7 +38,7 @@ export type DeleteChoice = "delete" | "archive";
           {{ "action.archive" | t }}
         </button>
         <button
-          class="btn"
+          class="btn danger"
           type="button"
           data-choose-delete
           (click)="close('delete')"
@@ -47,7 +47,7 @@ export type DeleteChoice = "delete" | "archive";
         </button>
       } @else {
         <button
-          class="btn primary"
+          class="btn danger"
           type="button"
           data-choose-delete
           (click)="close('delete')"

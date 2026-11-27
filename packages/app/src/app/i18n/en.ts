@@ -316,7 +316,7 @@ export const en = {
   "delete.plain":
     "The file and its line in the topic go away. Until the commit, the deletion can be undone in Cards",
   "delete.history":
-    "This card has review history. The history stays in the log, but the card leaves the queue and the statistics. Archiving keeps everything and can be undone at any time",
+    "This card has review history. The history stays in the log and its past answers still count in the statistics; the card leaves the queue. Archiving keeps everything and can be undone at any time",
   "delete.anyway": "Delete anyway",
   "delete.cancel": "Cancel",
   "browser.uncommitted": "Not committed",

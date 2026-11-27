@@ -124,8 +124,9 @@ button.sync:hover {
   color: var(--ink);
 }
 
+/* Not amber, the Hard rating's hue: something waiting to be committed or sent is news, not a warning. */
 .sync .dot.waiting {
-  background: var(--amber);
+  background: var(--muted);
 }
 
 /* Modal dialogs: an opaque panel over a dimmed page, so the text inside never sits on moving content. */
@@ -226,4 +227,9 @@ button.sync:hover {
 
 .confirm-panel h2 {
   font-size: 20px;
+}
+
+/* Red is reserved for Again and for what destroys: deleting a card says so in its colour. */
+.btn.danger {
+  color: var(--red-ink);
 }

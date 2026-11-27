@@ -19,7 +19,7 @@
 | FR-211 | Leech: после 8 lapses автоматически пишется `suspend` и ставится тег `leech` | MVP | done | LP-13 | J-07 |
 | FR-212 | Cram: тренировка по теме, тегу или домену без влияния на расписание (событие `practice`) | Later | proposed | LP-01 | J-06 |
 | FR-213 | Смешанная сессия: 20–30 мин сценарных карточек и карточек сравнения из разных доменов | Later | proposed | LP-03, LP-04 | J-06 |
-| FR-214 | Suspend, unsuspend и retire карточки прямо из повторения (`!`). В M4 — suspend и unsuspend; retire — Later. | MVP | accepted | LP-13 | J-07 |
+| FR-214 | Suspend и retire карточки прямо из повторения: `!` — suspend, `a` — в архив (`retired`) с возвратом из тоста; unsuspend и возврат из архива — в Cards ([app-sync-and-cards](../tasks/app-sync-and-cards/index.md)) | MVP | done | LP-13 | J-07 |
 | FR-215 | Действия в повторении: открыть тему (`o`), открыть файл в VS Code (`e`, `vscode://file/…`), пометить «переписать». В M4 — `b` до конца сессии; пометка «переписать» (`r`) — Later. | MVP | accepted | LP-05 | J-03, J-07 |
 | FR-216 | Подсказка о смысле Hard, если Hard больше 25% ответов и после него часты lapses | Later | proposed | LP-08 | J-03 |
 | FR-217 | Лестница подсказок в вебе для `scenario`: подсказка до ответа ограничивает максимальную оценку уровнем Hard | Later | proposed | LP-10, LP-15 | J-03 |
