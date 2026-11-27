@@ -266,7 +266,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/architecture/backpressure/cards/0d1gjcys.md",
       "questionHtml": "<p>[Streaming] Why does a consumer signal demand to the producer?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>So the producer never sends more than the consumer can buffer and process.</p>",
       "rubric": [],
       "explanationHtml": "<p><span class=\"diagram\" role=\"img\" aria-label=\"Demand flow: the consumer requests n items, the producer sends at most n\"><svg id=\"dg-279fa1f2-2\" width=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" class=\"flowchart\" style=\"max-width: 703.969px; \" viewBox=\"0 0.000003814697265625 703.96875 175.37066650390625\" role=\"graphics-document document\" aria-roledescription=\"flowchart-v2\"><g><marker id=\"dg-279fa1f2-2_flowchart-v2-pointEnd\" class=\"marker flowchart-v2\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerUnits=\"userSpaceOnUse\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto\"><path d=\"M 0 0 L 10 5 L 0 10 z\" class=\"arrowMarkerPath\" style=\"stroke-width: 1; stroke-dasharray: 1, 0;\"></path></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-pointStart\" class=\"marker flowchart-v2\" viewBox=\"0 0 10 10\" refX=\"4.5\" refY=\"5\" markerUnits=\"userSpaceOnUse\" markerWidth=\"8\" markerHeight=\"8\" orient=\"auto\"><path d=\"M 0 5 L 10 10 L 10 0 z\" class=\"arrowMarkerPath\" style=\"stroke-width: 1; stroke-dasharray: 1, 0;\"></path></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-pointEnd-margin\" class=\"marker flowchart-v2\" viewBox=\"0 0 11.5 14\" refX=\"11.5\" refY=\"7\" markerUnits=\"userSpaceOnUse\" markerWidth=\"10.5\" markerHeight=\"14\" orient=\"auto\"><path d=\"M 0 0 L 11.5 7 L 0 14 z\" class=\"arrowMarkerPath\" style=\"stroke-width: 0; stroke-dasharray: 1, 0;\"></path></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-pointStart-margin\" class=\"marker flowchart-v2\" viewBox=\"0 0 11.5 14\" refX=\"1\" refY=\"7\" markerUnits=\"userSpaceOnUse\" markerWidth=\"11.5\" markerHeight=\"14\" orient=\"auto\"><polygon points=\"0,7 11.5,14 11.5,0\" class=\"arrowMarkerPath\" style=\"stroke-width: 0; stroke-dasharray: 1, 0;\"></polygon></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-circleEnd\" class=\"marker flowchart-v2\" viewBox=\"0 0 10 10\" refX=\"11\" refY=\"5\" markerUnits=\"userSpaceOnUse\" markerWidth=\"11\" markerHeight=\"11\" orient=\"auto\"><circle cx=\"5\" cy=\"5\" r=\"5\" class=\"arrowMarkerPath\" style=\"stroke-width: 1; stroke-dasharray: 1, 0;\"></circle></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-circleStart\" class=\"marker flowchart-v2\" viewBox=\"0 0 10 10\" refX=\"-1\" refY=\"5\" markerUnits=\"userSpaceOnUse\" markerWidth=\"11\" markerHeight=\"11\" orient=\"auto\"><circle cx=\"5\" cy=\"5\" r=\"5\" class=\"arrowMarkerPath\" style=\"stroke-width: 1; stroke-dasharray: 1, 0;\"></circle></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-circleEnd-margin\" class=\"marker flowchart-v2\" viewBox=\"0 0 10 10\" refY=\"5\" refX=\"12.25\" markerUnits=\"userSpaceOnUse\" markerWidth=\"14\" markerHeight=\"14\" orient=\"auto\"><circle cx=\"5\" cy=\"5\" r=\"5\" class=\"arrowMarkerPath\" style=\"stroke-width: 0; stroke-dasharray: 1, 0;\"></circle></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-circleStart-margin\" class=\"marker flowchart-v2\" viewBox=\"0 0 10 10\" refX=\"-2\" refY=\"5\" markerUnits=\"userSpaceOnUse\" markerWidth=\"14\" markerHeight=\"14\" orient=\"auto\"><circle cx=\"5\" cy=\"5\" r=\"5\" class=\"arrowMarkerPath\" style=\"stroke-width: 0; stroke-dasharray: 1, 0;\"></circle></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-crossEnd\" class=\"marker cross flowchart-v2\" viewBox=\"0 0 11 11\" refX=\"12\" refY=\"5.2\" markerUnits=\"userSpaceOnUse\" markerWidth=\"11\" markerHeight=\"11\" orient=\"auto\"><path d=\"M 1,1 l 9,9 M 10,1 l -9,9\" class=\"arrowMarkerPath\" style=\"stroke-width: 2; stroke-dasharray: 1, 0;\"></path></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-crossStart\" class=\"marker cross flowchart-v2\" viewBox=\"0 0 11 11\" refX=\"-1\" refY=\"5.2\" markerUnits=\"userSpaceOnUse\" markerWidth=\"11\" markerHeight=\"11\" orient=\"auto\"><path d=\"M 1,1 l 9,9 M 10,1 l -9,9\" class=\"arrowMarkerPath\" style=\"stroke-width: 2; stroke-dasharray: 1, 0;\"></path></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-crossEnd-margin\" class=\"marker cross flowchart-v2\" viewBox=\"0 0 15 15\" refX=\"17.7\" refY=\"7.5\" markerUnits=\"userSpaceOnUse\" markerWidth=\"12\" markerHeight=\"12\" orient=\"auto\"><path d=\"M 1,1 L 14,14 M 1,14 L 14,1\" class=\"arrowMarkerPath\" style=\"stroke-width: 2.5;\"></path></marker><marker id=\"dg-279fa1f2-2_flowchart-v2-crossStart-margin\" class=\"marker cross flowchart-v2\" viewBox=\"0 0 15 15\" refX=\"-3.5\" refY=\"7.5\" markerUnits=\"userSpaceOnUse\" markerWidth=\"12\" markerHeight=\"12\" orient=\"auto\"><path d=\"M 1,1 L 14,14 M 1,14 L 14,1\" class=\"arrowMarkerPath\" style=\"stroke-width: 2.5; stroke-dasharray: 1, 0;\"></path></marker><g class=\"root\"><g class=\"clusters\"></g><g class=\"edgePaths\"><path d=\"M132.922,70.824L150.993,65.051C169.065,59.278,205.208,47.732,240.69,44.205C276.172,40.678,310.993,45.171,328.404,47.418L345.814,49.664\" id=\"dg-279fa1f2-2-L_P_B_0\" class=\"edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link\" marker-end=\"url(#dg-279fa1f2-2_flowchart-v2-pointEnd)\"></path><path d=\"M473.922,58.185L481.275,58.185C488.628,58.185,503.333,58.185,517.428,61.136C531.523,64.087,545.008,69.989,551.75,72.94L558.492,75.891\" id=\"dg-279fa1f2-2-L_B_C_0\" class=\"edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link\" marker-end=\"url(#dg-279fa1f2-2_flowchart-v2-pointEnd)\"></path><path d=\"M562.156,136.061L554.803,139.28C547.451,142.498,532.745,148.934,507.694,152.152C482.643,155.371,447.247,155.371,401.133,155.371C355.018,155.371,298.185,155.371,252.32,148.776C206.456,142.181,171.56,128.991,154.112,122.396L136.664,115.801\" id=\"dg-279fa1f2-2-L_C_P_0\" class=\"edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-solid flowchart-link\" marker-end=\"url(#dg-279fa1f2-2_flowchart-v2-pointEnd)\"></path><path d=\"M349.781,70.051L331.71,73.505C313.638,76.96,277.495,83.869,242.018,87.323C206.542,90.778,171.732,90.778,154.327,90.778L136.922,90.778\" id=\"dg-279fa1f2-2-L_B_P_0\" class=\"edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-solid flowchart-link\" marker-end=\"url(#dg-279fa1f2-2_flowchart-v2-pointEnd)\"></path></g><g class=\"edgeLabels\"><g class=\"edgeLabel\" transform=\"translate(241.3515625, 36.18532943725586)\"><g class=\"label\" transform=\"translate(-32.3984375, -12)\"><foreignObject width=\"64.796875\" height=\"24\"><div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"labelBkg\" style=\"display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;\"><span class=\"edgeLabel\"><p>items ≤ n</p></span></div></foreignObject></g></g><g class=\"edgeLabel\" transform=\"translate(518.0390625, 58.18532943725586)\"><g class=\"label\" transform=\"translate(-19.1171875, -12)\"><foreignObject width=\"38.234375\" height=\"24\"><div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"labelBkg\" style=\"display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;\"><span class=\"edgeLabel\"><p>items</p></span></div></foreignObject></g></g><g class=\"edgeLabel\" transform=\"translate(411.8515625, 155.37065887451172)\"><g class=\"label\" transform=\"translate(-36.4609375, -12)\"><foreignObject width=\"72.921875\" height=\"24\"><div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"labelBkg\" style=\"display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;\"><span class=\"edgeLabel\"><p>request(n)</p></span></div></foreignObject></g></g><g class=\"edgeLabel\" transform=\"translate(241.3515625, 90.77799415588379)\"><g class=\"label\" transform=\"translate(-83.4296875, -12)\"><foreignObject width=\"166.859375\" height=\"24\"><div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"labelBkg\" style=\"display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;\"><span class=\"edgeLabel\"><p>full → WriteAsync waits</p></span></div></foreignObject></g></g></g><g class=\"nodes\"><g class=\"node default\" id=\"dg-279fa1f2-2-flowchart-P-0\" transform=\"translate(70.4609375, 90.77799415588379)\"><rect class=\"basic label-container\" style=\"\" x=\"-62.4609375\" y=\"-39\" width=\"124.921875\" height=\"78\"></rect><g class=\"label\" style=\"\" transform=\"translate(-32.4609375, -24)\"><rect></rect><foreignObject width=\"64.921875\" height=\"48\"><div xmlns=\"http://www.w3.org/1999/xhtml\" style=\"display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;\"><span class=\"nodeLabel\"><p>Producer<br>fast</p></span></div></foreignObject></g></g><g class=\"node default\" id=\"dg-279fa1f2-2-flowchart-B-1\" transform=\"translate(411.8515625, 58.18532943725586)\"><path d=\"M0,12.456883035434306 a62.0703125,12.456883035434306 0,0,0 124.140625,0 a62.0703125,12.456883035434306 0,0,0 -124.140625,0 l0,75.4568830354343 a62.0703125,12.456883035434306 0,0,0 124.140625,0 l0,-75.4568830354343\" class=\"basic label-container outer-path\" style=\"\" transform=\"translate(-62.0703125, -50.18532455315146)\"></path><g class=\"label\" style=\"\" transform=\"translate(-54.5703125, -14)\"><rect></rect><foreignObject width=\"109.140625\" height=\"48\"><div xmlns=\"http://www.w3.org/1999/xhtml\" style=\"display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;\"><span class=\"nodeLabel\"><p>Bounded buffer<br>capacity 100</p></span></div></foreignObject></g></g><g class=\"node default\" id=\"dg-279fa1f2-2-flowchart-C-3\" transform=\"translate(629.0625, 106.77799415588379)\"><rect class=\"basic label-container\" style=\"\" x=\"-66.90625\" y=\"-39\" width=\"133.8125\" height=\"78\"></rect><g class=\"label\" style=\"\" transform=\"translate(-36.90625, -24)\"><rect></rect><foreignObject width=\"73.8125\" height=\"48\"><div xmlns=\"http://www.w3.org/1999/xhtml\" style=\"display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;\"><span class=\"nodeLabel\"><p>Consumer<br>slow</p></span></div></foreignObject></g></g></g></g></g><defs><filter id=\"dg-279fa1f2-2-drop-shadow\" height=\"130%\" width=\"130%\"><feDropShadow dx=\"4\" dy=\"4\" stdDeviation=\"0\" flood-opacity=\"0.06\" flood-color=\"#000000\"></feDropShadow></filter></defs><defs><filter id=\"dg-279fa1f2-2-drop-shadow-small\" height=\"150%\" width=\"150%\"><feDropShadow dx=\"2\" dy=\"2\" stdDeviation=\"0\" flood-opacity=\"0.06\" flood-color=\"#000000\"></feDropShadow></filter></defs></svg></span></p>",
@@ -293,7 +295,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/architecture/backpressure/cards/10dkrwp7.md",
       "questionHtml": "<p>[Reactive Streams] Which call does a subscriber use to ask for more items?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p><code>Subscription.request(n)</code></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -319,7 +323,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/architecture/backpressure/cards/1mpw75f3.md",
       "questionHtml": "<p>[Backpressure] Buffering vs dropping under overload: what does each trade away?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Buffering trades memory and latency to keep every item; dropping keeps latency bounded but loses items.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -347,7 +353,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/architecture/backpressure/cards/1rd53181.md",
       "questionHtml": "<p>[High-load] A Kafka consumer lags 2M messages and its pods get OOM-killed; producers are healthy. What do you change first?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Bound in-flight work: a smaller <code>max.poll.records</code> and a bounded processing queue; then scale consumers up to the partition count.</p>",
       "rubric": [
         {
@@ -391,7 +399,9 @@
       "variants": [
         "c1"
       ],
+      "file": "content/architecture/backpressure/cards/2by9881r.md",
       "questionHtml": "<p>[TCP] Flow control slows the sender using the receiver's advertised <span class=\"cloze\" data-cloze=\"1\">receive window</span>.</p>",
+      "reverseHtml": null,
       "answerHtml": "<p><code>rwnd</code>: how many bytes the receiver can still accept.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -417,7 +427,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/architecture/backpressure/cards/41tzszha.md",
       "questionHtml": "<p>[Backpressure] What happens to an unbounded queue between a fast producer and a slow consumer?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>It grows until the process runs out of memory.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -444,7 +456,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/architecture/backpressure/cards/48431e5b.md",
       "questionHtml": "<p>[System design] Why is rate limiting at the edge not a substitute for backpressure?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>A fixed limit caps load by policy; it does not react to downstream capacity in real time.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -472,7 +486,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/architecture/backpressure/cards/56z99ms4.md",
       "questionHtml": "<p>[Overload] Load shedding</p>",
+      "reverseHtml": "<p>Rejecting excess requests early so the rest keep low latency.</p>",
       "answerHtml": "<p>Rejecting excess requests early so the rest keep low latency.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -500,7 +516,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/architecture/backpressure/cards/5fdbzzng.md",
       "questionHtml": "<p>[.NET Channels] <code>FullMode.Wait</code> vs <code>FullMode.DropOldest</code>: what does the writer experience?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Wait: <code>WriteAsync</code> awaits free space. DropOldest: never waits; the oldest item is silently evicted.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -528,7 +546,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/architecture/backpressure/cards/647aga38.md",
       "questionHtml": "<p>[C# Channels] What does the second <code>TryWrite</code> return here?</p>\n<pre style=\"--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e\" class=\"shiki shiki-themes github-light github-dark\" tabindex=\"0\"><code><span class=\"line\"><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\">var</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\"> ch</span><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\"> Channel.</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\">CreateBounded</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">&#x3C;</span><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\">int</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">>(</span><span style=\"--shiki-light:#005CC5;--shiki-dark:#79B8FF\">1</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">);</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">ch.Writer.</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\">TryWrite</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">(</span><span style=\"--shiki-light:#005CC5;--shiki-dark:#79B8FF\">1</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">);</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\">var</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\"> ok</span><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\"> ch.Writer.</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\">TryWrite</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">(</span><span style=\"--shiki-light:#005CC5;--shiki-dark:#79B8FF\">2</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">); </span><span style=\"--shiki-light:#6A737D;--shiki-dark:#6A737D\">// no reader yet</span></span></code></pre>",
+      "reverseHtml": null,
       "answerHtml": "<p><code>false</code>: the channel is full and <code>TryWrite</code> never waits.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -554,7 +574,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/dotnet/async-await/cards/7388t2qp.md",
       "questionHtml": "<p>[.NET async] Зачем <code>ConfigureAwait(false)</code> в библиотечном коде?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Не захватывать контекст синхронизации: меньше накладных расходов и нет дедлока при блокирующем ожидании.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -581,7 +603,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/dotnet/async-await/cards/73y2xbmz.md",
       "questionHtml": "<p>[ASP.NET, .NET Framework] Действие контроллера вызывает <code>GetDataAsync().Result</code>, внутри — <code>await</code> без <code>ConfigureAwait(false)</code>. Запрос зависает навсегда. Почему?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Продолжение ждёт захваченный контекст запроса, а его поток заблокирован <code>.Result</code> — взаимная блокировка.</p>",
       "rubric": [
         {
@@ -620,7 +644,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/dotnet/async-await/cards/7ws01vt6.md",
       "questionHtml": "<p>[.NET async] <code>async void</code> против <code>async Task</code>: что происходит с исключением?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Из <code>async Task</code> оно попадает в Task и ловится через <code>await</code>; из <code>async void</code> уходит в контекст и может уронить процесс.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -647,7 +673,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/dotnet/async-await/cards/8cjwncpr.md",
       "questionHtml": "<p>[.NET async] Какой тип вернуть из горячего метода, который обычно завершается синхронно?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p><code>ValueTask&#x3C;T></code>: нет аллокации Task на синхронном пути.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -674,7 +702,9 @@
       "variants": [
         "c1"
       ],
+      "file": "content/dotnet/async-await/cards/c0a0v9nh.md",
       "questionHtml": "<p>[ASP.NET Core] Здесь нет <span class=\"cloze\" data-cloze=\"1\">SynchronizationContext</span>, поэтому <code>.Result</code> не даёт классический дедлок.</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Продолжения выполняются в пуле потоков.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -701,7 +731,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/dotnet/async-await/cards/c4tgqvdp.md",
       "questionHtml": "<p>[ASP.NET Core] Почему <code>.Result</code> здесь всё равно плохая идея?</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Блокирует поток пула; под нагрузкой это ведёт к голоданию пула потоков.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -727,7 +759,9 @@
       "variants": [
         "main"
       ],
+      "file": "content/dotnet/async-await/cards/capexe3a.md",
       "questionHtml": "<p>[C#] Что выведет этот код?</p>\n<pre style=\"--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e\" class=\"shiki shiki-themes github-light github-dark\" tabindex=\"0\"><code><span class=\"line\"><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\">async</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\"> Task</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\"> F</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">()</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">{</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">    Console.</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\">Write</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">(</span><span style=\"--shiki-light:#032F62;--shiki-dark:#9ECBFF\">\"A\"</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">);</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\">    await</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\"> Task.</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\">Delay</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">(</span><span style=\"--shiki-light:#005CC5;--shiki-dark:#79B8FF\">100</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">);</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">    Console.</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\">Write</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">(</span><span style=\"--shiki-light:#032F62;--shiki-dark:#9ECBFF\">\"B\"</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">);</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">}</span></span>\n<span class=\"line\"></span>\n<span class=\"line\"><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\">var</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\"> t</span><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\"> =</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\"> F</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">();</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">Console.</span><span style=\"--shiki-light:#6F42C1;--shiki-dark:#B392F0\">Write</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">(</span><span style=\"--shiki-light:#032F62;--shiki-dark:#9ECBFF\">\"C\"</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\">);</span></span>\n<span class=\"line\"><span style=\"--shiki-light:#D73A49;--shiki-dark:#F97583\">await</span><span style=\"--shiki-light:#24292E;--shiki-dark:#E1E4E8\"> t;</span></span></code></pre>",
+      "reverseHtml": null,
       "answerHtml": "<p><code>ACB</code>: до первого незавершённого <code>await</code> метод выполняется синхронно.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -754,7 +788,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/dotnet/async-await/cards/dsz616wb.md",
       "questionHtml": "<p>[.NET async] Sync-over-async</p>",
+      "reverseHtml": "<p>Блокирующее ожидание асинхронного кода через <code>.Result</code> или <code>.Wait()</code>.</p>",
       "answerHtml": "<p>Блокирующее ожидание асинхронного кода через <code>.Result</code> или <code>.Wait()</code>.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -781,7 +817,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/e4ej1s8e.md",
       "questionHtml": "<p>[pl: restauracja] rachunek</p>",
+      "reverseHtml": "<p>счёт (м. р.)</p>",
       "answerHtml": "<p>счёт (м. р.) — <em>Poproszę rachunek.</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -808,7 +846,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/egpne135.md",
       "questionHtml": "<p>[pl: restauracja] kelner</p>",
+      "reverseHtml": "<p>официант (м. р.)</p>",
       "answerHtml": "<p>официант (м. р.) — <em>Kelner przyniósł kartę.</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -835,7 +875,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/g1bv5c7y.md",
       "questionHtml": "<p>[pl: restauracja] stolik</p>",
+      "reverseHtml": "<p>столик (м. р.)</p>",
       "answerHtml": "<p>столик (м. р.) — <em>Czy jest wolny stolik dla dwóch osób?</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -862,7 +904,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/gj7gzc7q.md",
       "questionHtml": "<p>[pl: restauracja] napiwek</p>",
+      "reverseHtml": "<p>чаевые (м. р., ед. ч.)</p>",
       "answerHtml": "<p>чаевые (м. р., ед. ч.) — <em>Zostawiliśmy napiwek.</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -889,7 +933,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/hnxyjtjj.md",
       "questionHtml": "<p>[pl: restauracja] danie</p>",
+      "reverseHtml": "<p>блюдо (ср. р.)</p>",
       "answerHtml": "<p>блюдо (ср. р.) — <em>Jakie jest danie dnia?</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -916,7 +962,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/mmwv3t5h.md",
       "questionHtml": "<p>[pl: restauracja] przystawka</p>",
+      "reverseHtml": "<p>закуска (ж. р.)</p>",
       "answerHtml": "<p>закуска (ж. р.) — <em>Na przystawkę poproszę śledzia.</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -943,7 +991,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/n2hk3ktq.md",
       "questionHtml": "<p>[pl: restauracja] deser</p>",
+      "reverseHtml": "<p>десерт (м. р.)</p>",
       "answerHtml": "<p>десерт (м. р.) — <em>Co pan poleca na deser?</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -970,7 +1020,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/r8ysq6gr.md",
       "questionHtml": "<p>[pl: restauracja] zamówić / zamawiać</p>",
+      "reverseHtml": "<p>заказать (dk) / заказывать (ndk)</p>",
       "answerHtml": "<p>заказать (dk) / заказывать (ndk) — <em>Chciałbym zamówić pierogi.</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -997,7 +1049,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/rb9cs4q3.md",
       "questionHtml": "<p>[pl: restauracja] Smacznego!</p>",
+      "reverseHtml": "<p>Приятного аппетита!</p>",
       "answerHtml": "<p>Приятного аппетита! — <em>Kelner podaje danie i mówi: „Smacznego!”</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -1024,7 +1078,9 @@
         "fwd",
         "rev"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/vay1b5cs.md",
       "questionHtml": "<p>[pl: restauracja] karta</p>",
+      "reverseHtml": "<p>меню (ж. р.)</p>",
       "answerHtml": "<p>меню (ж. р.) — <em>Poproszę kartę.</em></p>",
       "rubric": [],
       "explanationHtml": "",
@@ -1051,7 +1107,9 @@
       "variants": [
         "c1"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/y446nd00.md",
       "questionHtml": "<p>[pl: Biernik] Poproszę <span class=\"cloze\" data-cloze=\"1\">kawę</span> (kawa).</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Biernik после «poproszę»: женский род -a → -ę.</p>",
       "rubric": [],
       "explanationHtml": "",
@@ -1078,7 +1136,9 @@
       "variants": [
         "c1"
       ],
+      "file": "content/lang-pl/w-restauracji/cards/z75gbez7.md",
       "questionHtml": "<p>[pl: Dopełniacz] Nie piję <span class=\"cloze\" data-cloze=\"1\">kawy</span> (kawa).</p>",
+      "reverseHtml": null,
       "answerHtml": "<p>Dopełniacz после отрицания: женский род -a → -y.</p>",
       "rubric": [],
       "explanationHtml": "",

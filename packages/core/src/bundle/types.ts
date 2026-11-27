@@ -52,8 +52,15 @@ export interface CardEntry {
   readonly langPair: string | null;
   readonly title: string;
   readonly variants: readonly string[];
+  /** Repository-relative path of the card's file, for opening it in an editor. */
+  readonly file: string;
   /** Cloze gaps are `<span class="cloze" data-cloze="N">`, so the UI hides the gap of the variant shown. */
   readonly questionHtml: string;
+  /**
+   * What the reverse variant asks, for a two-way card: the answer side, and for a vocab card without its
+   * example sentence, which would give the word away. `null` when the card has no `rev` variant.
+   */
+  readonly reverseHtml: string | null;
   readonly answerHtml: string;
   readonly rubric: readonly RubricItem[];
   readonly explanationHtml: string;
