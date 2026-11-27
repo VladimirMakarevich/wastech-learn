@@ -20,10 +20,12 @@ const templatesOf = (path: string): string[] => {
 };
 
 // Blanks what may hold letters without being prose: interpolations, control flow, comments, bound
-// attributes and tag names with their attributes. What is left between tags is text a user would read.
+// attributes, tag names with their attributes, and keycaps, which name a physical key (Space, Esc) as it is
+// printed on the keyboard. What is left between tags is text a user would read.
 const prose = (template: string): string[] =>
   template
     .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<kbd[^>]*>[\s\S]*?<\/kbd>/g, " ")
     .replace(/="[^"]*"/g, '=""')
     .replace(/\{\{[\s\S]*?\}\}/g, " ")
     .replace(

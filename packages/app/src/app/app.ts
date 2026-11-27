@@ -25,6 +25,7 @@ import { UI_LANGS, isUiLang, type UiLang } from "./i18n/message";
 import { TPipe } from "./i18n/t.pipe";
 import { Keyboard } from "./keys/keyboard";
 import { Preferences } from "./prefs/preferences";
+import { ReviewSession } from "./session/review-session";
 import { BuildBanner } from "./shell/build-banner";
 import { titleOf } from "./shell/titles";
 import { Icon, type IconName } from "./ui/icon";
@@ -71,6 +72,7 @@ export class App {
   private readonly keyboard = inject(Keyboard);
   protected readonly i18n = inject(I18n);
   protected readonly data = inject(AppData);
+  protected readonly session = inject(ReviewSession);
   protected readonly nav = NAV;
   protected readonly langs = UI_LANGS;
   protected readonly searchField =
@@ -81,17 +83,45 @@ export class App {
     globalThis.matchMedia("(prefers-color-scheme: dark)").matches,
   );
 
-  protected readonly title = toSignal(
+  private readonly navigation = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
-      map(() => {
+      map((event) => {
         let route = this.route.snapshot;
         while (route.firstChild !== null) route = route.firstChild;
-        return titleOf(route.data);
+        return { title: titleOf(route.data), url: event.urlAfterRedirects };
       }),
     ),
-    { initialValue: "title.home" },
+    { initialValue: { title: "title.home" as const, url: "/" } },
   );
+  protected readonly title = computed(() => this.navigation().title);
+
+  /** The running session in the toolbar, on the review screen only: mode, position and what is left. */
+  protected readonly sessionBar = computed(() => {
+    const state = this.session.state();
+    if (
+      state?.current === undefined ||
+      !this.navigation().url.startsWith("/review")
+    )
+      return undefined;
+    const progress = this.session.progress();
+    const minutes = (count: number) => this.i18n.t("count.minutes", { count });
+    return {
+      mode:
+        state.mode.kind === "full"
+          ? this.i18n.t("session.full")
+          : this.i18n.t("session.minutes", {
+              minutes: minutes(state.mode.minutes),
+            }),
+      progress: this.i18n.t("session.progress", {
+        done: Math.min(progress.done + 1, progress.total),
+        total: progress.total,
+      }),
+      left: this.i18n.t("session.left", {
+        minutes: minutes(this.session.minutesLeft()),
+      }),
+    };
+  });
 
   protected readonly dark = computed(() => {
     const theme = this.preferences.theme();
@@ -170,6 +200,11 @@ export class App {
     void this.router.navigate(["/browser"], {
       queryParams: q === "" ? {} : { q },
     });
+  }
+
+  protected finishSession(): void {
+    this.session.finish();
+    void this.router.navigateByUrl("/session-end");
   }
 
   protected leaveSearch(): void {

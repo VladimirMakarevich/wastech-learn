@@ -55,7 +55,21 @@
 <main>
   <header class="topbar">
     <h1>{{ title() | t }}</h1>
-    <div class="topbar-session"></div>
+    <div class="topbar-session">
+      @if (sessionBar(); as bar) {
+      <span class="session-mode">{{ bar.mode }}</span>
+      <span class="session-count tnum">{{ bar.progress }}</span>
+      <span class="tnum">{{ bar.left }}</span>
+      <button
+        class="btn sm session-end"
+        type="button"
+        aria-keyshortcuts="Escape"
+        (click)="finishSession()"
+      >
+        {{ "session.finish" | t }} <kbd>Esc</kbd>
+      </button>
+      }
+    </div>
     <div class="topbar-right">
       <form class="search" role="search" (submit)="submitSearch($event)">
         <wl-icon name="search" />

@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { test as base, expect } from "@playwright/test";
+import { webEvents } from "./content.js";
 import type { LogFixture } from "./fixture-log.js";
 
 const required = (name: string): string => {
@@ -60,7 +61,13 @@ export const test = base.extend<Fixtures>({
     { auto: true },
   ],
   page: async ({ page, logFixture }, use) => {
-    await page.clock.install({ time: new Date(logFixture.now) });
+    // Scenarios share one log: each starts a second after the last event an earlier one wrote, or a
+    // replay at the fixture's own moment would see those events as still to come and leave them out.
+    const latest = Math.max(
+      Date.parse(logFixture.now),
+      ...(await webEvents()).map((event) => Date.parse(event.ts) + 1_000),
+    );
+    await page.clock.install({ time: new Date(latest) });
     await use(page);
   },
 });

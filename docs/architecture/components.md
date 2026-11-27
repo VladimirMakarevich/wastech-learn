@@ -69,13 +69,13 @@ interface ContentBundle {
   builtAt: string;          // передаётся снаружи: повторная сборка даёт тот же файл
   domains: DomainMeta[];
   topics: TopicMeta[];      // путь, title, lang, familiarity, related, html секций summary
-  cards: CardEntry[];       // id, type, created, variants[], questionHtml, answerHtml, rubric[], contentHash, topic
+  cards: CardEntry[];       // id, type, created, file, variants[], questionHtml, reverseHtml, answerHtml, rubric[], contentHash, topic
   assets: Record<string, string>; // локальные картинки, которые не встроены; SVG встраиваются в HTML
   searchIndex?: string;     // сериализованный индекс MiniSearch из core/search; loadSearchIndex восстанавливает его в браузере
 }
 ```
 
-Пропуски cloze в HTML — `<span class="cloze" data-cloze="N">`: UI скрывает пропуск показываемого варианта. HTML на страницу ставит только директива `bundleHtml` — единственное место с `bypassSecurityTrustHtml`.
+Пропуски cloze в HTML — `<span class="cloze" data-cloze="N">`: UI скрывает пропуск показываемого варианта. `reverseHtml` — то, что спрашивает вариант `rev` (для `vocab` без примера, который выдал бы слово), той же функцией `promptMarkdown`, что и квиз MCP. HTML на страницу ставит только директива `bundleHtml` — единственное место с `bypassSecurityTrustHtml`.
 
 **Браузерная точка входа `core`.** Условие `browser` в `exports` ведёт на `dist/browser.js`: типы, схемы, каталог сообщений, ULID и загрузку индекса поиска, без компилятора bundle и `check`. Иначе сборщик приложения превращал бы каждую грамматику Shiki в отдельный чанк.
 
