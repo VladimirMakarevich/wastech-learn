@@ -107,3 +107,56 @@ export const withCardLinks = (
   if (markdown === current) return document;
   return withSection(document, "Cards", markdown, INDEX_SECTIONS);
 };
+
+const hasLink = (line: string, id: string): boolean =>
+  line.includes(`(${cardLinkTarget(id)})`);
+
+/**
+ * The index without the card's line in `## Cards`, for a card being deleted. Every other line, the
+ * author's notes and order included, stays as it is.
+ */
+export const withoutCardLink = (
+  document: ContentDocument,
+  id: string,
+): ContentDocument => {
+  const current = sectionMarkdown(document, "Cards") ?? "";
+  const lines = current === "" ? [] : current.split("\n");
+  const kept = lines.filter((line) => !hasLink(line, id));
+  if (kept.length === lines.length) return document;
+  return withSection(document, "Cards", kept.join("\n"), INDEX_SECTIONS);
+};
+
+/**
+ * The index with a deleted card's line back, as `committed` (the index of the last commit) had it: the
+ * same text, placed after the nearest card that preceded it there and is still listed. Lines added or
+ * edited since the commit stay, so undoing a delete never undoes other work on the index.
+ */
+export const withRestoredCardLink = (
+  document: ContentDocument,
+  committed: ContentDocument,
+  card: CardLink,
+): ContentDocument => {
+  const current = sectionMarkdown(document, "Cards") ?? "";
+  const lines = current === "" ? [] : current.split("\n");
+  if (lines.some((line) => hasLink(line, card.id))) return document;
+  const before = (sectionMarkdown(committed, "Cards") ?? "").split("\n");
+  const at = before.findIndex((line) => hasLink(line, card.id));
+  const line = before[at];
+  if (at === -1 || line === undefined) return withCardLinks(document, [card]);
+  let insertAt = 0;
+  for (let previous = at - 1; previous >= 0; previous--) {
+    const id = /\(cards\/([^/)]+)\.md\)/.exec(before[previous] ?? "")?.[1];
+    const found =
+      id === undefined ? -1 : lines.findIndex((other) => hasLink(other, id));
+    if (found !== -1) {
+      insertAt = found + 1;
+      break;
+    }
+  }
+  const restored = [
+    ...lines.slice(0, insertAt),
+    line,
+    ...lines.slice(insertAt),
+  ];
+  return withSection(document, "Cards", restored.join("\n"), INDEX_SECTIONS);
+};

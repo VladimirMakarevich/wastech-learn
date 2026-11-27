@@ -176,7 +176,7 @@ export const en = {
   "due.in": "in {interval}",
   "status.active": "active",
   "status.draft": "draft",
-  "status.retired": "retired",
+  "status.retired": "archived",
   "status.suspended": "suspended",
   "status.leech": "leech",
   "status.changed": "changed",
@@ -223,6 +223,126 @@ export const en = {
   "settings.path": "Content",
   "settings.edit": "These are changed in learn.config.json, not here",
   "settings.edit-open": "Open learn.config.json in VS Code",
+  "git.open": "Open the sync panel",
+  "git.indicator.clean": "{device} · everything synced",
+  "git.indicator.changes": {
+    one: "{device} · {count} change not committed",
+    other: "{device} · {count} changes not committed",
+  },
+  "git.indicator.ready": "{device} · ready to send",
+  "git.indicator.blocked": "{device} · sync is off",
+  "git.indicator.incoming": "{device} · new commits to receive",
+  "git.ahead": {
+    one: "{count} commit to send",
+    other: "{count} commits to send",
+  },
+  "git.behind": {
+    one: "{count} commit to receive",
+    other: "{count} commits to receive",
+  },
+  "git.panel.title": "Sync",
+  "git.panel.branch": "{branch} → {upstream}",
+  "git.panel.in": "Goes into the commit",
+  "git.panel.out": "Stays out: committed by hand",
+  "git.panel.none": "Nothing to commit",
+  "git.panel.message": "Commit message",
+  "git.panel.sync": "Sync",
+  "git.panel.pull": "Pull",
+  "git.panel.close": "Close",
+  "git.panel.running": "Git is working…",
+  "git.panel.loading": "Reading the repository…",
+  "git.change.added": "new",
+  "git.change.untracked": "new",
+  "git.change.modified": "changed",
+  "git.change.deleted": "deleted",
+  "git.change.renamed": "renamed",
+  "git.result.nothing": "Nothing new: both computers already match",
+  "git.result.sent": {
+    one: "Sent: {count} commit",
+    other: "Sent: {count} commits",
+  },
+  "git.result.received": {
+    one: "Received: {count} commit",
+    other: "Received: {count} commits",
+  },
+  "git.result.both": "Commits sent: {sent}, received: {received}",
+  "git.failure.conflict":
+    "The same files changed on both computers. The repository is as it was before you pressed Sync; run git pull --rebase in a terminal, settle these files in VS Code and finish the rebase, then sync again",
+  "git.failure.conflict-stash":
+    "Commits arrived, but local edits in these files clash with them. The edits wait in git stash: settle the files in VS Code",
+  "git.failure.auth-required":
+    "Git asks for a password or a key. Run git pull in a terminal once, then sync here",
+  "git.failure.offline":
+    "The remote cannot be reached. Check the connection and sync again",
+  "git.failure.identity-missing":
+    "Git does not know who commits. Run git config user.name and git config user.email in the content repository",
+  "git.failure.busy":
+    "Another git command is running. Wait for it and try again",
+  "git.failure.push-rejected":
+    "The other computer sent its changes first. Sync again to bring them in; your commit is kept",
+  "git.failure.git-failed": "Git stopped: {detail}",
+  "git.blocked.no-git": "Git is not installed or not on PATH",
+  "git.blocked.not-a-repository": "The content folder is not a git repository",
+  "git.blocked.detached":
+    "The repository is on a detached HEAD. Switch to a branch in a terminal",
+  "git.blocked.no-upstream":
+    "The branch has no upstream. Run git push -u once in a terminal",
+  "git.blocked.operation-in-progress":
+    "A merge or rebase is under way. Finish it in a terminal",
+  "git.blocked.unmerged":
+    "Files still hold a conflict. Settle them in VS Code and commit",
+  "end.unsent":
+    "The ratings of this session haven't been sent to the other computer yet",
+  "end.sync": "Sync",
+  "action.archive": "Archive",
+  "action.return": "Return",
+  "action.delete": "Delete",
+  "action.undo-delete": "Undo delete",
+  "toast.archived": "Card archived: it no longer comes up for review",
+  "toast.returned": "The card is active again, with its history",
+  "toast.deleted": "Card deleted; until the commit this can be undone",
+  "toast.deleted-for-good":
+    "Card deleted. It was never committed, so there is no copy to bring back",
+  "toast.restored": "The card is back in its topic",
+  "toast.topic-archived": "Topic archived: its cards leave the queue",
+  "toast.topic-returned": "The topic and its cards are back in the queue",
+  "write.blocked":
+    "Nothing was changed: the check stopped the edit. {file}: {detail}",
+  "write.blocked-plain": "Nothing was changed: the check stopped the edit",
+  "write.content-changed":
+    "The file changed on disk meanwhile and was left as it is. Try again",
+  "write.card-not-found": "This card is no longer in the content",
+  "write.topic-not-found": "This topic is no longer in the content",
+  "write.nothing-to-restore":
+    "The deletion is already committed; git history keeps the file",
+  "write.failed": "The server did not apply the change ({code})",
+  "delete.title": "Delete the card?",
+  "delete.permanent":
+    "This card was never committed: git keeps no copy, and the deletion cannot be undone",
+  "delete.plain":
+    "The file and its line in the topic go away. Until the commit, the deletion can be undone in Cards",
+  "delete.history":
+    "This card has review history. The history stays in the log and its past answers still count in the statistics; the card leaves the queue. Archiving keeps everything and can be undone at any time",
+  "delete.anyway": "Delete anyway",
+  "delete.cancel": "Cancel",
+  "browser.uncommitted": "Not committed",
+  "browser.not-committed": "not committed",
+  "browser.restore-label": "Undo the deletion of {path}",
+  "browser.deleted": "Deleted since the last commit",
+  "topic.archive": "Archive the topic",
+  "topic.unarchive": "Return the topic",
+  "topic.archived":
+    "The topic is archived: its cards do not come up for review",
+  "topic.uncommitted": "Not committed",
+  "home.archived-show": {
+    one: "Show {count} archived topic",
+    other: "Show {count} archived topics",
+  },
+  "home.archived-hide": {
+    one: "Hide {count} archived topic",
+    other: "Hide {count} archived topics",
+  },
+  "shortcut.archive": "archive",
   "count.cards": { one: "{count} card", other: "{count} cards" },
   "count.minutes": { one: "{count} minute", other: "{count} minutes" },
   "count.events": { one: "{count} rating", other: "{count} ratings" },

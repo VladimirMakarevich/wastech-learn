@@ -1,9 +1,13 @@
 import type { Finding } from "@wastech-learn/core";
 
-/** What the server tells the app over SSE: refetch the bundle, refetch the log, or show a build error. */
+/**
+ * What the server tells the app over SSE: refetch the bundle, refetch the log, show a build error, or
+ * reread the git state because a file of the work tree or the repository itself changed.
+ */
 export type ChangeEvent =
   | { readonly type: "content-changed" }
   | { readonly type: "events-changed" }
+  | { readonly type: "git-changed" }
   | {
       readonly type: "build-failed";
       readonly findings: readonly Finding[];

@@ -73,8 +73,10 @@ export { saveMaterials } from "./write/materials.js";
 export type { SavedMaterials } from "./write/materials.js";
 export { saveSummary } from "./write/summary.js";
 export type { SavedFile } from "./write/summary.js";
-export { createTopic } from "./write/topic.js";
+export { createTopic, setTopicStatus } from "./write/topic.js";
 export type { CreatedTopic } from "./write/topic.js";
+export { deleteCard, restoreCard, setCardStatus } from "./write/card-life.js";
+export type { ChangedCard } from "./write/card-life.js";
 export { validateEdited, validateFiles } from "./validate-files.js";
 export { watchRepository } from "./watch.js";
 export type {
@@ -83,3 +85,25 @@ export type {
   RepositoryWatcher,
   WatchOptions,
 } from "./watch.js";
+export {
+  GIT_TIMEOUT_MS,
+  firstLine,
+  gitEnvironment,
+  runGit,
+} from "./git/run.js";
+export type { GitResult, GitRunOptions } from "./git/run.js";
+export {
+  classifyPath,
+  isIndexLocked,
+  locateRepository,
+  parsePorcelainV2,
+  readGitState,
+} from "./git/status.js";
+export type {
+  BranchInfo,
+  ParsedStatus,
+  RepositoryGitState,
+} from "./git/status.js";
+export { isSynced, suggestCommitMessage } from "./git/message.js";
+export { pullRepository, syncRepository } from "./git/sync.js";
+export type { SyncOptions, SyncOutcome } from "./git/sync.js";

@@ -22,3 +22,4 @@
 | [0014](0014-search-minisearch.md) | Поиск: MiniSearch по content bundle | accepted |
 | [0015](0015-session-package.md) | Пакет `session` на `core` и `srs`; replay в клиенте без кэша `node:sqlite` | accepted |
 | [0016](0016-local-only.md) | Только локальный запуск на компьютере, без облака и мобильной версии | accepted |
+| [0017](0017-app-server-writes-and-git.md) | Сервер приложения пишет контент и запускает git | accepted |

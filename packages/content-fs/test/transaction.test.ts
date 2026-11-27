@@ -128,4 +128,59 @@ describe("confinePath", () => {
       });
     }
   });
+
+  it("removes a file with the others and skips one that is already gone", async () => {
+    const root = await tempDir();
+    await writeFile(join(root, "index.md"), "index\n");
+    await writeFile(join(root, "card.md"), "card\n");
+    await commitFiles([
+      { path: join(root, "index.md"), text: "index v2\n" },
+      { path: join(root, "card.md"), text: null },
+      { path: join(root, "gone.md"), text: null },
+    ]);
+    expect(await tree(root)).toEqual({ "index.md": "index v2\n" });
+  });
+
+  it("brings a removed file back when a later rename fails, and leaves no copies aside", async () => {
+    const root = await tempDir();
+    await writeFile(join(root, "a.md"), "a\n");
+    await writeFile(join(root, "card.md"), "card\n");
+    await writeFile(join(root, "z.md"), "z\n");
+    const before = await tree(root);
+    await expect(
+      commitFiles(
+        [
+          { path: join(root, "a.md"), text: "a v2\n" },
+          { path: join(root, "card.md"), text: null },
+          { path: join(root, "z.md"), text: "z v2\n" },
+        ],
+        failingOnRename(2),
+      ),
+    ).rejects.toMatchObject({ code: "io-failed" });
+    expect(await tree(root)).toEqual(before);
+  });
+
+  it("puts everything back when the unlink itself fails", async () => {
+    const root = await tempDir();
+    await writeFile(join(root, "a.md"), "a\n");
+    await writeFile(join(root, "card.md"), "card\n");
+    const before = await tree(root);
+    const fs: TransactionFs = {
+      ...nodeTransactionFs,
+      unlink: async (path) => {
+        if (path.endsWith("card.md")) throw new Error("busy");
+        await nodeTransactionFs.unlink(path);
+      },
+    };
+    await expect(
+      commitFiles(
+        [
+          { path: join(root, "a.md"), text: "a v2\n" },
+          { path: join(root, "card.md"), text: null },
+        ],
+        fs,
+      ),
+    ).rejects.toMatchObject({ code: "io-failed" });
+    expect(await tree(root)).toEqual(before);
+  });
 });

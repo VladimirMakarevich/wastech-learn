@@ -17,6 +17,7 @@ export type LearnErrorCode =
   | "card-not-found"
   | "package-not-found"
   | "nothing-to-undo"
+  | "nothing-to-restore"
   | "content-changed"
   | "search-index-invalid"
   | "id-unavailable";

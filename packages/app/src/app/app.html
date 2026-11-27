@@ -49,7 +49,27 @@
       <wl-icon name="refresh" />
       <span class="label">{{ "shell.refresh" | t }}</span>
     </button>
-    <div class="sync"><span class="dot"></span>{{ saveStatus() }}</div>
+    <button
+      class="sync"
+      type="button"
+      data-git-indicator
+      [title]="'git.open' | t"
+      (click)="syncPanels.open()"
+    >
+      <span class="dot" [class.waiting]="!git.inSync()"></span
+      ><span>{{ saveStatus() }}</span>
+      @if (git.state(); as state) { @if (state.ahead > 0) {
+      <span class="tnum" aria-hidden="true">↑{{ state.ahead }}</span
+      ><span class="cdk-visually-hidden"
+        >{{ "git.ahead" | t: { count: state.ahead } }}</span
+      >
+      } @if (state.behind > 0) {
+      <span class="tnum" aria-hidden="true">↓{{ state.behind }}</span
+      ><span class="cdk-visually-hidden"
+        >{{ "git.behind" | t: { count: state.behind } }}</span
+      >
+      } }
+    </button>
   </div>
 </aside>
 <main>

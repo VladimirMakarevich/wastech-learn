@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeLogFixture } from "./fixture-log.js";
+import { GIT_ENV, makeRepository } from "./git.js";
 
 const ROOT = fileURLToPath(new URL("../../../", import.meta.url));
 const GOLDEN = join(ROOT, "fixtures/golden");
@@ -35,6 +36,8 @@ export default async function globalSetup(): Promise<() => Promise<void>> {
   const fixture = await writeLogFixture(content);
   const fixtureFile = join(base, "fixture.json");
   await writeFile(fixtureFile, `${JSON.stringify(fixture, null, 2)}\n`);
+  const bare = join(base, "content.git");
+  await makeRepository(content, bare);
   const server = spawn(
     process.execPath,
     [
@@ -48,12 +51,13 @@ export default async function globalSetup(): Promise<() => Promise<void>> {
       "--lang",
       "en",
     ],
-    { stdio: ["ignore", "pipe", "inherit"] },
+    { stdio: ["ignore", "pipe", "inherit"], env: GIT_ENV },
   );
   const url = await listening(server);
   process.env.E2E_BASE_URL = url;
   process.env.E2E_CONTENT = content;
   process.env.E2E_FIXTURE = fixtureFile;
+  process.env.E2E_BARE = bare;
   return async () => {
     if (server.exitCode === null) {
       const exited = new Promise((resolve) => server.once("exit", resolve));

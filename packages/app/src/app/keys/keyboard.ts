@@ -3,7 +3,9 @@ import { Router } from "@angular/router";
 import { Clock } from "../data/clock";
 import {
   IDLE,
+  isControlActivation,
   isEditable,
+  isDialogOpen,
   keyName,
   readGlobalKey,
   type KeyInput,
@@ -21,12 +23,13 @@ export type ScreenKeys = (name: string, input: KeyInput) => boolean;
 export class Keyboard {
   private readonly router = inject(Router);
   private readonly clock = inject(Clock);
+  private readonly document = inject(DOCUMENT);
   private readonly handlers: ScreenKeys[] = [];
   private sequence: SequenceState = IDLE;
   private focusSearch: () => void = () => undefined;
 
   constructor() {
-    inject(DOCUMENT).addEventListener("keydown", (event) => {
+    this.document.addEventListener("keydown", (event) => {
       this.handle(event);
     });
   }
@@ -45,7 +48,12 @@ export class Keyboard {
   }
 
   private handle(event: KeyboardEvent): void {
-    if (event.defaultPrevented || event.isComposing) return;
+    if (
+      event.defaultPrevented ||
+      event.isComposing ||
+      isDialogOpen(this.document)
+    )
+      return;
     const input: KeyInput = {
       key: event.key,
       ctrlKey: event.ctrlKey,
@@ -70,7 +78,12 @@ export class Keyboard {
       void this.router.navigateByUrl("/");
       return;
     }
-    if (input.editable || input.altKey) return;
+    if (
+      input.editable ||
+      input.altKey ||
+      isControlActivation(event.key, event.target)
+    )
+      return;
     const screen = this.handlers.at(-1);
     if (screen?.(keyName(input), input) === true) event.preventDefault();
   }

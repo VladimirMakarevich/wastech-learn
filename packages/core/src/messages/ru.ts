@@ -144,6 +144,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "error.package-not-found": "По пути {subject} нет learning package",
   "error.nothing-to-undo":
     "Нет оценки с этого устройства, которую можно отменить",
+  "error.nothing-to-restore":
+    "Карточка {subject} не удалена после последнего коммита — возвращать нечего",
   "error.content-changed":
     "{subject} изменился, пока готовилась запись; ничего не записано",
   "error.search-index-invalid":
@@ -180,6 +182,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Передай путь к файлу в inbox/, например inbox/topic.md",
   "hint.nothing-to-undo":
     "Здесь отменяются только оценки, записанные через record_review на этом устройстве",
+  "hint.nothing-to-restore":
+    "Удаление отменяется только до коммита; после него файл остаётся в истории git",
   "hint.content-changed":
     "Файл сохранили в это время: вызови инструмент снова, чтобы опереться на новый текст",
   "hint.search-index-invalid":

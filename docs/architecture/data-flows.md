@@ -71,6 +71,8 @@ sequenceDiagram
     S-->>A: SSE events-changed
     A->>S: GET /api/events, полный replay в клиенте
   end
+  S-->>A: SSE git-changed (на любое изменение рабочего дерева)
+  A->>S: GET /api/git
 ```
 
 При `build-failed` сервер отдаёт последний собранный bundle, а приложение показывает баннер с файлом и строкой.
@@ -89,7 +91,7 @@ sequenceDiagram
   D2->>G: push (reviews/laptop/*)
 ```
 
-Конфликтов нет: каждое устройство и каждый writer пишут только в свой файл ([sync.md](sync.md)).
+Конфликтов нет: каждое устройство и каждый writer пишут только в свой файл ([sync.md](sync.md)). В приложении оба шага — кнопки панели синхронизации: «Синхронизировать» (`POST /api/git/sync`: commit путей синхронизации, `pull --rebase` с autostash, push) и «Получить» (`POST /api/git/pull`). Обе идут через ту же очередь сервера, что запись контента и дозапись журнала; после операции сервер шлёт `git-changed`, а наблюдатель — `content-changed` и `events-changed` для полученных файлов.
 
 ## Импорт learning package (J-02)
 

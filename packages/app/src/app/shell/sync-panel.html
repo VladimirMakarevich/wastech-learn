@@ -1,0 +1,95 @@
+<header class="dialog-head">
+  <h2 id="sync-title">{{ "git.panel.title" | t }}</h2>
+  @if (state(); as state) { @if (state.branch !== null && state.upstream !==
+  null) {
+  <p class="muted tnum" data-branch>
+    {{ "git.panel.branch" | t: { branch: state.branch, upstream: state.upstream
+    } }}
+  </p>
+  } }
+</header>
+
+@if (lists(); as lists) {
+<section class="glist" data-in>
+  <h3 class="group-h">{{ "git.panel.in" | t }}</h3>
+  <div class="group-body">
+    @for (entry of lists.synced; track entry.path) {
+    <div class="g-row git-entry">
+      <span class="git-path">{{ entry.path }}</span>
+      <span class="muted">{{ changeKey(entry) | t }}</span>
+    </div>
+    } @empty {
+    <div class="g-row muted">{{ "git.panel.none" | t }}</div>
+    }
+  </div>
+</section>
+@if (lists.other.length > 0) {
+<section class="glist" data-out>
+  <h3 class="group-h">{{ "git.panel.out" | t }}</h3>
+  <div class="group-body">
+    @for (entry of lists.other; track entry.path) {
+    <div class="g-row git-entry">
+      <span class="git-path">{{ entry.path }}</span>
+      <span class="muted">{{ changeKey(entry) | t }}</span>
+    </div>
+    }
+  </div>
+</section>
+} } @else {
+<p class="muted" role="status">{{ "git.panel.loading" | t }}</p>
+}
+
+<label class="git-message">
+  <span>{{ "git.panel.message" | t }}</span>
+  <textarea
+    rows="2"
+    data-message
+    [value]="message()"
+    maxlength="2000"
+    [readOnly]="!canAct()"
+    (input)="edit($any($event.target).value)"
+  ></textarea>
+</label>
+
+@if (block(); as block) {
+<p class="git-note" data-blocked>{{ block.key | t }}</p>
+}
+<div role="status" class="git-outcome">
+  @if (git.running()) {
+  <p class="muted">{{ "git.panel.running" | t }}</p>
+  } @else if (outcome(); as outcome) {
+  <p class="git-note" [class.ok]="outcome.ok" data-outcome>
+    {{ outcome.line.key | t: outcome.line.params }}
+  </p>
+  @if (outcome.files.length > 0) {
+  <ul class="git-files">
+    @for (file of outcome.files; track file.path) {
+    <li><a [href]="file.href">{{ file.path }}</a></li>
+    }
+  </ul>
+  } }
+</div>
+
+<div class="row dialog-actions">
+  <button
+    class="btn primary"
+    type="button"
+    data-sync
+    [disabled]="!canAct() || !messageValid()"
+    (click)="sync()"
+  >
+    {{ "git.panel.sync" | t }}
+  </button>
+  <button
+    class="btn"
+    type="button"
+    data-pull
+    [disabled]="!canAct()"
+    (click)="pull()"
+  >
+    {{ "git.panel.pull" | t }}
+  </button>
+  <button class="btn" type="button" (click)="close()">
+    {{ "git.panel.close" | t }}
+  </button>
+</div>

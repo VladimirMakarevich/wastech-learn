@@ -85,12 +85,18 @@ describe("watching a repository", () => {
     expect(changes).toHaveLength(1);
   });
 
-  it("ignores .git, .cache and files outside the repository's parts", async () => {
+  it("ignores .git and .cache", async () => {
     const { root, changes } = await watched();
     await writeFile(join(root, ".cache/x.json"), "{}");
-    await writeFile(join(root, "notes.txt"), "x");
     await pause(SETTLE_MS);
     expect(changes).toEqual([]);
+  });
+
+  it("reports a file outside content, reviews and config as another change", async () => {
+    const { root, changes } = await watched();
+    await writeFile(join(root, "notes.txt"), "x");
+    await pause(SETTLE_MS);
+    expect(changes).toEqual([{ kinds: ["other"], paths: ["notes.txt"] }]);
   });
 
   it("announces nothing after close", async () => {

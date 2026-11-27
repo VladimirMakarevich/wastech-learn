@@ -290,6 +290,20 @@ export class ReviewSession {
     this.showNext();
   }
 
+  /**
+   * Takes the card on screen out of the session at once and hands back its id, for the screen to archive
+   * the file. The session moves on without waiting for the write and the rebuilt bundle, which keep the
+   * card out of every later queue.
+   */
+  setAside(): string | undefined {
+    const state = this.state();
+    const cardId = state?.current?.cardId;
+    if (state === undefined || cardId === undefined) return undefined;
+    this.state.set(bury(state, this.clock.now()));
+    this.showNext();
+    return cardId;
+  }
+
   /** Ends the session and keeps its summary for the end screen; the log already holds every rating. */
   finish(): SessionSummary | undefined {
     const state = this.state();

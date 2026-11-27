@@ -10,7 +10,8 @@ import type { Snapshot, Workspace } from "../workspace.js";
 export interface WritePlan<Result> {
   /** The repository the plan was made from; a file that changed since is not overwritten. */
   readonly basis: Snapshot;
-  readonly files: ReadonlyMap<string, string>;
+  /** A `null` text removes the file, as deleting a card does. */
+  readonly files: ReadonlyMap<string, string | null>;
   /** Files of the plan changed only on the side, such as the topic index that gains links. */
   readonly incidental?: readonly string[];
   readonly result: Result;

@@ -10,7 +10,13 @@ export default defineConfig({
   test: {
     // Code that reads the machine's zone is a bug; a zone with DST and a half-hour offset makes such a bug
     // fail loudly instead of passing by luck on a UTC runner.
-    env: { TZ: "Australia/Adelaide" },
+    // The owner's global git config (signing, hooks, a default branch name) must not decide whether a
+    // test of the git code passes; tests read only the temp repository's own config.
+    env: {
+      TZ: "Australia/Adelaide",
+      GIT_CONFIG_GLOBAL: "/dev/null",
+      GIT_CONFIG_NOSYSTEM: "1",
+    },
     projects: [
       {
         extends: true,

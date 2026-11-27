@@ -20,6 +20,7 @@ import {
 } from "@angular/router";
 import { filter, map } from "rxjs";
 import { AppData } from "./data/app-data";
+import { GitStatus } from "./data/git-state";
 import { I18n } from "./i18n/i18n";
 import { UI_LANGS, isUiLang, type UiLang } from "./i18n/message";
 import { TPipe } from "./i18n/t.pipe";
@@ -27,6 +28,7 @@ import { Keyboard } from "./keys/keyboard";
 import { Preferences } from "./prefs/preferences";
 import { ReviewSession } from "./session/review-session";
 import { BuildBanner } from "./shell/build-banner";
+import { SyncPanels } from "./shell/sync-panels";
 import { titleOf } from "./shell/titles";
 import { Icon, type IconName } from "./ui/icon";
 import { Toast, Toasts } from "./ui/toast";
@@ -73,6 +75,8 @@ export class App {
   protected readonly i18n = inject(I18n);
   protected readonly data = inject(AppData);
   protected readonly session = inject(ReviewSession);
+  protected readonly git = inject(GitStatus);
+  protected readonly syncPanels = inject(SyncPanels);
   protected readonly nav = NAV;
   protected readonly langs = UI_LANGS;
   protected readonly searchField =
@@ -128,15 +132,31 @@ export class App {
     return theme === "system" ? this.prefersDark() : theme === "dark";
   });
 
+  /**
+   * Where this computer's work stands, most urgent first: ratings not yet on disk, files not committed,
+   * Sync switched off, commits not sent, commits to receive, then everything in place.
+   */
   protected readonly saveStatus = computed(() => {
     const device = this.data.status()?.device ?? "";
     const pending = this.data.outbox().pending;
-    return pending === 0
-      ? this.i18n.t("shell.saved", { device })
-      : this.i18n.t("shell.pending", {
-          device,
-          events: this.i18n.t("count.events", { count: pending }),
-        });
+    if (pending > 0)
+      return this.i18n.t("shell.pending", {
+        device,
+        events: this.i18n.t("count.events", { count: pending }),
+      });
+    const state = this.git.state();
+    if (state === undefined) return this.i18n.t("shell.saved", { device });
+    if (state.entries.length > 0)
+      return this.i18n.t("git.indicator.changes", {
+        device,
+        count: state.entries.length,
+      });
+    if (state.blocked !== undefined)
+      return this.i18n.t("git.indicator.blocked", { device });
+    if (state.ahead > 0) return this.i18n.t("git.indicator.ready", { device });
+    if (state.behind > 0)
+      return this.i18n.t("git.indicator.incoming", { device });
+    return this.i18n.t("git.indicator.clean", { device });
   });
 
   constructor() {

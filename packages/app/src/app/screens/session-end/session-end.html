@@ -17,6 +17,19 @@
       count(summary.tomorrow.due), minutes: minutes(summary.tomorrow.minutes) }
       }} } @else { {{ "end.tomorrow-none" | t }} }
     </p>
+    @if (git.unsentReviews()) {
+    <p class="git-note end-unsent" data-unsent>
+      {{ "end.unsent" | t }}
+      <button
+        class="btn sm"
+        type="button"
+        data-end-sync
+        (click)="syncPanels.open()"
+      >
+        {{ "end.sync" | t }}
+      </button>
+    </p>
+    }
     <section class="glist">
       <h3 class="group-h">{{ "end.misses" | t }}</h3>
       <div class="group-body">

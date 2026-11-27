@@ -30,6 +30,7 @@ const describeLearnError = (
     case "card-not-found":
     case "package-not-found":
     case "nothing-to-undo":
+    case "nothing-to-restore":
     case "content-changed":
     case "search-index-invalid":
     case "id-unavailable":

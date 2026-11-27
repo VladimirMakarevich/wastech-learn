@@ -144,6 +144,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "error.card-not-found": "Nie ma karty o id {subject}",
   "error.package-not-found": "Pod ścieżką {subject} nie ma learning package",
   "error.nothing-to-undo": "Nie ma oceny z tego urządzenia do cofnięcia",
+  "error.nothing-to-restore":
+    "Karta {subject} nie została usunięta od ostatniego commitu — nie ma czego przywracać",
   "error.content-changed":
     "{subject} zmienił się podczas przygotowania zapisu; nic nie zapisano",
   "error.search-index-invalid":
@@ -180,6 +182,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Podaj ścieżkę pliku w inbox/, na przykład inbox/topic.md",
   "hint.nothing-to-undo":
     "Tu można cofnąć tylko oceny zapisane przez record_review na tym urządzeniu",
+  "hint.nothing-to-restore":
+    "Usunięcie można cofnąć tylko przed commitem; potem plik zostaje w historii git",
   "hint.content-changed":
     "Ktoś w tym czasie zapisał plik: wywołaj narzędzie ponownie, by oprzeć się na nowym tekście",
   "hint.search-index-invalid":
