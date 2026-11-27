@@ -17,6 +17,7 @@ export interface TopicRow {
   readonly due: number;
   /** One point per card: the mean retrievability of its items, `null` while all are new. */
   readonly points: readonly (number | null)[];
+  readonly archived: boolean;
 }
 
 export interface DomainGroup {
@@ -36,7 +37,40 @@ export interface HomeModel {
   readonly comeback:
     { readonly days: number; readonly sessionMinutes: number } | undefined;
   readonly domains: readonly DomainGroup[];
+  /** Archived topics, out of the domains and the queue; Home lists them only when asked. */
+  readonly archived: readonly TopicRow[];
 }
+
+/**
+ * The domains with their active topics, and the archived topics apart: a domain whose topics are all
+ * archived drops out of the list instead of showing an empty group.
+ */
+const groupTopics = (
+  domains: readonly {
+    readonly id: string;
+    readonly topics: readonly string[];
+  }[],
+  row: (path: string) => readonly TopicRow[],
+): {
+  readonly domains: readonly DomainGroup[];
+  readonly archived: readonly TopicRow[];
+} => {
+  const all = domains.map((domain) => ({
+    id: domain.id,
+    rows: domain.topics.flatMap(row),
+  }));
+  return {
+    domains: all
+      .map((domain) => ({
+        id: domain.id,
+        topics: domain.rows.filter((topic) => !topic.archived),
+      }))
+      .filter((domain) => domain.topics.length > 0),
+    archived: all.flatMap((domain) =>
+      domain.rows.filter((topic) => topic.archived),
+    ),
+  };
+};
 
 const mean = (values: readonly number[]): number =>
   values.reduce((sum, value) => sum + value, 0) / values.length;
@@ -83,31 +117,29 @@ export const homeModel = (snapshot: LibrarySnapshot): HomeModel => {
           sessionMinutes: config.limits.sessionMinutes,
         }
       : undefined,
-    domains: bundle.domains.map((domain) => ({
-      id: domain.id,
-      topics: domain.topics.flatMap((path) => {
-        const topic = topics.get(path);
-        if (topic === undefined) return [];
-        return [
-          {
-            path,
-            title: topic.title,
-            lang: topic.lang,
-            cards: topic.cards.length,
-            due: topic.cards.reduce(
-              (sum, id) => sum + (dueByCard.get(id) ?? 0),
-              0,
-            ),
-            points: topic.cards.map((id) => {
-              const known = (itemsByCard.get(id) ?? []).flatMap((item) => {
-                const r = state.items.get(item)?.retrievability;
-                return r === null || r === undefined ? [] : [r];
-              });
-              return known.length === 0 ? null : mean(known);
-            }),
-          },
-        ];
-      }),
-    })),
+    ...groupTopics(bundle.domains, (path) => {
+      const topic = topics.get(path);
+      if (topic === undefined) return [];
+      return [
+        {
+          path,
+          title: topic.title,
+          lang: topic.lang,
+          cards: topic.cards.length,
+          due: topic.cards.reduce(
+            (sum, id) => sum + (dueByCard.get(id) ?? 0),
+            0,
+          ),
+          points: topic.cards.map((id) => {
+            const known = (itemsByCard.get(id) ?? []).flatMap((item) => {
+              const r = state.items.get(item)?.retrievability;
+              return r === null || r === undefined ? [] : [r];
+            });
+            return known.length === 0 ? null : mean(known);
+          }),
+          archived: topic.status === "archived",
+        },
+      ];
+    }),
   };
 };

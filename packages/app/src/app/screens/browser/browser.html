@@ -106,6 +106,15 @@
     <label class="check">
       <input
         type="checkbox"
+        data-filter="uncommitted"
+        [checked]="filters().uncommitted"
+        (change)="set('uncommitted', $any($event.target).checked)"
+      />
+      {{ "browser.uncommitted" | t }}
+    </label>
+    <label class="check">
+      <input
+        type="checkbox"
         data-filter="changed"
         [checked]="filters().changed"
         (change)="set('changed', $any($event.target).checked)"
@@ -129,6 +138,26 @@
       >
         {{ topic.title }}<wl-icon name="chevron" />
       </a>
+      }
+    </div>
+  </section>
+  } @if (deleted().length > 0) {
+  <section class="glist" data-deleted>
+    <h2 class="group-h">{{ "browser.deleted" | t }}</h2>
+    <div class="group-body">
+      @for (entry of deleted(); track entry.path) {
+      <div class="g-row git-entry">
+        <span class="git-path">{{ entry.path }}</span>
+        <button
+          class="btn sm"
+          type="button"
+          data-restore
+          [attr.aria-label]="'browser.restore-label' | t: { path: entry.path }"
+          (click)="restore(entry.card)"
+        >
+          {{ "action.undo-delete" | t }}
+        </button>
+      </div>
       }
     </div>
   </section>
@@ -164,6 +193,10 @@
             @if (row.changed) {
             <span class="status-changed"
               ><wl-icon name="pencil" />{{ "status.changed" | t }}</span
+            >
+            } @if (gitChanges().has(row.cardId)) {
+            <span class="chip" data-git-change
+              >{{ "browser.not-committed" | t }}</span
             >
             } @if (row.leech) {
             <span class="chip">{{ "status.leech" | t }}</span>
@@ -243,7 +276,34 @@
       >
         {{ "panel.unsuspend" | t }}
       </button>
-      } @if (panel.editor; as href) {
+      } @if (panel.card.status === "retired") {
+      <button
+        class="btn"
+        type="button"
+        data-unarchive
+        (click)="unarchive(panel.card.id)"
+      >
+        {{ "action.return" | t }}
+      </button>
+      } @else {
+      <button
+        class="btn"
+        type="button"
+        data-archive
+        (click)="archive(panel.card.id)"
+      >
+        {{ "action.archive" | t }}
+      </button>
+      }
+      <button
+        class="btn"
+        type="button"
+        data-delete
+        (click)="remove(panel.card.id, panel.card.title, panel.card.lang)"
+      >
+        {{ "action.delete" | t }}
+      </button>
+      @if (panel.editor; as href) {
       <a #editor class="btn" [href]="href" aria-keyshortcuts="e"
         >{{ "context.vscode" | t }} <kbd>e</kbd></a
       >

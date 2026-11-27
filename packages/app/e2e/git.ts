@@ -3,6 +3,7 @@ import { mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
+import { contentRoot } from "./content.js";
 
 const exec = promisify(execFile);
 
@@ -55,4 +56,13 @@ export const secondComputer = async (): Promise<string> => {
   await git(dir, "config", "user.name", "laptop");
   await git(dir, "config", "user.email", "laptop@example.test");
   return dir;
+};
+
+/** Commits and pushes whatever earlier scenarios left, so each one starts from a repository in sync. */
+export const settle = async (): Promise<void> => {
+  const root = contentRoot();
+  await git(root, "add", "--all");
+  if ((await git(root, "status", "--porcelain")).trim() !== "")
+    await git(root, "commit", "-q", "-m", "chore: settle e2e");
+  await git(root, "push", "-q");
 };

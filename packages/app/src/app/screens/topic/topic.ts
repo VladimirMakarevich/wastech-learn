@@ -10,9 +10,13 @@ import {
 import { toSignal } from "@angular/core/rxjs-interop";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { AppData } from "../../data/app-data";
+import { CardActions } from "../../data/card-actions";
+import { topicEntries } from "../../data/git-model";
+import { GitStatus } from "../../data/git-state";
 import { Library } from "../../data/library";
 import { intervalLabel, percent } from "../../format/duration";
 import { BundleHtml } from "../../html/bundle-html";
+import type { MessageKey } from "../../i18n/en";
 import { I18n } from "../../i18n/i18n";
 import { sectionAnchor, sectionKey } from "../../i18n/sections";
 import { TPipe } from "../../i18n/t.pipe";
@@ -60,6 +64,34 @@ export class Topic {
       .bundle()
       ?.topics.find((candidate) => candidate.path === path);
   });
+
+  private readonly git = inject(GitStatus);
+  private readonly cardActions = inject(CardActions);
+
+  /**
+   * This topic's files that differ from the last commit, named relative to the topic's folder, so the
+   * reader sees what a Sync would send before opening the panel.
+   */
+  protected readonly uncommitted = computed(() => {
+    const state = this.git.state();
+    const path = `${this.domain()}/${this.topic()}`;
+    if (state === undefined) return [];
+    const prefix = `content/${path}/`;
+    return topicEntries(state, path).map((entry) => ({
+      path: entry.path,
+      name: entry.path.startsWith(prefix)
+        ? entry.path.slice(prefix.length)
+        : entry.path,
+      change: `git.change.${entry.change}` satisfies MessageKey,
+    }));
+  });
+
+  protected setArchived(archived: boolean): void {
+    void this.cardActions.topicStatus(
+      `${this.domain()}/${this.topic()}`,
+      archived ? "archived" : "active",
+    );
+  }
 
   protected readonly sections = computed(() =>
     (this.meta()?.summary ?? []).map((section) => {

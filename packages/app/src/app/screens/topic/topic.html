@@ -14,13 +14,31 @@
         [wlBundleHtml]="topic.keyIdeaHtml"
       ></div>
     </div>
-    @if (editorHref(); as href) {
     <div class="row">
+      @if (editorHref(); as href) {
       <a class="btn" [href]="href" aria-keyshortcuts="e"
         >{{ "topic.vscode" | t }}</a
       >
+      } @if (topic.status === "archived") {
+      <button
+        class="btn"
+        type="button"
+        data-topic-archive
+        (click)="setArchived(false)"
+      >
+        {{ "topic.unarchive" | t }}
+      </button>
+      } @else {
+      <button
+        class="btn"
+        type="button"
+        data-topic-archive
+        (click)="setArchived(true)"
+      >
+        {{ "topic.archive" | t }}
+      </button>
+      }
     </div>
-    }
   </div>
   <div class="topic-layout">
     <nav class="toc" [attr.aria-label]="'topic.sections' | t">
@@ -54,6 +72,25 @@
       } }
     </article>
     <aside class="context">
+      @if (topic.status === "archived") {
+      <p class="git-note" data-topic-archived>{{ "topic.archived" | t }}</p>
+      } @if (uncommitted().length > 0) {
+      <section data-uncommitted>
+        <h3 class="group-h">
+          {{ "topic.uncommitted" | t }}<span class="tnum"
+            >{{ uncommitted().length }}</span
+          >
+        </h3>
+        <div class="group-body">
+          @for (entry of uncommitted(); track entry.path) {
+          <div class="g-row git-entry">
+            <span class="git-path">{{ entry.name }}</span>
+            <span class="muted">{{ entry.change | t }}</span>
+          </div>
+          }
+        </div>
+      </section>
+      }
       <section>
         <h3 class="group-h">
           {{ "topic.cards" | t }}<span class="tnum">{{ cards().length }}</span>

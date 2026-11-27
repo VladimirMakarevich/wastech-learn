@@ -216,3 +216,14 @@ button.sync:hover {
   gap: 12px;
   flex-wrap: wrap;
 }
+
+/* Inside a dialog the panel's gap spaces the blocks; the browser's own margins would double it. */
+.sync-panel .glist,
+.confirm-panel h2,
+.confirm-panel p {
+  margin: 0;
+}
+
+.confirm-panel h2 {
+  font-size: 20px;
+}

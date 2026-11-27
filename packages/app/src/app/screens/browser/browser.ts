@@ -1,4 +1,5 @@
 import { CdkTrapFocus } from "@angular/cdk/a11y";
+import { Dialog, DialogConfig, type DialogRef } from "@angular/cdk/dialog";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,8 +14,12 @@ import {
   viewChild,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
+import type { GitEntry } from "@wastech-learn/core";
 import { unsuspendEvent } from "@wastech-learn/session";
 import { AppData } from "../../data/app-data";
+import { CardActions } from "../../data/card-actions";
+import { cardChanges, deletedCards } from "../../data/git-model";
+import { GitStatus } from "../../data/git-state";
 import { Clock } from "../../data/clock";
 import { Library } from "../../data/library";
 import { intervalLabel, percent } from "../../format/duration";
@@ -36,6 +41,11 @@ import {
   type BrowserFilters,
   type BrowserRow,
 } from "./browser-model";
+import {
+  ConfirmDelete,
+  type ConfirmDeleteData,
+  type DeleteChoice,
+} from "./confirm-delete";
 
 const STATUSES = ["active", "suspended", "draft", "retired"] as const;
 const STATUS_KEYS: Readonly<Record<string, MessageKey>> = {
@@ -89,8 +99,30 @@ export class Browser {
     const snapshot = this.library.snapshot();
     return snapshot === undefined ? [] : browserRows(snapshot);
   });
+  private readonly git = inject(GitStatus);
+  private readonly cardActions = inject(CardActions);
+  private readonly dialog = inject(Dialog);
+
+  /** How each card differs from the last commit, for the mark in its row and the filter. */
+  protected readonly gitChanges = computed(() => {
+    const state = this.git.state();
+    return state === undefined
+      ? new Map<string, GitEntry["change"]>()
+      : cardChanges(state);
+  });
+  /** Cards deleted since the last commit: no longer in the content, but still possible to bring back. */
+  protected readonly deleted = computed(() => {
+    const state = this.git.state();
+    return state === undefined ? [] : deletedCards(state);
+  });
+
   protected readonly result = computed(() =>
-    filterRows(this.rows(), this.filters(), this.index()),
+    filterRows(
+      this.rows(),
+      this.filters(),
+      this.index(),
+      new Set(this.gitChanges().keys()),
+    ),
   );
 
   protected readonly options = computed(() => {
@@ -182,6 +214,50 @@ export class Browser {
     if (origin === undefined) return;
     void this.data.append([unsuspendEvent(origin, this.clock.now(), item)]);
     this.toasts.show(this.i18n.t("toast.unsuspended"));
+  }
+
+  protected archive(cardId: string): void {
+    void this.cardActions.archive(cardId);
+  }
+
+  protected unarchive(cardId: string): void {
+    void this.cardActions.unarchive(cardId);
+  }
+
+  protected restore(cardId: string): void {
+    void this.cardActions.restore(cardId);
+  }
+
+  /**
+   * Deleting asks first. Whether the card has history decides the question: the log is read here, where
+   * the events already are, rather than asked of the server.
+   */
+  protected remove(cardId: string, title: string, lang: string): void {
+    // From the replayed rows, not the raw log: a rating taken back with undo leaves no history behind.
+    const history = this.rows().some(
+      (row) => row.cardId === cardId && row.lastRating !== null,
+    );
+    const config = new DialogConfig<
+      ConfirmDeleteData,
+      DialogRef<DeleteChoice>
+    >();
+    config.data = { title, lang, history };
+    config.ariaLabelledBy = "confirm-title";
+    config.autoFocus = "first-tabbable";
+    config.restoreFocus = true;
+    config.panelClass = "dialog-panel";
+    config.backdropClass = "dialog-backdrop";
+    const ref = this.dialog.open<DeleteChoice, ConfirmDeleteData>(
+      ConfirmDelete,
+      config,
+    );
+    ref.closed.subscribe((choice) => {
+      if (choice === "archive") void this.cardActions.archive(cardId);
+      if (choice === "delete")
+        void this.cardActions.delete(cardId).then((done) => {
+          if (done) this.selected.set(undefined);
+        });
+    });
   }
 
   private onKey(name: string): boolean {

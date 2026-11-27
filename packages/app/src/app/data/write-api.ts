@@ -122,7 +122,7 @@ export const createWriteApi = (fetcher: Fetch): WriteApi => {
     body: unknown,
   ): Promise<WriteAnswer> => {
     const response = await call(path, method, body);
-    if (response.status !== 200 && response.status !== 409)
+    if (![200, 404, 409].includes(response.status))
       throw new ApiError(
         "http",
         response.status,

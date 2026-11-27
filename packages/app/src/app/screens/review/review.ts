@@ -18,6 +18,7 @@ import { Router, RouterLink } from "@angular/router";
 import type { SessionMode } from "@wastech-learn/session";
 import type { Rating } from "@wastech-learn/srs";
 import { AppData } from "../../data/app-data";
+import { CardActions } from "../../data/card-actions";
 import { daysAgo, intervalLabel, percent } from "../../format/duration";
 import { BundleHtml } from "../../html/bundle-html";
 import { askedGap, type ClozeView } from "../../html/cloze";
@@ -94,6 +95,7 @@ export class Review {
   protected readonly speech = inject(Speech);
   private readonly router = inject(Router);
   private readonly toasts = inject(Toasts);
+  private readonly cardActions = inject(CardActions);
   private readonly announcer = inject(LiveAnnouncer);
   private readonly preferences = inject(Preferences);
   private readonly injector = inject(Injector);
@@ -311,6 +313,15 @@ export class Review {
     this.editorLink()?.nativeElement.click();
   }
 
+  /**
+   * Archives the card on screen without a question: the session moves on at once, and the message offers
+   * the way back, so a slip of the key costs one more press.
+   */
+  protected archive(): void {
+    const cardId = this.session.setAside();
+    if (cardId !== undefined) void this.cardActions.archive(cardId);
+  }
+
   protected finish(): void {
     this.session.finish();
     void this.router.navigateByUrl("/session-end");
@@ -351,6 +362,9 @@ export class Review {
         return true;
       case "b":
         this.session.bury();
+        return true;
+      case "a":
+        this.archive();
         return true;
       case "p":
         this.speak();

@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   computed,
+  signal,
   inject,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
@@ -31,6 +32,9 @@ export class Home {
   private readonly router = inject(Router);
   protected readonly i18n = inject(I18n);
   protected readonly preferences = inject(Preferences);
+
+  /** Archived topics stay folded away until asked for: Home is about what to study now. */
+  protected readonly showArchived = signal(false);
 
   protected readonly model = computed(() => {
     const snapshot = this.library.snapshot();

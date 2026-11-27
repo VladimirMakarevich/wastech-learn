@@ -4,7 +4,7 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { contentRoot, editFile } from "./content.js";
 import { expect, test } from "./fixtures.js";
-import { bareRoot, git, secondComputer } from "./git.js";
+import { bareRoot, git, secondComputer, settle } from "./git.js";
 
 const CARD = "content/architecture/backpressure/cards/0d1gjcys.md";
 const OTHER_CARD = "content/architecture/backpressure/cards/1mpw75f3.md";
@@ -14,15 +14,6 @@ const NEW_CARD = `content/architecture/backpressure/cards/${NEW_ID}.md`;
 
 const indicator = (page: Page) => page.locator("[data-git-indicator]");
 const panel = (page: Page) => page.locator("wl-sync-panel");
-
-/** Commits and pushes whatever earlier scenarios left, so each one starts from a repository in sync. */
-const settle = async (): Promise<void> => {
-  const root = contentRoot();
-  await git(root, "add", "--all");
-  if ((await git(root, "status", "--porcelain")).trim() !== "")
-    await git(root, "commit", "-q", "-m", "chore: settle e2e");
-  await git(root, "push", "-q");
-};
 
 /** The tab came back into view: the app rereads git, as after a commit made in a terminal. */
 const tabShown = (page: Page): Promise<void> =>

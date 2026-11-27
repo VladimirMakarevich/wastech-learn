@@ -38,6 +38,8 @@ export interface BrowserFilters {
   readonly status: string;
   readonly leech: boolean;
   readonly changed: boolean;
+  /** Only cards that differ from the last commit. */
+  readonly uncommitted: boolean;
   /** Review items picked elsewhere (the session summary, a topic); empty for all. */
   readonly items: readonly string[];
 }
@@ -51,6 +53,7 @@ export const NO_FILTERS: BrowserFilters = {
   status: "",
   leech: false,
   changed: false,
+  uncommitted: false,
   items: [],
 };
 
@@ -116,6 +119,7 @@ export const filterRows = (
   rows: readonly BrowserRow[],
   filters: BrowserFilters,
   index: ContentSearchIndex | undefined,
+  uncommittedCards: ReadonlySet<string> = new Set(),
 ): BrowserResult => {
   const items = new Set(filters.items);
   const keep = (row: BrowserRow): boolean =>
@@ -126,7 +130,8 @@ export const filterRows = (
     (filters.type === "" || row.type === filters.type) &&
     (filters.status === "" || row.status === filters.status) &&
     (!filters.leech || row.leech) &&
-    (!filters.changed || row.changed);
+    (!filters.changed || row.changed) &&
+    (!filters.uncommitted || uncommittedCards.has(row.cardId));
   const query = filters.q.trim();
   if (query === "" || index === undefined)
     return { rows: rows.filter(keep), topics: [] };

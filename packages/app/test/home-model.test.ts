@@ -53,3 +53,22 @@ describe("home model", () => {
     ).toBeUndefined();
   });
 });
+
+describe("archived topics on Home", () => {
+  it("leave their domain group, which drops out when nothing is left, and wait apart", async () => {
+    const snapshot = await snapshotAt(new Date("2026-11-26T09:00:00.000Z"), []);
+    const model = homeModel({
+      ...snapshot,
+      bundle: {
+        ...snapshot.bundle,
+        topics: snapshot.bundle.topics.map((topic) =>
+          topic.path === "lang-pl/words"
+            ? { ...topic, status: "archived" }
+            : topic,
+        ),
+      },
+    });
+    expect(model.domains.map((domain) => domain.id)).toEqual(["arch"]);
+    expect(model.archived.map((row) => row.path)).toEqual(["lang-pl/words"]);
+  });
+});

@@ -104,5 +104,42 @@
       }
     </div>
   </section>
+  } @if (model.archived.length > 0) {
+  <section class="glist" data-archived-topics>
+    <button
+      class="btn sm"
+      type="button"
+      data-show-archived
+      [attr.aria-expanded]="showArchived()"
+      (click)="showArchived.set(!showArchived())"
+    >
+      {{ (showArchived() ? "home.archived-hide" : "home.archived-show") | t: {
+      count: model.archived.length } }}
+    </button>
+    @if (showArchived()) {
+    <div class="group-body">
+      @for (row of model.archived; track row.path) {
+      <a class="t-row" [routerLink]="['/topic', ...row.path.split('/')]">
+        <span class="t-main">
+          <span class="t-title" [attr.lang]="row.lang">{{ row.title }}</span>
+          <span class="t-meta"
+            >{{ "home.topic-meta" | t: { lang: row.lang.toUpperCase(), cards:
+            count(row.cards) } }}</span
+          >
+        </span>
+        <span class="memstrip" role="img" [attr.aria-label]="topicLabel(row)">
+          @for (point of row.points; track $index) {
+          <wl-memory-point size="small" [retrievability]="point" />
+          }
+        </span>
+        <span class="t-due tnum" [class.none]="row.due === 0"
+          >{{ "home.due" | t: { count: row.due } }}</span
+        >
+        <wl-icon name="chevron" />
+      </a>
+      }
+    </div>
+    }
+  </section>
   } }
 </main>

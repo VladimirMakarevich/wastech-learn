@@ -140,3 +140,21 @@ describe("browser filters", () => {
     ).toEqual([]);
   });
 });
+
+describe("the uncommitted filter", () => {
+  it("keeps only rows of cards that differ from the last commit", () => {
+    expect(
+      items(
+        filterRows(
+          ROWS,
+          { ...NO_FILTERS, uncommitted: true },
+          undefined,
+          new Set(["p0000001"]),
+        ),
+      ),
+    ).toEqual(["p0000001:fwd", "p0000001:rev"]);
+    expect(
+      items(filterRows(ROWS, NO_FILTERS, undefined, new Set(["p0000001"]))),
+    ).toHaveLength(ROWS.length);
+  });
+});
