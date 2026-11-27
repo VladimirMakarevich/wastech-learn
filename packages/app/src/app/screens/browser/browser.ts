@@ -5,10 +5,13 @@ import {
   Component,
   DestroyRef,
   type ElementRef,
+  Injector,
+  afterNextRender,
   computed,
   effect,
   inject,
   input,
+  linkedSignal,
   signal,
   untracked,
   viewChild,
@@ -32,6 +35,8 @@ import type { MessageKey } from "../../i18n/en";
 import { I18n } from "../../i18n/i18n";
 import { TPipe } from "../../i18n/t.pipe";
 import { Keyboard } from "../../keys/keyboard";
+import { SourceEditor } from "../../edit/source-editor";
+import { UnsavedEdits } from "../../edit/unsaved-guard";
 import { ReviewSession } from "../../session/review-session";
 import { vscodeLink } from "../../shell/vscode";
 import { Icon } from "../../ui/icon";
@@ -72,7 +77,15 @@ const RATING_KEYS: Readonly<Record<number, MessageKey>> = {
  */
 @Component({
   selector: "wl-browser",
-  imports: [RouterLink, TPipe, BundleHtml, Icon, MemoryPoint, CdkTrapFocus],
+  imports: [
+    RouterLink,
+    TPipe,
+    BundleHtml,
+    Icon,
+    MemoryPoint,
+    CdkTrapFocus,
+    SourceEditor,
+  ],
   templateUrl: "./browser.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -95,6 +108,15 @@ export class Browser {
   protected readonly selected = signal<string | undefined>(undefined);
   private readonly editorLink =
     viewChild<ElementRef<HTMLAnchorElement>>("editor");
+  private readonly editButton =
+    viewChild<ElementRef<HTMLButtonElement>>("editButton");
+  private readonly unsaved = inject(UnsavedEdits);
+  private readonly injector = inject(Injector);
+  /** The open card is shown as its file's text; choosing another card closes the editor. */
+  protected readonly editing = linkedSignal({
+    source: this.selected,
+    computation: () => false,
+  });
 
   private readonly index = computed(() =>
     searchIndexOf(this.data.bundle()?.searchIndex),
@@ -174,6 +196,28 @@ export class Browser {
     });
     const release = inject(Keyboard).register((name) => this.onKey(name));
     inject(DestroyRef).onDestroy(release);
+  }
+
+  /** Another card, or none, after the learner agreed to drop an unsaved edit of this one. */
+  protected async select(item: string | undefined): Promise<void> {
+    if (item === this.selected()) return;
+    if (this.editing() && !(await this.unsaved.mayDiscard())) return;
+    this.selected.set(item);
+  }
+
+  protected edit(): void {
+    this.editing.set(true);
+  }
+
+  /** Back to the card, with focus on the button that opened the editor. */
+  protected closeEditor(): void {
+    this.editing.set(false);
+    afterNextRender(
+      () => {
+        this.editButton()?.nativeElement.focus();
+      },
+      { injector: this.injector },
+    );
   }
 
   protected set<Key extends keyof BrowserFilters>(
@@ -268,12 +312,15 @@ export class Browser {
 
   private onKey(name: string): boolean {
     const panel = this.panel();
-    if (panel === undefined) return false;
+    if (panel === undefined || this.editing()) return false;
     switch (name) {
       case "Escape":
         this.selected.set(undefined);
         return true;
       case "e":
+        this.edit();
+        return true;
+      case "Shift+e":
         this.editorLink()?.nativeElement.click();
         return true;
       case "o":

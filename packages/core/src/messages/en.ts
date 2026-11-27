@@ -72,6 +72,8 @@ export const en = {
     "Sources have no link to a ../summary.md# section: add one",
   "finding.active-edit":
     "{section} of an active card changed by {percent}%: if the meaning changed, retire it and add a new card",
+  "finding.card-id-changed":
+    "The id stays {id}: the card's review history is kept under it",
   "finding.preset-invalid":
     "Not a valid wastech-mdlint config: copy the preset that ships with the CLI",
   "finding.preset-drift":
@@ -123,6 +125,8 @@ export const en = {
     "Card {subject} is not deleted since the last commit, so there is nothing to bring back",
   "error.content-changed":
     "{subject} changed while the write was being prepared; nothing was written",
+  "error.source-not-found":
+    "{subject} is not a topic or card file the app can edit",
   "error.search-index-invalid":
     "The content bundle has a search index this version cannot read",
   "error.id-unavailable":
@@ -161,6 +165,8 @@ export const en = {
     "A deletion can be undone only until it is committed; after that, git history keeps the file",
   "hint.content-changed":
     "Someone saved the file in the meantime: call the tool again to build on the new text",
+  "hint.source-not-found":
+    "Open the file from a topic or a card shown in the app",
   "hint.search-index-invalid":
     "Rebuild the bundle with wastech-learn build or restart wastech-learn serve",
   "hint.id-unavailable":

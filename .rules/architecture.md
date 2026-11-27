@@ -36,7 +36,7 @@
 ## Boundaries of the hosts
 
 - **The UI reaches state only through `ReviewStore`** and content only through the content bundle ([components](../docs/architecture/components.md)). It never imports `content-fs` or reads files.
-- **The local server binds `127.0.0.1` only** and validates every incoming event with the `core` schema.
+- **The local server binds `127.0.0.1` only** and validates every incoming event with the `core` schema. It writes Markdown only through `content-fs` with both validation tiers, and only to topic and card files the bundle names (ADR-0017).
 - **MCP tools:** mutating tools are idempotent by `requestId` and support `dryRun`; paths are confined to `--content`; `quiz_next` never returns the answer (`reveal` does) — [mcp-tools](../docs/ai/mcp-tools.md).
 - **No model calls from code.** The app, server and CLI never call an LLM API (NFR-02); AI work happens in subscription chats through skills and MCP (ADR-0008). A future API grader is a pluggable `Grader` behind an explicit opt-in.
 

@@ -85,6 +85,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "В Sources нет ссылки на секцию ../summary.md#: добавь её",
   "finding.active-edit":
     "{section} активной карточки изменён на {percent}%: если смысл другой, переведи её в retired и заведи новую",
+  "finding.card-id-changed":
+    "id остаётся {id}: под ним хранится история повторений карточки",
   "finding.preset-invalid":
     "Это не валидный конфиг wastech-mdlint: скопируй пресет из CLI",
   "finding.preset-drift":
@@ -148,6 +150,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Карточка {subject} не удалена после последнего коммита — возвращать нечего",
   "error.content-changed":
     "{subject} изменился, пока готовилась запись; ничего не записано",
+  "error.source-not-found":
+    "{subject} — не файл темы или карточки, который можно править в приложении",
   "error.search-index-invalid":
     "Индекс поиска в content bundle не читается этой версией",
   "error.id-unavailable":
@@ -186,6 +190,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Удаление отменяется только до коммита; после него файл остаётся в истории git",
   "hint.content-changed":
     "Файл сохранили в это время: вызови инструмент снова, чтобы опереться на новый текст",
+  "hint.source-not-found":
+    "Открой файл из темы или карточки, которые показывает приложение",
   "hint.search-index-invalid":
     "Пересобери bundle командой wastech-learn build или перезапусти wastech-learn serve",
   "hint.id-unavailable":

@@ -8,6 +8,7 @@ import {
   openWorkspace,
   readReviewLog,
   watchRepository,
+  type TransactionFs,
   type Workspace,
   type RepositoryChange,
   type RepositoryWatcher,
@@ -32,6 +33,7 @@ import { refusal, type Refusal } from "./body.js";
 import { contentRoutes } from "./content-routes.js";
 import { guard, limitBody } from "./guard.js";
 import { gitRoutes } from "./git-routes.js";
+import { sourceRoutes } from "./source.js";
 import { appFile, fileUnder } from "./static.js";
 
 /** The writer of events the app sends; the server appends nothing under any other name. */
@@ -67,6 +69,8 @@ export interface ServerOptions {
   /** The randomness of new ids; tests pass a seeded one. */
   readonly random?: RandomSource;
   readonly hostname?: () => string;
+  /** Replaced in tests, so a write can fail half way without a broken disk. */
+  readonly transactionFs?: TransactionFs;
   /** Replaced in tests, so a change can be announced without touching the disk. */
   readonly watch?: (root: string, options: WatchOptions) => RepositoryWatcher;
   /** Each bundle build, for the host to report time and counts; never content. */
@@ -131,6 +135,7 @@ interface RouteDeps {
   readonly watcher: () => RepositoryWatcher | undefined;
   readonly hub: ChangeHub;
   readonly ready: Promise<void>;
+  readonly refresh: () => Promise<void>;
 }
 
 const routes = ({
@@ -140,6 +145,7 @@ const routes = ({
   watcher,
   hub,
   ready,
+  refresh,
 }: RouteDeps): Hono => {
   const { root } = options;
   const subscribe = hub.subscribe;
@@ -225,6 +231,17 @@ const routes = ({
   });
 
   api.route("/git", gitRoutes({ options, workspace, hub }));
+  api.route(
+    "/source",
+    sourceRoutes({
+      workspace,
+      bundle: async () => {
+        await ready;
+        return holder.served()?.bundle;
+      },
+      refresh,
+    }),
+  );
   api.route("/", contentRoutes({ workspace, hub }));
 
   api.get("/changes", (c) =>
@@ -313,6 +330,9 @@ export const createServer = (options: ServerOptions): LearnServer => {
     now,
     random: options.random ?? cryptoRandom,
     ...(options.hostname === undefined ? {} : { hostname: options.hostname }),
+    ...(options.transactionFs === undefined
+      ? {}
+      : { transactionFs: options.transactionFs }),
   });
 
   const build = async (): Promise<BuildOutcome> => {
@@ -323,21 +343,23 @@ export const createServer = (options: ServerOptions): LearnServer => {
 
   const ready = build().then(() => undefined);
 
+  const refresh = async (): Promise<void> => {
+    const outcome = await build();
+    hub.publish(
+      outcome.ok
+        ? { type: "content-changed" }
+        : { type: "build-failed", findings: outcome.findings },
+    );
+  };
+
   const onChange = (change: RepositoryChange): void => {
     // Any change in the work tree may change what is not committed yet; the app rereads only the cheap
     // git state, not the bundle.
     hub.publish({ type: "git-changed" });
     if (change.kinds.includes("reviews"))
       hub.publish({ type: "events-changed" });
-    if (change.kinds.includes("content") || change.kinds.includes("config")) {
-      void build().then((outcome) => {
-        hub.publish(
-          outcome.ok
-            ? { type: "content-changed" }
-            : { type: "build-failed", findings: outcome.findings },
-        );
-      });
-    }
+    if (change.kinds.includes("content") || change.kinds.includes("config"))
+      void refresh();
   };
 
   const watcher = (options.watch ?? watchRepository)(options.root, {
@@ -355,6 +377,7 @@ export const createServer = (options: ServerOptions): LearnServer => {
       watcher: () => watcher,
       hub,
       ready,
+      refresh,
     }),
     ready,
     close: () => {

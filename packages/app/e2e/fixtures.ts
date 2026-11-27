@@ -52,7 +52,13 @@ export const test = base.extend<Fixtures>({
     async ({ page }, use) => {
       const errors: string[] = [];
       page.on("console", (message) => {
-        if (message.type() === "error") errors.push(message.text());
+        // A save the server refuses by contract (blocked, a conflict, a question about the meaning)
+        // answers 4xx, and Chromium reports every such answer; the editor shows it, nothing failed.
+        const refusedSave =
+          message.text().startsWith("Failed to load resource") &&
+          message.location().url.includes("/api/source");
+        if (message.type() === "error" && !refusedSave)
+          errors.push(message.text());
       });
       page.on("pageerror", (error) => errors.push(error.message));
       await use(errors);

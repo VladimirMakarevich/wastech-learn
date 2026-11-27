@@ -1,6 +1,15 @@
 @if (card(); as card) {
 <div class="review-wrap">
   <div class="review-col">
+    @if (editing()) {
+    <wl-source-editor
+      class="review-card review-editor"
+      [files]="[{ path: card.file, label: 'edit.action' }]"
+      [initial]="card.file"
+      [lang]="card.lang"
+      (closed)="closeEditor()"
+    />
+    } @else {
     <article
       class="review-card"
       [class.is-a]="revealed()"
@@ -87,7 +96,10 @@
       </div>
       <footer class="shortcuts">
         <span><kbd>o</kbd>{{ "shortcut.topic" | t }}</span>
-        <span><kbd>e</kbd>{{ "context.vscode" | t }}</span>
+        @if (revealed()) {
+        <span><kbd>e</kbd>{{ "shortcut.edit" | t }}</span>
+        }
+        <span><kbd>⇧E</kbd>{{ "shortcut.vscode" | t }}</span>
         <span><kbd>u</kbd>{{ "shortcut.undo" | t }}</span>
         <span><kbd>!</kbd>{{ "shortcut.suspend" | t }}</span>
         <span><kbd>b</kbd>{{ "shortcut.bury" | t }}</span>
@@ -159,6 +171,7 @@
         }
       </div>
     </div>
+    }
   </div>
   <aside class="context">
     <section>
@@ -232,8 +245,13 @@
       <div class="group-body">
         <div class="g-row path">{{ card.file }}</div>
         @if (editorHref(); as href) {
-        <a #editor class="g-row g-action" [href]="href" aria-keyshortcuts="e">
-          {{ "context.vscode" | t }}<kbd>e</kbd>
+        <a
+          #editor
+          class="g-row g-action"
+          [href]="href"
+          aria-keyshortcuts="Shift+E"
+        >
+          {{ "context.vscode" | t }}<kbd>⇧E</kbd>
         </a>
         }
       </div>

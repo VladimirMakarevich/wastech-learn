@@ -10,6 +10,7 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
   signal,
   untracked,
   viewChild,
@@ -33,6 +34,7 @@ import {
   type Notice,
 } from "../../session/review-session";
 import { vscodeLink } from "../../shell/vscode";
+import { SourceEditor } from "../../edit/source-editor";
 import { Speech } from "../../tts/speech";
 import { Icon } from "../../ui/icon";
 import { MemoryPoint } from "../../ui/memory-point";
@@ -81,7 +83,7 @@ const modeOf = (raw: string | undefined, fallback: number): SessionMode => {
  */
 @Component({
   selector: "wl-review",
-  imports: [RouterLink, TPipe, BundleHtml, Icon, MemoryPoint],
+  imports: [RouterLink, TPipe, BundleHtml, Icon, MemoryPoint, SourceEditor],
   templateUrl: "./review.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -112,6 +114,14 @@ export class Review {
   private readonly spoken = viewChild<ElementRef<HTMLElement>>("spoken");
 
   protected readonly card = this.session.card;
+  /**
+   * The card on screen is shown as its file's text. Only after the answer: the learner has seen what is
+   * wrong, and the rating that follows applies to the corrected text. Another card closes it.
+   */
+  protected readonly editing = linkedSignal({
+    source: () => this.session.current()?.item,
+    computation: () => false,
+  });
   protected readonly topic = this.session.topic;
   protected readonly revealed = computed(
     () => this.session.phase() === "answer",
@@ -309,8 +319,25 @@ export class Review {
     this.speech.speak(this.spoken()?.nativeElement.textContent ?? "");
   }
 
-  protected openEditor(): void {
+  protected openVsCode(): void {
     this.editorLink()?.nativeElement.click();
+  }
+
+  protected openEditor(): void {
+    if (this.revealed()) this.editing.set(true);
+  }
+
+  /** The card comes back with its answer, rebuilt from the saved file; focus returns to the ratings. */
+  protected closeEditor(): void {
+    this.editing.set(false);
+    afterNextRender(
+      () => {
+        this.host.nativeElement
+          .querySelector<HTMLButtonElement>('[data-rating="3"]')
+          ?.focus({ preventScroll: true });
+      },
+      { injector: this.injector },
+    );
   }
 
   /**
@@ -328,7 +355,7 @@ export class Review {
   }
 
   private onKey(name: string): boolean {
-    if (this.session.current() === undefined) return false;
+    if (this.session.current() === undefined || this.editing()) return false;
     const answer = this.revealed();
     switch (name) {
       case "Space":
@@ -356,6 +383,9 @@ export class Review {
       }
       case "e":
         this.openEditor();
+        return answer;
+      case "Shift+e":
+        this.openVsCode();
         return true;
       case "!":
         this.session.suspend();

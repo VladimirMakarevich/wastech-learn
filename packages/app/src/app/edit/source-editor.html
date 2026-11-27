@@ -1,0 +1,100 @@
+@if (files().length > 1) {
+<div
+  class="segmented editor-tabs"
+  role="tablist"
+  [attr.aria-label]="'edit.tabs' | t"
+>
+  @for (file of files(); track file.path) {
+  <button
+    type="button"
+    role="tab"
+    [class.active]="file.path === model.path()"
+    [attr.aria-selected]="file.path === model.path()"
+    [attr.data-tab]="file.path"
+    (click)="switchTo(file.path)"
+  >
+    {{ file.label | t }}
+  </button>
+  }
+</div>
+}
+<label class="editor-file" for="source-editor-text">
+  <span class="sr-only">{{ "edit.field" | t: { file: fileName() } }}</span>
+  <span aria-hidden="true">{{ model.path() }}</span>
+</label>
+<textarea
+  #area
+  id="source-editor-text"
+  class="editor-text"
+  spellcheck="false"
+  autocapitalize="off"
+  [attr.lang]="lang()"
+  [attr.aria-busy]="model.busy()"
+  [attr.aria-describedby]="'source-editor-status'"
+  [readOnly]="model.busy()"
+  (input)="onInput($event)"
+></textarea>
+<div id="source-editor-status" class="editor-status" aria-live="polite">
+  @switch (model.phase()) { @case ("loading") {
+  <p class="editor-note">{{ "edit.loading" | t }}</p>
+  } @case ("saving") {
+  <p class="editor-note">{{ "edit.saving" | t }}</p>
+  } @case ("blocked") {
+  <p class="editor-note error" data-blocked>{{ "edit.blocked" | t }}</p>
+  <ul class="editor-findings">
+    @for (finding of model.findings(); track $index) {
+    <li>
+      @if (finding.here && finding.line !== undefined) {
+      <button
+        type="button"
+        class="editor-finding"
+        [class.warning]="finding.severity === 'warning'"
+        [attr.data-line]="finding.line"
+        (click)="goTo(finding.line)"
+      >
+        {{ describe(finding) }}
+      </button>
+      } @else {
+      <span
+        class="editor-finding"
+        [class.warning]="finding.severity === 'warning'"
+        >{{ describe(finding) }}</span
+      >
+      }
+    </li>
+    }
+  </ul>
+  } @case ("conflict") {
+  <p class="editor-note error" data-conflict>{{ "edit.conflict" | t }}</p>
+  <button type="button" class="btn sm" data-reload (click)="reload()">
+    {{ "edit.reload" | t }}
+  </button>
+  } @case ("missing") {
+  <p class="editor-note error">{{ "edit.missing" | t }}</p>
+  } @case ("failed") {
+  <p class="editor-note error">
+    {{ "edit.failed" | t: { code: model.failure() ?? "" } }}
+  </p>
+  } }
+</div>
+<div class="row editor-actions">
+  <button
+    type="button"
+    class="btn primary"
+    data-save
+    aria-keyshortcuts="Control+S Meta+S"
+    [disabled]="model.busy()"
+    (click)="save()"
+  >
+    {{ "edit.save" | t }} <kbd>Ctrl S</kbd>
+  </button>
+  <button
+    type="button"
+    class="btn"
+    data-cancel
+    aria-keyshortcuts="Escape"
+    (click)="cancel()"
+  >
+    {{ "edit.cancel" | t }} <kbd>Esc</kbd>
+  </button>
+</div>

@@ -122,3 +122,19 @@ export type {
   GitSyncResult,
   TopicStatusBody,
 } from "./schema/app.js";
+
+export { EDITABLE_KINDS, editableKind } from "./edit/editable.js";
+export type { EditableKind } from "./edit/editable.js";
+export {
+  EDIT_MEANINGS,
+  parseSourceSaveAnswer,
+  sourceFileSchema,
+  sourceSaveBodySchema,
+} from "./schema/source.js";
+export type {
+  EditMeaning,
+  SourceFile,
+  SourceLintFinding,
+  SourceSaveAnswer,
+  SourceSaveBody,
+} from "./schema/source.js";

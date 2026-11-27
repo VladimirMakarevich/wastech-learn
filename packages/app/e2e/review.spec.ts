@@ -331,7 +331,7 @@ test.describe("review", () => {
     expect(await currentItem(page)).not.toBe(suspended);
   });
 
-  test("o opens the topic, e opens the card's file in VS Code", async ({
+  test("o opens the topic, Shift+E opens the card's file in VS Code", async ({
     page,
   }) => {
     await catchEditorLinks(page);
@@ -339,7 +339,7 @@ test.describe("review", () => {
     const status = (await (await page.request.get("/api/status")).json()) as {
       contentPath: string;
     };
-    await page.keyboard.press("e");
+    await page.keyboard.press("Shift+E");
     const opened = await page.evaluate(
       () => (window as unknown as { opened: string[] }).opened,
     );

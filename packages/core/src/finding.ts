@@ -27,6 +27,7 @@ export const RULE_IDS = [
   "diagram-stale",
   "summary-link",
   "active-edit",
+  "card-id-changed",
   "preset-invalid",
   "preset-drift",
   "diagram-render",

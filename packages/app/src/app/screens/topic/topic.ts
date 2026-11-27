@@ -1,11 +1,16 @@
 import {
+  afterNextRender,
   afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
+  type ElementRef,
+  Injector,
   computed,
   inject,
   input,
   linkedSignal,
+  viewChild,
 } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { ActivatedRoute, RouterLink } from "@angular/router";
@@ -20,7 +25,10 @@ import type { MessageKey } from "../../i18n/en";
 import { I18n } from "../../i18n/i18n";
 import { sectionAnchor, sectionKey } from "../../i18n/sections";
 import { TPipe } from "../../i18n/t.pipe";
+import { Keyboard } from "../../keys/keyboard";
 import { vscodeLink } from "../../shell/vscode";
+import { SourceEditor, type EditorFile } from "../../edit/source-editor";
+import { Icon } from "../../ui/icon";
 import { MemoryPoint } from "../../ui/memory-point";
 
 const SELF_CHECK = "Self-check";
@@ -38,7 +46,7 @@ const selfCheckQuestions = (html: string): number =>
  */
 @Component({
   selector: "wl-topic",
-  imports: [RouterLink, TPipe, BundleHtml, MemoryPoint],
+  imports: [RouterLink, TPipe, BundleHtml, MemoryPoint, SourceEditor, Icon],
   templateUrl: "./topic.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -117,12 +125,55 @@ export class Topic {
     return selfCheckQuestions(html);
   });
 
+  /**
+   * The topic's files the editor offers, in the order of its tabs: the summary first because it is what
+   * the page shows, then the passport, then materials when the topic has them.
+   */
+  protected readonly files = computed((): readonly EditorFile[] => {
+    const meta = this.meta();
+    if (meta === undefined) return [];
+    const dir = `content/${meta.path}`;
+    return [
+      ...(meta.summary.length > 0
+        ? [{ path: `${dir}/summary.md`, label: "edit.tab.summary" as const }]
+        : []),
+      { path: `${dir}/index.md`, label: "edit.tab.index" },
+      ...(meta.materialsHtml !== ""
+        ? [
+            {
+              path: `${dir}/materials.md`,
+              label: "edit.tab.materials" as const,
+            },
+          ]
+        : []),
+    ];
+  });
+
+  /** The file open in the editor and the section to start at, or `undefined` while the topic is read. */
+  protected readonly editing = linkedSignal<
+    string,
+    | { readonly initial: string; readonly section: string | undefined }
+    | undefined
+  >({
+    source: () => `${this.domain()}/${this.topic()}`,
+    computation: () => undefined,
+  });
+
+  private readonly editButton =
+    viewChild<ElementRef<HTMLButtonElement>>("editButton");
+  private readonly materialsButton =
+    viewChild<ElementRef<HTMLButtonElement>>("materialsButton");
+  private readonly vscode = viewChild<ElementRef<HTMLAnchorElement>>("vscode");
+  private readonly injector = inject(Injector);
+  private returnFocus: "edit" | "materials" = "edit";
+
+  /** VS Code opens the file the pencil would edit: the summary the page shows, not the passport. */
   protected readonly editorHref = computed(() => {
     const root = this.data.status()?.contentPath;
-    const meta = this.meta();
-    return root === undefined || meta === undefined
+    const first = this.files()[0];
+    return root === undefined || first === undefined
       ? null
-      : vscodeLink(root, `content/${meta.path}/index.md`);
+      : vscodeLink(root, first.path);
   });
 
   protected readonly cards = computed(() => {
@@ -175,6 +226,8 @@ export class Topic {
   });
 
   constructor() {
+    const release = inject(Keyboard).register((name) => this.onKey(name));
+    inject(DestroyRef).onDestroy(release);
     // The router scrolls the window to a fragment, but the page scrolls inside `main`, so the topic does it.
     afterRenderEffect(() => {
       const fragment = this.fragment() ?? null;
@@ -187,6 +240,69 @@ export class Topic {
   /** A click on the section already in the URL is no navigation for the router, so the link scrolls itself. */
   protected scrollToSection(anchor: string): void {
     document.getElementById(anchor)?.scrollIntoView({ block: "start" });
+  }
+
+  /**
+   * Opens the editor on the topic's first file, at the section given or, without one, at the section
+   * whose heading is the last one in the top fifth of the window or above it: the one being read. A short
+   * section leaves the next heading in view too, so the band stays narrow.
+   */
+  protected edit(section?: string): void {
+    const first = this.files()[0];
+    if (first === undefined) return;
+    if (section !== undefined) {
+      this.returnFocus = "edit";
+      this.editing.set({ initial: first.path, section });
+      return;
+    }
+    const limit = window.innerHeight / 5;
+    const reading = this.sections()
+      .filter((section) => {
+        const top = document
+          .getElementById(section.anchor)
+          ?.getBoundingClientRect().top;
+        return top !== undefined && top <= limit;
+      })
+      .at(-1);
+    this.returnFocus = "edit";
+    this.editing.set({ initial: first.path, section: reading?.name });
+  }
+
+  protected editMaterials(): void {
+    const materials = this.files().find((file) =>
+      file.path.endsWith("/materials.md"),
+    );
+    if (materials === undefined) return;
+    this.returnFocus = "materials";
+    this.editing.set({ initial: materials.path, section: undefined });
+  }
+
+  /** Back to reading, with focus on the button that opened the editor. */
+  protected closeEditor(): void {
+    this.editing.set(undefined);
+    afterNextRender(
+      () => {
+        const button =
+          this.returnFocus === "materials"
+            ? (this.materialsButton() ?? this.editButton())
+            : this.editButton();
+        button?.nativeElement.focus();
+      },
+      { injector: this.injector },
+    );
+  }
+
+  private onKey(name: string): boolean {
+    if (this.editing() !== undefined || this.meta() === undefined) return false;
+    if (name === "e") {
+      this.edit();
+      return true;
+    }
+    if (name === "Shift+e") {
+      this.vscode()?.nativeElement.click();
+      return true;
+    }
+    return false;
   }
 
   protected showNextQuestion(): void {

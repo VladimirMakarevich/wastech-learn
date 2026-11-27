@@ -65,6 +65,34 @@ export { findSection, readSections } from "./parse/sections.js";
 export type { Section, SectionedBody } from "./parse/sections.js";
 export { clozeGapCounts, isClozeType, variantsFor } from "./parse/variants.js";
 
+export {
+  EDITABLE_KINDS,
+  editableKind,
+  editableTopic,
+} from "./edit/editable.js";
+export type { EditableKind } from "./edit/editable.js";
+export { cardEditDecision, needsMeaningDecision } from "./edit/decision.js";
+export type { CardEditDecision, LargeEdit } from "./edit/decision.js";
+export {
+  EDIT_MEANINGS,
+  SOURCE_REFUSAL_CODES,
+  lintFindingSchema,
+  parseSourceSaveAnswer,
+  sourceFileSchema,
+  sourcePathSchema,
+  sourceSaveAnswerSchema,
+  sourceSaveBodySchema,
+  sourceVersionSchema,
+} from "./schema/source.js";
+export type {
+  EditMeaning,
+  SourceFile,
+  SourceLintFinding,
+  SourceRefusalCode,
+  SourceSaveAnswer,
+  SourceSaveBody,
+} from "./schema/source.js";
+
 export { compileBundle } from "./bundle/compile.js";
 export type { CompileOptions } from "./bundle/compile.js";
 export type {
@@ -267,6 +295,7 @@ export {
   commitMessageSchema,
   contentWriteAnswerSchema,
   emptyBodySchema,
+  findingSchema,
   gitBlockSchema,
   gitEntrySchema,
   gitFailureSchema,
@@ -277,6 +306,7 @@ export {
   kebabParamSchema,
   parseAppBody,
   parseContentWriteAnswer,
+  toFindings,
   topicStatusBodySchema,
 } from "./schema/app.js";
 export type {

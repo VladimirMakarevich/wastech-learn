@@ -67,6 +67,8 @@ export { applyWrite, blockedBy } from "./write/apply.js";
 export type { WritePlan, WriteOutcomeOf, WriteStatus } from "./write/apply.js";
 export { addCards, updateCard } from "./write/cards.js";
 export { takenCardIds } from "./write/successor.js";
+export { readSource, saveSource } from "./write/source.js";
+export type { SourceSaveOutcome } from "./write/source.js";
 export type { AddedCards, UpdatedCard } from "./write/cards.js";
 export { renderDiagram, saveDiagram } from "./write/diagram.js";
 export type { RenderedDiagram, SavedDiagram } from "./write/diagram.js";

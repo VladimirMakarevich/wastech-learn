@@ -153,10 +153,17 @@ export const parseContent = async (
     const question = findSection(sections, "Question");
     const answer = findSection(sections, "Answer");
     if (question === undefined || answer === undefined) {
+      // Pointing at the heading the missing section would stand before lets an editor put the cursor
+      // where the section belongs.
+      const anchor =
+        question === undefined
+          ? sections[0]
+          : (sections[sections.indexOf(question) + 1] ?? question);
       findings.push({
         ruleId: "section-missing",
         severity: "error",
         file,
+        ...(anchor === undefined ? {} : { line: anchor.line }),
         params: { section: question === undefined ? "Question" : "Answer" },
       });
       continue;

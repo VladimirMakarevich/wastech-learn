@@ -9,7 +9,8 @@
 | `1` `2` `3` `4` | Review, после показа ответа | Again, Hard, Good, Easy |
 | `u` / `Ctrl+Z` | Review, Session end | Отменить последнюю оценку; на итогах сессия открывается снова на этой карточке |
 | `o` | Review, Browser | Открыть тему |
-| `e` | Review, Browser, Topic | Открыть файл в VS Code (`vscode://file/<abs-path>:<line>`) |
+| `e` | Review (после ответа), Browser, Topic | Править файл в приложении: весь Markdown текстом, `Ctrl/Cmd+S` — сохранить, `Esc` — закрыть (FR-315) |
+| `Shift+E` | Review, Browser, Topic | Открыть тот же файл в VS Code (`vscode://file/<abs-path>`) |
 | `r` | Review | Пометить «переписать» (Later, вместе с fix list) |
 | `!` | Review | Отложить (suspend) |
 | `b` | Review | Скрыть карточку до конца сессии, без записи в журнал |

@@ -114,6 +114,14 @@ export class AppData {
     await Promise.all([this.loadContent(), this.loadEvents()]);
   }
 
+  /**
+   * Loads the status and the bundle again now: after its own save the editor waits for this, so it closes
+   * over the new text instead of flashing the old one until the change stream catches up.
+   */
+  refreshContent(): Promise<void> {
+    return this.loadContent();
+  }
+
   /** Appends this client's events: they count at once on screen and reach the server when it is there. */
   async append(events: readonly ReviewEvent[]): Promise<void> {
     if (events.length === 0) return;

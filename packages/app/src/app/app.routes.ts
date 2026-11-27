@@ -1,4 +1,5 @@
 import type { Routes } from "@angular/router";
+import { unsavedGuard } from "./edit/unsaved-guard";
 import { TITLE_KEY } from "./shell/titles";
 
 // Screens load on demand: the first paint of Home never waits for the Browser's table or the Topic reader.
@@ -10,6 +11,7 @@ export const routes: Routes = [
   },
   {
     path: "review",
+    canDeactivate: [unsavedGuard],
     data: { [TITLE_KEY]: "title.review" },
     loadComponent: () =>
       import("./screens/review/review").then((m) => m.Review),
@@ -22,11 +24,13 @@ export const routes: Routes = [
   },
   {
     path: "topic/:domain/:topic",
+    canDeactivate: [unsavedGuard],
     data: { [TITLE_KEY]: "title.topic" },
     loadComponent: () => import("./screens/topic/topic").then((m) => m.Topic),
   },
   {
     path: "browser",
+    canDeactivate: [unsavedGuard],
     data: { [TITLE_KEY]: "title.browser" },
     loadComponent: () =>
       import("./screens/browser/browser").then((m) => m.Browser),

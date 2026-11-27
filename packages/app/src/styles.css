@@ -233,3 +233,148 @@ button.sync:hover {
 .btn.danger {
   color: var(--red-ink);
 }
+
+/* The editor replaces what it edits in place: the file is plain text in the mono face, as in VS Code and
+   in git, and the field takes the height the screen gives it, so a long summary scrolls inside it. */
+.source-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.editor-tabs {
+  align-self: flex-start;
+}
+
+.editor-file {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.editor-text {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 320px;
+  height: min(62vh, 720px);
+  padding: 12px 14px;
+  font: 13px/1.6 var(--mono);
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  resize: vertical;
+  tab-size: 2;
+}
+
+.editor-text:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.editor-text[readonly] {
+  color: var(--muted);
+}
+
+.editor-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.editor-status:empty {
+  display: none;
+}
+
+.editor-note {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--body);
+}
+
+.editor-note.error {
+  color: var(--amber-ink);
+  font-weight: 600;
+}
+
+.editor-findings {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 160px;
+  overflow: auto;
+  align-self: stretch;
+}
+
+.editor-finding {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--amber-weak);
+  color: var(--ink);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.editor-finding.warning {
+  background: var(--fill);
+}
+
+button.editor-finding:hover {
+  background: var(--fill-strong);
+}
+
+.editor-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.topic-editor {
+  padding: 16px 18px;
+  margin-top: 16px;
+}
+
+/* While a card is edited the drawer gives the text room: a card file is short, but its lines are long. */
+.drawer.editing {
+  width: min(720px, 100%);
+}
+
+.review-editor {
+  padding: 20px 22px;
+}
+
+/* One pencil per section: quiet until the heading is pointed at or the button is reached by Tab. */
+.section-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 32px 0 10px;
+}
+
+.md .section-h h2 {
+  margin: 0;
+}
+
+.md .section-h:first-child {
+  margin-top: 0;
+}
+
+.section-edit {
+  padding: 4px 6px;
+  opacity: 0.6;
+  transition: opacity 0.18s var(--ease-out);
+}
+
+.section-edit:focus-visible,
+.section-h:hover .section-edit {
+  opacity: 1;
+}

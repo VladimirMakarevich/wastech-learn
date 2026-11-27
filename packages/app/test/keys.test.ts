@@ -20,6 +20,8 @@ describe("key names", () => {
   it("names keys the way the screens list them", () => {
     expect(keyName(key(" "))).toBe("Space");
     expect(keyName(key("U"))).toBe("u");
+    expect(keyName(key("E", { shiftKey: true }))).toBe("Shift+e");
+    expect(keyName(key("!", { shiftKey: true }))).toBe("!");
     expect(keyName(key("!"))).toBe("!");
     expect(keyName(key("Escape"))).toBe("Escape");
     expect(keyName(key("z", { ctrlKey: true }))).toBe("Ctrl+z");

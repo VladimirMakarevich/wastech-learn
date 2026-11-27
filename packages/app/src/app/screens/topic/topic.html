@@ -15,9 +15,20 @@
       ></div>
     </div>
     <div class="row">
+      <button
+        #editButton
+        class="btn"
+        type="button"
+        data-edit
+        aria-keyshortcuts="e"
+        [disabled]="editing() !== undefined"
+        (click)="edit()"
+      >
+        <wl-icon name="pencil" />{{ "edit.action" | t }} <kbd>e</kbd>
+      </button>
       @if (editorHref(); as href) {
-      <a class="btn" [href]="href" aria-keyshortcuts="e"
-        >{{ "topic.vscode" | t }}</a
+      <a #vscode class="btn" [href]="href" aria-keyshortcuts="Shift+E"
+        >{{ "topic.vscode" | t }} <kbd>⇧E</kbd></a
       >
       } @if (topic.status === "archived") {
       <button
@@ -40,6 +51,16 @@
       }
     </div>
   </div>
+  @if (editing(); as edit) {
+  <wl-source-editor
+    class="card topic-editor"
+    [files]="files()"
+    [initial]="edit.initial"
+    [section]="edit.section"
+    [lang]="topic.lang"
+    (closed)="closeEditor()"
+  />
+  } @else {
   <div class="topic-layout">
     <nav class="toc" [attr.aria-label]="'topic.sections' | t">
       @for (section of sections(); track section.anchor) {
@@ -53,7 +74,19 @@
     </nav>
     <article class="card md summary" [attr.lang]="topic.lang">
       @for (section of sections(); track section.anchor) {
-      <h2 [id]="section.anchor">{{ section.title }}</h2>
+      <div class="section-h">
+        <h2 [id]="section.anchor">{{ section.title }}</h2>
+        <button
+          class="icon-btn section-edit"
+          type="button"
+          [attr.data-edit-section]="section.name"
+          (click)="edit(section.name)"
+        >
+          <wl-icon name="pencil" /><span class="sr-only"
+            >{{ "edit.section" | t: { section: section.title } }}</span
+          >
+        </button>
+      </div>
       @if (section.selfCheck) {
       <div
         class="self-check"
@@ -116,7 +149,20 @@
       </section>
       @if (topic.materialsHtml !== "") {
       <section>
-        <h3 class="group-h">{{ "topic.materials" | t }}</h3>
+        <h3 class="group-h">
+          {{ "topic.materials" | t }}
+          <button
+            #materialsButton
+            class="btn sm"
+            type="button"
+            data-edit-materials
+            (click)="editMaterials()"
+          >
+            <wl-icon name="pencil" /><span class="sr-only"
+              >{{ "edit.materials" | t }}</span
+            >
+          </button>
+        </h3>
         <div
           class="group-body pad md materials"
           [attr.lang]="topic.lang"
@@ -126,7 +172,7 @@
       }
     </aside>
   </div>
-  } @else if (data.bundle() !== undefined) {
+  } } @else if (data.bundle() !== undefined) {
   <p class="muted">{{ "topic.missing" | t }}</p>
   }
 </main>
