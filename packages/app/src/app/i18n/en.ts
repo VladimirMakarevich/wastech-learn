@@ -123,6 +123,7 @@ export const en = {
   "end.tomorrow-none": "Nothing is due tomorrow",
   "end.home": "Home",
   "end.more": "{minutes} more",
+  "end.undo": "Undo the last rating",
   "end.nothing":
     "Nothing was answered this time; the cards stay where they were",
   "end.empty": "No session to sum up yet",

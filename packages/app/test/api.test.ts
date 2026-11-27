@@ -134,13 +134,14 @@ describe("server answers", () => {
     expect(await api.events()).toEqual([]);
   });
 
-  it("reports the server's refusal of a batch with its code", async () => {
+  it("reports the server's refusal of a batch with its code and the event it names", async () => {
     const api = createApi(() =>
-      Promise.resolve(json({ code: "writer-not-allowed", index: 0 }, 400)),
+      Promise.resolve(json({ code: "writer-not-allowed", index: 2 }, 400)),
     );
     await expect(api.append([])).rejects.toMatchObject({
       code: "writer-not-allowed",
       status: 400,
+      index: 2,
     });
   });
 });

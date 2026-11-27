@@ -294,6 +294,23 @@ test.describe("review", () => {
     });
   });
 
+  test("u on the session end takes the last rating back and reopens the session on that card", async ({
+    page,
+  }) => {
+    await startReview(page);
+    const first = await currentItem(page);
+    await answer(page, "4");
+    await page.keyboard.press("Escape");
+    await expect(page).toHaveURL(/\/session-end$/);
+    const since = (await webEvents()).length;
+    await expect(page.locator("[data-undo]")).toBeVisible();
+    await page.keyboard.press("u");
+    await expect(page).toHaveURL(/\/review$/);
+    await expect.poll(() => currentItem(page)).toBe(first);
+    const [undo] = await eventsAfter(since, 1);
+    expect(undo).toMatchObject({ kind: "undo", item: first });
+  });
+
   test("! suspends the card, b hides it without writing anything", async ({
     page,
   }) => {

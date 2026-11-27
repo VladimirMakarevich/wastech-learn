@@ -97,8 +97,8 @@ export interface ForecastDay {
 /**
  * Review items due on each of the next `days` study days, today first, with the time they take at the
  * learner's own pace. It counts what is scheduled now and does not simulate the answers in between, so
- * later days show the floor of their load. Suspended items, leeches and inactive cards stay out, as they
- * stay out of the queue; new cards are not a forecast but a choice.
+ * later days show the floor of their load. Suspended items and inactive cards stay out, as they stay out
+ * of the queue; new cards are not a forecast but a choice.
  */
 export const loadForecast = (
   state: ReplayState,
@@ -122,7 +122,7 @@ export const loadForecast = (
     if (card.status !== "active") continue;
     const item = state.items.get(card.item);
     if (item === undefined || item.dueAt === null) continue;
-    if (item.suspended || item.leech) continue;
+    if (item.suspended) continue;
     const index = horizon.findIndex(
       (day) => item.dueAt !== null && item.dueAt < day.end,
     );
@@ -169,10 +169,11 @@ export const comebackStatus = (
 ): ComebackStatus => {
   const until = now.getTime();
   let lastStudyAt: number | null = null;
-  for (const event of prepareEvents(events)) {
-    const at = Date.parse(event.ts);
-    if (at > until) break;
-    if (event.kind === "review" || event.kind === "practice") lastStudyAt = at;
+  // Cut off before undos are resolved, as replay does: a later undo had not happened yet at `now`.
+  const seen = events.filter((event) => Date.parse(event.ts) <= until);
+  for (const event of prepareEvents(seen)) {
+    if (event.kind === "review" || event.kind === "practice")
+      lastStudyAt = Date.parse(event.ts);
   }
   if (lastStudyAt === null)
     return { lastStudyAt, daysAway: null, returning: false };

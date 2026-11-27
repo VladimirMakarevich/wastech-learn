@@ -4,7 +4,7 @@ import {
   computed,
   inject,
   input,
-  signal,
+  linkedSignal,
 } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { AppData } from "../../data/app-data";
@@ -18,6 +18,12 @@ import { vscodeLink } from "../../shell/vscode";
 import { MemoryPoint } from "../../ui/memory-point";
 
 const SELF_CHECK = "Self-check";
+
+/** Parsed as an inert document: nothing in it loads or runs while the items are counted. */
+const selfCheckQuestions = (html: string): number =>
+  new DOMParser()
+    .parseFromString(html, "text/html")
+    .body.querySelectorAll(":scope > ol > li, :scope > ul > li").length;
 
 /**
  * A topic to read before reviewing it and after a mistake, after the prototype: its sections with a table of
@@ -37,8 +43,11 @@ export class Topic {
   protected readonly data = inject(AppData);
   private readonly library = inject(Library);
   protected readonly i18n = inject(I18n);
-  /** Self-check questions shown so far; the section starts closed. */
-  protected readonly shown = signal(0);
+  /** Self-check questions shown so far; the section starts closed, also when another topic opens here. */
+  protected readonly shown = linkedSignal({
+    source: () => `${this.domain()}/${this.topic()}`,
+    computation: () => 0,
+  });
 
   protected readonly meta = computed(() => {
     const path = `${this.domain()}/${this.topic()}`;
@@ -60,12 +69,15 @@ export class Topic {
     }),
   );
 
-  /** How many questions the self-check holds: the items of its first list. */
+  /**
+   * How many questions the self-check holds: the top-level items of its lists, the same items the section
+   * reveals one at a time. An item's own nested list is part of that question, not another one.
+   */
   protected readonly questions = computed(() => {
     const html =
       this.meta()?.summary.find((section) => section.name === SELF_CHECK)
         ?.html ?? "";
-    return (html.match(/<li[\s>]/g) ?? []).length;
+    return selfCheckQuestions(html);
   });
 
   protected readonly editorHref = computed(() => {

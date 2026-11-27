@@ -2,6 +2,7 @@ import type { ReviewEvent } from "@wastech-learn/core";
 import { describe, expect, it } from "vitest";
 import { ApiError, type Api } from "../src/app/data/api";
 import {
+  MAX_BATCH,
   createHttpReviewStore,
   type OutboxReport,
   type Timers,
@@ -162,7 +163,7 @@ describe("HttpReviewStore", () => {
     expect(server.log.map((e) => e.id)).toEqual([event(7).id]);
   });
 
-  it("drops a batch the server refuses instead of blocking the ratings after it", async () => {
+  it("drops a batch the server refuses without naming an event instead of blocking the ratings after it", async () => {
     const { store } = memoryStore();
     const reports: OutboxReport[] = [];
     const reviews = createHttpReviewStore({
@@ -178,6 +179,140 @@ describe("HttpReviewStore", () => {
     await reviews.append([event(1), event(2)]);
     await reviews.flush();
     expect(reports.at(-1)).toEqual({ pending: 0, offline: false, refused: 2 });
+  });
+
+  it("drops only the event the server names and sends the rest of the batch again", async () => {
+    const server = fakeServer();
+    const { store } = memoryStore();
+    const reports: OutboxReport[] = [];
+    let refusedOnce = false;
+    const reviews = createHttpReviewStore({
+      api: {
+        ...server.api,
+        append: (events) => {
+          if (!refusedOnce) {
+            refusedOnce = true;
+            return Promise.reject(
+              new ApiError("event-invalid", 400, "refused", 1),
+            );
+          }
+          return server.api.append(events);
+        },
+      },
+      store,
+      subscribeChanges: () => () => undefined,
+      onReport: (report) => reports.push(report),
+    });
+    await reviews.append([event(1), event(2), event(3)]);
+    await reviews.flush();
+    expect(server.log.map((e) => e.id)).toEqual([event(1).id, event(3).id]);
+    expect(reports.at(-1)).toEqual({ pending: 0, offline: false, refused: 1 });
+  });
+
+  it("re-stamps waiting events with the device the server names now instead of dropping them", async () => {
+    const server = fakeServer();
+    const { store } = memoryStore();
+    const reports: OutboxReport[] = [];
+    const reviews = createHttpReviewStore({
+      api: {
+        ...server.api,
+        append: (events) =>
+          events.some((e) => e.device !== "desk2")
+            ? Promise.reject(
+                new ApiError("device-not-allowed", 400, "refused", 0),
+              )
+            : server.api.append(events),
+      },
+      store,
+      subscribeChanges: () => () => undefined,
+      onReport: (report) => reports.push(report),
+      currentDevice: () => Promise.resolve("desk2"),
+    });
+    await reviews.append([event(1), event(2)]);
+    await reviews.flush();
+    expect(server.log.map((e) => [e.id, e.device])).toEqual([
+      [event(1).id, "desk2"],
+      [event(2).id, "desk2"],
+    ]);
+    expect(reports.at(-1)).toEqual({ pending: 0, offline: false, refused: 0 });
+  });
+
+  it("sends a long outbox in batches and halves a batch the server finds too large", async () => {
+    const server = fakeServer();
+    const { store } = memoryStore();
+    const sizes: number[] = [];
+    const reviews = createHttpReviewStore({
+      api: {
+        ...server.api,
+        append: (events) => {
+          sizes.push(events.length);
+          return events.length > 150
+            ? Promise.reject(new ApiError("body-too-large", 413, "too large"))
+            : server.api.append(events);
+        },
+      },
+      store,
+      subscribeChanges: () => () => undefined,
+    });
+    const many = Array.from({ length: MAX_BATCH + 50 }, (_, n) => event(n));
+    await reviews.append(many);
+    await reviews.flush();
+    expect(sizes).toEqual([MAX_BATCH, MAX_BATCH / 2, 150]);
+    expect(server.log).toHaveLength(MAX_BATCH + 50);
+  });
+
+  it("keeps the ratings sent while the log was loading although the server's answer predates them", async () => {
+    const server = fakeServer();
+    const { store } = memoryStore();
+    let answer: (events: readonly ReviewEvent[]) => void = () => undefined;
+    const reviews = createHttpReviewStore({
+      api: {
+        ...server.api,
+        events: () =>
+          new Promise((resolve) => {
+            answer = resolve;
+          }),
+      },
+      store,
+      subscribeChanges: () => () => undefined,
+    });
+    const loading = reviews.loadEvents();
+    const before = [...server.log];
+    await reviews.append([event(1)]);
+    await reviews.flush();
+    expect(server.log.map((e) => e.id)).toEqual([event(1).id]);
+    answer(before);
+    const loaded = await loading;
+    expect(loaded.map((e) => e.id)).toEqual([event(1).id]);
+  });
+
+  it("keeps another tab's waiting ratings in the shared storage and sends them too", async () => {
+    const server = fakeServer();
+    const { store, data } = memoryStore();
+    const clock = manualTimers();
+    const tab = () =>
+      createHttpReviewStore({
+        api: server.api,
+        store,
+        timers: clock.timers,
+        subscribeChanges: () => () => undefined,
+      });
+    const first = tab();
+    const second = tab();
+    server.setUp(false);
+    await first.append([event(1), event(2)]);
+    await first.flush();
+    await second.append([event(3)]);
+    await second.flush();
+    expect(storedIds(data.get("wastech-learn.outbox")).sort()).toEqual(
+      [event(1).id, event(2).id, event(3).id].sort(),
+    );
+    server.setUp(true);
+    await second.flush();
+    expect(server.log.map((e) => e.id).sort()).toEqual(
+      [event(1).id, event(2).id, event(3).id].sort(),
+    );
+    expect(storedIds(data.get("wastech-learn.outbox"))).toEqual([]);
   });
 
   it("loads the server's log with the events still waiting, each once", async () => {

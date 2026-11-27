@@ -148,6 +148,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "{subject} zmienił się podczas przygotowania zapisu; nic nie zapisano",
   "error.search-index-invalid":
     "Indeks wyszukiwania w content bundle jest nieczytelny dla tej wersji",
+  "error.id-unavailable":
+    "Nie udało się utworzyć nowego id: źródło losowości lub zegar dały {subject}",
   "error.input-invalid": "Pole wejścia {field} jest niepoprawne",
   "error.tool-unknown": "Nie ma narzędzia o nazwie {subject}",
   "error.config-invalid": "{file}: pole {field} jest niepoprawne",
@@ -182,6 +184,8 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
     "Ktoś w tym czasie zapisał plik: wywołaj narzędzie ponownie, by oprzeć się na nowym tekście",
   "hint.search-index-invalid":
     "Przebuduj bundle poleceniem wastech-learn build albo uruchom ponownie wastech-learn serve",
+  "hint.id-unavailable":
+    "Sprawdź zegar komputera i wywołaj ponownie; jeśli to się powtórzy, to błąd wastech-learn",
   "hint.input-invalid": "Popraw to pole i wywołaj narzędzie ponownie",
   "hint.tool-unknown": "Pobierz listę narzędzi, by zobaczyć, co oferuje serwer",
   "hint.config-invalid": "Popraw wartość w pliku i wywołaj ponownie",

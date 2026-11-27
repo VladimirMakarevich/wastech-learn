@@ -351,6 +351,7 @@ describe("serving the app", () => {
     expect(
       (await get(server, "/content/architecture/backpressure/index.md")).status,
     ).toBe(404);
+    expect((await get(server, "/content/a%E0.png")).status).toBe(404);
   });
 
   it("answers only /api without a built app", async () => {

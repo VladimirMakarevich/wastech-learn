@@ -52,6 +52,11 @@
       >
         {{ "end.more" | t: { minutes: minutes(preferences.sessionMinutes()) } }}
       </a>
+      @if (session.canUndoEnded()) {
+      <button class="btn" type="button" data-undo (click)="undo()">
+        <kbd>u</kbd>&ngsp;{{ "end.undo" | t }}
+      </button>
+      }
     </div>
   </section>
   } @else {

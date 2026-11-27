@@ -43,7 +43,9 @@ describe("card ids", () => {
   });
 
   it("refuses a random source outside [0, 1)", () => {
-    expect(() => newCardId(() => 1)).toThrow(RangeError);
+    expect(() => newCardId(() => 1)).toThrow(
+      expect.objectContaining({ code: "id-unavailable" }),
+    );
   });
 });
 

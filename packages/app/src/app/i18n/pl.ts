@@ -119,6 +119,7 @@ export const pl: Readonly<Record<MessageKey, Message>> = {
   "end.tomorrow-none": "Na jutro nic nie zaplanowano",
   "end.home": "Start",
   "end.more": "Jeszcze {minutes}",
+  "end.undo": "Cofnij ostatnią ocenę",
   "end.nothing": "Tym razem nie było odpowiedzi; karty zostały tam, gdzie były",
   "end.empty": "Na razie nie ma czego podsumować: sesji jeszcze nie było",
   "count.days": {

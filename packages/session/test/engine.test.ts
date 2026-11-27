@@ -18,6 +18,7 @@ import {
   startSession,
   suspend,
   undo,
+  unsuspendEvent,
   type SessionState,
 } from "../src/index.js";
 import {
@@ -236,6 +237,39 @@ describe("rating", () => {
     expect(lapse.state.log.state.items.get("c0000001:main")?.suspended).toBe(
       true,
     );
+  });
+
+  it("asks a leech again once it is unsuspended after a rewrite", async () => {
+    const config = { ...CONFIG, leechThreshold: 1 };
+    const context = await contextOf(config);
+    const deck = deckOf([{ id: "c0000001" }]);
+    const past = reviewedLog(["c0000001"]);
+    const lapse = rate(
+      context,
+      startSession(context, {
+        deck,
+        events: past,
+        mode: { kind: "full" },
+        now: NOW,
+      }),
+      { rating: 1 },
+      NOW,
+    );
+    const returned = startSession(context, {
+      deck,
+      events: [
+        ...past,
+        ...lapse.events,
+        unsuspendEvent(context.origin, later(DAY_MS), "c0000001:main"),
+      ],
+      mode: { kind: "full" },
+      now: later(DAY_MS + MINUTE),
+    });
+    expect(returned.log.state.items.get("c0000001:main")).toMatchObject({
+      leech: true,
+      suspended: false,
+    });
+    expect(returned.current?.item).toBe("c0000001:main");
   });
 });
 

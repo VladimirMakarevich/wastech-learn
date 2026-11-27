@@ -177,7 +177,8 @@ describe("load forecast", () => {
       itemState("week0001:main", Date.parse("2026-12-02T09:00:00.000Z")),
       itemState("later001:main", Date.parse("2026-12-03T09:00:00.000Z")),
       itemState("susp0001:main", TODAY_START, { suspended: true }),
-      itemState("leech001:main", TODAY_START, { leech: true }),
+      // A leech is suspended by the rating that made it one; while it is, it holds no load.
+      itemState("leech001:main", TODAY_START, { leech: true, suspended: true }),
       itemState("retir001:main", TODAY_START),
       itemState("gone0001:main", TODAY_START),
       itemState("new00001:main", null),

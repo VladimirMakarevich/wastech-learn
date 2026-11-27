@@ -25,6 +25,21 @@ describe("key names", () => {
     expect(keyName(key("z", { ctrlKey: true }))).toBe("Ctrl+z");
     expect(keyName(key("z", { metaKey: true }))).toBe("Ctrl+z");
   });
+
+  it("names a letter of another script by its key, so the shortcuts work on a Russian layout", () => {
+    expect(keyName(key("г", { code: "KeyU" }))).toBe("u");
+    expect(keyName(key("И", { code: "KeyB" }))).toBe("b");
+    expect(keyName(key("я", { code: "KeyZ", ctrlKey: true }))).toBe("Ctrl+z");
+    expect(readGlobalKey(key("п", { code: "KeyG" }), IDLE, 0).state.gAt).toBe(
+      0,
+    );
+  });
+
+  it("keeps Latin letters with diacritics and symbols as typed", () => {
+    expect(keyName(key("ą", { code: "KeyA" }))).toBe("ą");
+    expect(keyName(key("!", { code: "Digit1" }))).toBe("!");
+    expect(keyName(key(".", { code: "Slash" }))).toBe(".");
+  });
 });
 
 describe("global keys", () => {

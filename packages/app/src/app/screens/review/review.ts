@@ -252,6 +252,8 @@ export class Review {
       if (notice !== null)
         untracked(() => {
           this.toasts.show(this.i18n.t(NOTICES[notice.kind]));
+          // Shown once: a later visit to this screen must not repeat what happened in an earlier one.
+          this.session.notice.set(null);
         });
     });
 

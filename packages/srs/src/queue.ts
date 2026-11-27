@@ -99,8 +99,8 @@ const interleave = <T>(groups: ReadonlyMap<string, readonly T[]>): T[] => {
 /**
  * Builds what the user repeats now: learning steps that are due, then the day's review items from all
  * domains interleaved within each domain's limit, then new cards within the limit the backlog policy
- * allows. Variants of one card and cards of one idea never share a day. Suspended items and leeches stay
- * out. Pure: the replayed state, the content and `now` fully decide the result.
+ * allows. Variants of one card and cards of one idea never share a day. Suspended items stay out, leeches
+ * among them until they are unsuspended. Pure: the replayed state, the content and `now` fully decide the result.
  *
  * New cards are taken in the order `cards` lists them, so the host decides which topic comes first.
  */
@@ -145,7 +145,7 @@ export const buildQueue = (
 
   for (const card of active) {
     const item = state.items.get(card.item);
-    if (item?.suspended === true || item?.leech === true) continue;
+    if (item?.suspended === true) continue;
     if (
       item?.lastReviewAt !== undefined &&
       item.lastReviewAt !== null &&
@@ -263,3 +263,28 @@ export const buildQueue = (
 /** The card to show next, or `undefined` when the queue is done for now. */
 export const nextEntry = (queue: Queue): QueueEntry | undefined =>
   queue.entries[0];
+
+/**
+ * The first moment after `now` at which the queue can change without a new event: a learning step comes
+ * due, or the next study day begins and brings its reviews and new cards. A screen that shows the queue
+ * recomputes then, instead of keeping the count of the moment it was opened.
+ */
+export const nextQueueChange = (
+  state: ReplayState,
+  config: Pick<SrsConfig, "timezone" | "dayStartsAt">,
+  now: Date,
+): number => {
+  const at = now.getTime();
+  let next = createCalendar(config.timezone, config.dayStartsAt).dayOf(at).end;
+  for (const item of state.items.values()) {
+    if (
+      !item.suspended &&
+      (item.phase === "learning" || item.phase === "relearning") &&
+      item.dueAt !== null &&
+      item.dueAt > at &&
+      item.dueAt < next
+    )
+      next = item.dueAt;
+  }
+  return next;
+};

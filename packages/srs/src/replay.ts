@@ -25,13 +25,17 @@ export interface ItemState {
   readonly reps: number;
   readonly lapses: number;
   readonly suspended: boolean;
-  /** Lapsed `leechThreshold` times or more: it needs rewriting, not more repetition. */
+  /**
+   * Lapsed `leechThreshold` times or more: it needs rewriting, not more repetition. Only a flag for the fix
+   * list; the `suspend` written when the item crossed the threshold is what takes it out of review, so an
+   * `unsuspend` after the rewrite brings it back.
+   */
   readonly leech: boolean;
 }
 
 /**
  * From `from` until the next segment, the item was due at `dueAt` and counted toward a backlog when
- * `countable` (reviewed at least once, not suspended, not a leech). The backlog policy reads past days
+ * `countable` (reviewed at least once and not suspended). The backlog policy reads past days
  * from these segments instead of replaying the log once per day.
  */
 export interface HistorySegment {
@@ -75,6 +79,8 @@ interface Memory {
 export interface Replayer {
   readonly apply: (event: ReplayEvent) => void;
   readonly state: (now: Date) => ReplayState;
+  /** One item's lapses so far, without building the whole state: the simulation asks after every answer. */
+  readonly lapses: (item: string) => number;
 }
 
 export const createReplayer = (
@@ -105,7 +111,7 @@ export const createReplayer = (
     memory.segments.push({
       from: at,
       dueAt: reviewed ? card.dueAt.getTime() : null,
-      countable: reviewed && !memory.suspended && card.lapses < leechThreshold,
+      countable: reviewed && !memory.suspended,
     });
   };
 
@@ -176,7 +182,11 @@ export const createReplayer = (
     return { now: now.getTime(), sched: scheduler.sched, items, history };
   };
 
-  return { apply, state };
+  return {
+    apply,
+    state,
+    lapses: (item) => memories.get(item)?.card.lapses ?? 0,
+  };
 };
 
 const applyUntil = (
@@ -185,10 +195,9 @@ const applyUntil = (
   now: Date,
 ): void => {
   const until = now.getTime();
-  for (const event of prepareEvents(events)) {
-    if (Date.parse(event.ts) > until) break;
-    replayer.apply(event);
-  }
+  // Cut off before undos are resolved: an undo written after `now` had not happened yet at `now`.
+  const seen = events.filter((event) => Date.parse(event.ts) <= until);
+  for (const event of prepareEvents(seen)) replayer.apply(event);
 };
 
 /**

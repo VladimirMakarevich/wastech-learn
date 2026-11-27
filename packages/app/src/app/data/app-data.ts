@@ -68,7 +68,14 @@ export class AppData {
     onReport: (report) => {
       this.outbox.set(report);
     },
+    currentDevice: async () => {
+      const status = await this.api.status();
+      this.status.set(status);
+      return status.device;
+    },
   });
+  // Two loads can overlap (a reconnect and an announced change); only the latest may set the log.
+  private loadGeneration = 0;
 
   constructor() {
     this.changes.onConnection((open) => {
@@ -139,8 +146,11 @@ export class AppData {
   }
 
   private async loadEvents(): Promise<void> {
+    const generation = ++this.loadGeneration;
     try {
-      this.events.set(await this.store.loadEvents());
+      const events = await this.store.loadEvents();
+      if (generation !== this.loadGeneration) return;
+      this.events.set(events);
       this.eventsLoaded.set(true);
       this.externalRevision.update((revision) => revision + 1);
     } catch (error) {

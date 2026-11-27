@@ -68,6 +68,16 @@ export class ReviewSession {
   } | null>(null);
   /** The summary of the session that ended last, for the end screen. */
   readonly summary = signal<SessionSummary | undefined>(undefined);
+  /**
+   * The session that just ended, kept until the next one starts: the last card's rating ends the session at
+   * once, and the learner must still be able to take that rating back.
+   */
+  private readonly ended = signal<SessionState | undefined>(undefined);
+  readonly canUndoEnded = computed(
+    () => (this.ended()?.answers.length ?? 0) > 0,
+  );
+  /** When the answer was shown: the end of recall, which the rubric's pace measures. */
+  private readonly revealedAt = signal<number | undefined>(undefined);
 
   readonly context = computed((): SessionContext | undefined => {
     const replay = this.data.context();
@@ -143,10 +153,12 @@ export class ReviewSession {
       return undefined;
     const estimateMs =
       this.current()?.estimateMs ?? estimateFor(DEFAULT_ESTIMATES, card.type);
+    // Recall ends when the answer is shown; ticking the rubric afterwards is checking, not remembering.
+    const recalledAt = this.revealedAt() ?? this.shownAt();
     return suggestRating(
       card.rubric,
       this.marks().map((mark) => (mark ? "yes" : "no")),
-      { durMs: this.clock.now().getTime() - this.shownAt(), estimateMs },
+      { durMs: recalledAt - this.shownAt(), estimateMs },
     );
   });
 
@@ -203,6 +215,7 @@ export class ReviewSession {
     )
       return false;
     this.summary.set(undefined);
+    this.ended.set(undefined);
     this.state.set(
       startSession(context, {
         deck: deckFromBundle(bundle),
@@ -216,7 +229,9 @@ export class ReviewSession {
   }
 
   reveal(): void {
-    if (this.current() !== undefined) this.phase.set("answer");
+    if (this.current() === undefined || this.phase() === "answer") return;
+    this.revealedAt.set(this.clock.now().getTime());
+    this.phase.set("answer");
   }
 
   setConfidence(confidence: Confidence | undefined): void {
@@ -282,8 +297,20 @@ export class ReviewSession {
     if (state === undefined || context === undefined) return this.summary();
     const summary = summarize(context, state, this.clock.now());
     this.summary.set(summary);
+    this.ended.set(state);
     this.state.set(undefined);
     return summary;
+  }
+
+  /** Reopens the session that just ended with its last rating taken back; `false` when there is none. */
+  undoEnded(): boolean {
+    const ended = this.ended();
+    if (ended === undefined || ended.answers.length === 0) return false;
+    this.ended.set(undefined);
+    this.summary.set(undefined);
+    this.state.set(ended);
+    this.undo();
+    return true;
   }
 
   private apply(
@@ -315,6 +342,7 @@ export class ReviewSession {
 
   private showNext(): void {
     this.phase.set("question");
+    this.revealedAt.set(undefined);
     this.confidence.set(undefined);
     this.marks.set(this.card()?.rubric.map(() => false) ?? []);
     this.shownAt.set(this.clock.now().getTime());

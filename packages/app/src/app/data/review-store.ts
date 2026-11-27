@@ -36,6 +36,11 @@ export interface HttpReviewStoreOptions {
   readonly subscribeChanges: (listener: () => void) => () => void;
   readonly onReport?: (report: OutboxReport) => void;
   readonly timers?: Timers;
+  /**
+   * The device the server appends for now. Without `learn.local.json` the name follows the hostname, which
+   * can change under an open tab; the events waiting then carry the old name and are re-stamped with this.
+   */
+  readonly currentDevice?: () => Promise<string>;
 }
 
 const OUTBOX_KEY = "wastech-learn.outbox";
@@ -43,6 +48,9 @@ const FIRST_RETRY_MS = 1_000;
 // A server stopped for the night is not worth knocking on every second; half a minute keeps the retry
 // cheap and still sends the ratings soon after `serve` starts again.
 const MAX_RETRY_MS = 30_000;
+// An event is a few hundred bytes, so this many stay far below the server's body limit; a long offline
+// stretch then drains batch by batch instead of growing into one request the server never accepts.
+export const MAX_BATCH = 200;
 
 const browserTimers: Timers = {
   set: (callback, ms) => setTimeout(callback, ms),
@@ -67,20 +75,31 @@ const restore = (text: string | undefined): ReviewEvent[] => {
   });
 };
 
+const idsOf = (events: readonly ReviewEvent[]): Set<string> =>
+  new Set(events.map((event) => event.id));
+
 /**
  * The phase 1 store: events go to the local server, and until it confirms them they wait in memory and in
  * this browser's storage, so a rating survives a stopped server and a closed tab. Sending is serialized:
  * one batch in flight, the rest after it, retried with a growing delay while the server is away. A retry
  * is safe because the server skips an event id it already has.
+ *
+ * Every tab of the app shares the stored outbox: a tab adopts the events another one left there and keeps
+ * them when it writes its own, so two tabs rating offline never overwrite each other's ratings.
  */
 export const createHttpReviewStore = (
   options: HttpReviewStoreOptions,
 ): ReviewStore & { readonly flush: () => Promise<void> } => {
   const timers = options.timers ?? browserTimers;
   let outbox = restore(options.store.get(OUTBOX_KEY));
+  // Confirmed or refused here: another tab's stored copy of them must not bring them back.
+  const settled = new Set<string>();
+  // A load in flight may get an answer that misses what this tab sent meanwhile, so each collects it.
+  const loads = new Set<ReviewEvent[]>();
   let sending: Promise<void> | undefined;
   let retry: unknown;
   let retryMs = FIRST_RETRY_MS;
+  let batchSize = MAX_BATCH;
   let offline = false;
   let refused = 0;
 
@@ -89,7 +108,23 @@ export const createHttpReviewStore = (
   };
 
   const persist = (): void => {
+    const own = idsOf(outbox);
+    const others = restore(options.store.get(OUTBOX_KEY)).filter(
+      (event) => !own.has(event.id) && !settled.has(event.id),
+    );
+    outbox = [...outbox, ...others];
     options.store.set(OUTBOX_KEY, JSON.stringify(outbox));
+  };
+
+  const settle = (events: readonly ReviewEvent[]): void => {
+    const done = idsOf(events);
+    for (const id of done) settled.add(id);
+    outbox = outbox.filter((event) => !done.has(event.id));
+  };
+
+  const refuse = (events: readonly ReviewEvent[]): void => {
+    settle(events);
+    refused += events.length;
   };
 
   const schedule = (): void => {
@@ -101,28 +136,69 @@ export const createHttpReviewStore = (
     retryMs = Math.min(retryMs * 2, MAX_RETRY_MS);
   };
 
-  /** Sends what is queued; `false` when the server could not be reached and a retry is scheduled. */
+  const goOffline = (): false => {
+    offline = true;
+    schedule();
+    return false;
+  };
+
+  /**
+   * The server names this machine differently than the waiting events do. They were never written under
+   * either name, so stamping them with the current one keeps every rating; `false` when that cannot help.
+   */
+  const restamp = async (): Promise<boolean> => {
+    if (options.currentDevice === undefined) return false;
+    const device = await options.currentDevice();
+    if (outbox.every((event) => event.device === device)) return false;
+    outbox = outbox.map((event) =>
+      event.device === device ? event : { ...event, device },
+    );
+    return true;
+  };
+
+  /** A refusal the server explained: only the named event goes, the rest of the batch is sent again. */
+  const refusedPart = (
+    error: ApiError,
+    batch: readonly ReviewEvent[],
+  ): readonly ReviewEvent[] => {
+    const named = error.index === undefined ? undefined : batch[error.index];
+    return named === undefined ? batch : [named];
+  };
+
+  /** Sends one batch; `false` when the server could not be reached and a retry is scheduled. */
   const sendOnce = async (): Promise<boolean> => {
-    const batch = outbox;
+    const batch = outbox.slice(0, batchSize);
     try {
       await options.api.append(batch);
-      const sent = new Set(batch.map((event) => event.id));
-      outbox = outbox.filter((event) => !sent.has(event.id));
+      settle(batch);
       offline = false;
       retryMs = FIRST_RETRY_MS;
+      batchSize = MAX_BATCH;
       return true;
     } catch (error) {
-      if (error instanceof ApiError && error.status === 400) {
-        // The server read the batch and refused it: sending it again would be refused again, and keeping
-        // it would block every later rating behind it.
-        const dropped = new Set(batch.map((event) => event.id));
-        outbox = outbox.filter((event) => !dropped.has(event.id));
-        refused += batch.length;
+      // Only an answer of the server says what to drop; anything else keeps the events for a retry.
+      if (!(error instanceof ApiError)) return goOffline();
+      if (error.status === 413) {
+        // Too large even as one event: nothing smaller can be sent, and keeping it blocks the rest.
+        if (batch.length === 1) refuse(batch);
+        else batchSize = Math.max(1, Math.floor(batch.length / 2));
         return true;
       }
-      offline = true;
-      schedule();
-      return false;
+      if (error.code === "device-not-allowed") {
+        try {
+          if (await restamp()) return true;
+        } catch {
+          // The server went away between the refusal and the question; the events wait for the retry.
+          return goOffline();
+        }
+      }
+      if (error.status === 400) {
+        // The server read the batch and refused it: sending the refused event again would be refused
+        // again, and keeping it would block every later rating behind it.
+        refuse(refusedPart(error, batch));
+        return true;
+      }
+      return goOffline();
     } finally {
       persist();
       report();
@@ -145,13 +221,25 @@ export const createHttpReviewStore = (
 
   return {
     loadEvents: async () => {
-      const events = await options.api.events();
-      const known = new Set(events.map((event) => event.id));
-      return [...events, ...outbox.filter((event) => !known.has(event.id))];
+      // The server may read its files before a batch sent meanwhile is written and answer after the batch
+      // left the outbox; everything this tab knew of during the load is added back, so no rating vanishes.
+      const known = [...outbox];
+      loads.add(known);
+      try {
+        const events = await options.api.events();
+        const merged = new Map(events.map((event) => [event.id, event]));
+        for (const event of [...known, ...outbox])
+          if (!merged.has(event.id)) merged.set(event.id, event);
+        return [...merged.values()];
+      } finally {
+        loads.delete(known);
+      }
     },
     append: (events) => {
-      const known = new Set(outbox.map((event) => event.id));
-      outbox = [...outbox, ...events.filter((event) => !known.has(event.id))];
+      const known = idsOf(outbox);
+      const fresh = events.filter((event) => !known.has(event.id));
+      outbox = [...outbox, ...fresh];
+      for (const load of loads) load.push(...fresh);
       persist();
       report();
       void flush();

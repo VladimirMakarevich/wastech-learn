@@ -1,13 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   computed,
   inject,
 } from "@angular/core";
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { AppData } from "../../data/app-data";
 import { I18n } from "../../i18n/i18n";
 import { TPipe } from "../../i18n/t.pipe";
+import { Keyboard } from "../../keys/keyboard";
 import { Preferences } from "../../prefs/preferences";
 import { ReviewSession } from "../../session/review-session";
 import { Icon } from "../../ui/icon";
@@ -23,8 +25,9 @@ import { Icon } from "../../ui/icon";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SessionEnd {
-  private readonly session = inject(ReviewSession);
+  protected readonly session = inject(ReviewSession);
   private readonly data = inject(AppData);
+  private readonly router = inject(Router);
   protected readonly i18n = inject(I18n);
   protected readonly preferences = inject(Preferences);
   protected readonly summary = this.session.summary;
@@ -49,4 +52,18 @@ export class SessionEnd {
     this.i18n.t("count.cards", { count: cards });
   protected readonly minutes = (count: number): string =>
     this.i18n.t("count.minutes", { count });
+
+  constructor() {
+    const release = inject(Keyboard).register((name) =>
+      name === "u" || name === "Ctrl+z" ? this.undo() : false,
+    );
+    inject(DestroyRef).onDestroy(release);
+  }
+
+  /** The last card's rating ended the session; taking it back reopens the session on that card. */
+  protected undo(): boolean {
+    if (!this.session.undoEnded()) return false;
+    void this.router.navigateByUrl("/review");
+    return true;
+  }
 }

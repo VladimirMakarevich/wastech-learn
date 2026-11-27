@@ -18,7 +18,8 @@ export type LearnErrorCode =
   | "package-not-found"
   | "nothing-to-undo"
   | "content-changed"
-  | "search-index-invalid";
+  | "search-index-invalid"
+  | "id-unavailable";
 
 /**
  * Where an error points: a repository-relative file and, for schema errors, the dotted field path; `subject`

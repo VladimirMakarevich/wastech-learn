@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   buildQueue,
+  createCalendar,
   createScheduler,
   estimateDurations,
+  nextQueueChange,
   replay,
   type QueueCard,
   type ReplayEvent,
@@ -68,7 +70,7 @@ describe("buildQueue: order", () => {
     );
   });
 
-  it("leaves out suspended items, leeches, drafts and retired cards", () => {
+  it("leaves out suspended items, a suspended leech among them, drafts and retired cards", () => {
     const cards = [
       card("draft001:main", { status: "draft" }),
       card("retire01:main", { status: "retired" }),
@@ -80,9 +82,34 @@ describe("buildQueue: order", () => {
       { id: "S1", ts: daysBefore(9), kind: "suspend", item: "susp0001:main" },
       review("leech001:main", daysBefore(10), 3),
       review("leech001:main", daysBefore(5), 1),
+      { id: "S2", ts: daysBefore(5), kind: "suspend", item: "leech001:main" },
     ];
     const queue = queueOf(events, cards, { ...CONFIG, leechThreshold: 1 });
     expect(queue.entries).toEqual([]);
+  });
+
+  it("brings a leech back once it is unsuspended after a rewrite, still flagged as a leech", () => {
+    const cards = [card("leech001:main")];
+    const config = { ...CONFIG, leechThreshold: 1 };
+    const events: ReplayEvent[] = [
+      review("leech001:main", daysBefore(10), 3),
+      review("leech001:main", daysBefore(5), 1),
+      { id: "S2", ts: daysBefore(5), kind: "suspend", item: "leech001:main" },
+      {
+        id: "U2",
+        ts: daysBefore(1),
+        kind: "unsuspend",
+        item: "leech001:main",
+      },
+    ];
+    const state = replay(events, scheduler, config, NOW);
+    expect(state.items.get("leech001:main")).toMatchObject({
+      leech: true,
+      suspended: false,
+    });
+    expect(
+      queueOf(events, cards, config).entries.map((entry) => entry.item),
+    ).toEqual(["leech001:main"]);
   });
 });
 
@@ -220,5 +247,34 @@ describe("estimateDurations", () => {
       durMs: 9_000_000,
     }));
     expect(estimateDurations(samples, cards).byType.basic).toBe(120_000);
+  });
+});
+
+describe("nextQueueChange", () => {
+  it("is the next study day when nothing is learning", () => {
+    const state = replay(
+      [review("arch0001:main", daysBefore(1), 3)],
+      scheduler,
+      CONFIG,
+      NOW,
+    );
+    const today = createCalendar(CONFIG.timezone, CONFIG.dayStartsAt).dayOf(
+      NOW.getTime(),
+    );
+    expect(nextQueueChange(state, CONFIG, NOW)).toBe(today.end);
+  });
+
+  it("is the moment a learning step comes due when that is sooner", () => {
+    const events = [
+      review(
+        "learn001:main",
+        new Date(NOW.getTime() - 20_000).toISOString(),
+        1,
+      ),
+    ];
+    const state = replay(events, scheduler, CONFIG, NOW);
+    const step = state.items.get("learn001:main")?.dueAt;
+    expect(step).toBeGreaterThan(NOW.getTime());
+    expect(nextQueueChange(state, CONFIG, NOW)).toBe(step);
   });
 });

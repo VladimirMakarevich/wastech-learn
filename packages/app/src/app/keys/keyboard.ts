@@ -52,6 +52,7 @@ export class Keyboard {
       metaKey: event.metaKey,
       altKey: event.altKey,
       editable: isEditable(event.target),
+      code: event.code,
     };
     const global = readGlobalKey(
       input,

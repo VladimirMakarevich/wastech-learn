@@ -123,6 +123,8 @@ export const en = {
     "{subject} changed while the write was being prepared; nothing was written",
   "error.search-index-invalid":
     "The content bundle has a search index this version cannot read",
+  "error.id-unavailable":
+    "No new id could be made: the random source or the clock gave {subject}",
   "error.input-invalid": "Input field {field} is invalid",
   "error.tool-unknown": "There is no tool named {subject}",
   "error.config-invalid": "{file}: {field} is invalid",
@@ -157,6 +159,8 @@ export const en = {
     "Someone saved the file in the meantime: call the tool again to build on the new text",
   "hint.search-index-invalid":
     "Rebuild the bundle with wastech-learn build or restart wastech-learn serve",
+  "hint.id-unavailable":
+    "Check the computer's clock and call again; if it happens again, it is a bug in wastech-learn",
   "hint.input-invalid": "Fix that field and call the tool again",
   "hint.tool-unknown": "List the tools to see what this server offers",
   "hint.config-invalid": "Fix the value in the file and call again",

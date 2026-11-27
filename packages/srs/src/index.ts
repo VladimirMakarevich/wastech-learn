@@ -28,6 +28,7 @@ export {
   DEFAULT_BACKLOG_ORDER,
   buildQueue,
   nextEntry,
+  nextQueueChange,
 } from "./queue.js";
 export type {
   BacklogOrder,

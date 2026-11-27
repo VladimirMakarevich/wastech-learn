@@ -119,6 +119,7 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "end.tomorrow-none": "На завтра ничего не назначено",
   "end.home": "На главную",
   "end.more": "Ещё {minutes}",
+  "end.undo": "Отменить последнюю оценку",
   "end.nothing":
     "В этот раз ответов не было; карточки остались на своих местах",
   "end.empty": "Пока нечего подводить: сессии ещё не было",

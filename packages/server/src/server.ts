@@ -211,6 +211,8 @@ const routes = (
       const closed = new Promise<void>((resolve) => {
         stream.onAbort(resolve);
       });
+      // A write fails only once the tab has gone; onAbort then ends this stream and drops the listener, so
+      // a failed write needs no handling of its own.
       const unsubscribe = subscribe((event) => {
         const { type, ...data } = event;
         stream
@@ -244,8 +246,14 @@ const routes = (
   // Local images the bundle links to rather than inlines: only paths the bundle names, so the content
   // repository is not browsable through the server.
   app.get("/content/*", async (c) => {
-    const path = c.req.path.slice(1);
-    const listed = holder.served()?.bundle.assets[decodeURIComponent(path)];
+    let path: string;
+    try {
+      path = decodeURIComponent(c.req.path.slice(1));
+    } catch {
+      // A malformed escape names no asset; it is a missing file, not a server failure.
+      return c.json({ code: "not-found" }, 404);
+    }
+    const listed = holder.served()?.bundle.assets[path];
     const file =
       listed === undefined ? undefined : await fileUnder(root, listed);
     if (file === undefined) return c.json({ code: "not-found" }, 404);

@@ -27,12 +27,15 @@ export interface ServerStatus {
 export class ApiError extends Error {
   readonly code: string;
   readonly status: number;
+  /** The event of a refused batch the server named, so the others are not dropped with it. */
+  readonly index: number | undefined;
 
-  constructor(code: string, status: number, message: string) {
+  constructor(code: string, status: number, message: string, index?: number) {
     super(message);
     this.name = "ApiError";
     this.code = code;
     this.status = status;
+    this.index = index;
   }
 }
 
@@ -126,7 +129,18 @@ const refusal = async (response: Response): Promise<ApiError> => {
   const answer = await body(response);
   const code =
     isRecord(answer) && typeof answer.code === "string" ? answer.code : "http";
-  return new ApiError(code, response.status, `HTTP ${String(response.status)}`);
+  const index =
+    isRecord(answer) &&
+    typeof answer.index === "number" &&
+    Number.isInteger(answer.index)
+      ? answer.index
+      : undefined;
+  return new ApiError(
+    code,
+    response.status,
+    `HTTP ${String(response.status)}`,
+    index,
+  );
 };
 
 export type BundleAnswer =

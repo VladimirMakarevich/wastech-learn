@@ -6,18 +6,35 @@ export interface KeyInput {
   readonly altKey: boolean;
   /** The event came from a text field, where letters are typing, not commands. */
   readonly editable: boolean;
+  /** The physical key, `KeyU` for the key that types `u` on a Latin layout. */
+  readonly code?: string;
 }
+
+const PHYSICAL_LETTER = /^Key([A-Z])$/;
+
+/**
+ * A letter typed in another script (`г` on a Russian layout) stands for the Latin letter of the same key: the
+ * shortcuts belong to the keys, and a learner who writes Russian must not switch layouts to undo a rating.
+ * Latin letters with diacritics (`ą`, `é`) keep their own name, so typing them triggers nothing.
+ */
+const letterOf = (input: KeyInput): string => {
+  const typed = input.key.toLowerCase();
+  if (!/\p{L}/u.test(typed) || /\p{Script=Latin}/u.test(typed)) return typed;
+  const physical = PHYSICAL_LETTER.exec(input.code ?? "")?.[1];
+  return physical === undefined ? typed : physical.toLowerCase();
+};
 
 /**
  * A key as the screens name it: `Space`, `Escape`, `1`, `u`, `!`, `Ctrl+z`. Cmd on a Mac counts as Ctrl,
- * so undo is the same chord everywhere; letters are lower case, so Caps Lock changes nothing.
+ * so undo is the same chord everywhere; letters are lower case, so Caps Lock changes nothing, and named by
+ * their key, so the keyboard layout changes nothing either.
  */
 export const keyName = (input: KeyInput): string => {
   const base =
     input.key === " "
       ? "Space"
       : input.key.length === 1
-        ? input.key.toLowerCase()
+        ? letterOf(input)
         : input.key;
   return input.ctrlKey || input.metaKey ? `Ctrl+${base}` : base;
 };

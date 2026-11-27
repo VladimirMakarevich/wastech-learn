@@ -90,12 +90,14 @@ const timeIsUp = (state: SessionState, now: Date): boolean =>
   state.mode.kind === "minutes" &&
   now.getTime() - state.startedAt >= state.mode.minutes * MINUTE_MS;
 
-/** An entry can still be asked: its card exists and is active, the item is neither suspended nor a leech. */
+/**
+ * An entry can still be asked: its card exists and is active, and the item is not suspended. A leech is
+ * suspended by the rating that made it one, so it is asked again only once it was rewritten and unsuspended.
+ */
 const isAskable = (state: SessionState, item: string): boolean => {
   if (state.buried.has(cardOf(item))) return false;
   if (state.deck.byItem.get(item)?.status !== "active") return false;
-  const memory = state.log.state.items.get(item);
-  return memory?.suspended !== true && memory?.leech !== true;
+  return state.log.state.items.get(item)?.suspended !== true;
 };
 
 /** Puts the next card on screen: due learning steps first, then the queue, then a learning step ahead. */

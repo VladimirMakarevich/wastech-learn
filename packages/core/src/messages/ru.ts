@@ -148,6 +148,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "{subject} изменился, пока готовилась запись; ничего не записано",
   "error.search-index-invalid":
     "Индекс поиска в content bundle не читается этой версией",
+  "error.id-unavailable":
+    "Не удалось создать новый id: источник случайности или часы дали {subject}",
   "error.input-invalid": "Поле входа {field} неверно",
   "error.tool-unknown": "Инструмента {subject} нет",
   "error.config-invalid": "{file}: поле {field} неверно",
@@ -182,6 +184,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
     "Файл сохранили в это время: вызови инструмент снова, чтобы опереться на новый текст",
   "hint.search-index-invalid":
     "Пересобери bundle командой wastech-learn build или перезапусти wastech-learn serve",
+  "hint.id-unavailable":
+    "Проверьте часы компьютера и повторите вызов; если это повторится, это ошибка wastech-learn",
   "hint.input-invalid": "Исправь это поле и вызови инструмент снова",
   "hint.tool-unknown":
     "Запроси список инструментов, чтобы увидеть, что есть у сервера",
