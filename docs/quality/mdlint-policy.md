@@ -112,7 +112,7 @@
 | --- | --- |
 | MCP: каждая запись и `validate` | Корпус mdlint из `@wastech-mdlint/core` с наложенными новыми файлами (`lintContext` по заменённым документам) + `check` до записи |
 | Hook Claude Code `PostToolUse` | `wastech-learn hook post-tool-use`: mdlint и `check` по изменённому файлу `content/**` |
-| CI контент-репозитория | `lint` + `check` на каждый push |
+| CI контент-репозитория | `lint`, `check` и свежесть SVG на каждый push и pull request; фреймворк для `check` workflow берёт соседним checkout (`FRAMEWORK_REPOSITORY`, `FRAMEWORK_REF`) |
 | VS Code | Задача `lint:content`; MCP mdlint доступен ИИ в редакторе |
 
 ## См. также

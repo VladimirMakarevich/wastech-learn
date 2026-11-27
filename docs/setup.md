@@ -78,6 +78,8 @@ git commit -m "chore: start the content repository"
 gh repo create wastech-learn-content --private --source . --push
 ```
 
+После push GitHub сам запускает CI из шаблона: mdlint, `wastech-learn check` и свежесть диаграмм. Фреймворк для `check` он берёт из публичного репозитория, ветка `main`; другая ветка или тег задаётся в начале `.github/workflows/content-lint.yml`.
+
 ## 3б. Контент-репозиторий уже есть
 
 Второй компьютер того же человека: клонировать свой репозиторий и назвать компьютер по-новому.

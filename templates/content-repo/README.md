@@ -24,4 +24,4 @@ npm run view              # просмотр тем в браузере: схе�
 npm run render:diagrams   # diagrams/*.mmd → *.svg с хэшем источника
 ```
 
-CI (`.github/workflows/content-lint.yml`) на каждый push и pull request запускает `lint` и проверку свежести диаграмм. Правила для ИИ-агентов — в [AGENTS.md](AGENTS.md).
+CI (`.github/workflows/content-lint.yml`) на каждый push и pull request запускает `lint`, `wastech-learn check` и проверку свежести диаграмм; фреймворк для `check` он берёт из `VladimirMakarevich/wastech-learn` (ветка `main`, меняется в начале workflow). Правила для ИИ-агентов — в [AGENTS.md](AGENTS.md).

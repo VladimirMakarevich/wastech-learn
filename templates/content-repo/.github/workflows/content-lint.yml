@@ -2,8 +2,8 @@ name: Content lint
 
 # The gate from AGENTS.md: every topic, card, summary and package must pass the content preset of
 # wastech-mdlint (front matter, required sections, size budgets, links and images, no yes/no questions,
-# no template tokens), and every committed diagram SVG must match its .mmd source. Both reports go into
-# the job summary.
+# no template tokens) and `wastech-learn check` (card limits, cloze, ids, related topics, preset drift),
+# and every committed diagram SVG must match its .mmd source. Each report goes into the job summary.
 #
 # No path filter, on purpose: a config or preset change can break files that did not change.
 
@@ -21,19 +21,50 @@ concurrency:
   group: content-lint-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Until the framework is on npm, package.json links it as the sibling folder ../wastech-learn, so CI
+  # checks it out next to this repository and builds the CLI. Pin FRAMEWORK_REF to a tag or commit to
+  # keep CI on the framework version you run locally; point FRAMEWORK_REPOSITORY at a fork if you use one.
+  FRAMEWORK_REPOSITORY: VladimirMakarevich/wastech-learn
+  FRAMEWORK_REF: main
+
 jobs:
   lint:
-    name: wastech-mdlint + diagrams
+    name: wastech-mdlint + check + diagrams
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: wastech-learn-content
     steps:
       - uses: actions/checkout@v7
+        with:
+          path: wastech-learn-content
+          persist-credentials: false
 
-      # wastech-mdlint needs Node >= 24.17; scripts/render-diagrams.mjs uses fs.globSync (Node 22+).
+      - uses: actions/checkout@v7
+        with:
+          repository: ${{ env.FRAMEWORK_REPOSITORY }}
+          ref: ${{ env.FRAMEWORK_REF }}
+          path: wastech-learn
+          persist-credentials: false
+
+      # wastech-mdlint and the framework need Node >= 24.17; scripts/render-diagrams.mjs uses fs.globSync.
       - uses: actions/setup-node@v7
         with:
-          node-version-file: .nvmrc
+          node-version-file: wastech-learn-content/.nvmrc
           cache: npm
+          cache-dependency-path: |
+            wastech-learn-content/package-lock.json
+            wastech-learn/package-lock.json
+
+      # `check` needs only the CLI and the packages it imports; the app and its Angular build are skipped.
+      # Install scripts stay off: the TypeScript build does not need what they download.
+      - name: Build the framework CLI
+        working-directory: wastech-learn
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install tsc -b packages/cli/tsconfig.json
 
       - name: Install dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
@@ -52,9 +83,26 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           exit "$status"
 
+      # Runs after a failed lint too: both lists of findings in one run save a round trip.
+      - name: Check content
+        if: ${{ !cancelled() }}
+        run: |
+          status=0
+          npx --no-install wastech-learn check --content . > "$RUNNER_TEMP/check.txt" 2>&1 || status=$?
+          cat "$RUNNER_TEMP/check.txt"
+          {
+            echo "## wastech-learn check"
+            echo
+            echo '```text'
+            cat "$RUNNER_TEMP/check.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
+
       # `--check` only hashes the .mmd sources and compares them with the marker in each SVG; it renders
       # nothing, so no browser is needed here. A stale SVG means `npm run render:diagrams` was skipped.
       - name: Diagram SVGs are up to date
+        if: ${{ !cancelled() }}
         run: |
           status=0
           npm run --silent render:diagrams -- --check > "$RUNNER_TEMP/diagrams.txt" 2>&1 || status=$?

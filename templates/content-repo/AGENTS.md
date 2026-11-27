@@ -19,7 +19,8 @@ https://github.com/VladimirMakarevich/wastech-learn/tree/main/docs (content/, le
 ## Checks
 
 ```bash
-npm run lint   # must report zero errors before a commit
+npm run lint                          # must report zero errors before a commit
+npx wastech-learn check --content .   # card limits, cloze, ids; CI runs both
 ```
 
 The `wastech-mdlint` MCP server is registered in [.mcp.json](.mcp.json). Use its `lint` tool on a draft
