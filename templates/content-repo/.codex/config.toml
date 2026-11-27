@@ -1,0 +1,8 @@
+# Codex reads this file once the folder is trusted; the same servers as .mcp.json for Claude Code.
+[mcp_servers.wastech-learn]
+command = "npx"
+args = ["--no-install", "wastech-learn-mcp", "--content", "."]
+
+[mcp_servers.wastech-mdlint]
+command = "npx"
+args = ["--no-install", "wastech-mdlint-mcp"]

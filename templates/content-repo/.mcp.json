@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "wastech-learn": {
+      "command": "npx",
+      "args": ["--no-install", "wastech-learn-mcp", "--content", "."]
+    },
+    "wastech-mdlint": {
+      "command": "npx",
+      "args": ["--no-install", "wastech-mdlint-mcp"]
+    }
+  }
+}

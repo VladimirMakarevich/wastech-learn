@@ -33,6 +33,7 @@
 
 | Документ | О чём |
 | --- | --- |
+| [setup.md](setup.md) | Установка с нуля: фреймворк, контент-репозиторий из шаблона, агенты, приложение |
 | [repo-layout.md](content/repo-layout.md) | Структура `wastech-learn-content` |
 | [topic-files.md](content/topic-files.md) | `index.md`, `summary.md`, `materials.md`, диаграммы |
 | [visuals.md](content/visuals.md) | Виды визуала и правила наглядности |

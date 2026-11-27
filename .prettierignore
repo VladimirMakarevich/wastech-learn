@@ -15,6 +15,10 @@ playwright-report/
 # reformatted here: the golden tests compare against the content repository's own formatting.
 fixtures/golden/
 
+# The infrastructure of wastech-learn-content, copied byte for byte into a new content repository and
+# formatted in that repository's own style.
+templates/content-repo/
+
 # Vitest file snapshots: written by the test runner byte for byte, reviewed as output, not formatted.
 **/__snapshots__/
 
