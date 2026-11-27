@@ -26,6 +26,21 @@ describe("rubric suggestion", () => {
     expect(suggestRating(rubric, ["yes", "yes", "yes"])).toBe(3);
   });
 
+  it("suggests Hard when everything required is there but the answer took more than twice as long", () => {
+    expect(
+      suggestRating(rubric, ["yes", "yes", "yes"], {
+        durMs: 91_000,
+        estimateMs: 45_000,
+      }),
+    ).toBe(2);
+    expect(
+      suggestRating(rubric, ["no", "yes", "yes"], {
+        durMs: 91_000,
+        estimateMs: 45_000,
+      }),
+    ).toBe(1);
+  });
+
   it("counts a missing mark as missed", () => {
     expect(suggestRating(rubric, ["yes"], usual)).toBe(1);
   });

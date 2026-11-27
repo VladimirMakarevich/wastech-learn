@@ -3,6 +3,9 @@ import type { Rating } from "@wastech-learn/srs";
 /** What the learner ticked for one rubric item: named it, named part of it, or missed it. */
 export type RubricMark = "yes" | "partial" | "no";
 
+// Recall that takes more than twice the usual time for the card type came with effort, whatever the rubric says.
+const SLOW_FACTOR = 2;
+
 /** How long the answer took against the usual time for the card type. */
 export interface AnswerPace {
   readonly durMs: number;
@@ -11,10 +14,10 @@ export interface AnswerPace {
 
 /**
  * The rating the ticked rubric suggests, by the grading protocol the chat tutor follows: a required item
- * missed is Again; every required item there but one only partly is Hard; every required item there is
- * Good; everything there, the optional items included, and no slower than usual is Easy. A rubric without
- * required items treats all of its items as required. The learner decides; this is only the suggestion.
- * A mark missing from `marks` counts as missed.
+ * missed is Again; every required item there but one only partly, or all there but more than twice as slow
+ * as usual, is Hard; every required item there is Good; everything there, the optional items included, and
+ * no slower than usual is Easy. A rubric without required items treats all of its items as required. The
+ * learner decides; this is only the suggestion. A mark missing from `marks` counts as missed.
  */
 export const suggestRating = (
   rubric: readonly { readonly required: boolean }[],
@@ -30,6 +33,8 @@ export const suggestRating = (
   const core = hasRequired ? marked.filter((entry) => entry.required) : marked;
   if (core.some((entry) => entry.mark === "no")) return 1;
   if (core.some((entry) => entry.mark === "partial")) return 2;
+  if (pace !== undefined && pace.durMs > SLOW_FACTOR * pace.estimateMs)
+    return 2;
   const everything = marked.every((entry) => entry.mark === "yes");
   const extra = hasRequired && marked.some((entry) => !entry.required);
   const quick = pace !== undefined && pace.durMs <= pace.estimateMs;
