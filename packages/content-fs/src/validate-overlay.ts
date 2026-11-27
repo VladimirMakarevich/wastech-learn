@@ -19,20 +19,16 @@ import {
   checkContent,
   type ContentFiles,
   type Finding,
+  type LintFinding,
 } from "@wastech-learn/core";
 import { readGitBaseline } from "./git-baseline.js";
 import { readCanonicalPreset } from "./preset.js";
 import { MDLINT_CONFIG_FILE } from "./repo.js";
 import type { Workspace } from "./workspace.js";
 
-/** A finding of the first validation tier, wastech-mdlint, in its own words. */
-export interface LintFinding {
-  readonly file: string;
-  readonly line: number;
-  readonly ruleId: string;
-  readonly severity: "error" | "warning";
-  readonly message: string;
-}
+// A finding of the first validation tier, wastech-mdlint, in its own words: core owns the shape, so the
+// app's editor reads exactly what this report holds.
+export type { LintFinding };
 
 /** Both validation tiers over the files a call touches. */
 export interface ValidationReport {

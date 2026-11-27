@@ -1,9 +1,10 @@
 import { computed, signal } from "@angular/core";
 import type {
+  CardEditDecision,
   EditMeaning,
   Finding,
+  LintFinding,
   SourceFile,
-  SourceLintFinding,
   SourceSaveAnswer,
   SourceSaveBody,
 } from "@wastech-learn/core";
@@ -49,14 +50,6 @@ export interface EditorFinding {
       };
 }
 
-export interface MeaningQuestion {
-  readonly largeEdit: readonly {
-    readonly section: string;
-    readonly percent: number;
-  }[];
-  readonly removedVariants: readonly string[];
-}
-
 export interface SaveResult {
   readonly status: "written" | "unchanged";
   readonly warnings: readonly EditorFinding[];
@@ -67,7 +60,7 @@ const LINE_BREAKS = /\r\n?/g;
 const editorFindings = (
   path: string,
   findings: readonly Finding[],
-  lint: readonly SourceLintFinding[],
+  lint: readonly LintFinding[],
 ): readonly EditorFinding[] =>
   [
     ...findings.map((finding): EditorFinding => ({
@@ -110,7 +103,7 @@ export class EditorModel {
   readonly phase = signal<EditorPhase>("loading");
   readonly draft = signal("");
   readonly findings = signal<readonly EditorFinding[]>([]);
-  readonly question = signal<MeaningQuestion | undefined>(undefined);
+  readonly question = signal<CardEditDecision | undefined>(undefined);
   readonly failure = signal<string | undefined>(undefined);
   /** Bumped whenever the text is replaced from the server, so the view puts it into the field. */
   readonly revision = signal(0);

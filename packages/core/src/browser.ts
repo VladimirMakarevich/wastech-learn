@@ -125,6 +125,7 @@ export type {
 
 export { EDITABLE_KINDS, editableKind } from "./edit/editable.js";
 export type { EditableKind } from "./edit/editable.js";
+export type { CardEditDecision, LargeEdit } from "./edit/decision.js";
 export {
   EDIT_MEANINGS,
   parseSourceSaveAnswer,
@@ -133,8 +134,9 @@ export {
 } from "./schema/source.js";
 export type {
   EditMeaning,
+  LintFinding,
+  SavedCard,
   SourceFile,
-  SourceLintFinding,
   SourceSaveAnswer,
   SourceSaveBody,
 } from "./schema/source.js";

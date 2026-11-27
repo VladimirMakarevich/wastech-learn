@@ -78,6 +78,7 @@ export {
   SOURCE_REFUSAL_CODES,
   lintFindingSchema,
   parseSourceSaveAnswer,
+  savedCardSchema,
   sourceFileSchema,
   sourcePathSchema,
   sourceSaveAnswerSchema,
@@ -86,8 +87,9 @@ export {
 } from "./schema/source.js";
 export type {
   EditMeaning,
+  LintFinding,
+  SavedCard,
   SourceFile,
-  SourceLintFinding,
   SourceRefusalCode,
   SourceSaveAnswer,
   SourceSaveBody,

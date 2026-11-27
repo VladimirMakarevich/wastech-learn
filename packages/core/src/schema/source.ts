@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { CardEditDecision } from "../edit/decision.js";
 import type { Finding } from "../finding.js";
 import { findingSchema, toFindings } from "./app.js";
 
@@ -42,7 +43,17 @@ export const lintFindingSchema = z.object({
   severity: z.enum(["error", "warning"]),
   message: z.string(),
 });
-export type SourceLintFinding = z.infer<typeof lintFindingSchema>;
+export type LintFinding = Readonly<z.infer<typeof lintFindingSchema>>;
+
+/**
+ * The card a saved edit leaves the text on: the id that now carries it, and the id retired for it when
+ * the learner said the meaning changed, so the screen can follow the text to its new card.
+ */
+export const savedCardSchema = z.object({
+  id: z.string(),
+  retired: z.string().nullable(),
+});
+export type SavedCard = Readonly<z.infer<typeof savedCardSchema>>;
 
 const largeEditSchema = z.object({
   section: z.string(),
@@ -65,9 +76,7 @@ export const sourceSaveAnswerSchema = z.union([
   z.object({
     status: z.enum(["written", "unchanged"]),
     paths: z.array(z.string()),
-    card: z
-      .object({ id: z.string(), retired: z.string().nullable() })
-      .optional(),
+    card: savedCardSchema.optional(),
     findings: z.array(findingSchema),
     lint: z.array(lintFindingSchema),
   }),
@@ -90,24 +99,16 @@ export type SourceSaveAnswer =
       readonly kind: "saved";
       readonly status: "written" | "unchanged";
       readonly paths: readonly string[];
-      readonly card:
-        { readonly id: string; readonly retired: string | null } | undefined;
+      readonly card: SavedCard | undefined;
       readonly findings: readonly Finding[];
-      readonly lint: readonly SourceLintFinding[];
+      readonly lint: readonly LintFinding[];
     }
   | {
       readonly kind: "blocked";
       readonly findings: readonly Finding[];
-      readonly lint: readonly SourceLintFinding[];
+      readonly lint: readonly LintFinding[];
     }
-  | {
-      readonly kind: "decision";
-      readonly largeEdit: readonly {
-        readonly section: string;
-        readonly percent: number;
-      }[];
-      readonly removedVariants: readonly string[];
-    }
+  | ({ readonly kind: "decision" } & CardEditDecision)
   | { readonly kind: "refused"; readonly code: string };
 
 export const parseSourceSaveAnswer = (
