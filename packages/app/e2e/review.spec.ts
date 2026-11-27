@@ -7,6 +7,17 @@ const card = (page: Page) => page.locator("article.review-card");
 const currentItem = async (page: Page): Promise<string> =>
   (await card(page).getAttribute("data-item")) ?? "";
 
+const DAY = 86_400_000;
+
+/**
+ * Moves the browser clock two months ahead: every card answered by an earlier scenario is due again, so a
+ * scenario that needs a full queue does not depend on what ran before it.
+ */
+const twoMonthsLater = async (page: Page): Promise<void> => {
+  const now = await page.evaluate(() => Date.now());
+  await page.clock.setSystemTime(new Date(now + 60 * DAY));
+};
+
 const startReview = async (page: Page, mode = "all"): Promise<void> => {
   await page.goto(`/review?mode=${mode}`);
   await expect(card(page)).toBeVisible();
@@ -118,23 +129,47 @@ const catchEditorLinks = (page: Page) =>
   });
 
 test.describe("review", () => {
-  // First in the file: a later scenario may answer this card and so make it unchanged.
   test("a card edited since its last answer is marked and can start over", async ({
     page,
     logFixture,
   }) => {
-    await startReview(page);
-    await skipUntil(
-      page,
-      async () => (await currentItem(page)) === logFixture.changed,
+    // The scenario edits the card itself: whatever earlier scenarios answered, its text now differs from
+    // the text it was last answered on.
+    const id = logFixture.changed.slice(0, logFixture.changed.indexOf(":"));
+    const bundle = (await (await page.request.get("/api/bundle")).json()) as {
+      cards: { id: string; file: string; contentHash: string }[];
+    };
+    const entry = bundle.cards.find((candidate) => candidate.id === id);
+    if (entry === undefined)
+      throw new Error("the changed card is not in the bundle");
+    const restore = await editFile(entry.file, (text) =>
+      text.replace("## Answer\n\n", "## Answer\n\nEdited: "),
     );
-    expect(await currentItem(page)).toBe(logFixture.changed);
-    await expect(page.locator(".status-changed")).toBeVisible();
-    const since = (await webEvents()).length;
-    await page.getByRole("button", { name: /over|заново|od nowa/ }).click();
-    expect(await eventsAfter(since, 1)).toEqual([
-      expect.objectContaining({ kind: "reset", item: logFixture.changed }),
-    ]);
+    try {
+      await expect
+        .poll(async () => {
+          const next = (await (
+            await page.request.get("/api/bundle")
+          ).json()) as typeof bundle;
+          return next.cards.find((candidate) => candidate.id === id)
+            ?.contentHash;
+        })
+        .not.toBe(entry.contentHash);
+      await twoMonthsLater(page);
+      await startReview(page);
+      await skipUntil(
+        page,
+        async () => (await currentItem(page)) === logFixture.changed,
+      );
+      await expect(page.locator(".status-changed")).toBeVisible();
+      const since = (await webEvents()).length;
+      await page.getByRole("button", { name: /over|заново|od nowa/ }).click();
+      expect(await eventsAfter(since, 1)).toEqual([
+        expect.objectContaining({ kind: "reset", item: logFixture.changed }),
+      ]);
+    } finally {
+      await restore();
+    }
   });
 
   // Early in the file, while the queue still holds every card type.
@@ -380,6 +415,7 @@ test.describe("review", () => {
   test("a session of 20 review items runs on the keyboard alone, with the focus always visible", async ({
     page,
   }) => {
+    await twoMonthsLater(page);
     await startReview(page);
     await page.evaluate(() => {
       const timings: number[] = [];

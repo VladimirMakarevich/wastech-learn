@@ -19,7 +19,7 @@
 | 07 | [Каркас приложения](07-app-scaffold.md) | Пакет `app` на Angular 22, сборка, lint, раздача сервером, Playwright и job в CI | 06 | ☑ |
 | 08 | [Данные и основа UI](08-app-foundation.md) | `ReviewStore`, bundle, SSE, `bundleHtml`, i18n, токены и компоненты Evening Glass, клавиши, оболочка | 07 | ☑ |
 | 09 | [Экран Review](09-review.md) | Сессия с клавиатуры: все типы карточек, уверенность, оценки, действия, озвучка | 03, 08 | ☑ |
-| 10 | [Home и Session end](10-home-and-session-end.md) | Главная с планом возврата, итоги сессии | 09 | ☐ |
+| 10 | [Home и Session end](10-home-and-session-end.md) | Главная с планом возврата, итоги сессии | 09 | ☑ |
 | 11 | [Topic и Browser](11-topic-and-browser.md) | Страница темы, поиск и браузер карточек | 08 | ☐ |
 | 12 | [Stats и Settings](12-stats-and-settings.md) | Статистика и настройки | 02, 08 | ☐ |
 | 13 | [Качество](13-quality.md) | Доступность, 360 px, сеть, замеры, ревью дизайна | 09–12 | ☐ |

@@ -1,5 +1,6 @@
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import type { Queue } from "@wastech-learn/srs";
 
 /** The content copy this run serves; scenarios read its log and edit its files. */
 export const contentRoot = (): string => {
@@ -51,4 +52,35 @@ export const editFile = async (
   const before = await readFile(path, "utf8");
   await writeFile(path, edit(before));
   return () => writeFile(path, before);
+};
+
+/**
+ * The day's queue as srs builds it in Node over the same copy and log, at the moment the page reads its
+ * clock: what Home must show.
+ */
+export const nodeQueue = async (nowMs: number): Promise<Queue> => {
+  const { buildBundle, loadConfig, readReviewLog } =
+    await import("@wastech-learn/content-fs");
+  const { deckFromBundle, toReplayEvents, toSrsConfig } =
+    await import("@wastech-learn/session");
+  const {
+    buildQueue,
+    createScheduler,
+    estimateDurations,
+    prepareEvents,
+    replay,
+  } = await import("@wastech-learn/srs");
+  const root = contentRoot();
+  const config = toSrsConfig(await loadConfig(root));
+  const built = await buildBundle(root, new Date(nowMs));
+  if (!built.ok) throw new Error("the copy does not build");
+  const deck = deckFromBundle(built.bundle);
+  const { events } = await readReviewLog(root);
+  const scheduler = await createScheduler(config);
+  const now = new Date(nowMs);
+  const state = replay(toReplayEvents(events), scheduler, config, now);
+  return buildQueue(state, deck.cards, config, now, {
+    mode: { kind: "full" },
+    estimates: estimateDurations(prepareEvents(events), deck.cards),
+  });
 };

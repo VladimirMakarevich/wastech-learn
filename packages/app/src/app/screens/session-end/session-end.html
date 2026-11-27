@@ -1,0 +1,65 @@
+<main class="screen" data-screen="session-end">
+  @if (summary(); as summary) {
+  <section class="end">
+    <h2
+      class="today-big tnum"
+      data-reviewed
+      [attr.data-count]="summary.reviewed"
+    >
+      {{ "end.title" | t: { cards: count(summary.reviewed), minutes:
+      minutes(summary.minutes) } }}
+    </h2>
+    <p class="today-sub tnum">
+      @if (summary.retention.total > 0) { {{ "end.recalled" | t: { passed:
+      summary.retention.passed, total: summary.retention.total } }} } @else { {{
+      "end.only-new" | t }} } · @if (summary.tomorrow !== undefined &&
+      summary.tomorrow.due > 0) { {{ "end.tomorrow" | t: { cards:
+      count(summary.tomorrow.due), minutes: minutes(summary.tomorrow.minutes) }
+      }} } @else { {{ "end.tomorrow-none" | t }} }
+    </p>
+    <section class="glist">
+      <h3 class="group-h">{{ "end.misses" | t }}</h3>
+      <div class="group-body">
+        @for (miss of misses(); track miss.item) {
+        <a
+          class="g-row g-action"
+          [routerLink]="['/browser']"
+          [queryParams]="{ items: miss.item }"
+        >
+          <span [attr.lang]="miss.lang">{{ miss.title }}</span
+          ><wl-icon name="chevron" />
+        </a>
+        } @empty {
+        <div class="g-row muted">{{ "end.misses-none" | t }}</div>
+        }
+      </div>
+      @if (misses().length > 1) {
+      <a
+        class="ctx-link"
+        [routerLink]="['/browser']"
+        [queryParams]="{ items: missedItems() }"
+      >
+        {{ "end.misses-open" | t }}<wl-icon name="chevron" />
+      </a>
+      }
+    </section>
+    <div class="row">
+      <a class="btn primary" routerLink="/">{{ "end.home" | t }}</a>
+      <a
+        class="btn"
+        [routerLink]="['/review']"
+        [queryParams]="{ mode: preferences.sessionMinutes() }"
+      >
+        {{ "end.more" | t: { minutes: minutes(preferences.sessionMinutes()) } }}
+      </a>
+    </div>
+  </section>
+  } @else {
+  <section class="end">
+    <p class="today-sub">{{ "end.empty" | t }}</p>
+    <div class="row">
+      <a class="btn primary" routerLink="/">{{ "end.home" | t }}</a>
+    </div>
+  </section>
+  }
+</main>
