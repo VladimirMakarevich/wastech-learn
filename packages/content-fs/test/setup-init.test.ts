@@ -207,6 +207,22 @@ describe("init", () => {
     expect(await read(root, "README.md")).toBe("# My notes\n");
   });
 
+  it("adds no .gitkeep to a folder that already has files", async () => {
+    const { root } = await initializedRepository();
+    await rm(join(root, "content", ".gitkeep"));
+    await mkdir(join(root, "content", "dotnet"));
+    await rm(join(root, "inbox", ".gitkeep"));
+    const again = await initRepository({
+      root,
+      framework: frameworkLayout(FRAMEWORK),
+      timezone: "UTC",
+      uiLanguage: "en",
+    });
+    if (again.kind !== "done") throw new Error("refused");
+    expect(again.report.created).toEqual(["inbox/.gitkeep"]);
+    expect((await readdir(join(root, "content"))).sort()).toEqual(["dotnet"]);
+  });
+
   it("refuses a folder that holds files a content repository does not have, and writes nothing", async () => {
     const root = await tempDir();
     await writeFile(join(root, "notes.txt"), "mine\n");

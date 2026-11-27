@@ -98,6 +98,11 @@ const foreignEntries = (
   return entries.filter((entry) => !known.has(entry));
 };
 
+// A .gitkeep only keeps an empty folder in git; a folder that already has files needs none.
+const holdsOnlyAFolder = async (root: string, path: string): Promise<boolean> =>
+  path.endsWith(".gitkeep") &&
+  (await listFolder(join(root, dirname(path)))).length > 0;
+
 const writeNew = (
   root: string,
   path: string,
@@ -224,6 +229,7 @@ export const initRepository = async (
       continue;
     }
     if (!existing) {
+      if (await holdsOnlyAFolder(root, file.path)) continue;
       await writeNew(root, file.path, file.content);
       created.push(file.path);
       continue;
