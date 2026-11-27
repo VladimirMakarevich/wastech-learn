@@ -1,0 +1,16 @@
+{
+  // Type-checks the unit tests of the app's pure modules, which import the app's sources the way the
+  // bundler does, so the sources are part of this project too (ngc checks them with their templates). It
+  // emits only declarations into .cache/, which tsc -b needs for a project in the solution.
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "emitDeclarationOnly": true,
+    "rootDir": "..",
+    "outDir": "../../../.cache/tsc/app-test"
+  },
+  "include": ["**/*.ts", "../src/app/**/*.ts"]
+}

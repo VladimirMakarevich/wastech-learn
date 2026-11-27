@@ -1,0 +1,91 @@
+<aside class="sidebar">
+  <a class="brand" routerLink="/">
+    <span class="brand-mark" aria-hidden="true">w</span>
+    <span>{{ "app.name" | t }}</span>
+  </a>
+  <nav [attr.aria-label]="'nav.main' | t">
+    @for (item of nav; track item.path) {
+    <a
+      class="nav-item"
+      [routerLink]="item.path"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+      ariaCurrentWhenActive="page"
+    >
+      <wl-icon [name]="item.icon" />{{ item.label | t }}
+    </a>
+    }
+  </nav>
+  <div class="sidebar-foot">
+    <div
+      class="lang-switch"
+      role="group"
+      [attr.aria-label]="'shell.language' | t"
+    >
+      @for (lang of langs; track lang) {
+      <button
+        type="button"
+        [class.active]="lang === i18n.lang()"
+        [attr.aria-pressed]="lang === i18n.lang()"
+        [attr.lang]="lang"
+        (click)="setLang(lang)"
+      >
+        {{ lang.toUpperCase() }}
+      </button>
+      }
+    </div>
+    <button
+      class="ghost-btn"
+      type="button"
+      [attr.aria-label]="(dark() ? 'shell.theme-light' : 'shell.theme-dark') | t"
+      (click)="toggleTheme()"
+    >
+      <wl-icon [name]="dark() ? 'sun' : 'moon'" />
+      <span class="label"
+        >{{ (dark() ? "shell.theme-light" : "shell.theme-dark") | t }}</span
+      >
+    </button>
+    <button class="ghost-btn" type="button" (click)="refresh()">
+      <wl-icon name="refresh" />
+      <span class="label">{{ "shell.refresh" | t }}</span>
+    </button>
+    <div class="sync"><span class="dot"></span>{{ saveStatus() }}</div>
+  </div>
+</aside>
+<main>
+  <header class="topbar">
+    <h1>{{ title() | t }}</h1>
+    <div class="topbar-session"></div>
+    <div class="topbar-right">
+      <form class="search" role="search" (submit)="submitSearch($event)">
+        <wl-icon name="search" />
+        <input
+          #searchInput
+          type="search"
+          autocomplete="off"
+          [placeholder]="'shell.search-short' | t"
+          [attr.aria-label]="'shell.search' | t"
+          aria-keyshortcuts="/"
+          [value]="query()"
+          (input)="query.set($any($event.target).value)"
+          (keydown.escape)="leaveSearch()"
+        />
+        <kbd aria-hidden="true">/</kbd>
+      </form>
+    </div>
+  </header>
+  @if (!data.connected()) {
+  <p class="banner" role="status">{{ "shell.offline" | t }}</p>
+  }
+  <wl-build-banner />
+  <div class="view">
+    @switch (data.loadState()) { @case ("loading") {
+    <p class="muted" role="status">{{ "shell.loading" | t }}</p>
+    } @case ("unavailable") {
+    <p class="muted">{{ "shell.unavailable" | t }}</p>
+    } @default {
+    <router-outlet />
+    } }
+  </div>
+</main>
+<wl-toast />

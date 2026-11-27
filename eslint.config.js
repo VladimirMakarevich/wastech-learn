@@ -218,6 +218,18 @@ export default defineConfig(
     },
   },
 
+  // The app's unit tests run in Node over its pure modules; the literal audit reads the templates from disk.
+  {
+    files: ["packages/app/test/**"],
+    rules: {
+      ...restrictImports(
+        pkg("content-fs"),
+        ...["cli", "mcp-server", "server"].map(pkg),
+      ),
+      ...restrictSyntax(NO_ENUM, NO_DEFAULT_EXPORT),
+    },
+  },
+
   // Angular: component and template rules, accessibility included, for the TypeScript of the app and the
   // templates inline in its components.
   {

@@ -2,7 +2,7 @@
 
 [⌂ plan](index.md) · [спека](../index.md)
 
-- **Статус:** ☐
+- **Статус:** ☑
 - **Зависит от:** 07
 - **Даёт:** `ReviewStore`, bundle, SSE, `bundleHtml`, i18n, токены и компоненты Evening Glass, клавиши, оболочка
 
@@ -34,5 +34,5 @@ Vitest: очередь `HttpReviewStore` с подменой `fetch`, парит
 
 ## Приёмка фазы
 
-- [ ] AC-F04, unit-часть AC-F19, AC-N06 проходят.
-- [ ] Lint, тесты и e2e зелёные.
+- [x] AC-F04, unit-часть AC-F19, AC-N06 проходят.
+- [x] Lint, тесты и e2e зелёные.
