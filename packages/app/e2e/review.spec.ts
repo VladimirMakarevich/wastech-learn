@@ -172,51 +172,57 @@ test.describe("review", () => {
     }
   });
 
-  // Early in the file, while the queue still holds every card type.
   test("a scenario card grades by its rubric, a cloze hides only the asked gap, vocab asks both ways", async ({
     page,
   }) => {
+    await twoMonthsLater(page);
     await startReview(page);
     const typeChip = card(page).locator(".meta-tags .chip").last();
-    await skipUntil(
-      page,
-      async () =>
-        (await typeChip.textContent())?.startsWith("scenario") ?? false,
-    );
-    await page.keyboard.press("Space");
-    const boxes = page.locator(".rubric input[type=checkbox]");
-    await expect(boxes.first()).toBeVisible();
-    expect(await boxes.count()).toBeGreaterThanOrEqual(3);
-    await expect(page.locator(".answer-block .hint")).toHaveCount(1);
-    const items = page.locator(".rubric label");
-    for (let index = 0; index < (await items.count()); index++)
-      if ((await items.nth(index).locator(".req").count()) > 0)
-        await boxes.nth(index).check();
-    await expect(page.locator(".ratings button.suggested")).toHaveCount(1);
-    await page.keyboard.press("b");
-
-    await skipUntil(
-      page,
-      async () => (await typeChip.textContent())?.startsWith("cloze") ?? false,
-    );
-    const asked = card(page).locator(".question span.cloze");
-    await expect(asked).toHaveCount(1);
-    await expect(asked).toHaveText("[…]");
-    await page.keyboard.press("Space");
-    await expect(
-      card(page).locator(".question span.cloze.open"),
-    ).not.toHaveText("[…]");
-    await page.keyboard.press("b");
-
-    await skipUntil(
-      page,
-      async () => (await typeChip.textContent())?.startsWith("vocab") ?? false,
-    );
-    const item = await currentItem(page);
-    expect(item).toMatch(/:(fwd|rev)$/);
-    // The reverse side never shows the example sentence: it holds the very word being asked.
-    if (item.endsWith(":rev"))
-      await expect(card(page).locator(".question em")).toHaveCount(0);
+    const checked = new Set<string>();
+    // One pass over the queue: each card type is checked when it comes up, in whatever order srs put it.
+    for (
+      let step = 0;
+      step < 60 && checked.size < 3 && (await card(page).count()) > 0;
+      step++
+    ) {
+      const type = ((await typeChip.textContent()) ?? "").split(" ")[0] ?? "";
+      const item = await currentItem(page);
+      if (type === "scenario" && !checked.has("scenario")) {
+        await page.keyboard.press("Space");
+        const boxes = page.locator(".rubric input[type=checkbox]");
+        await expect(boxes.first()).toBeVisible();
+        expect(await boxes.count()).toBeGreaterThanOrEqual(3);
+        await expect(page.locator(".answer-block .hint")).toHaveCount(1);
+        const labels = page.locator(".rubric label");
+        for (let index = 0; index < (await labels.count()); index++)
+          if ((await labels.nth(index).locator(".req").count()) > 0)
+            await boxes.nth(index).check();
+        await expect(page.locator(".ratings button.suggested")).toHaveCount(1);
+        checked.add("scenario");
+      } else if (type === "cloze" && !checked.has("cloze")) {
+        const asked = card(page).locator(".question span.cloze");
+        await expect(asked).toHaveCount(1);
+        await expect(asked).toHaveText("[…]");
+        await page.keyboard.press("Space");
+        await expect(
+          card(page).locator(".question span.cloze.open"),
+        ).not.toHaveText("[…]");
+        checked.add("cloze");
+      } else if (type === "vocab" && !checked.has("vocab")) {
+        expect(item).toMatch(/:(fwd|rev)$/);
+        // The reverse side never shows the example sentence: it holds the very word being asked.
+        if (item.endsWith(":rev"))
+          await expect(card(page).locator(".question em")).toHaveCount(0);
+        checked.add("vocab");
+      }
+      await page.keyboard.press("b");
+      await expect
+        .poll(async () =>
+          (await card(page).count()) === 0 ? "gone" : currentItem(page),
+        )
+        .not.toBe(item);
+    }
+    expect([...checked].sort()).toEqual(["cloze", "scenario", "vocab"]);
   });
 
   test("records confidence, answer time, content hash and scheduler, and null when confidence is skipped", async ({
@@ -258,9 +264,8 @@ test.describe("review", () => {
         "aria-keyshortcuts",
         new RegExp(`^${key}`),
       );
-      await expect(button).toHaveAttribute(
-        "aria-label",
-        new RegExp(`^${key} · .+ · .+`),
+      await expect(button).toHaveAccessibleName(
+        new RegExp(`^${key} \\S.* \\S+$`),
       );
       await expect(button.locator(".iv")).not.toBeEmpty();
     }
@@ -469,6 +474,9 @@ test.describe("review", () => {
     );
     const sorted = [...timings].sort((a, b) => a - b);
     expect(sorted.length).toBeGreaterThanOrEqual(19);
+    console.log(
+      `next card after a rating, median of ${String(sorted.length)}: ${(sorted[Math.floor(sorted.length / 2)] ?? 0).toFixed(1)} ms`,
+    );
     expect(sorted[Math.floor(sorted.length / 2)]).toBeLessThan(50);
   });
 });

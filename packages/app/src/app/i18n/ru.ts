@@ -65,7 +65,6 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "rating.2": "С трудом",
   "rating.3": "Вспомнил",
   "rating.4": "Легко",
-  "rating.label": "{key} · {name} · {interval}",
   "shortcut.topic": "тема",
   "shortcut.undo": "отменить",
   "shortcut.suspend": "отложить",
@@ -120,6 +119,8 @@ export const ru: Readonly<Record<MessageKey, Message>> = {
   "end.tomorrow-none": "На завтра ничего не назначено",
   "end.home": "На главную",
   "end.more": "Ещё {minutes}",
+  "end.nothing":
+    "В этот раз ответов не было; карточки остались на своих местах",
   "end.empty": "Пока нечего подводить: сессии ещё не было",
   "count.days": {
     one: "{count} день",

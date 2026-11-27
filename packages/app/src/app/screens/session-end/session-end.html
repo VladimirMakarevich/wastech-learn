@@ -1,5 +1,5 @@
 <main class="screen" data-screen="session-end">
-  @if (summary(); as summary) {
+  @if (summary(); as summary) { @if (summary.reviewed > 0) {
   <section class="end">
     <h2
       class="today-big tnum"
@@ -55,6 +55,13 @@
     </div>
   </section>
   } @else {
+  <section class="end">
+    <p class="today-sub">{{ "end.nothing" | t }}</p>
+    <div class="row">
+      <a class="btn primary" routerLink="/">{{ "end.home" | t }}</a>
+    </div>
+  </section>
+  } } @else {
   <section class="end">
     <p class="today-sub">{{ "end.empty" | t }}</p>
     <div class="row">

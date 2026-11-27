@@ -18,7 +18,12 @@ import { clozeToSpans } from "./cloze.js";
 import { sanitizeSchema } from "./sanitize-schema.js";
 import { diagramFigure, prepareSvg } from "./svg.js";
 
-const THEMES = { light: "github-light", dark: "github-dark" } as const;
+// The high-contrast variants: the regular GitHub themes paint comments and punctuation below WCAG AA on the
+// app's code surface, and code is read as closely as prose.
+const THEMES = {
+  light: "github-light-high-contrast",
+  dark: "github-dark-high-contrast",
+} as const;
 
 type Highlighter = Awaited<ReturnType<typeof createHighlighter>>;
 

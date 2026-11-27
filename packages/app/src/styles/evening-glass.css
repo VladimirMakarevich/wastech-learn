@@ -758,11 +758,11 @@ body[data-view="cards"] .topbar-right {
   background: color-mix(in oklch, var(--primary) 88%, var(--ink));
 }
 
+/* The keycap recedes by its border, not by fading its text: a faded label on the tint fails AA contrast. */
 .btn kbd {
   background: transparent;
   color: inherit;
-  border-color: currentcolor;
-  opacity: 0.6;
+  border-color: color-mix(in oklch, currentcolor 45%, transparent);
 }
 
 .muted {

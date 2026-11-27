@@ -192,11 +192,16 @@ export class ReviewSession {
     });
   }
 
-  /** Starts a session over the day's queue; `false` while the content or the scheduler is still loading. */
+  /** Starts a session over the day's queue; `false` while the content, the log or the scheduler is loading. */
   start(mode: SessionMode): boolean {
     const context = this.context();
     const bundle = this.data.bundle();
-    if (context === undefined || bundle === undefined) return false;
+    if (
+      context === undefined ||
+      bundle === undefined ||
+      !this.data.eventsLoaded()
+    )
+      return false;
     this.summary.set(undefined);
     this.state.set(
       startSession(context, {

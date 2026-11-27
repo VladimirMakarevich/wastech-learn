@@ -222,14 +222,9 @@ export class Review {
     const release = keyboard.register((name) => this.onKey(name));
     inject(DestroyRef).onDestroy(release);
 
-    // The content and the scheduler arrive asynchronously; the session starts as soon as both are there.
+    // The content, the log and the scheduler arrive asynchronously; the session starts once all are there.
     effect(() => {
-      if (
-        this.started() ||
-        this.session.context() === undefined ||
-        this.data.bundle() === undefined
-      )
-        return;
+      if (this.started() || !this.data.ready()) return;
       untracked(() => {
         const mode = this.mode();
         if (!this.session.active() || mode !== undefined)
@@ -292,14 +287,6 @@ export class Review {
           { injector: this.injector },
         );
       });
-    });
-  }
-
-  protected label(rating: (typeof RATINGS)[number]): string {
-    return this.i18n.t("rating.label", {
-      key: String(rating.rating),
-      name: this.i18n.t(rating.name),
-      interval: this.intervals().get(rating.rating) ?? "",
     });
   }
 

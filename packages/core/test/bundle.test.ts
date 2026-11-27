@@ -73,7 +73,7 @@ describe("compileBundle", () => {
     expect(html).toContain('class="katex"');
     expect(html).toContain("<math");
     expect(html).toContain(
-      'class="shiki shiki-themes github-light github-dark"',
+      'class="shiki shiki-themes github-light-high-contrast github-dark-high-contrast"',
     );
     expect(html).toContain("--shiki-light:");
   });

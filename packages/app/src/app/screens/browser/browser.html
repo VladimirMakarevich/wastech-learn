@@ -150,6 +150,7 @@
         @for (row of result().rows; track row.item) {
         <tr
           [attr.data-item]="row.item"
+          [attr.data-due]="row.dueAt"
           [class.selected]="selected() === row.item"
         >
           <td class="title">

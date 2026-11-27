@@ -38,6 +38,8 @@ export class AppData {
   readonly events = signal<readonly ReviewEvent[]>([]);
   /** Bumped on every reload of the log from outside, so a running session knows to refresh. */
   readonly externalRevision = signal(0);
+  /** The log has been loaded once: a queue built before that would treat every card as new. */
+  readonly eventsLoaded = signal(false);
   readonly context = signal<ReplayContext | undefined>(undefined);
   readonly loadState = signal<LoadState>("loading");
   readonly buildFailure = signal<BuildFailure | null>(null);
@@ -52,7 +54,8 @@ export class AppData {
     () =>
       this.bundle() !== undefined &&
       this.status() !== undefined &&
-      this.context() !== undefined,
+      this.context() !== undefined &&
+      this.eventsLoaded(),
   );
 
   readonly store: ReviewStore = createHttpReviewStore({
@@ -138,6 +141,7 @@ export class AppData {
   private async loadEvents(): Promise<void> {
     try {
       this.events.set(await this.store.loadEvents());
+      this.eventsLoaded.set(true);
       this.externalRevision.update((revision) => revision + 1);
     } catch (error) {
       // Without the server the log already on screen stays; the session goes on with it.

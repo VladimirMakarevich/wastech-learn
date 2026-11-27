@@ -69,7 +69,6 @@ export const en = {
   "rating.2": "With effort",
   "rating.3": "Recalled",
   "rating.4": "Easy",
-  "rating.label": "{key} · {name} · {interval}",
   "shortcut.topic": "topic",
   "shortcut.undo": "undo",
   "shortcut.suspend": "suspend",
@@ -124,6 +123,8 @@ export const en = {
   "end.tomorrow-none": "Nothing is due tomorrow",
   "end.home": "Home",
   "end.more": "{minutes} more",
+  "end.nothing":
+    "Nothing was answered this time; the cards stay where they were",
   "end.empty": "No session to sum up yet",
   "count.days": { one: "{count} day", other: "{count} days" },
   "section.tldr": "TL;DR",

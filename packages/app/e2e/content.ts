@@ -124,3 +124,26 @@ export const nodeStats = async (nowMs: number): Promise<NodeStats> => {
   );
   return { week, month, forecast: forecast.map((day) => day.due) };
 };
+
+/** When each review item is due after a full replay of the copy's log in Node. */
+export const nodeDue = async (
+  nowMs: number,
+): Promise<ReadonlyMap<string, number | null>> => {
+  const { loadConfig, readReviewLog } =
+    await import("@wastech-learn/content-fs");
+  const { toReplayEvents, toSrsConfig } =
+    await import("@wastech-learn/session");
+  const { createScheduler, replay } = await import("@wastech-learn/srs");
+  const root = contentRoot();
+  const config = toSrsConfig(await loadConfig(root));
+  const { events } = await readReviewLog(root);
+  const state = replay(
+    toReplayEvents(events),
+    await createScheduler(config),
+    config,
+    new Date(nowMs),
+  );
+  return new Map(
+    [...state.items.values()].map((item) => [item.item, item.dueAt]),
+  );
+};

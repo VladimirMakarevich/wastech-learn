@@ -19,7 +19,12 @@ export class Library {
     const context = this.data.context();
     const bundle = this.data.bundle();
     const events = this.data.events();
-    if (context === undefined || bundle === undefined) return undefined;
+    if (
+      context === undefined ||
+      bundle === undefined ||
+      !this.data.eventsLoaded()
+    )
+      return undefined;
     const now = this.clock.now();
     const deck = deckFromBundle(bundle);
     const prepared = prepareEvents(events);
