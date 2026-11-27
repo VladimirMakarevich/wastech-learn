@@ -71,10 +71,10 @@ export {
 } from "./template.js";
 export type { SummarySectionName } from "./template.js";
 
-export { foldDiacritics, loadSearchIndex } from "./search/search.js";
+export { foldDiacritics, loadSearchIndex } from "./search/load.js";
 export type {
   ContentSearchIndex,
   SearchFilters,
   SearchHit,
   SearchHitKind,
-} from "./search/search.js";
+} from "./search/load.js";
