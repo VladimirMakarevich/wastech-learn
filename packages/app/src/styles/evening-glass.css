@@ -1023,6 +1023,13 @@ body[data-view="cards"] .topbar-right {
   flex: none;
 }
 
+/* A rubric item arrives as a rendered paragraph; kept inline it stays on the
+   checkbox line and lets the "required" badge follow the text. */
+.rubric-text > p {
+  display: inline;
+  margin: 0;
+}
+
 .rubric .req {
   font-size: 11.5px;
   font-weight: 600;
@@ -2047,6 +2054,48 @@ label.g-row {
 .md th {
   color: var(--ink);
   background: var(--fill);
+}
+
+/* The side column is too narrow for a three-column table, so each row reads as an entry: the title on its
+   own line, the rest under it. */
+.materials table,
+.materials tbody,
+.materials tr,
+.materials td {
+  display: block;
+}
+
+.materials table {
+  margin: 0;
+}
+
+.materials thead {
+  display: none;
+}
+
+.materials tr {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.materials tr:first-child {
+  padding-top: 0;
+}
+
+.materials tr:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.materials td {
+  padding: 0;
+  border: 0;
+  overflow-wrap: anywhere;
+}
+
+.materials td + td {
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .selfcheck-hidden {
